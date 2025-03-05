@@ -34,7 +34,7 @@
   <title>@yield('title', 'IPCR')</title>
 </head>
 <body>
-  <!--  -->
+  <!-- Navbar Section -->
   @yield('navbar')
 
   <!-- Main Content Section -->
