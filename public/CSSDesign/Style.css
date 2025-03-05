@@ -1,0 +1,154 @@
+.navbar {
+    height: 55px; /* Set navbar height */
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center; /* Centers navbar content */
+}
+.navbar-brand img {
+    height: 50px; /* Adjust logo height */
+    margin-bottom: 7px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+.navbar-brand {
+    display: inline-flex;
+    align-items: center;
+  }
+.ipcr-bold {
+    font-weight: 1000; /* Maximum boldness */
+    font-size: 2.2rem; /* Title size */
+    color: #03592c;
+}
+.btn {
+    width: 75px;
+}
+.btn,
+.btn-success {
+  font-family: 'Montserrat';
+}
+/* Responsive Navbar Adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        height: auto; /* Allow height to adjust based on content */
+        padding: 10px;
+    }
+    .navbar-brand img {
+        height: 40px; /* Reduce logo size */
+    }
+    .ipcr-bold {
+        font-size: 1.8rem; /* Scale down title size */
+    }
+    .btn {
+        width: auto;
+        padding: 5px 10px;
+        font-size: 0.9rem; /* Adjust button font size */
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start;
+        padding: 10px;
+    }
+    .navbar-brand {
+        margin-bottom: 5px;
+    }
+    .navbar-brand img {
+        height: 35px;
+    }
+    .ipcr-bold {
+        font-size: 1.6rem;
+    }
+    .btn {
+        width: 100%;
+        padding: 5px 10px;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+}
+.hero-section{
+    font-family: Bebas Neue;
+    background: url('backgroundimage.jpg') center/cover no-repeat;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+}
+.hero-section .overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #03592c; /* Semi-transparent overlay */
+    opacity: 90%;
+}
+.container{
+    position: relative;
+    z-index: z; /* Keeping original value to not change design */
+    padding: 10px; /* Adjust the padding value */
+    margin: 0 auto;
+    max-width: 100%;
+}
+.btn-success{
+    background-color: #03592c;
+    border: none;
+}
+.btn-success:hover{
+    background-color: #003300;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 992px) {
+    .hero-section h1:nth-of-type(1) {
+      font-size: 70px !important; /* Reduced from 90px */
+    }
+    .hero-section h1:nth-of-type(2) {
+      font-size: 50px !important; /* Reduced from 63px */
+      line-height: 1.1 !important; /* Adjusted line-height */
+    }
+    .hero-section p.lead {
+      font-size: 13px !important; /* Slightly reduced */
+      line-height: 3 !important;  /* Adjusted for better readability */
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section h1:nth-of-type(1) {
+      font-size: 50px !important;
+    }
+    .hero-section h1:nth-of-type(2) {
+      font-size: 40px !important;
+      line-height: 1 !important;
+    }
+    .hero-section p.lead {
+      font-size: 12px !important;
+      line-height: 2.5 !important;
+    }
+  }
+
+  /* Responsive adjustments for the "PROVINCE OF NUEVA VIZCAYA" span */
+@media (max-width: 768px) {
+    .hero-section p.lead span {
+      letter-spacing: 5px !important;  /* Reduced spacing for better fit */
+      font-size: 13px !important;      /* Slightly smaller font size */
+    }
+    .hero-section p.lead {
+      line-height: 2.5 !important;     /* Adjusted line height for improved readability */
+    }
+  }
+
+  @media (max-width: 576px) {
+    .hero-section p.lead span {
+      letter-spacing: 2px !important;  /* Further reduced letter spacing */
+      font-size: 10px !important;      /* Smaller font size for very small devices */
+    }
+    .hero-section p.lead {
+      line-height: 2 !important;       /* Further adjustment to line height */
+    }
+  }
+
