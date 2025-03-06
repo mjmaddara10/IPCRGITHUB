@@ -6,7 +6,7 @@
 @section('navbar')
 <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom" style="height: 55px; width: 100%;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-       
+        <!-- Left-aligned Logo & Text -->
         <a class="navbar-brand fw-bold text-success d-flex align-items-center" href="#">
             <img src="{{ asset('images/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 50px; margin-top: 10px; margin-bottom: 10px;">
             <span style="font-weight: 1000; font-size: 2.2rem; color: #03592c;">IPCR</span>
