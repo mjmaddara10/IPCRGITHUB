@@ -1,4 +1,4 @@
-@extends('layouts.csslink')
+@extends('layouts')
 
 @section('content')
 @section('navbar')
@@ -45,7 +45,7 @@
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <!-- Left-aligned Logo & Text -->
         <a class="navbar-brand fw-bold text-success d-flex align-items-center" href="#">
-            <img src="{{ asset('NVLogo.png') }}" alt="NV Logo" class="me-2"
+            <img src="{{ asset('images/NVLogo.png') }}" alt="NV Logo" class="me-2"
                 style="height: 50px; margin-top: 10px; margin-bottom: 10px;">
             <span style="font-weight: 1000; font-size: 2.2rem; color: #03592c;">IPCR</span>
         </a>
@@ -193,7 +193,7 @@
             <div class="modal-header text-center">
                 <h1 class="modal-title w-100" id="userAccountModalLabel"
                     style="font-family: 'Montserrat'; font-weight: 700; color: #03592c; font-size: 2.5rem;">
-                    USER ACCOUNT REGISTRATION
+                    <i class="fa-solid fa-user-plus mr-2"></i>USER ACCOUNT REGISTRATION
                 </h1>
             </div>
             <div class="modal-body" style="background-color: #eaeaea;">

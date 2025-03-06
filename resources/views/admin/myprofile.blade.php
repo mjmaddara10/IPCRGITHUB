@@ -1,4 +1,4 @@
-@extends('layouts.csslink')
+@extends('layouts')
 
 @section('content')
 @section('navbar')
@@ -29,7 +29,7 @@
 
     /* Page Styling */
     .info-container {
-        background: url('{{ asset("backgroundimage.jpg") }}') no-repeat center center;
+        background: url('{{ asset("images/backgroundimage.jpg") }}') no-repeat center center;
         background-size: cover;
         background-color: rgba(255, 255, 255, 0.8);
         background-blend-mode: lighten;
@@ -76,7 +76,7 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom">
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <a class="navbar-brand fw-bold text-success d-flex align-items-center" href="#">
-            <img src="{{ asset('NVLogo.png') }}" alt="NV Logo">
+            <img src="{{ asset('images/NVLogo.png') }}" alt="NV Logo">
             <span style="font-weight: 1000; font-size: 2.2rem; color: #03592c;">IPCR</span>
         </a>
 
