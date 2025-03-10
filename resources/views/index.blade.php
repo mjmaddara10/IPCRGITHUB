@@ -31,7 +31,7 @@
 <header class="hero-section">
     <div class="overlay"></div>
     <div class="container text-center text-white" style="padding: 10px;">
-        <h1 style="font-size: 90px; margin-bottom: 0;">INDIVIDUAL PERFORMANCES</h1>
+        <h1 style="font-size: 90px; margin-bottom: 0;">INDIVIDUAL PERFORMANCESwdwadawd</h1>
         <h1 style="font-size: 63px; margin-bottom: 0; line-height: 0.10;">COMMITMENT AND REVIEW (TARGETS)</h1>
         <p class="lead" style="font-size: 15px; font-weight: bold; margin-bottom: 0; line-height: 4; font-family: 'Montserrat';">
             <span style="display: inline-block; letter-spacing: 15px;">
