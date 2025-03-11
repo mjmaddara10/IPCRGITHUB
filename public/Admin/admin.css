@@ -1,0 +1,347 @@
+/*==================================================
+  Hero Section Styles
+==================================================*/
+.hero-section {
+    /* Creates a semi-transparent green overlay on the background image */
+    background: linear-gradient(rgba(3, 89, 44, 0.9), rgba(3, 89, 44, 0.9)),
+                url('../img/backgroundimage.jpg') no-repeat center center fixed;
+    /* Makes background image cover entire container */
+    background-size: cover;
+    /* Takes full viewport height minus navbar height */
+    min-height: calc(100vh - 65px);
+    /* Centers content vertically and horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Adds space around content */
+    padding: 2rem;
+}
+
+/*==================================================
+  Hero Typography
+==================================================*/
+.hero-title {
+    /* Sets Montserrat as the font */
+    font-family: 'Montserrat';
+    /* Responsive font size - min: 2rem, preferred: 5vw, max: 4.5rem */
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    /* Bold weight - can be 100-900 */
+    font-weight: 700;
+    /* White text color */
+    color: #ffffff;
+    /* Adds depth with shadow: x-offset y-offset blur color */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* Small space below title */
+    margin-bottom: -1.4rem;
+    /* Space between letters */
+    letter-spacing: 1px;
+    /* Line height for readability */
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-family: 'Montserrat';
+    /* Smaller responsive size than title */
+    font-size: clamp(1.5rem, 4vw, 3.0rem);
+    /* Semi-bold weight */
+    font-weight: 600;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: -1.0rem;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+}
+
+.hero-text {
+    font-family: 'Montserrat';
+    /* Smallest text size of the three */
+    font-size: clamp(1rem, 3vw, 2.5rem);
+    /* Medium weight for readability */
+    font-weight: 300;
+    color: #ffffff;
+    /* Lighter shadow for smaller text */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    margin-bottom: 0;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+}
+
+/*==================================================
+  Global Styles
+==================================================*/
+body {
+    /* Base font for entire site */
+    font-family: 'Montserrat';
+    /* Removes default margins */
+    margin: 0;
+    padding: 0;
+    /* Includes padding in element width calculations */
+    box-sizing: border-box;
+}
+
+/*==================================================
+  Navigation & Sidebar
+==================================================*/
+.sidebar {
+    /* Subtle shadow effect */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    /* Full height sidebar */
+    min-height: 100vh;
+    padding-top: 1rem;
+}
+
+.nav-link {
+    /* Spacing around links */
+    padding: 0.8rem 1rem;
+    /* Brand green color */
+    color: #03592c;
+    /* Smooth hover animation */
+    transition: all 0.3s ease;
+    /* Rounded corners */
+    border-radius: 4px;
+    margin: 0.2rem 0;
+}
+
+.nav-link:hover {
+    /* Light green background on hover */
+    background-color: rgba(3, 89, 44, 0.1);
+    color: #03592c;
+    /* Slight shift right on hover */
+    transform: translateX(5px);
+}
+
+.nav-link.active {
+    /* Darker background for active state */
+    background-color: rgba(3, 89, 44, 0.2);
+    font-weight: 600;
+    color: #03592c;
+}
+
+/*==================================================
+  Brand Styling
+==================================================*/
+.brand-text {
+    font-family: 'Montserrat';
+    /* Extra bold weight for brand */
+    font-weight: 900;
+    /* Responsive brand text size */
+    font-size: clamp(2.5rem, 2vw, 2.2rem);
+    /* Brand green color */
+    color: #03592c;
+    letter-spacing: 1px;
+}
+
+/*==================================================
+  Card Components
+==================================================*/
+.card {
+    /* Removes default border */
+    border: none;
+    border-radius: 8px;
+    /* Card shadow effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Smooth hover animation */
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.card:hover {
+    /* Lift effect on hover */
+    transform: translateY(-5px);
+    /* Stronger shadow when lifted */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    /* Brand green background */
+    background-color: #03592c;
+    color: #ffffff;
+    /* Rounded top corners */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 1rem;
+}
+
+.card-body {
+    /* Content padding */
+    padding: 1.5rem;
+}
+
+/*==================================================
+  Utility Classes
+==================================================*/
+.text-primary-green {
+    /* Brand green text color */
+    color: #03592c;
+}
+
+.bg-primary-green {
+    /* Brand green background */
+    background-color: #03592c;
+}
+
+.shadow-custom {
+    /* Reusable shadow effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/*==================================================
+  Media Queries
+==================================================*/
+/* Tablet Devices */
+@media (max-width: 768px) {
+    /* Reduced padding on tablets */
+    .hero-section {
+        padding: 1rem;
+    }
+    .card {
+        margin: 0.5rem;
+    }
+}
+
+/* Mobile Devices */
+@media (max-width: 576px) {
+    /* Smaller spacing on mobile */
+    .nav-link {
+        padding: 0.5rem;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/*==================================================
+  Page Background Styles
+  How to modify:
+  - Adjust position values to control placement
+  - Change gradient colors for different overlay effect
+  - Update image path for different background
+  - Modify blur or opacity as needed
+==================================================*/
+.page-background {
+    /* Fixed positioning relative to viewport */
+    position: fixed;
+    /* Distance from top of viewport (matches navbar height) */
+    top: 65px;
+    /* Stretch to fill viewport edges */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Places background behind content */
+    z-index: -1;
+    /* Creates white semi-transparent overlay and sets background image */
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.5),
+        rgba(255, 255, 255, 0.5)
+    ),
+    url('../img/backgroundimage.jpg') no-repeat center center fixed;
+    /* Ensures image covers entire container */
+    background-size: cover;
+}
+
+/* Admin Settings Label Styles */
+.admin-settings-label {
+    background: #198754;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.admin-settings-label i {
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.admin-settings-label h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Table Layout Styles */
+.table-fixed {
+    table-layout: fixed;
+    width: 100%;
+    border: 1px solid #dee2e6;
+}
+
+.table-fixed td {
+    padding: 1rem;
+    word-wrap: break-word;
+}
+
+/* Button Hover Styles */
+.btn-hover {
+    opacity: 1;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-hover:hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Card Styles */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    border-radius: 8px 8px 0 0;
+}
+
+/* Table Cell Styles */
+.table td {
+    vertical-align: middle;
+}
+
+
+/* Common Colors */
+.nv-green {
+    background-color: #03592c;
+    color: #FFFFFF;
+}
+
+.nv-red {
+    background-color: #bc0c0c;
+    color: #FFFFFF;
+}
+
+
+/* Table Styles Admin Setting*/
+.info-label {
+    width: 30%;
+    color: #03592c;
+    background-color: #f8f9fa;
+    text-align: right;
+    padding-right: 15px;
+    font-family: 'Montserrat';
+}
+
+/* Header Styles */
+.gold-gradient {
+    background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03);
+    height: 10px;
+    width: 100%;
+}
+
+/* Modal Styles */
+.modal-form-label {
+    color: #03592c;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.modal-bg {
+    background-color: #Eaeaea;
+}
