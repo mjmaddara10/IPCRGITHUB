@@ -5,9 +5,9 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function dashboard()
+    public function index()
     {
-        return view('admin.dashboard'); // Make sure this matches your file path
+        return view('admin.index'); // Make sure this matches your file path
     }
 }
 Route::get('/admin/Setting', [AdminController::class, 'Setting'])->name('admin.Setting');

@@ -18,15 +18,15 @@
     <!-- Typography -->
     <!-- Primary Font: Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Application Specific Styles -->
     <!-- Custom Admin Styles -->
     <link href="{{ asset('Admin/admin.css') }}" rel="stylesheet">
-    
+
     <!-- Additional Font Weights -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    
+
     <!-- Alert System -->
     <!-- SweetAlert2 Library for beautiful alerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
@@ -36,7 +36,7 @@
 <body>
     <!-- Navigation Section -->
     @yield('navbar')
-    
+
     <!-- Main Content Area -->
     @yield('content')
 
@@ -49,9 +49,9 @@
 
     <!-- Custom Scripts -->
     <!-- Delete Confirmation Alerts -->
-    <script src="{{ asset('deleteAlerts/delete.js') }}"></script>
-    <!-- Logout Confirmation Alerts -->
-    <script src="{{ asset('logoutAlerts/logout.js') }}"></script>
+    <script src="{{ asset('js/delete.js') }}"></script>
+    <!-- logout Confirmation Alerts -->
+    <script src="{{ asset('js/logout.js') }}"></script>
 </body>
 
 </html>

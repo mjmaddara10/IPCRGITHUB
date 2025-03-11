@@ -6,7 +6,7 @@
 <nav class="navbar navbar-expand-sm navbar-light border-bottom bg-white" style="height: 55px;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <!-- Logo and Brand -->
-        <a class="navbar-brand fw-bold text-success d-flex align-items-center" href="{{ route('admin.dashboard') }}">
+        <a class="navbar-brand fw-bold text-success d-flex align-items-center" href="{{ route('admin.index') }}">
             <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto;">
             <span class="brand-text">IPCR</span>
         </a>
