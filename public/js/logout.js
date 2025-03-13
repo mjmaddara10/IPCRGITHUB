@@ -1,8 +1,8 @@
-function confirmLogout() {
+function confirmLogoutWithRedirect() {
     Swal.fire({
-        title: 'Logout Confirmation',
+        title: 'Logout?',
         text: "Are you sure you want to logout?",
-        icon: 'question',
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#03592c',
         cancelButtonColor: '#bc0c0c',
@@ -10,8 +10,15 @@ function confirmLogout() {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Add your logout redirect here
-            window.location.href = "/logout";
+            Swal.fire({
+                title: 'Success!',
+                text: 'Successfully logged out',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = '/logout';
+            });
         }
     });
 }

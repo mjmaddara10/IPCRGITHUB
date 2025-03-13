@@ -12,7 +12,7 @@
         </a>
         <!-- Logout Button -->
         <div class="d-flex align-items-center">
-            <a href="javascript:void(0)" onclick="confirmLogout()" class="btn btn-hover px-4 nv-red">
+            <a href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
                 <i class="fas fa-sign-out-alt me-2"></i>Logout
             </a>
         </div>
@@ -23,11 +23,11 @@
 
 @section('content')
 <div class="page-background"></div>
-<div class="container mt-4">
+<div class="container mt-4 position-relative">
     <div class="row">
         <div class="col-12">
-            <!-- Settings Card -->
-            <div class="card shadow">
+            <!-- Add position-static to prevent unexpected movements -->
+            <div class="bg-white">
                 <!-- Card Header -->
                 <div class="card-header py-3 d-flex align-items-center nv-green">
                     <div class="d-flex align-items-center">
@@ -46,19 +46,19 @@
                         <div class="col-md-6">
                             <table class="table table-bordered table-fixed">
                                 <tr>
-                                    <td class="info-label fw-bold" style="color: #03592c;">Name:</td>
+                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Name:</td>
                                     <td class="bg-white">Marc Jay H. Maddara</td>
                                 </tr>
                                 <tr>
-                                    <td class="info-label fw-bold" style="color: #03592c;">Position:</td>
+                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Position:</td>
                                     <td class="bg-white">Administrative Aide III (Clerk I)</td>
                                 </tr>
                                 <tr>
-                                    <td class="info-label fw-bold" style="color: #03592c;">Status:</td>
+                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Status:</td>
                                     <td class="bg-white">Permanent</td>
                                 </tr>
                                 <tr>
-                                    <td class="info-label fw-bold" style="color: #03592c;">Division:</td>
+                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Division:</td>
                                     <td class="bg-white">PITD</td>
                                 </tr>
                             </table>
@@ -67,11 +67,11 @@
                         <div class="col-md-6">
                             <table class="table table-bordered table-fixed">
                                 <tr>
-                                    <td class="info-label fw-bold" style="color: #03592c;">User Name:</td>
+                                    <td class="info-label fw-bold text-end" style="color: #03592c;">User Name:</td>
                                     <td class="bg-white">Marc Jay H. Maddara</td>
                                 </tr>
                                 <tr>
-                                    <td class="info-label fw-bold" style="color: #03592c;">Password:</td>
+                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Password:</td>
                                     <td class="bg-white">********</td>
                                 </tr>
                             </table>
@@ -110,48 +110,62 @@
                     <form>
                         <div class="mb-3 row align-items-center">
                             <label for="updateName"
-                                class="col-sm-3 form-label text-end mb-0 modal-form-label">Name:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="updateName" value="">
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">First Name:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateName" value="" name="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updateName"
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Middle Name:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateName" value="" name="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updateName"
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Last Name:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateName" value="" name="">
                             </div>
                         </div>
                         <div class="mb-3 row align-items-center">
                             <label for="updatePosition"
-                                class="col-sm-3 form-label text-end mb-0 modal-form-label">Position:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="updatePosition" value="">
-                            </div>
-                        </div>
-                        <div class="mb-3 row align-items-center">
-                            <label for="updateStatus"
-                                class="col-sm-3 form-label text-end mb-0 modal-form-label">Status:</label>
-                            <div class="col-sm-9">
-                                <select class="form-select" id="updateStatus">
-                                    <option value="Permanent" selected>Permanent</option>
-                                    <option value="COS">COS</option>
-                                    <option value="Casual">Casual</option>
-                                </select>
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Position:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updatePosition" value="" name="">
                             </div>
                         </div>
                         <div class="mb-3 row align-items-center">
                             <label for="updateDivision"
-                                class="col-sm-3 form-label text-end mb-0 modal-form-label">Division:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="updateDivision" value="">
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Division:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateDivision" value="" name="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updateStatus"
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Status:</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" id="updateStatus">
+                                    <option value="Permanent" name="">Permanent</option>
+                                    <option value="COS" name="">COS</option>
+                                    <option value="Casual" name="">Casual</option>
+                                </select>
                             </div>
                         </div>
                         <div class="mb-3 row align-items-center">
                             <label for="updateUsername"
-                                class="col-sm-3 form-label text-end mb-0 modal-form-label">Username:</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="updateUsername" value="">
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Username:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateUsername" value="" name="">
                             </div>
                         </div>
                         <div class="mb-3 row align-items-center">
                             <label for="updatePassword"
-                                class="col-sm-3 form-label text-end mb-0 modal-form-label">Password:</label>
-                            <div class="col-sm-9">
-                                <input type="password" class="form-control" id="updatePassword" value="">
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Password:</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="updatePassword" value="" name="">
                             </div>
                         </div>
                     </form>
