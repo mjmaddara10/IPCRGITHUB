@@ -9,11 +9,11 @@ Route::prefix('admin')->group(function () {
         return view('adminBlades.adminIndex');
     })->name('admin.index');
 
-    // Settings route
+    /*
     Route::get('/settings', function () {
         return view('adminBlades.adminSettings');
     })->name('admin.settings');
-
+*/
     //adminManageUser route
     Route::get('/manageuser', function () {
         return view('adminBlades.adminManageUser');
@@ -38,11 +38,11 @@ Route::prefix('employee')->group(function () {
         return view('employeeBlades.employeeIndex');
     })->name('employee.index');
 
- //Employee Settings route
+ /* Employee Settings route
     Route::get('/settings', function () {
         return view('employeeBlades.employeeSettings');
     })->name('employee.settings');
-
+*/
     //Employee Assign
     Route::get('/Assign', function () {
         return view('employeeBlades.employeeAssign');

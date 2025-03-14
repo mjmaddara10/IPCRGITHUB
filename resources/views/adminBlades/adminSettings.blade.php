@@ -1,16 +1,16 @@
-@extends('layouts')
+<!-- @extends('layouts')
 
 @section('title', 'Admin Settings')
 
 @section('navbar')
 <nav class="navbar navbar-expand-sm navbar-light border-bottom bg-white" style="height: 55px;">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <!-- Logo and Brand -->
+
         <a class="navbar-brand fw-bold text-success d-flex align-items-center" href="{{ route('admin.index') }}">
             <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto;">
             <span class="brand-text">SPMS</span>
         </a>
-        <!-- Logout Button -->
+
         <div class="d-flex align-items-center">
             <a href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
                 <i class="fas fa-sign-out-alt me-2"></i>Logout
@@ -26,9 +26,9 @@
 <div class="container mt-4 position-relative">
     <div class="row">
         <div class="col-12">
-            <!-- Add position-static to prevent unexpected movements -->
+
             <div class="bg-white">
-                <!-- Card Header -->
+
                 <div class="card-header py-3 d-flex align-items-center nv-green">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-cog fa-2x text-white me-3"></i>
@@ -39,10 +39,10 @@
                         </div>
                     </div>
                 </div>
-                <!-- Card Body -->
+
                 <div class="card-body">
                     <div class="row">
-                        <!-- Personal Information Table -->
+
                         <div class="col-md-6">
                             <table class="table table-bordered table-fixed">
                                 <tr>
@@ -63,7 +63,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <!-- Account Information Table -->
+
                         <div class="col-md-6">
                             <table class="table table-bordered table-fixed">
                                 <tr>
@@ -76,13 +76,13 @@
                                 </tr>
                             </table>
                         </div>
-                        <!-- Action Buttons -->
+
                         <div class="text-end mt-4">
                             <button type="button" class="btn btn-hover px-4 nv-red" onclick="confirmDelete()">
                                 <i class="fas fa-trash-alt me-2"></i>Delete
                             </button>
                             <button type="button" class="btn btn-hover px-4 ms-2 nv-green" data-bs-toggle="modal"
-                                data-bs-target="#updateAccountModal">
+                                data-bs-target="#adminAccountModal">
                                 <i class="fas fa-edit me-2"></i>Update Account
                             </button>
                         </div>
@@ -92,22 +92,22 @@
         </div>
     </div>
 
-   <!-- Update Account Modal -->
-<div class="modal fade" id="updateAccountModal" tabindex="-1" aria-labelledby="updateAccountModalLabel"
+
+<div class="modal fade" id="adminAccountModal" tabindex="-1" aria-labelledby="adminAccountModalLabel"
 aria-hidden="true">
 <div class="modal-dialog">
     <div class="modal-content">
-        <!-- Modal Header -->
+
         <div class="modal-header nv-green">
-            <h5 class="modal-title" id="updateAccountModalLabel">
-                <i class="fas fa-edit me-2"></i>Update Account
+            <h5 class="modal-title" id="adminAccountModalLabel">
+                <i class="fas fa-edit me-2"></i>Admin Update Account
             </h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                 aria-label="Close"></button>
         </div>
-        <!-- Modal Body -->
+
         <div class="modal-body modal-bg">
-            <form>
+            <form id="adminAccountForm">
                 @csrf
                 <div class="mb-3 row align-items-center">
                     <label for="updateName"
@@ -171,12 +171,12 @@ aria-hidden="true">
                 </div>
             </form>
         </div>
-        <!-- Modal Footer -->
+
         <div class="modal-footer modal-bg">
             <button type="button" class="btn btn-hover px-4 nv-red" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-hover px-4 nv-green">Save Changes</button>
+            <button type="button" class="btn btn-hover px-4 nv-green" onclick="adminUpdateAccount()">Save Changes</button>
         </div>
     </div>
 </div>
 </div>
-@endsection
+@endsection -->
