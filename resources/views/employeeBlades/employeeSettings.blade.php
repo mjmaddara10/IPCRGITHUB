@@ -1,4 +1,4 @@
-<!-- @extends('layouts')
+@extends('layouts')
 
 @section('title', 'Employee Settings')
 
@@ -92,90 +92,91 @@
     </div>
 
 
-<div class="modal fade" id="employeeAccountModal" tabindex="-1" aria-labelledby="employeeAccountModal"
-aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal fade" id="employeeAccountModal" tabindex="-1" aria-labelledby="employeeAccountModal"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
-        <div class="modal-header nv-green">
-            <h5 class="modal-title" id="employeeAccountModal">
-                <i class="fas fa-edit me-2"></i>Update Account
-            </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                aria-label="Close"></button>
-        </div>
+                <div class="modal-header nv-green">
+                    <h5 class="modal-title" id="employeeAccountModal">
+                        <i class="fas fa-edit me-2"></i>Update Account
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
 
-        <div class="modal-body modal-bg">
-            <form id="employeeAccountForm">
-                @csrf
-                <div class="mb-3 row align-items-center">
-                    <label for="updateName"
-                        class="col-sm-4 form-label text-end mb-0 modal-form-label">First Name:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="updateName" value="" name="">
-                    </div>
+                <div class="modal-body modal-bg">
+                    <form id="employeeAccountForm">
+                        @csrf
+                        <div class="mb-3 row align-items-center">
+                            <label for="updateName" class="col-sm-4 form-label text-end mb-0 modal-form-label">First
+                                Name:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateName" value="" name="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updateName" class="col-sm-4 form-label text-end mb-0 modal-form-label">Middle
+                                Name:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateName" value="" name="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updateName" class="col-sm-4 form-label text-end mb-0 modal-form-label">Last
+                                Name:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateName" value="" name="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updatePosition"
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Position:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updatePosition" value="" name="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updateDivision"
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Division:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateDivision" value="" name="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updateStatus"
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Status:</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" id="updateStatus">
+                                    <option value="Permanent" name="">Permanent</option>
+                                    <option value="COS" name="">COS</option>
+                                    <option value="Casual" name="">Casual</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updateUsername"
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Username:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="updateUsername" value="" name="">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="updatePassword"
+                                class="col-sm-4 form-label text-end mb-0 modal-form-label">Password:</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="updatePassword" value="" name="">
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="mb-3 row align-items-center">
-                    <label for="updateName"
-                        class="col-sm-4 form-label text-end mb-0 modal-form-label">Middle Name:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="updateName" value="" name="">
-                    </div>
-                </div>
-                <div class="mb-3 row align-items-center">
-                    <label for="updateName"
-                        class="col-sm-4 form-label text-end mb-0 modal-form-label">Last Name:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="updateName" value="" name="">
-                    </div>
-                </div>
-                <div class="mb-3 row align-items-center">
-                    <label for="updatePosition"
-                        class="col-sm-4 form-label text-end mb-0 modal-form-label">Position:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="updatePosition" value="" name="">
-                    </div>
-                </div>
-                <div class="mb-3 row align-items-center">
-                    <label for="updateDivision"
-                        class="col-sm-4 form-label text-end mb-0 modal-form-label">Division:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="updateDivision" value="" name="">
-                    </div>
-                </div>
-                <div class="mb-3 row align-items-center">
-                    <label for="updateStatus"
-                        class="col-sm-4 form-label text-end mb-0 modal-form-label">Status:</label>
-                    <div class="col-sm-8">
-                        <select class="form-select" id="updateStatus">
-                            <option value="Permanent" name="">Permanent</option>
-                            <option value="COS" name="">COS</option>
-                            <option value="Casual" name="">Casual</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="mb-3 row align-items-center">
-                    <label for="updateUsername"
-                        class="col-sm-4 form-label text-end mb-0 modal-form-label">Username:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="updateUsername" value="" name="">
-                    </div>
-                </div>
-                <div class="mb-3 row align-items-center">
-                    <label for="updatePassword"
-                        class="col-sm-4 form-label text-end mb-0 modal-form-label">Password:</label>
-                    <div class="col-sm-8">
-                        <input type="password" class="form-control" id="updatePassword" value="" name="">
-                    </div>
-                </div>
-            </form>
-        </div>
 
-        <div class="modal-footer modal-bg">
-            <button type="button" class="btn btn-hover px-4 nv-red" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-hover px-4 nv-green" onclick="employeeUpdateAccount()">Save Changes</button>
+                <div class="modal-footer modal-bg">
+                    <button type="button" class="btn btn-hover px-4 nv-red" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-hover px-4 nv-green" onclick="employeeUpdateAccount()">Save
+                        Changes</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div>
-@endsection -->
+    @endsection

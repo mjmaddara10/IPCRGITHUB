@@ -1,5 +1,5 @@
 <!-- Homepage + this will include the navbar section for employees -->
- <!-- Extends the main layout template -->
+<!-- Extends the main layout template -->
 @extends('layouts')
 
 <!-- Sets the page title in the browser tab -->
@@ -18,31 +18,23 @@
             <!-- System Name -->
             <span class="brand-text">SPMS</span>
         </a>
-        <!-- Authentication Button Section -->
         <div class="d-flex align-items-center">
-            <!-- Dropdown for Role Selection -->
-            <div class="dropdown">
-                <button class="btn btn-success dropdown-toggle" type="button" id="loginDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-sign-in-alt"></i> Login
-                </button>
-                <ul class="dropdown-menu dropdown-menu custom-dropdown text-center" aria-labelledby="loginDropdown">
-                    <li>
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#adminLoginModal"
-                            data-role="Admin">Admin</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                            data-bs-target="#employeeLoginModalLabel" data-role="employee">Employee</a>
-                    </li>
-                    <!--
-                    <li>
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                            data-bs-target="#verifierLoginModalLabel" data-role="verifier">Verifier</a>
-                    </li>
-                    -->
-                </ul>
-            </div>
+            <a href="{{ route('employee.assignIpcr') }}" style="margin-left: 3px;" href=""
+                class="btn btn-hover px-4 nv-green">
+                Assign IPCR
+            </a>
+            <a href="{{ route('employee.viewIpcr') }}" style="margin-left: 3px;" href=""
+                class="btn btn-hover px-4 nv-green">
+                View IPCR
+            </a>
+            <a href="{{ route('employee.settings') }}" style="margin-left: 3px;" href=""
+                class="btn btn-hover px-4 nv-green">
+                Settings
+            </a>
+            <a style="margin-left: 3px;" href="javascript:void(0)" onclick="confirmLogoutWithRedirect()"
+                class="btn btn-hover px-4 nv-red">
+                Logout
+            </a>
         </div>
     </div>
 </nav>
@@ -75,7 +67,8 @@
                 <h5 class="modal-title text-white fw-bold" id="adminLoginModalLabel">
                     <i class="fas fa-user-shield me-2"></i>Admin Login
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
             <div class="modal-body" style="background-color: #f8f9fa;">
@@ -85,15 +78,20 @@
                         <label for="adminUsername" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-user me-2"></i>Username
                         </label>
-                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminUsername" name="username" placeholder="Enter username">
+                        <input type="text" class="form-control form-control-lg border-2"
+                            style="border-color: #03592c; background-color: #ffffff;" id="adminUsername" name="username"
+                            placeholder="Enter username">
                     </div>
                     <div class="mb-4">
                         <label for="adminPassword" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-lock me-2"></i>Password
                         </label>
                         <div class="input-group input-group-lg">
-                            <input type="password" class="form-control border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminPassword" name="password" placeholder="Enter password">
-                            <button class="btn btn-outline-secondary border-2" style="border-color: #03592c;" type="button" id="togglePassword">
+                            <input type="password" class="form-control border-2"
+                                style="border-color: #03592c; background-color: #ffffff;" id="adminPassword"
+                                name="password" placeholder="Enter password">
+                            <button class="btn btn-outline-secondary border-2" style="border-color: #03592c;"
+                                type="button" id="togglePassword">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
@@ -114,7 +112,8 @@
 </div>
 
 <!-- Employee Login Modal -->
-<div class="modal fade" id="employeeLoginModalLabel" tabindex="-1" aria-labelledby="employeeLoginModalLabel" aria-hidden="true">
+<div class="modal fade" id="employeeLoginModalLabel" tabindex="-1" aria-labelledby="employeeLoginModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <!-- Modal Header -->
@@ -122,7 +121,8 @@
                 <h5 class="modal-title text-white fw-bold" id="employeeLoginModalLabel">
                     <i class="fas fa-user-tie me-2"></i>Employee Login
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <!-- Modal Body -->
             <div class="modal-body" style="background-color: #f8f9fa;">
@@ -132,15 +132,20 @@
                         <label for="employeeUsername" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-user me-2"></i>Username
                         </label>
-                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="employeeUsername" name="username" placeholder="Enter username">
+                        <input type="text" class="form-control form-control-lg border-2"
+                            style="border-color: #03592c; background-color: #ffffff;" id="employeeUsername"
+                            name="username" placeholder="Enter username">
                     </div>
                     <div class="mb-4">
                         <label for="employeePassword" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-lock me-2"></i>Password
                         </label>
                         <div class="input-group input-group-lg">
-                            <input type="password" class="form-control border-2" style="border-color: #03592c; background-color: #ffffff;" id="employeePassword" name="password" placeholder="Enter password">
-                            <button class="btn btn-outline-secondary border-2" style="border-color: #03592c;" type="button" id="togglePassword">
+                            <input type="password" class="form-control border-2"
+                                style="border-color: #03592c; background-color: #ffffff;" id="employeePassword"
+                                name="password" placeholder="Enter password">
+                            <button class="btn btn-outline-secondary border-2" style="border-color: #03592c;"
+                                type="button" id="togglePassword">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>

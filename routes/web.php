@@ -13,28 +13,35 @@ Route::get('/', function () {
 Route::post('/adminIndex', [authorizationController::class, 'adminLoginPost'])->name('admin.index');
 
 Route::prefix('admin')->group(function () {
-    //adminSettings route
-    Route::get('/settings', function () {
-        return view('adminBlades.adminSettings');
-    })->name('admin.settings');
+
+    // adminIndex route
+    Route::get('/index', function () {
+        return view('adminBlades.adminIndex');
+    })->name('admin.index');
 
     //adminManageUser route
-    Route::get('/manageuser', function () {
+    Route::get('/admin/manage-users', function () {
         return view('adminBlades.adminManageUser');
-    })->name('admin.manageUser');
+    })->name('admin.manageUsers');
 
-    //adminIpcr route
-    Route::get('/Assign', function () {
-        return view('adminBlades.adminAssign');
-    })->name('admin.assign');
-   //ManagePpa route
-    Route::get('/ManagePpa', function () {
+    //Manage PPA route
+    Route::get('/admin/manage-ppa', function () {
         return view('adminBlades.adminManagePpa');
     })->name('admin.managePpa');
+
     //admin IPCR route
-    Route::get('/Ipcr', function () {
+    Route::get('/viewIpcr', function () {
         return view('adminBlades.adminIpcr');
-    })->name('admin.ipcr');
+    })->name('admin.viewIpcr');
+
+    //admin Assign IPCR route
+    Route::get('/ipcr', function () {
+        return view('adminBlades.adminAssign');
+    })->name('admin.assignIpcr');
+
+    Route::get('/admin/settings', function () {
+        return view('adminBlades.adminSettings');
+    })->name('admin.settings');
 });
 
 Route::prefix('employee')->group(function () {
@@ -42,24 +49,21 @@ Route::prefix('employee')->group(function () {
         return view('employeeBlades.employeeIndex');
     })->name('employee.index');
 
- /* Employee Settings route
-    Route::get('/settings', function () {
+    //Employee Assign
+    Route::get('/employee/assign-ipcr', function () {
+        return view('employeeBlades.employeeAssign');
+    })->name('employee.assignIpcr');
+
+    //Employee View IPCR
+    Route::get('/employee/view-ipcr', function () {
+        return view('employeeBlades.employeeIpcr');
+    })->name('employee.viewIpcr');
+
+    //Employee Settings
+    Route::get('/employee/settings', function () {
         return view('employeeBlades.employeeSettings');
     })->name('employee.settings');
-*/
-    //Employee Assign
-    Route::get('/Assign', function () {
-        return view('employeeBlades.employeeAssign');
-    })->name('employee.assign');
-
-    //Employee IPCR
-    Route::get('/Ipcr', function () {
-        return view('employeeBlades.employeeIpcr');
-    })->name('employee.ipcr');
-
 });
-
-
 
 // ... existing routes ...
 Route::get('/logout', function () {
@@ -68,5 +72,3 @@ Route::get('/logout', function () {
     return redirect('/');
 })->name('logout');
 // ... existing routes ...
-
-
