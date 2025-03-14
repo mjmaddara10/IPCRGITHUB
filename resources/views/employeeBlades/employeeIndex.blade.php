@@ -3,7 +3,7 @@
 @extends('layouts')
 
 <!-- Sets the page title in the browser tab -->
-@section('title', 'Employee Main Layout')
+@section('title', 'Employee Index')
 
 <!-- Navigation Section -->
 @section('navbar')

@@ -12,7 +12,7 @@
     /* Centers content vertically and horizontally */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center;    
     align-items: center;
     /* Adds space around content */
     padding: 2rem;
