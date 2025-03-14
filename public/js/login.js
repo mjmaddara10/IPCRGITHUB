@@ -1,3 +1,22 @@
+// admin login confirmation
+function confirmAdminLogin() {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to login as Admin?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#03592c",
+        cancelButtonColor: "#bc0c0c",
+        confirmButtonText: "Yes, login!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('adminLoginForm').submit();
+        }
+    });
+}
+
+
+
 // employee login confirmation
 function confirmLogin(role) {
     Swal.fire({
@@ -16,22 +35,6 @@ function confirmLogin(role) {
     });
 }
 
-// admin login confirmation
-function confirmAdminLogin() {
-    Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to login as Admin?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#03592c",
-        cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, login!"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById('adminLoginForm').submit();
-        }
-    });
-}
 
 /*
 function confirmVerifierLogin() {
