@@ -54,6 +54,11 @@ Route::prefix('employee')->group(function () {
     })->name('employee.Ipcr');
 
 });
+
+Route::get('/index', function () {
+    return view('index');
+})->name('index');
+
 // ... existing routes ...
 Route::get('/logout', function () {
     Auth::logout();
