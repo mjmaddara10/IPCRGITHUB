@@ -35,12 +35,6 @@
                          <a class="dropdown-item" href="#" data-bs-toggle="modal"
                              data-bs-target="#employeeLoginModalLabel" data-role="employee">Employee</a>
                      </li>
-                     <!--
-                     <li>
-                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                             data-bs-target="#verifierLoginModalLabel" data-role="verifier">Verifier</a>
-                     </li>
-                     -->
                  </ul>
              </div>
          </div>
@@ -66,6 +60,7 @@
  @endsection
  <!-- Main Content Section -->
 
+ <!-- Admin Login Modal -->
  <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-labelledby="adminLoginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
@@ -78,36 +73,38 @@
             </div>
             <!-- Modal Body -->
             <div class="modal-body" style="background-color: #f8f9fa;">
-                <form class="p-2" method="POST" action="{{ route('admin.index') }}">
+
+                <!-- Login form -->
+                <form class="p-2" action="{{ route('admin.index') }}" method="POST">
                     @csrf
                     <div class="mb-4">
                         <label for="adminUsername" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-user me-2"></i>Username
                         </label>
-                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminUsername" name="username" placeholder="Enter username">
+                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminUsername" name="adminUsername" placeholder="Enter username">
                     </div>
                     <div class="mb-4">
                         <label for="adminPassword" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-lock me-2"></i>Password
                         </label>
                         <div class="input-group input-group-lg">
-                            <input type="password" class="form-control border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminPassword" name="password" placeholder="Enter password">
+                            <input type="password" class="form-control border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminPassword" name="adminPassword" placeholder="Enter password">
                             <button class="btn btn-outline-secondary border-2" style="border-color: #03592c;" type="button" id="togglePassword">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
-                </form>
             </div>
-            <!-- Modal Footer -->
-            <div class="modal-footer border-0" style="background-color: #f8f9fa;">
-                <button type="button" class="btn btn-lg btn-hover px-4 nv-red" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-2"></i>Cancel
-                </button>
-                <button type="button" class="btn btn-lg btn-hover px-4 nv-green" onclick="confirmAdminLogin()">
-                    <i class="fas fa-sign-in-alt me-2"></i>Login
-                </button>
-            </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer border-0" style="background-color: #f8f9fa;">
+                    <button type="button" class="btn btn-lg btn-hover px-4 nv-red" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="submit" class="btn btn-lg btn-hover px-4 nv-green">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -125,7 +122,7 @@
             </div>
             <!-- Modal Body -->
             <div class="modal-body" style="background-color: #f8f9fa;">
-                <form class="p-2" id="employeeLoginForm" method="POST" action="{{ route('employee.index') }}">
+                <form class="p-2" id="employeeLoginForm" method="POST" >
                     @csrf
                     <div class="mb-4">
                         <label for="employeeUsername" class="form-label fw-bold text-dark mb-2">

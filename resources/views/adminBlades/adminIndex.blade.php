@@ -9,43 +9,24 @@
  @section('navbar')
  <!-- Main Navigation Bar -->
  <nav class="navbar navbar-expand-sm navbar-light border-bottom"
-     style="height: 55px; width: 100%; background-color: #ffffff">
-     <div class="container-fluid d-flex justify-content-between align-items-center">
-         <!-- Logo and Brand Name -->
-         <a class="navbar-brand fw-bold text-success d-flex align-items-center">
-             <!-- Provincial Logo -->
-             <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
-             <!-- System Name -->
-             <span class="brand-text">SPMS</span>
-         </a>
-         <!-- Authentication Button Section -->
-         <div class="d-flex align-items-center">
-             <!-- Dropdown for Role Selection -->
-             <div class="dropdown">
-                 <button class="btn btn-success dropdown-toggle" type="button" id="loginDropdown"
-                     data-bs-toggle="dropdown" aria-expanded="false">
-                     <i class="fas fa-sign-in-alt"></i> Login
-                 </button>
-                 <ul class="dropdown-menu dropdown-menu custom-dropdown text-center" aria-labelledby="loginDropdown">
-                     <li>
-                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#adminLoginModal"
-                             data-role="Admin">Admin</a>
-                     </li>
-                     <li>
-                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                             data-bs-target="#employeeLoginModalLabel" data-role="employee">Employee</a>
-                     </li>
-                     <!--
-                     <li>
-                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                             data-bs-target="#verifierLoginModalLabel" data-role="verifier">Verifier</a>
-                     </li>
-                     -->
-                 </ul>
-             </div>
-         </div>
-     </div>
- </nav>
+    style="height: 55px; width: 100%; background-color: #ffffff">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <!-- Logo and Brand Name -->
+        <a class="navbar-brand fw-bold text-success d-flex align-items-center">
+            <!-- Provincial Logo -->
+            <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
+            <!-- System Name -->
+            <span class="brand-text">SPMS</span>
+        </a>
+        <!-- Logout Button -->
+        <div class="d-flex align-items-center">
+            <a href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
+                <i class="fas fa-sign-out-alt me-2"></i>Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
  <!-- Decorative Gold Gradient Bar -->
  <div style="
          background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03);

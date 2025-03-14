@@ -3,17 +3,21 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\authorizationController;
+
+Route::get('/', function () {
+    return view('index');
+});
+
+// Logging in
+Route::post('/adminIndex', [authorizationController::class, 'adminLoginPost'])->name('admin.index');
 
 Route::prefix('admin')->group(function () {
-    Route::get('/index', function () {
-        return view('adminBlades.adminIndex');
-    })->name('admin.index');
-
-    /*
+    //adminSettings route
     Route::get('/settings', function () {
         return view('adminBlades.adminSettings');
     })->name('admin.settings');
-*/
+
     //adminManageUser route
     Route::get('/manageuser', function () {
         return view('adminBlades.adminManageUser');
@@ -22,15 +26,15 @@ Route::prefix('admin')->group(function () {
     //adminIpcr route
     Route::get('/Assign', function () {
         return view('adminBlades.adminAssign');
-    })->name('admin.Assign');
+    })->name('admin.assign');
    //ManagePpa route
     Route::get('/ManagePpa', function () {
         return view('adminBlades.adminManagePpa');
-    })->name('admin.ManagePpa');
+    })->name('admin.managePpa');
     //admin IPCR route
     Route::get('/Ipcr', function () {
         return view('adminBlades.adminIpcr');
-    })->name('admin.Ipcr');
+    })->name('admin.ipcr');
 });
 
 Route::prefix('employee')->group(function () {
@@ -46,24 +50,22 @@ Route::prefix('employee')->group(function () {
     //Employee Assign
     Route::get('/Assign', function () {
         return view('employeeBlades.employeeAssign');
-    })->name('employee.Assign');
+    })->name('employee.assign');
 
     //Employee IPCR
     Route::get('/Ipcr', function () {
         return view('employeeBlades.employeeIpcr');
-    })->name('employee.Ipcr');
+    })->name('employee.ipcr');
 
 });
 
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
+
 
 // ... existing routes ...
 Route::get('/logout', function () {
     Auth::logout();
     Session::flush();
-    return redirect('/admin/index');
+    return redirect('/');
 })->name('logout');
 // ... existing routes ...
 
