@@ -1,5 +1,5 @@
 //confirm add modal
-// add user manageUser Blade
+/* add user manageUser Blade
 function confirmAdd(event) {
     event.preventDefault();
     Swal.fire({
@@ -22,3 +22,4 @@ function confirmAdd(event) {
         }
     });
 }
+    */

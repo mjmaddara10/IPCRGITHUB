@@ -8,7 +8,7 @@
         <!-- Logo and Brand -->
         <a class="navbar-brand fw-bold text-success d-flex align-items-center" href="{{ route('admin.index') }}">
             <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto;">
-            <span class="brand-text">IPCR</span>
+            <span class="brand-text">SPMS</span>
         </a>
         <!-- Logout Button -->
         <div class="d-flex align-items-center">

@@ -10,7 +10,7 @@
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <a class="navbar-brand fw-bold text-success d-flex align-items-center">
             <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
-            <span class="brand-text">IPCR</span>
+            <span class="brand-text">SPMS</span>
         </a>
         <div class="d-flex align-items-center">
             <a href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
@@ -51,7 +51,7 @@
                     <table id="ppaTable" class="table table-hover">
                         <thead class="text-center">
                             <tr>
-                                <th style="color: #FFFFFF; background-color: #dd9f03;">Assign</th>
+                                <!-- <th style="color: #FFFFFF; background-color: #dd9f03;">Assign</th> -->
                                 <th style="color: #FFFFFF; background-color: #dd9f03;">Major Programs/Project/Activities</th>
                                 <th style="color: #FFFFFF; background-color: #dd9f03;">Success Indicator</th>
                                 <th style="color: #FFFFFF; background-color: #dd9f03;">Quality</th>
@@ -63,7 +63,7 @@
                         <tbody>
                             <tr>
                                 <tr>
-                                    <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                    <!-- <td class="text-center"><input type="checkbox" class="form-check-input"></td> -->
                                 <td class="text-center">1.1 Prepare Training Calendar</td>
                                 <td class="text-center">Success Indicator</td>
                                 <td class="text-center">Quality</td>

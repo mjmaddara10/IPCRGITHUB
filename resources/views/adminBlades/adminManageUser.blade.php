@@ -16,7 +16,7 @@
             <!-- Provincial Logo -->
             <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
             <!-- System Name -->
-            <span class="brand-text">IPCR</span>
+            <span class="brand-text">SPMS</span>
         </a>
         <!-- Authentication Button Section -->
         <div class="d-flex align-items-center">
@@ -52,12 +52,12 @@
             </div>
         </div>
         <div class="p-4">
-            <!-- Add User Button -->
+            <!-- Add User Button
             <div class="mb-3">
                 <button class="btn nv-green text-white" data-bs-toggle="modal" data-bs-target="#addUserModal">
                     <i class="fas fa-user-plus me-2"></i>Add User
                 </button>
-            </div>
+            </div> -->
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center">
@@ -89,7 +89,7 @@
                             <th style="color: #03592c;">Status</th>
                             <th style="color: #03592c;">Username</th>
                             <th style="color: #03592c;">Password</th>
-                            <th style="color: #03592c;">Actions</th>
+                            <!-- <th style="color: #03592c;">Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -103,7 +103,7 @@
                             <td>Permanent</td>
                             <td>johndoe</td>
                             <td>••••••••</td>
-                            <td>
+                            <!-- <td>
                                 <button class="btn btn-sm nv-green text-white" data-bs-toggle="modal"
                                     data-bs-target="#editUserModal" title="Edit">
                                     <i class="fas fa-edit"></i>
@@ -111,7 +111,7 @@
                                 <button class="btn btn-sm nv-red text-white" onclick="confirmDelete(1)" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>

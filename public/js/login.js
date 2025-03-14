@@ -16,24 +16,6 @@ function confirmLogin(role) {
     });
 }
 
-// employee login confirmation
-function confirmLogin(role) {
-    Swal.fire({
-        title: "Are you sure?",
-        text: `Do you want to login as ${role}?`,
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#03592c",
-        cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, login!"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Add your login logic here
-            document.getElementById(`${role.toLowerCase()}LoginForm`).submit();
-        }
-    });
-}
-
 // admin login confirmation
 function confirmAdminLogin() {
     Swal.fire({
@@ -51,7 +33,7 @@ function confirmAdminLogin() {
     });
 }
 
-// verifier login confirmation
+/*
 function confirmVerifierLogin() {
     Swal.fire({
         title: "Are you sure?",
@@ -67,3 +49,22 @@ function confirmVerifierLogin() {
         }
     });
 }
+    */
+
+/*
+function confirmLogin(role) {
+    Swal.fire({
+        title: "Are you sure?",
+        text: `Do you want to login as ${role}?`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#03592c",
+        cancelButtonColor: "#bc0c0c",
+        confirmButtonText: "Yes, login!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Add your login logic here
+            document.getElementById(`${role.toLowerCase()}LoginForm`).submit();
+        }
+    });
+} */
