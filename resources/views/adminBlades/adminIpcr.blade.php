@@ -20,8 +20,23 @@
         </a>
         <!-- Logout Button -->
         <div class="d-flex align-items-center">
-            <a href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
-                <i class="fas fa-sign-out-alt me-2"></i>Logout
+            <a href="{{ route('admin.manageUsers') }}" class="btn btn-hover px-4 nv-green">
+               Manage Users
+            </a>
+            <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
+                Manage PPA
+             </a>
+            <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">
+               View IPCR
+            </a>
+            <a href="{{ route('admin.assignIpcr') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
+               Assign IPCR
+            </a>
+            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
+               Settings
+            </a>
+            <a style="margin-left: 3px;" href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
+               Logout
             </a>
         </div>
     </div>
@@ -56,7 +71,7 @@
             <div class="p-4 nv-green">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <div class="d-flex align-items-center" style="color: #FFFFFF; font-weight: 500;">
-                        <span>View IPCR:</span>
+                        <span>Select User:</span>
                         <select class="form-select ms-2" style="width: 250px; border: 2px solid #FFFFFF;">
                             <option selected disabled></option>
                             <option value="1">User 1</option>

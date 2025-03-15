@@ -81,7 +81,7 @@
                         <label for="adminUsername" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-user me-2"></i>Username
                         </label>
-                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminUsername" name="username" placeholder="Enter username">
+                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminUsername" name="username" placeholder="Enter username" autofocus>
                     </div>
                     <div class="mb-4">
                         <label for="adminPassword" class="form-label fw-bold text-dark mb-2">

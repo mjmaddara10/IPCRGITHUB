@@ -10,7 +10,7 @@ Route::get('/', function () {
 });
 
 // Logging in
-Route::post('/adminIndex', [authorizationController::class, 'adminLoginPost'])->name('admin.index');
+Route::post('/adminIndex', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
 
 Route::prefix('admin')->group(function () {
 
@@ -20,12 +20,12 @@ Route::prefix('admin')->group(function () {
     })->name('admin.index');
 
     //adminManageUser route
-    Route::get('/admin/manage-users', function () {
-        return view('adminBlades.adminManageUser');
+    Route::get('/admin/manageUsers', function () {
+        return view('adminBlades.adminManageUsers');
     })->name('admin.manageUsers');
 
     //Manage PPA route
-    Route::get('/admin/manage-ppa', function () {
+    Route::get('/admin/managePpa', function () {
         return view('adminBlades.adminManagePpa');
     })->name('admin.managePpa');
 
@@ -39,7 +39,7 @@ Route::prefix('admin')->group(function () {
         return view('adminBlades.adminAssign');
     })->name('admin.assignIpcr');
 
-    Route::get('/admin/settings', function () {
+    Route::get('/settings', function () {
         return view('adminBlades.adminSettings');
     })->name('admin.settings');
 });
@@ -50,12 +50,12 @@ Route::prefix('employee')->group(function () {
     })->name('employee.index');
 
     //Employee Assign
-    Route::get('/employee/assign-ipcr', function () {
+    Route::get('/employee/assignIpcr', function () {
         return view('employeeBlades.employeeAssign');
     })->name('employee.assignIpcr');
 
     //Employee View IPCR
-    Route::get('/employee/view-ipcr', function () {
+    Route::get('/employee/viewIpcr', function () {
         return view('employeeBlades.employeeIpcr');
     })->name('employee.viewIpcr');
 

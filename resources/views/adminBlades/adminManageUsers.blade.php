@@ -18,10 +18,25 @@
             <!-- System Name -->
             <span class="brand-text">SPMS</span>
         </a>
-        <!-- Authentication Button Section -->
+        <!-- Logout Button -->
         <div class="d-flex align-items-center">
-            <a href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
-                <i class="fas fa-sign-out-alt me-2"></i>Logout
+            <a href="{{ route('admin.manageUsers') }}" class="btn btn-hover px-4 nv-green">
+               Manage Users
+            </a>
+            <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
+                Manage PPA
+             </a>
+            <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">
+               View IPCR
+            </a>
+            <a href="{{ route('admin.assignIpcr') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
+               Assign IPCR
+            </a>
+            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
+               Settings
+            </a>
+            <a style="margin-left: 3px;" href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
+               Logout
             </a>
         </div>
     </div>

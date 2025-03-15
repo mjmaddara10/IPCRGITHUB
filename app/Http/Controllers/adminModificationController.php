@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class authorizationController extends Controller
+class adminModificationController extends Controller
 {
-    function adminLoginPost (Request $request) {
+    function modifyAccount (Request $request) {
         $adminUsername = $request->input('adminUsername');
         $adminPassword = $request->input('adminPassword');
 

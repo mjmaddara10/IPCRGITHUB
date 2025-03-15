@@ -75,7 +75,7 @@
             <div class="modal-body" style="background-color: #f8f9fa;">
 
                 <!-- Login form -->
-                <form class="p-2" action="{{ route('admin.index') }}" method="POST">
+                <form class="p-2" action="{{ route('adminIndex') }}" method="POST">
                     @csrf
                     <div class="mb-4">
                         <label for="adminUsername" class="form-label fw-bold text-dark mb-2">
