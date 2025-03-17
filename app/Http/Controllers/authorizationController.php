@@ -18,6 +18,7 @@ class authorizationController extends Controller
             ->first();
 
             session([
+                'id' => $admin->id,
                 'firstName' => $admin->firstName,
                 'middleName' => $admin->middleName,
                 'middleInitial' => $admin->middleName ? substr($admin->middleName, 0, 1) . '.' : '',

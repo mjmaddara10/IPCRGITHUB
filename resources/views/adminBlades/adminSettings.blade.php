@@ -85,12 +85,19 @@
                         <div class="col-md-6">
                             <table class="table table-bordered table-fixed">
                                 <tr>
-                                    <td class="info-label fw-bold text-end" style="color: #03592c;">User Name:</td>
+                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Username:</td>
                                     <td class="bg-white">{{ session('username') }}</td>
                                 </tr>
                                 <tr>
                                     <td class="info-label fw-bold text-end" style="color: #03592c;">Password:</td>
-                                    <td class="bg-white">{{ session('password') }}</td>
+                                    <td class="bg-white" id="showPassword">********</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-end" colspan="2">
+                                        <button type="button" onclick="togglePassword()" style="border: none; cursor: pointer;" class="btn btn-hover px-4 ms-2 nv-green">
+                                            Show Password
+                                        </button>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -100,7 +107,7 @@
                                 <i class="fas fa-trash-alt me-2"></i>Delete
                             </button>
                             <button type="button" class="btn btn-hover px-4 ms-2 nv-green" data-bs-toggle="modal"
-                                data-bs-target="#adminAccountModal">
+                                data-bs-target="#adminAccountEditModal">
                                 <i class="fas fa-edit me-2"></i>Update Account
                             </button>
                         </div>
@@ -114,7 +121,7 @@
 <!-- Update Admin Account Modal -->
 <div class="modal fade" id="adminAccountEditModal" tabindex="-1" aria-labelledby="adminAccountEditModal"
 aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: 40%;">
         <div class="modal-content">
 
             <div class="modal-header nv-green">
@@ -126,51 +133,51 @@ aria-hidden="true">
             </div>
 
             <div class="modal-body modal-bg">
-                <form method="POST" action="{{ route('admin.settings') }}">
+                <form action="{{ route('adminSettings') }}" method="POST">
                     @csrf
                     <div class="mb-3 row align-items-center">
                         <label for="updateName"
                             class="col-sm-4 form-label text-end mb-0 modal-form-label">First Name:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="updateName" value="{{ session('firstName') }}" name="">
+                            <input type="text" class="form-control" id="updateFirstName" value="{{ session('firstName') }}" name="updateFirstName">
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
                         <label for="updateName"
                             class="col-sm-4 form-label text-end mb-0 modal-form-label">Middle Name:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="updateName" value="{{ session('middleName') }}" name="">
+                            <input type="text" class="form-control" id="updateMiddleName" value="{{ session('middleName') }}" name="updateMiddleName">
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
                         <label for="updateName"
                             class="col-sm-4 form-label text-end mb-0 modal-form-label">Last Name:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="updateName" value="{{ session('lastName') }}" name="">
+                            <input type="text" class="form-control" id="updateLastName" value="{{ session('lastName') }}" name="updateLastName">
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
                         <label for="updatePosition"
                             class="col-sm-4 form-label text-end mb-0 modal-form-label">Position:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="updatePosition" value="{{ session('position') }}" name="">
+                            <input type="text" class="form-control" id="updatePosition" value="{{ session('position') }}" name="updatePosition">
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
                         <label for="updateDivision"
                             class="col-sm-4 form-label text-end mb-0 modal-form-label">Division:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="updateDivision" value="{{ session('division') }}" name="">
+                            <input type="text" class="form-control" id="updateDivision" value="{{ session('division') }}" name="updateDivision">
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
                         <label for="updateStatus"
                             class="col-sm-4 form-label text-end mb-0 modal-form-label">Status:</label>
                         <div class="col-sm-8">
-                            <select class="form-select" id="updateStatus">
-                                <option value="Permanent" name="">Permanent</option>
-                                <option value="COS" name="">COS</option>
-                                <option value="Casual" name="">Casual</option>
+                            <select class="form-select" id="updateStatus" name="updateStatus">
+                                <option value="Permanent" name="permanent">Permanent</option>
+                                <option value="COS" name="COS">COS</option>
+                                <option value="Casual" name="casual">Casual</option>
                             </select>
                         </div>
                     </div>
@@ -178,23 +185,55 @@ aria-hidden="true">
                         <label for="updateUsername"
                             class="col-sm-4 form-label text-end mb-0 modal-form-label">Username:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="updateUsername" value="{{ session('username') }}" name="">
+                            <input type="text" class="form-control" id="updateUsername" value="{{ session('username') }}" name="updateUsername" readonly>
                         </div>
                     </div>
                     <div class="mb-3 row align-items-center">
                         <label for="updatePassword"
                             class="col-sm-4 form-label text-end mb-0 modal-form-label">Password:</label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control" id="updatePassword" value="{{ session('password') }}" name="">
+                            <input type="password" class="form-control" id="updatePassword" value="{{ session('password') }}" name="updatePassword">
                         </div>
                     </div>
             </div>
                 <div class="modal-footer modal-bg">
                     <button type="button" class="btn btn-hover px-4 nv-red" data-bs-dismiss="modal">Cancel</button>
-                    <button type="Submit" class="btn btn-hover px-4 nv-green" onclick="adminUpdateAccount()">Save Changes</button>
+                    <button type="Submit" class="btn btn-hover px-4 nv-green" >Save Changes</button>
                 </div>
             </form>
         </div>
 </div>
 </div>
+<!-- onclick="adminUpdateAccount()" -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if (session('message') == 'success')
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: 'Admin details updated successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById('showPassword');
+        const button = event.target;
+
+        if (passwordField.textContent === '********') {
+            // Replace the asterisks with the actual password from the session
+            passwordField.textContent = '{{ session('password') }}';
+            button.textContent = 'Hide Password';
+        } else {
+            // Hide the password again
+            passwordField.textContent = '********';
+            button.textContent = 'Show Password';
+        }
+    }
+</script>
+
 @endsection

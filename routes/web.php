@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\authorizationController;
+use App\Http\Controllers\adminModificationController;
 
 Route::get('/', function () {
     return view('index');
@@ -12,12 +13,19 @@ Route::get('/', function () {
 // Logging in
 Route::post('/adminIndex', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
 
+// Updating admin account
+Route::post('/admin/settings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
+
 Route::prefix('admin')->group(function () {
 
     // adminIndex route
     Route::get('/index', function () {
         return view('adminBlades.adminIndex');
     })->name('admin.index');
+
+    Route::get('/settings', function () {
+        return view('adminBlades.adminSettings');
+    })->name('admin.settings');
 
     //adminManageUser route
     Route::get('/admin/manageUsers', function () {
@@ -39,9 +47,7 @@ Route::prefix('admin')->group(function () {
         return view('adminBlades.adminAssign');
     })->name('admin.assignIpcr');
 
-    Route::get('/settings', function () {
-        return view('adminBlades.adminSettings');
-    })->name('admin.settings');
+    
 });
 
 Route::prefix('employee')->group(function () {

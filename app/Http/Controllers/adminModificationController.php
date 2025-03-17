@@ -7,33 +7,61 @@ use Illuminate\Http\Request;
 
 class adminModificationController extends Controller
 {
-    function modifyAccount (Request $request) {
-        $adminUsername = $request->input('adminUsername');
-        $adminPassword = $request->input('adminPassword');
+    function editAccount (Request $request) {
+        $firstName = $request->input('updateFirstName');
+        $middleName = $request->input('updateMiddleName');
+        $lastName = $request->input('updateLastName');
+        $username = $request->input('updateUsername');
+        $password = $request->input('updatePassword');
+        $position = $request->input('updatePosition');
+        $division = $request->input('updateDivision');
+        $status = $request->input('updateStatus');
 
-        // Query the database to see if the user exists with matching credentials
+        // $request->input('updateUsername');
+        // $request->input('updatePassword');
+
         $admin = DB::table('tbladmin')
-            ->where('username', $adminUsername)
-            ->where('password', $adminPassword) // Make sure password hashing or encryption is handled properly
+            ->where('username', $username)
             ->first();
 
-            session([
-                'firstName' => $admin->firstName,
-                'middleName' => $admin->middleName,
-                'middleInitial' => $admin->middleName ? substr($admin->middleName, 0, 1) . '.' : '',
-                'lastName' => $admin->lastName,
-                'username' => $admin->username,
-                'password' => $admin->password,
-                'position' => $admin->position,
-                'division' => $admin->division,
-                'status' => $admin->status]);
+            // session(['id' => $admin->id]);
 
-        // Check if admin exists
-        if ($admin) {
-            return view('adminBlades.adminIndex');
-        } else {
-            // Send a failure JSON response if credentials don't match
-            return response()->json(['message' => 'Invalid Credentials'], 401);
-        }
+        DB::table('tbladmin')
+        ->where('username', $username)
+        ->update([
+            'firstName' => $firstName,
+            'middleName' => $middleName,
+            'lastName' => $lastName,
+            'username' => $username,
+            'password' => $password,
+            'position' => $position,
+            'division' => $division,
+            'status' => $status
+        ]);
+
+        $admin = DB::table('tbladmin')->where('username', $username)->first();
+
+        // Step 3: Refresh the Session with Updated Data
+        session([
+            'firstName' => $admin->firstName,
+            'middleName' => $admin->middleName,
+            'middleInitial' => $admin->middleName ? substr($admin->middleName, 0, 1) . '.' : '',
+            'lastName' => $admin->lastName,
+            'username' => $admin->username,
+            'password' => $admin->password,
+            'position' => $admin->position,
+            'division' => $admin->division,
+            'status' => $admin->status
+        ]);
+
+        return redirect()->route('adminSettings')->with('message', 'success');
+
+        // if ($updated) {
+        //     // Success message
+        //     return redirect()->route('adminSettings', ['id' => $adminId])->with('status', 'success');
+        // } else {
+        //     // Error message
+        //     return redirect()->route('adminSettings', ['id' => $adminId])->with('status', 'error');
+        // }
     }
 }
