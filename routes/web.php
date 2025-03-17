@@ -11,7 +11,7 @@ Route::get('/', function () {
 });
 
 // Logging in
-Route::post('/adminIndex', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
+Route::post('/', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
 
 // Updating admin account
 Route::post('/admin/settings', [adminModificationController::class, 'editAccount'])->name('adminSettings');

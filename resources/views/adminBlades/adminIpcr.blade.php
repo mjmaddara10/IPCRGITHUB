@@ -42,11 +42,7 @@
     </div>
 </nav>
 <!-- Decorative Gold Gradient Bar -->
-<div style="
-        background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03);
-        height: 10px;
-        width: 100%;
-    "></div>
+<div style= "background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03); height: 10px; width: 100%;"></div>
 @section('content')
 <div class="page-background"></div>
 
