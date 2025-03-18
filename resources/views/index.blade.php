@@ -156,7 +156,6 @@
     </div>
 </div>
 
-
  <!-- Verifier Login Modal -->
  <!--
  <div class="modal fade" id="verifierLoginModalLabel" tabindex="-1" aria-labelledby="verifierLoginModalLabel"

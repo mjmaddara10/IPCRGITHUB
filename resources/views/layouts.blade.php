@@ -68,6 +68,12 @@
      <script src="{{ asset('js/login.js') }}"></script>
      <!-- viewPassword -->
      <script src="{{ asset('js/viewPassword.js') }}"></script>
+
+    <script>
+        $('#adminLoginModal').on('shown.bs.modal', function () {
+            $('#adminUsername').focus();
+        });
+    </script>
 </body>
 
 </html>
