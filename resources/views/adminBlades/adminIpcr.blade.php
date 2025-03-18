@@ -7,51 +7,17 @@
 
 <!-- Navigation Section -->
 @section('navbar')
-<!-- Main Navigation Bar -->
-<nav class="navbar navbar-expand-sm navbar-light border-bottom"
-    style="height: 55px; width: 100%; background-color: #ffffff">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <!-- Logo and Brand Name -->
-        <a class="navbar-brand fw-bold text-success d-flex align-items-center">
-            <!-- Provincial Logo -->
-            <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
-            <!-- System Name -->
-            <span class="brand-text">SPMS</span>
-        </a>
-        <!-- Logout Button -->
-        <div class="d-flex align-items-center">
-            <a href="{{ route('admin.manageUsers') }}" class="btn btn-hover px-4 nv-green">
-               Manage Users
-            </a>
-            <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-                Manage PPA
-             </a>
-            <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">
-               View IPCR
-            </a>
-            <a href="{{ route('admin.assignIpcr') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Assign IPCR
-            </a>
-            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Settings
-            </a>
-            <a style="margin-left: 3px;" href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
-               Logout
-            </a>
-        </div>
-    </div>
-</nav>
-<!-- Decorative Gold Gradient Bar -->
-<div style= "background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03); height: 10px; width: 100%;"></div>
+    @include('adminBlades.adminInclude')
+@endsection
+
 @section('content')
 <div class="page-background"></div>
 
-@endsection
-<!-- Main Content Section -->
 <!-- DataTable -->
 <div style="padding-top: 2px;">
     <div class="container-fluid mt-2">
         <div class="bg-white">
+
             <!-- Card Header -->
             <div class="card-header py-3 d-flex align-items-center nv-green">
                 <div class="d-flex align-items-center">
@@ -77,11 +43,10 @@
                     </div>
                 </div>
             </div>
-            <!-- Full-width content container -->
+
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12"
-                        style="font-family: 'Montserrat'; background: #0d5cba; padding: 50px; color: #FFFFFF; text-align: justify;">
+                    <div class="col-12" style="font-family: 'Montserrat'; background: #0d5cba; padding: 50px; color: #FFFFFF; text-align: justify;">
                         <p class="justified-text">
                             I, JULIUS N. IGLESIAS, Administrative Officer IV (HRMO II)- Permanent of the PROVINCIAL
                             HUMAN
@@ -136,8 +101,10 @@
                     </div>
                 </div>
             </div>
+            
             <!-- Table Section -->
             <div class="container-fluid" style="padding: 0 0px;">
+
                 <div class="table-responsive">
                     <table id="usersTable" class="table table-hover" style="width: 100%;">
                         <thead class="text-center">
@@ -166,6 +133,7 @@
                         </tbody>
                     </table>
                 </div>
+
                 <!-- Save Button -->
                 <div class="row mt-3">
                     <div class="col-12 d-flex justify-content-start mb-3 ms-4">
@@ -174,6 +142,9 @@
                         </a>
                     </div>
                 </div>
+
             </div>
         </div>
-        @endsection
+    </div>
+</div>
+@endsection

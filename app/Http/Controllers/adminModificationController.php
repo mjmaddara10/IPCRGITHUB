@@ -41,7 +41,6 @@ class adminModificationController extends Controller
 
         $admin = DB::table('tbladmin')->where('username', $username)->first();
 
-        // Step 3: Refresh the Session with Updated Data
         session([
             'firstName' => $admin->firstName,
             'middleName' => $admin->middleName,

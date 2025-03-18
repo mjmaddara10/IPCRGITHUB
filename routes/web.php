@@ -23,27 +23,27 @@ Route::prefix('admin')->group(function () {
         return view('adminBlades.adminIndex');
     })->name('admin.index');
 
-    Route::get('/settings', function () {
+    Route::get('/adminSettings', function () {
         return view('adminBlades.adminSettings');
     })->name('admin.settings');
 
     //adminManageUser route
-    Route::get('/admin/manageUsers', function () {
+    Route::get('/adminManageUsers', function () {
         return view('adminBlades.adminManageUsers');
     })->name('admin.manageUsers');
 
     //Manage PPA route
-    Route::get('/admin/managePpa', function () {
+    Route::get('/adminManagePpa', function () {
         return view('adminBlades.adminManagePpa');
     })->name('admin.managePpa');
 
     //admin IPCR route
-    Route::get('/viewIpcr', function () {
+    Route::get('/adminIpcr', function () {
         return view('adminBlades.adminIpcr');
     })->name('admin.viewIpcr');
 
     //admin Assign IPCR route
-    Route::get('/ipcr', function () {
+    Route::get('/adminAssign', function () {
         return view('adminBlades.adminAssign');
     })->name('admin.assignIpcr');
 

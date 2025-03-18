@@ -4,41 +4,8 @@
 @section('title', 'Manage PPA')
 
 @section('navbar')
-<!-- Main Navigation Bar -->
-<nav class="navbar navbar-expand-sm navbar-light border-bottom"
-    style="height: 55px; width: 100%; background-color: #ffffff">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <!-- Logo and Brand Name -->
-        <a class="navbar-brand fw-bold text-success d-flex align-items-center">
-            <!-- Provincial Logo -->
-            <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
-            <!-- System Name -->
-            <span class="brand-text">SPMS</span>
-        </a>
-        <!-- Logout Button -->
-        <div class="d-flex align-items-center">
-            <a href="{{ route('admin.manageUsers') }}" class="btn btn-hover px-4 nv-green">
-               Manage Users
-            </a>
-            <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-                Manage PPA
-             </a>
-            <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">
-               View IPCR
-            </a>
-            <a href="{{ route('admin.assignIpcr') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Assign IPCR
-            </a>
-            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Settings
-            </a>
-            <a style="margin-left: 3px;" href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
-               Logout
-            </a>
-        </div>
-    </div>
-</nav>
-<div class="gold-gradient position-fixed top-0 w-100" style="margin-top: 55px; z-index: 1029;"></div>
+    @include('adminBlades.adminInclude')
+@endsection
 
 <div class="page-background"></div>
 
@@ -106,6 +73,7 @@
     </div>
 </div>
 
+<!------------------------------------Modals-------------------------------------->
 <!-- Add PPA Modal -->
 <div class="modal fade" id="addPpaModal" tabindex="-1" aria-labelledby="addPpaModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

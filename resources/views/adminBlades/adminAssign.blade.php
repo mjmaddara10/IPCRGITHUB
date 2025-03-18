@@ -3,63 +3,26 @@
 @extends('layouts')
 
 <!-- Sets the page title in the browser tab -->
-@section('title', 'Assign IPCR')
+@section('title', 'Assign PPA')
 
 <!-- Navigation Section -->
 @section('navbar')
-<!-- Main Navigation Bar -->
-<nav class="navbar navbar-expand-sm navbar-light border-bottom"
-    style="height: 55px; width: 100%; background-color: #ffffff">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <!-- Logo and Brand Name -->
-        <a class="navbar-brand fw-bold text-success d-flex align-items-center">
-            <!-- Provincial Logo -->
-            <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
-            <!-- System Name -->
-            <span class="brand-text">SPMS</span>
-        </a>
-        <!-- Logout Button -->
-        <div class="d-flex align-items-center">
-            <a href="{{ route('admin.manageUsers') }}" class="btn btn-hover px-4 nv-green">
-               Manage Users
-            </a>
-            <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-                Manage PPA
-             </a>
-            <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">
-               View IPCR
-            </a>
-            <a href="{{ route('admin.assignIpcr') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Assign IPCR
-            </a>
-            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Settings
-            </a>
-            <a style="margin-left: 3px;" href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
-               Logout
-            </a>
-        </div>
-    </div>
-</nav>
-<!-- Decorative Gold Gradient Bar -->
-<div style= "background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03); height: 10px; width: 100%;"></div>
+    @include('adminBlades.adminInclude')
+@endsection
+
 @section('content')
 <div class="page-background"></div>
-
-@endsection
-<!-- Main Content Section -->
 <!-- DataTable -->
 <div class="container-fluid mt-3">
     <div class="bg-white">
+
         <!-- Card Header -->
         <div class="card-header py-3 d-flex align-items-center nv-green">
             <div class="d-flex align-items-center">
                 <i class="fas fa-tasks fa-2x text-white me-3"></i>
                 <div>
-                    <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
-                        Assign
-                        IPCR</h4>
-                    <small class="text-white-50">Assign IPCR</small>
+                    <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">Assign PPA</h4>
+                    <small class="text-white-50">Assign PPA</small>
                 </div>
             </div>
         </div>
@@ -81,8 +44,7 @@
         <!-- Blue area -->
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12"
-                    style="font-family: 'Montserrat'; background: #0d5cba; padding: 50px; color: #FFFFFF; text-align: justify;">
+                <div class="col-12" style="font-family: 'Montserrat'; background: #0d5cba; padding: 50px; color: #FFFFFF; text-align: justify;">
                     <p class="justified-text">
                         I, JULIUS N. IGLESIAS, Administrative Officer IV (HRMO II)- Permanent of the PROVINCIAL
                         HUMAN
@@ -134,6 +96,7 @@
                             </select>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -142,6 +105,7 @@
         <div class="container-fluid" style="padding: 0 0px;">
             <div class="table-responsive">
                 <table id="usersTable" class="table table-hover" style="width: 100%;">
+
                     <thead class="text-center">
                         <tr>
                             <th style="color: #FFFFFF; background-color: #dd9f03;">Assign</th>
@@ -153,6 +117,7 @@
                             <th style="color: #FFFFFF; background-color: #dd9f03;">Remarks/MOV</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr style="background-color: #ffffff;">
                             <td class="text-center"><input type="checkbox"></td>
@@ -175,4 +140,7 @@
                 </div>
             </div>
         </div>
-        @endsection
+
+    </div>
+</div>
+@endsection

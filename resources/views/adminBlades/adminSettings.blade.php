@@ -3,40 +3,7 @@
 @section('title', 'Admin Settings')
 
 @section('navbar')
-<nav class="navbar navbar-expand-sm navbar-light border-bottom"
-    style="height: 55px; width: 100%; background-color: #ffffff">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <!-- Logo and Brand Name -->
-        <a class="navbar-brand fw-bold text-success d-flex align-items-center">
-            <!-- Provincial Logo -->
-            <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
-            <!-- System Name -->
-            <span class="brand-text">SPMS</span>
-        </a>
-        <!-- Logout Button -->
-        <div class="d-flex align-items-center">
-            <a href="{{ route('admin.manageUsers') }}" class="btn btn-hover px-4 nv-green">
-               Manage Users
-            </a>
-            <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-                Manage PPA
-             </a>
-            <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">
-               View IPCR
-            </a>
-            <a href="{{ route('admin.assignIpcr') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Assign IPCR
-            </a>
-            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Settings
-            </a>
-            <a style="margin-left: 3px;" href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
-               Logout
-            </a>
-        </div>
-    </div>
-</nav>
-<div class="gold-gradient"></div>
+    @include('adminBlades.adminInclude')
 @endsection
 
 @section('content')
@@ -119,8 +86,7 @@
 
 
 <!-- Update Admin Account Modal -->
-<div class="modal fade" id="adminAccountEditModal" tabindex="-1" aria-labelledby="adminAccountEditModal"
-aria-hidden="true">
+<div class="modal fade" id="adminAccountEditModal" tabindex="-1" aria-labelledby="adminAccountEditModal" aria-hidden="true">
     <div class="modal-dialog" style="max-width: 40%;">
         <div class="modal-content">
 
@@ -202,9 +168,8 @@ aria-hidden="true">
                 </div>
             </form>
         </div>
+    </div>
 </div>
-</div>
-<!-- onclick="adminUpdateAccount()" -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

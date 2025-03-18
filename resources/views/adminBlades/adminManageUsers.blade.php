@@ -7,48 +7,9 @@
 
 <!-- Navigation Section -->
 @section('navbar')
-<!-- Main Navigation Bar -->
-<nav class="navbar navbar-expand-sm navbar-light border-bottom"
-    style="height: 55px; width: 100%; background-color: #ffffff">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <!-- Logo and Brand Name -->
-        <a class="navbar-brand fw-bold text-success d-flex align-items-center">
-            <!-- Provincial Logo -->
-            <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
-            <!-- System Name -->
-            <span class="brand-text">SPMS</span>
-        </a>
-        <!-- Logout Button -->
-        <div class="d-flex align-items-center">
-            <a href="{{ route('admin.manageUsers') }}" class="btn btn-hover px-4 nv-green">
-               Manage Users
-            </a>
-            <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-                Manage PPA
-             </a>
-            <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">
-               View IPCR
-            </a>
-            <a href="{{ route('admin.assignIpcr') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Assign IPCR
-            </a>
-            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Settings
-            </a>
-            <a style="margin-left: 3px;" href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
-               Logout
-            </a>
-        </div>
-    </div>
-</nav>
-<!-- Decorative Gold Gradient Bar -->
-<div style="
-        background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03);
-        height: 10px;
-        width: 100%;
-    "></div>
-
+    @include('adminBlades.adminInclude')
 @endsection
+
 <!-- Main Content Section -->
 <div class="page-background"></div>
 
@@ -104,7 +65,6 @@
                             <th style="color: #03592c;">Status</th>
                             <th style="color: #03592c;">Username</th>
                             <th style="color: #03592c;">Password</th>
-                            <!-- <th style="color: #03592c;">Actions</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -118,15 +78,6 @@
                             <td>Permanent</td>
                             <td>johndoe</td>
                             <td>••••••••</td>
-                            <!-- <td>
-                                <button class="btn btn-sm nv-green text-white" data-bs-toggle="modal"
-                                    data-bs-target="#editUserModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm nv-red text-white" onclick="confirmDelete(1)" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td> -->
                         </tr>
                     </tbody>
                 </table>
@@ -150,10 +101,12 @@
     </div>
 </div>
 
+<!----------------------------------Modals------------------------------------->
 <!-- Add User Modal -->
 <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
+            
             <div class="modal-header border-0" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addUserModalLabel">
                     <i class="fas fa-user-plus me-2"></i>Add New User
@@ -161,6 +114,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
+
             <div class="modal-body" style="background-color: #f8f9fa;">
                 <form id="addUserForm" class="p-2">
                     <div class="row g-2">
@@ -220,6 +174,7 @@
                     </div>
                 </form>
             </div>
+
             <div class="modal-footer border-0" style="background-color: #f8f9fa;">
                 <button type="button" class="btn btn-hover px-3 nv-red" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i>Cancel
@@ -243,6 +198,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
+
             <div class="modal-body" style="background-color: #f8f9fa;">
                 <form id="editUserForm" class="p-2">
                     <input type="hidden" name="userId" id="editUserId">
@@ -303,6 +259,7 @@
                     </div>
                 </form>
             </div>
+
             <div class="modal-footer border-0" style="background-color: #f8f9fa;">
                 <button type="button" class="btn btn-hover px-3 nv-red" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i>Cancel
@@ -313,6 +270,5 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 @endsection
