@@ -7,10 +7,11 @@
     @include('adminBlades.adminInclude')
 @endsection
 
-<div class="page-background"></div>
+
 
 @section('content')
-<div style="padding-top: 75px;">
+<div class="page-background"></div>
+<div>
     <div class="container-fluid mt-3">
         <div class="bg-white">
             <!-- Header -->
