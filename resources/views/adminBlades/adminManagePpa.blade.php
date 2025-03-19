@@ -37,10 +37,10 @@
 
                 <!-- PPA Table -->
                 <div class="table-responsive">
+                    @foreach($programs as $program)
                     <table id="ppaTable" class="table table-hover">
                         <thead class="text-center">
                             <tr>
-                                <!-- <th style="color: #FFFFFF; background-color: #dd9f03;">Assign</th> -->
                                 <th style="color: #FFFFFF; background-color: #dd9f03;">Major Programs/Project/Activities</th>
                                 <th style="color: #FFFFFF; background-color: #dd9f03;">Success Indicator</th>
                                 <th style="color: #FFFFFF; background-color: #dd9f03;">Quality</th>
@@ -51,23 +51,24 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <tr>
-                                    <!-- <td class="text-center"><input type="checkbox" class="form-check-input"></td> -->
-                                <td class="text-center">1.1 Prepare Training Calendar</td>
-                                <td class="text-center">Success Indicator</td>
-                                <td class="text-center">Quality</td>
+                                <td class="text-left" style= "color: #FFFFFF; background-color: #03592c;" colspan="6">{{ $program->name }}</td>
+                            </tr>
+                            <tr>
+                            @foreach($program->projects as $project)
+                                <td class="text-center">{{ $project->id }}</td>
+                                <td class="text-center">{{ $project->name }}</td>
+                                <!-- <td class="text-center">Quality</td>
                                 <td class="text-center">Efficiency</td>
                                 <td class="text-center">Timeliness</td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editPpaModal">
-                                        <i class="fas fa-edit"></i>
-                                        <button class="btn btn-sm btn-danger" onclick="deletePpa(1)">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                </td>
+                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editPpaModal"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger" onclick="deletePpa(1)"><i class="fas fa-trash"></i></button>
+                                </td> -->
+                                @endforeach
                             </tr>
                         </tbody>
                     </table>
+                    @endforeach
                 </div>
             </div>
         </div>

@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
+
 
 Route::get('/', function () {
     return view('index');
@@ -16,7 +18,11 @@ Route::post('/', [authorizationController::class, 'adminLoginPost'])->name('admi
 // Updating admin account
 Route::post('/admin/settings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
 
+Route::get('/adminBlades/adminManagePpa', [ProgramController::class, 'fetch'])->name('admin.managePpa');
+
 Route::prefix('admin')->group(function () {
+
+    
 
     // adminIndex route
     Route::get('/index', function () {

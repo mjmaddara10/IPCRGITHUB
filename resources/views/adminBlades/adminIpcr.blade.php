@@ -121,6 +121,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td class="text-left" style= "color: #FFFFFF; background-color: #03592c;" colspan="6">D. CAPABILITY BUILDING PROGRAM</td>
+                            </tr>
                             <tr style="background-color: #ffffff;">
                                 <!-- <td class="text-center"><input type="checkbox"></td> -->
                                 <td class="text-center">1.1 Prepare Training Calendar</td>
