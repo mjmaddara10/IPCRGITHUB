@@ -37,7 +37,9 @@
 
                 <!-- PPA Table -->
                 <div class="table-responsive">
-                    @foreach($programs as $program)
+                <!-- <pre>{{ var_dump($programs) }}</pre> -->
+
+                    
                     <table id="ppaTable" class="table table-hover">
                         <thead class="text-center">
                             <tr>
@@ -50,25 +52,43 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($programs as $program)
                             <tr>
                                 <td class="text-left" style= "color: #FFFFFF; background-color: #03592c;" colspan="6">{{ $program->name }}</td>
                             </tr>
-                            <tr>
                             @foreach($program->projects as $project)
-                                <td class="text-center">{{ $project->id }}</td>
+                            <td class="text-left" style= "color: #FFFFFF; background-color:rgb(1, 165, 80);" colspan="6">&nbsp&nbsp&nbsp{{ $project->name }}</td>
+                            <tr>
+                                <tr>
+                                    @foreach($project->activities as $activity)
+                                        <td class="text-left">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ $activity->name }}</td>
+                                        <td class="text-center">{{ $activity->successIndicator }}</td>
+                                        <td class="text-center">{{ $activity->quality }}</td>
+                                        <td class="text-center">{{ $activity->efficiency }}</td>
+                                        <td class="text-center">{{ $activity->timeliness }}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editPpaModal"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-danger" onclick="deletePpa(1)"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    @endforeach
+                                </tr>
+                                
+                            </tr>
+                            <!-- <tr>
+                            
                                 <td class="text-center">{{ $project->name }}</td>
-                                <!-- <td class="text-center">Quality</td>
+                                <td class="text-center">Quality</td>
                                 <td class="text-center">Efficiency</td>
                                 <td class="text-center">Timeliness</td>
                                 <td class="text-center">
                                     <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editPpaModal"><i class="fas fa-edit"></i></button>
                                     <button class="btn btn-sm btn-danger" onclick="deletePpa(1)"><i class="fas fa-trash"></i></button>
-                                </td> -->
-                                @endforeach
-                            </tr>
+                                </td>
+                            </tr> -->
+                            @endforeach
+                            @endforeach
                         </tbody>
                     </table>
-                    @endforeach
                 </div>
             </div>
         </div>

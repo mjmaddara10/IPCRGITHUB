@@ -16,13 +16,9 @@ Route::get('/', function () {
 Route::post('/', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
 
 // Updating admin account
-Route::post('/admin/settings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
-
-Route::get('/adminBlades/adminManagePpa', [ProgramController::class, 'fetch'])->name('admin.managePpa');
+Route::post('/admin/adminSettings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
 
 Route::prefix('admin')->group(function () {
-
-    
 
     // adminIndex route
     Route::get('/index', function () {
@@ -38,10 +34,8 @@ Route::prefix('admin')->group(function () {
         return view('adminBlades.adminManageUsers');
     })->name('admin.manageUsers');
 
-    //Manage PPA route
-    Route::get('/adminManagePpa', function () {
-        return view('adminBlades.adminManagePpa');
-    })->name('admin.managePpa');
+    //Manage PPA route including controller for fetching PPAs
+    Route::get('/adminManagePpa', [ProgramController::class, 'fetch'])->name('admin.managePpa');
 
     //admin IPCR route
     Route::get('/adminIpcr', function () {

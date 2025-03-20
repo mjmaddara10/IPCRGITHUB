@@ -13,4 +13,9 @@ class Project extends Model
     {
         return $this->belongsTo(Program::class);
     }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
 }
