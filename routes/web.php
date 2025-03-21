@@ -13,7 +13,8 @@ Route::get('/', function () {
 });
 
 // Logging in
-Route::post('/', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
+Route::post('/login', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
+// Route::post('/adminIndex', [AdminController::class, 'adminLogin'])->name('adminIndex');
 
 // Updating admin account
 Route::post('/admin/adminSettings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
@@ -21,6 +22,8 @@ Route::post('/admin/adminSettings', [adminModificationController::class, 'editAc
 Route::prefix('admin')->group(function () {
 
     // adminIndex route
+    
+
     Route::get('/index', function () {
         return view('adminBlades.adminIndex');
     })->name('admin.index');
@@ -78,3 +81,7 @@ Route::get('/logout', function () {
     return redirect('/');
 })->name('logout');
 // ... existing routes ...
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
