@@ -19,8 +19,6 @@
     <!-- Location/Institution -->
     <h3 class="hero-text">PROVINCE OF NUEVA VIZCAYA</h3>
 </div>
-@endsection
-
 
 <!------------------------Modals------------------------------->
 
@@ -117,3 +115,4 @@
         </div>
     </div>
 </div>
+@endsection

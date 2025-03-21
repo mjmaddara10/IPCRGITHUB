@@ -13,8 +13,14 @@ return new class extends Migration
     {
         Schema::create('tbl_admin', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('quantity');
+            $table->string('firstName');
+            $table->string('middleName');
+            $table->string('lastName');
+            $table->string('position');
+            $table->string('status');
+            $table->string('division');
+            $table->string('username');
+            $table->string('password');
             $table->timestamps();
         });
     }

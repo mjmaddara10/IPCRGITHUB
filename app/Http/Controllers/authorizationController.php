@@ -12,7 +12,7 @@ class authorizationController extends Controller
         $adminPassword = $request->input('adminPassword');
 
         // Query the database to see if the user exists with matching credentials
-        $admin = DB::table('tbladmin')
+        $admin = DB::table('tbl_admin')
             ->where('username', $adminUsername)
             ->where('password', $adminPassword) // Make sure password hashing or encryption is handled properly
             ->first();

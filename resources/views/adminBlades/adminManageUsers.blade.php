@@ -10,10 +10,8 @@
     @include('adminBlades.adminInclude')
 @endsection
 
-<!-- Main Content Section -->
-<div class="page-background"></div>
-
 @section('content')
+<div class="page-background"></div>
 <div class="container-fluid py-4">
     <div class="bg-white">
         <!-- Card Header -->

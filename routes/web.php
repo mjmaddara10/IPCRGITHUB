@@ -1,20 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
+
 
 Route::get('/', function () {
     return view('index');
 });
 
 // Logging in
-Route::post('/', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
+Route::post('/login', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
+// Route::post('/adminIndex', [AdminController::class, 'adminLogin'])->name('adminIndex');
 
 // Updating admin account
-Route::post('/admin/settings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
+Route::post('/admin/adminSettings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
 
 Route::prefix('admin')->group(function () {
 
@@ -32,10 +35,8 @@ Route::prefix('admin')->group(function () {
         return view('adminBlades.adminManageUsers');
     })->name('admin.manageUsers');
 
-    //Manage PPA route
-    Route::get('/adminManagePpa', function () {
-        return view('adminBlades.adminManagePpa');
-    })->name('admin.managePpa');
+    //Manage PPA route including controller for fetching PPAs
+    Route::get('/adminManagePpa', [ProgramController::class, 'fetch'])->name('admin.managePpa');
 
     //admin IPCR route
     Route::get('/adminIpcr', function () {
@@ -78,3 +79,7 @@ Route::get('/logout', function () {
     return redirect('/');
 })->name('logout');
 // ... existing routes ...
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

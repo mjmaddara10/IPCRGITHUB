@@ -54,13 +54,5 @@ class adminModificationController extends Controller
         ]);
 
         return redirect()->route('adminSettings')->with('message', 'success');
-
-        // if ($updated) {
-        //     // Success message
-        //     return redirect()->route('adminSettings', ['id' => $adminId])->with('status', 'success');
-        // } else {
-        //     // Error message
-        //     return redirect()->route('adminSettings', ['id' => $adminId])->with('status', 'error');
-        // }
     }
 }

@@ -7,7 +7,7 @@
             <!-- Provincial Logo -->
             <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
             <!-- System Name -->
-            <span class="brand-text">SPMS</span>
+            <span class="brand-text" onclick="window.location.href='{{ route('admin.index') }}'" style="cursor: pointer;">SPMS</span>
         </a>
         <!-- Logout Button -->
         <div class="d-flex align-items-center">
