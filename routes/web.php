@@ -22,8 +22,6 @@ Route::post('/admin/adminSettings', [adminModificationController::class, 'editAc
 Route::prefix('admin')->group(function () {
 
     // adminIndex route
-    
-
     Route::get('/index', function () {
         return view('adminBlades.adminIndex');
     })->name('admin.index');

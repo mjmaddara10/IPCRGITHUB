@@ -72,19 +72,7 @@
                                         </td>
                                     @endforeach
                                 </tr>
-                                
                             </tr>
-                            <!-- <tr>
-                            
-                                <td class="text-center">{{ $project->name }}</td>
-                                <td class="text-center">Quality</td>
-                                <td class="text-center">Efficiency</td>
-                                <td class="text-center">Timeliness</td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editPpaModal"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-danger" onclick="deletePpa(1)"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr> -->
                             @endforeach
                             @endforeach
                         </tbody>
