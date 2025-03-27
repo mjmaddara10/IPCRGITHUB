@@ -5,6 +5,10 @@
     <!-- Basic Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Ajax -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Dynamic Title using Laravel Blade -->
     <title>@yield('title', 'IPCR')</title>
 
@@ -55,18 +59,25 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <!-- Custom Scripts -->
+
     <!-- Delete Confirmation Alerts -->
     <script src="{{ asset('js/delete.js') }}"></script>
+
     <!-- logout Confirmation Alerts -->
     <script src="{{ asset('js/logout.js') }}"></script>
+
      <!-- update Confirmation Alerts -->
     <script src="{{ asset('js/edit.js') }}"></script>
+
      <!-- add Confirmation Alerts -->
     <script src="{{ asset('js/add.js') }}"></script>
+
      <!-- SaveChanges Confirmation Alerts -->
     <script src="{{ asset('js/SaveChanges.js') }}"></script>
+
      <!-- login Confirmation Alerts -->
      <script src="{{ asset('js/login.js') }}"></script>
+
      <!-- viewPassword -->
      <script src="{{ asset('js/viewPassword.js') }}"></script>
 
