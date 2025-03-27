@@ -13,20 +13,23 @@ Route::get('/', function () {
     return view('index');
 });
 
-// Updating admin account
-Route::post('/admin/adminSettings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
-
-Route::get('/admin/adminIndex', [adminPagesController::class, 'index'])->name('admin.index');
-Route::get('/admin/adminSettings', [adminPagesController::class, 'settings'])->name('admin.settings');
-Route::get('/admin/adminManageUsers', [adminPagesController::class, 'manageUsers'])->name('admin.manageUsers');
-Route::get('/admin/adminManagePpa', [adminPagesController::class, 'managePpa'])->name('admin.managePpa');
-Route::get('/admin/adminIpcr', [adminPagesController::class, 'viewIpcr'])->name('admin.viewIpcr');
-Route::get('/admin/adminAssign', [adminPagesController::class, 'assignIpcr'])->name('admin.assignIpcr');
-
 // Logging in
 Route::post('/admin/adminIndex', [authorizationController::class, 'adminLogin'])->name('adminLogin');
 
+Route::group(['middleware' => 'admin'], function () {
+    // Updating admin account
+    Route::post('/admin/adminSettings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
 
+    // Logging out
+    Route::post('/', [authorizationController::class, 'adminLogout'])->name('adminLogout');
+
+    Route::get('/admin/adminIndex', [adminPagesController::class, 'index'])->name('admin.index');
+    Route::get('/admin/adminSettings', [adminPagesController::class, 'settings'])->name('admin.settings');
+    Route::get('/admin/adminManageUsers', [adminPagesController::class, 'manageUsers'])->name('admin.manageUsers');
+    Route::get('/admin/adminManagePpa', [adminPagesController::class, 'managePpa'])->name('admin.managePpa');
+    Route::get('/admin/adminIpcr', [adminPagesController::class, 'viewIpcr'])->name('admin.viewIpcr');
+    Route::get('/admin/adminAssign', [adminPagesController::class, 'assignIpcr'])->name('admin.assignIpcr');
+});
 
 Route::prefix('employee')->group(function () {
     Route::get('/index', function () {

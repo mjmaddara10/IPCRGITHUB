@@ -26,7 +26,7 @@
             <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
                Settings
             </a>
-            <a style="margin-left: 3px;" href="javascript:void(0)" onclick="confirmLogoutWithRedirect()" class="btn btn-hover px-4 nv-red">
+            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover px-4 nv-red">
                Logout
             </a>
         </div>
