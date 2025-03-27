@@ -16,30 +16,31 @@ class adminModificationController extends Controller
         $position = $request->input('updatePosition');
         $division = $request->input('updateDivision');
         $status = $request->input('updateStatus');
+        $plainPassword = $request->input('updatePassword');
 
         // $request->input('updateUsername');
         // $request->input('updatePassword');
 
-        $admin = DB::table('tbladmin')
+        $admin = DB::table('tbl_admin')
             ->where('username', $username)
             ->first();
 
             // session(['id' => $admin->id]);
 
-        DB::table('tbladmin')
+        DB::table('tbl_admin')
         ->where('username', $username)
         ->update([
             'firstName' => $firstName,
             'middleName' => $middleName,
             'lastName' => $lastName,
             'username' => $username,
-            'password' => $password,
+            'password' => DB::raw("AES_ENCRYPT('$password', 'admin')"),
             'position' => $position,
             'division' => $division,
             'status' => $status
         ]);
 
-        $admin = DB::table('tbladmin')->where('username', $username)->first();
+        $admin = DB::table('tbl_admin')->where('username', $username)->first();
 
         session([
             'firstName' => $admin->firstName,
@@ -50,7 +51,8 @@ class adminModificationController extends Controller
             'password' => $admin->password,
             'position' => $admin->position,
             'division' => $admin->division,
-            'status' => $admin->status
+            'status' => $admin->status,
+            'plainPassword' => $plainPassword
         ]);
 
         return redirect()->route('adminSettings')->with('message', 'success');

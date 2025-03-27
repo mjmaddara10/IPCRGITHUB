@@ -156,11 +156,15 @@
                     </div>
                     <div class="mb-3 row align-items-center">
                         <label for="updatePassword"
-                            class="col-sm-4 form-label text-end mb-0 modal-form-label">Password:</label>
-                        <div class="col-sm-8">
-                            <input type="password" class="form-control" id="updatePassword" value="{{ session('password') }}" name="updatePassword">
+                            class="col-sm-4 form-label text-end mb-0 modal-form-label">Password:
+                        </label>
+                        <div class="input-group" style="max-width: 350px;">
+                            <input type="password" class="form-control form-group" id="updatePassword" value="{{ session('plainPassword') }}" name="updatePassword">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
                         </div>
-                    </div>
+                    </div> 
             </div>
                 <div class="modal-footer modal-bg">
                     <button type="button" class="btn btn-hover px-4 nv-red" data-bs-dismiss="modal">Cancel</button>
@@ -191,7 +195,7 @@
 
         if (passwordField.textContent === '********') {
             // Replace the asterisks with the actual password from the session
-            passwordField.textContent = '{{ session('password') }}';
+            passwordField.textContent = '{{ session('plainPassword') }}';
             button.textContent = 'Hide Password';
         } else {
             // Hide the password again

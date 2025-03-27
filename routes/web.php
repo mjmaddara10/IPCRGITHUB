@@ -6,50 +6,27 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
+use App\Http\Controllers\adminPagesController;;
 
 
 Route::get('/', function () {
     return view('index');
 });
 
-// Logging in
-Route::post('/login', [authorizationController::class, 'adminLoginPost'])->name('adminIndex');
-// Route::post('/adminIndex', [AdminController::class, 'adminLogin'])->name('adminIndex');
-
 // Updating admin account
 Route::post('/admin/adminSettings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
 
-Route::prefix('admin')->group(function () {
+Route::get('/admin/adminIndex', [adminPagesController::class, 'index'])->name('admin.index');
+Route::get('/admin/adminSettings', [adminPagesController::class, 'settings'])->name('admin.settings');
+Route::get('/admin/adminManageUsers', [adminPagesController::class, 'manageUsers'])->name('admin.manageUsers');
+Route::get('/admin/adminManagePpa', [adminPagesController::class, 'managePpa'])->name('admin.managePpa');
+Route::get('/admin/adminIpcr', [adminPagesController::class, 'viewIpcr'])->name('admin.viewIpcr');
+Route::get('/admin/adminAssign', [adminPagesController::class, 'assignIpcr'])->name('admin.assignIpcr');
 
-    // adminIndex route
-    Route::get('/index', function () {
-        return view('adminBlades.adminIndex');
-    })->name('admin.index');
+// Logging in
+Route::post('/admin/adminIndex', [authorizationController::class, 'adminLogin'])->name('adminLogin');
 
-    Route::get('/adminSettings', function () {
-        return view('adminBlades.adminSettings');
-    })->name('admin.settings');
 
-    //adminManageUser route
-    Route::get('/adminManageUsers', function () {
-        return view('adminBlades.adminManageUsers');
-    })->name('admin.manageUsers');
-
-    //Manage PPA route including controller for fetching PPAs
-    Route::get('/adminManagePpa', [ProgramController::class, 'fetch'])->name('admin.managePpa');
-
-    //admin IPCR route
-    Route::get('/adminIpcr', function () {
-        return view('adminBlades.adminIpcr');
-    })->name('admin.viewIpcr');
-
-    //admin Assign IPCR route
-    Route::get('/adminAssign', function () {
-        return view('adminBlades.adminAssign');
-    })->name('admin.assignIpcr');
-
-    
-});
 
 Route::prefix('employee')->group(function () {
     Route::get('/index', function () {
