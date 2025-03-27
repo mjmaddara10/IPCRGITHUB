@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\programController;
+use App\Http\Controllers\ppaController;
 use App\Http\Controllers\usersController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
@@ -15,9 +16,14 @@ Route::get('/', function () {
 // Logging in
 Route::post('/admin/adminIndex', [authorizationController::class, 'adminLogin'])->name('adminLogin');
 
+// Update Activity
+Route::post('/admin/updateActivity', [ppaController::class, 'updateActivity'])->name('updateActivity');
+
 Route::group(['middleware' => 'admin'], function () {
     // Updating admin account
     Route::post('/admin/adminSettings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
+
+    
 
     // Logging out
     Route::post('/', [authorizationController::class, 'adminLogout'])->name('adminLogout');
@@ -56,9 +62,8 @@ Route::get('/logout', function () {
     Auth::logout();
     Session::flush();
     return redirect('/');
-})->name('logout');
+})->name('logoutUser');
 // ... existing routes ...
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
