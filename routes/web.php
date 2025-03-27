@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProgramController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\programController;
+use App\Http\Controllers\usersController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
 use App\Http\Controllers\adminPagesController;;

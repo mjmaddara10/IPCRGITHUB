@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Activity;
+use App\Models\Employee;
 
 class adminPagesController extends Controller
 {
@@ -18,7 +19,9 @@ class adminPagesController extends Controller
     }
 
     public function manageUsers(){
-        return view('adminBlades.adminManageUsers');
+        $employees = Employee::all();
+
+        return view('adminBlades.adminManageUsers', compact('employees'));
     }
     
     public function managePpa(){
