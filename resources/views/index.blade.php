@@ -68,20 +68,20 @@
             <div class="modal-body" style="background-color: #f8f9fa;">
 
                 <!-- Login form -->
-                <form class="p-2" action="{{ route('adminIndex') }}" method="POST">
+                <form class="p-2" action="{{ route('adminLogin') }}" method="POST">
                     @csrf
                     <div class="mb-4">
-                        <label for="adminUsername" class="form-label fw-bold text-dark mb-2">
+                        <label for="username" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-user me-2"></i>Username
                         </label>
-                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminUsername" name="adminUsername" placeholder="Enter username">
+                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="username" name="username" placeholder="Enter username">
                     </div>
                     <div class="mb-4">
-                        <label for="adminPassword" class="form-label fw-bold text-dark mb-2">
+                        <label for="password" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-lock me-2"></i>Password
                         </label>
                         <div class="input-group input-group-lg">
-                            <input type="password" class="form-control border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminPassword" name="adminPassword" placeholder="Enter password">
+                            <input type="password" class="form-control border-2" style="border-color: #03592c; background-color: #ffffff;" id="password" name="password" placeholder="Enter password">
                             <button class="btn btn-outline-secondary border-2" style="border-color: #03592c;" type="button" id="togglePassword">
                                 <i class="fas fa-eye"></i>
                             </button>
