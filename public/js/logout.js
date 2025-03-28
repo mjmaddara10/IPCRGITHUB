@@ -8,8 +8,10 @@ document.getElementById('adminLogoutBtn').addEventListener('click', function (e)
         text: 'You will be logged out.',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Yes, log me out!',
-        cancelButtonText: 'No, stay logged in'
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: "#03592c",
+        cancelButtonColor: "#bc0c0c",
     }).then((result) => {
         if (result.isConfirmed) {
             // If confirmed, send the logout request via AJAX

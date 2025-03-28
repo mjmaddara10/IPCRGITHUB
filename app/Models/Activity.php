@@ -9,6 +9,14 @@ class Activity extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'name',
+        'successIndicator',
+        'quality',
+        'efficiency',
+        'timeliness'
+    ];
     public function project()
     {
         return $this->belongsTo(Project::class);

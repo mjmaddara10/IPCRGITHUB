@@ -37,9 +37,6 @@
 
                 <!-- PPA Table -->
                 <div class="table-responsive">
-                <!-- <pre>{{ var_dump($programs) }}</pre> -->
-
-                    
                     <table id="ppaTable" class="table table-hover">
                         <thead class="text-center">
                             <tr>
@@ -58,21 +55,28 @@
                             </tr>
                             @foreach($program->projects as $project)
                             <td class="text-left" style= "color: #FFFFFF; background-color:rgb(1, 165, 80);" colspan="6">&nbsp&nbsp&nbsp{{ $project->name }}</td>
-                            <tr>
                                 <tr>
                                     @foreach($project->activities as $activity)
+                                        <td class="text-left" hidden>{{ $activity->id }}</td>
                                         <td class="text-left">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ $activity->name }}</td>
                                         <td class="text-center">{{ $activity->successIndicator }}</td>
                                         <td class="text-center">{{ $activity->quality }}</td>
                                         <td class="text-center">{{ $activity->efficiency }}</td>
                                         <td class="text-center">{{ $activity->timeliness }}</td>
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editPpaModal"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-primary me-2 editActivityBtn" 
+                                                data-activity-id="{{ $activity->id }}" 
+                                                data-activity-name="{{ $activity->name }}" 
+                                                data-success-indicator="{{ $activity->successIndicator }}"
+                                                data-quality="{{ $activity->quality }}"
+                                                data-efficiency="{{ $activity->efficiency }}"
+                                                data-timeliness="{{ $activity->timeliness }}"
+                                                data-bs-toggle="modal" data-bs-target="#editActivityModal"><i class="fas fa-edit"></i>
+                                            </button>
                                             <button class="btn btn-sm btn-danger" onclick="deletePpa(1)"><i class="fas fa-trash"></i></button>
                                         </td>
                                     @endforeach
                                 </tr>
-                            </tr>
                             @endforeach
                             @endforeach
                         </tbody>
@@ -140,59 +144,60 @@
     </div>
 </div>
 
-<!-- Edit PPA Modal -->
-<div class="modal fade" id="editPpaModal" tabindex="-1" aria-labelledby="editPpaModalLabel" aria-hidden="true">
+<!-- Edit Activity Modal -->
+<div class="modal fade" id="editActivityModal" tabindex="-1" aria-labelledby="editActivityModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header border-0" style="background-color: #03592c;">
-                <h5 class="modal-title text-white fw-bold" id="editPpaModalLabel">
+                <h5 class="modal-title text-white fw-bold" id="editActivityModalLabel">
                     <i class="fas fa-edit me-2"></i>Edit PPA
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="background-color: #f8f9fa;">
-                <form id="editPpaForm" class="p-2">
-                    <input type="hidden" name="ppa_id" id="edit_ppa_id">
+                <form id="editActivityForm" class="p-2">
+                    @csrf
+                    <input type="hidden" id="activityId" name="activityId" required>
                     <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Major Programs/Project/Activities:</label>
+                        <label class="form-label fw-bold text-dark mb-1">Activity Name:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="ppaTitle" id="edit_ppaTitle" required></textarea>
+                            name="editActivityName" id="editActivityName" required></textarea>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="successIndicator" id="edit_successIndicator" required></textarea>
+                            name="editSuccessIndicator" id="editSuccessIndicator" required></textarea>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Quality:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="quality" id="edit_quality" required></textarea>
+                            name="editQuality" id="editQuality" required></textarea>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="efficiency" id="edit_efficiency" required></textarea>
+                            name="editEfficiency" id="editEfficiency" required></textarea>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="timeliness" id="edit_timeliness" required></textarea>
+                            name="editTimeliness" id="editTimeliness" required></textarea>
                     </div>
-                </form>
             </div>
             <div class="modal-footer border-0" style="background-color: #f8f9fa;">
                 <button type="button" class="btn btn-hover px-3 nv-red" data-bs-dismiss="modal">
                     <i class="fas fa-times me-2"></i>Cancel
                 </button>
-                <button type="button" class="btn btn-hover px-3 nv-green" onclick="confirmEditPpa()">
+                <button type="submit" class="btn btn-hover px-3 nv-green">
                     <i class="fas fa-save me-2"></i>Save Changes
                 </button>
             </div>
+            </form>
         </div>
     </div>
 </div>

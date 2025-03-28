@@ -81,6 +81,12 @@
      <!-- viewPassword -->
      <script src="{{ asset('js/viewPassword.js') }}"></script>
 
+     <!-- Data Table -->
+     <script src="{{ asset('js/dataTable.js') }}"></script>
+
+     <!-- Edit PPA -->
+     <script src="{{ asset('js/ppaManagement.js') }}"></script>
+
     <script>
         $('#adminLoginModal').on('shown.bs.modal', function () {
             $('#adminUsername').focus();
