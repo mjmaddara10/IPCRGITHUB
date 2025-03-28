@@ -9,6 +9,12 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'name',
+        'program_id',
+    ];
+
     public function program()
     {
         return $this->belongsTo(Program::class);

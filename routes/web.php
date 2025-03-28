@@ -19,11 +19,21 @@ Route::post('/admin/adminIndex', [authorizationController::class, 'adminLogin'])
 // Update Activity
 Route::post('/admin/updateActivity', [ppaController::class, 'updateActivity'])->name('updateActivity');
 
+// Delete Activity
+Route::post('/admin/deleteActivity', [ppaController::class, 'deleteActivity'])->name('deleteActivity');
+
+// Add Activity
+Route::post('/admin/addActivity', [ppaController::class, 'addActivity'])->name('addActivity');
+
+// Update Project
+Route::post('/admin/updateProject', [ppaController::class, 'updateProject'])->name('updateProject');
+
+// Delete Project
+Route::post('/admin/deleteProject', [ppaController::class, 'deleteProject'])->name('deleteProject');
+
 Route::group(['middleware' => 'admin'], function () {
     // Updating admin account
     Route::post('/admin/adminSettings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
-
-    
 
     // Logging out
     Route::post('/', [authorizationController::class, 'adminLogout'])->name('adminLogout');

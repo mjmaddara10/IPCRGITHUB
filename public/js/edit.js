@@ -78,7 +78,6 @@ function adminUpdateAccount() {
     });
 }
 
-
 // Update account details
 function employeeUpdateAccount() {
     Swal.fire({

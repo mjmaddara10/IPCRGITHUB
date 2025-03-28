@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('quality'); // Quality
             $table->string('efficiency'); // Efficiency
             $table->string('timeliness'); // Timeliness
+            $table->string('remarks'); // Remarks
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->timestamps(); // Created at and updated at timestamps
         });

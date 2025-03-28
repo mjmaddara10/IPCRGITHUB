@@ -15,7 +15,9 @@ class Activity extends Model
         'successIndicator',
         'quality',
         'efficiency',
-        'timeliness'
+        'timeliness',
+        'remarks',
+        'project_id'
     ];
     public function project()
     {
