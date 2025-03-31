@@ -7,6 +7,7 @@ use App\Models\Program;
 use App\Models\Project;
 use App\Models\Activity;
 use App\Models\Employee;
+use App\Models\SubProject;
 
 class adminPagesController extends Controller
 {
@@ -27,10 +28,11 @@ class adminPagesController extends Controller
     public function managePpa(){
         // Fetch all programs with their related projects
         $programs = Program::with('projects')->get();
-        $projects = Project::with('activities')->get();
+        $projects = Project::with('activities' , 'subProjects')->get();
+        $subProjects = SubProject::with('activities')->get();
 
         // Pass the data to the view
-        return view('adminBlades.adminManagePpa', compact('programs','projects'));
+        return view('adminBlades.adminManagePpa', compact('programs','projects','subProjects'));
     }
 
     public function viewIpcr(){

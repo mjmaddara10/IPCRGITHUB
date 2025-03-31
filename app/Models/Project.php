@@ -15,7 +15,7 @@ class Project extends Model
         'program_id',
     ];
 
-    public function program()
+    public function programs()
     {
         return $this->belongsTo(Program::class);
     }
@@ -23,5 +23,10 @@ class Project extends Model
     public function activities()
     {
         return $this->hasMany(Activity::class);
+    }
+
+    public function subProjects()
+    {
+        return $this->hasMany(SubProject::class);
     }
 }

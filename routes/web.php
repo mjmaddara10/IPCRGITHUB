@@ -16,20 +16,23 @@ Route::get('/', function () {
 // Logging in
 Route::post('/admin/adminIndex', [authorizationController::class, 'adminLogin'])->name('adminLogin');
 
-// Update Activity
-Route::post('/admin/updateActivity', [ppaController::class, 'updateActivity'])->name('updateActivity');
+Route::prefix('admin')->group(function () {
+    Route::post('/updateActivity', [ppaController::class, 'updateActivity'])->name('updateActivity');
+    Route::post('/deleteActivity', [ppaController::class, 'deleteActivity'])->name('deleteActivity');
+    Route::post('/addActivity', [ppaController::class, 'addActivity'])->name('addActivity');
 
-// Delete Activity
-Route::post('/admin/deleteActivity', [ppaController::class, 'deleteActivity'])->name('deleteActivity');
+    Route::post('/addSubProject', [ppaController::class, 'addSubProject'])->name('addSubProject');
+    Route::post('/updateSubProject', [ppaController::class, 'updateSubProject'])->name('updateSubProject');
+    Route::post('/deleteSubProject', [ppaController::class, 'deleteSubProject'])->name('deleteSubProject');
 
-// Add Activity
-Route::post('/admin/addActivity', [ppaController::class, 'addActivity'])->name('addActivity');
-
-// Update Project
-Route::post('/admin/updateProject', [ppaController::class, 'updateProject'])->name('updateProject');
-
-// Delete Project
-Route::post('/admin/deleteProject', [ppaController::class, 'deleteProject'])->name('deleteProject');
+    Route::post('/addProject', [ppaController::class, 'addProject'])->name('addProject');
+    Route::post('/updateProject', [ppaController::class, 'updateProject'])->name('updateProject');
+    Route::post('/deleteProject', [ppaController::class, 'deleteProject'])->name('deleteProject');
+    
+    Route::post('/updateProgram', [ppaController::class, 'updateProgram'])->name('updateProgram');
+    Route::post('/deleteProgram', [ppaController::class, 'deleteProgram'])->name('deleteProgram');
+    Route::post('/addActivityInSub', [ppaController::class, 'addActivityInSub'])->name('addActivityInSub');
+});
 
 Route::group(['middleware' => 'admin'], function () {
     // Updating admin account

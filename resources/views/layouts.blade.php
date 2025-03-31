@@ -58,34 +58,24 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
     <!-- Custom Scripts -->
 
-    <!-- Delete Confirmation Alerts -->
-    <script src="{{ asset('js/delete.js') }}"></script>
-
-    <!-- logout Confirmation Alerts -->
-    <script src="{{ asset('js/logout.js') }}"></script>
-
-     <!-- update Confirmation Alerts -->
-    <script src="{{ asset('js/edit.js') }}"></script>
-
-     <!-- add Confirmation Alerts -->
-    <script src="{{ asset('js/add.js') }}"></script>
-
-     <!-- SaveChanges Confirmation Alerts -->
-    <script src="{{ asset('js/SaveChanges.js') }}"></script>
-
-     <!-- login Confirmation Alerts -->
-     <script src="{{ asset('js/login.js') }}"></script>
-
-     <!-- viewPassword -->
+     <!-- View Password -->
      <script src="{{ asset('js/viewPassword.js') }}"></script>
 
      <!-- Data Table -->
      <script src="{{ asset('js/dataTable.js') }}"></script>
 
-     <!-- Edit PPA -->
-     <script src="{{ asset('js/ppaManagement.js') }}"></script>
+     <!-- PPA Management -->
+     <script src="{{ asset('js/ppaManagement/forms.js') }}"></script>
+     <script src="{{ asset('js/ppaManagement/activity.js') }}"></script>
+     <script src="{{ asset('js/ppaManagement/project.js') }}"></script>
+     <script src="{{ asset('js/ppaManagement/subProject.js') }}"></script>
+     <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
+
+     <!-- Hover on Button -->
+     <script src="{{ asset('js/buttonHover.js') }}"></script>
 
     <script>
         $('#adminLoginModal').on('shown.bs.modal', function () {

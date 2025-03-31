@@ -5,27 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Activity extends Model
+class SubProject extends Model
 {
     use HasFactory;
+
+    protected $table = 'sub_projects';
 
     protected $fillable = [
         'id',
         'name',
-        'successIndicator',
-        'quality',
-        'efficiency',
-        'timeliness',
-        'remarks',
-        'project_id'
+        'project_id',
     ];
+
     public function projects()
     {
         return $this->belongsTo(Project::class);
     }
 
-    public function subProjects()
+    public function activities()
     {
-        return $this->belongsTo(SubProject::class);
+        return $this->hasMany(Activity::class);
     }
 }

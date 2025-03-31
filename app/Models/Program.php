@@ -9,6 +9,11 @@ class Program extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'id',
+        'name',
+    ];
+
     public function projects()
     {
         return $this->hasMany(Project::class);
