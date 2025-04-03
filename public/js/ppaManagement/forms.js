@@ -15,6 +15,7 @@ $(document).on('click', '.closeEditModal', function(e) {
         if (result.isConfirmed) {
             // Close the modal if the user confirms
             $('#editActivityModal').modal('hide');
+            $('#editProgramModal').modal('hide');
             $('#editProjectModal').modal('hide');
             $('#editSubProjectModal').modal('hide');
         }
@@ -37,6 +38,7 @@ $(document).on('click', '.closeAddModal', function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             // Close the modal if the user confirms
+            $('#addProgramModal').modal('hide');
             $('#addProjectModal').modal('hide');
             $('#addActivityModal').modal('hide');
             $('#addActivityInSubModal').modal('hide');

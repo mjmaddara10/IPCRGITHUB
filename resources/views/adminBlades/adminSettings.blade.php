@@ -70,9 +70,6 @@
                         </div>
 
                         <div class="text-end mt-4">
-                            <button type="button" class="btn btn-hover px-4 nv-red" onclick="confirmDelete()">
-                                <i class="fas fa-trash-alt me-2"></i>Delete
-                            </button>
                             <button type="button" class="btn btn-hover px-4 ms-2 nv-green" data-bs-toggle="modal"
                                 data-bs-target="#adminAccountEditModal">
                                 <i class="fas fa-edit me-2"></i>Update Account

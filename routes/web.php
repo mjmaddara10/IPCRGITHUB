@@ -6,7 +6,10 @@ use App\Http\Controllers\ppaController;
 use App\Http\Controllers\usersController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
-use App\Http\Controllers\adminPagesController;;
+use App\Http\Controllers\adminPagesController;
+use App\Models\Program;
+use App\Models\Project;
+use App\Models\SubProject;
 
 
 Route::get('/', function () {
@@ -29,8 +32,10 @@ Route::prefix('admin')->group(function () {
     Route::post('/updateProject', [ppaController::class, 'updateProject'])->name('updateProject');
     Route::post('/deleteProject', [ppaController::class, 'deleteProject'])->name('deleteProject');
     
+    Route::post('/addProgram', [ppaController::class, 'addProgram'])->name('addProgram');
     Route::post('/updateProgram', [ppaController::class, 'updateProgram'])->name('updateProgram');
     Route::post('/deleteProgram', [ppaController::class, 'deleteProgram'])->name('deleteProgram');
+
     Route::post('/addActivityInSub', [ppaController::class, 'addActivityInSub'])->name('addActivityInSub');
 });
 
@@ -43,10 +48,24 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('/admin/adminIndex', [adminPagesController::class, 'index'])->name('admin.index');
     Route::get('/admin/adminSettings', [adminPagesController::class, 'settings'])->name('admin.settings');
-    Route::get('/admin/adminManageUsers', [adminPagesController::class, 'manageUsers'])->name('admin.manageUsers');
+    Route::get('/admin/adminViewEmployees', [adminPagesController::class, 'viewEmployees'])->name('admin.viewEmployees');
     Route::get('/admin/adminManagePpa', [adminPagesController::class, 'managePpa'])->name('admin.managePpa');
+
+    Route::get('/admin/adminManagePpa2', [adminPagesController::class, 'managePpa2'])->name('admin.managePpa2');
+
     Route::get('/admin/adminIpcr', [adminPagesController::class, 'viewIpcr'])->name('admin.viewIpcr');
     Route::get('/admin/adminAssign', [adminPagesController::class, 'assignIpcr'])->name('admin.assignIpcr');
+
+    Route::get('/get-table/{table}', function ($table) {
+        if (view()->exists("adminBlades.tables.$table")) {
+            $programs = Program::with('projects')->get();
+            $projects = Project::with('activities', 'subProjects')->get();
+            $subProjects = SubProject::with('activities')->get();
+
+            return view("adminBlades.tables.$table", compact('programs', 'projects', 'subProjects'));
+        }
+        return response("Table not found", 404);
+    });
 });
 
 Route::prefix('employee')->group(function () {

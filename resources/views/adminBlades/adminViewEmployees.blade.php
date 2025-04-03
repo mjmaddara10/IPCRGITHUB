@@ -37,6 +37,7 @@
                                 <th style="color: #03592c;">Position</th>
                                 <th style="color: #03592c;">Division</th>
                                 <th style="color: #03592c;">Status</th>
+                                <th style="color: #03592c;">Role</th>
                                 <th style="color: #03592c;">Username</th>
                                 <th style="color: #03592c;">Password</th>
                             </tr>
@@ -50,6 +51,7 @@
                                 <td>{{ $employee->lastName }}</td>
                                 <td>{{ $employee->position }}</td>
                                 <td>{{ $employee->division }}</td>
+                                <td>{{ $employee->status }}</td>
                                 <td>{{ $employee->status }}</td>
                                 <td>{{ $employee->username }}</td>
                                 <td>{{ $employee->password }}</td>

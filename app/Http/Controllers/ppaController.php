@@ -99,6 +99,12 @@ class ppaController extends Controller
     }
 
     // =====================Program========================= //
+    public function addProgram(Request $request){
+        $program = new Program();
+        $program->name = $request->addProgramName;
+        $program->save();
+    }
+
     public function updateProgram(Request $request){
         // Find the program and update it
         $program = Program::findOrFail($request->editProgramId);

@@ -61,21 +61,24 @@
 
     <!-- Custom Scripts -->
 
-     <!-- View Password -->
-     <script src="{{ asset('js/viewPassword.js') }}"></script>
+    <!-- View Password -->
+    <script src="{{ asset('js/viewPassword.js') }}"></script>
 
-     <!-- Data Table -->
-     <script src="{{ asset('js/dataTable.js') }}"></script>
+    <!-- Data Table -->
+    <script src="{{ asset('js/dataTable.js') }}"></script>
 
-     <!-- PPA Management -->
-     <script src="{{ asset('js/ppaManagement/forms.js') }}"></script>
-     <script src="{{ asset('js/ppaManagement/activity.js') }}"></script>
-     <script src="{{ asset('js/ppaManagement/project.js') }}"></script>
-     <script src="{{ asset('js/ppaManagement/subProject.js') }}"></script>
-     <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
+    <!-- PPA Management -->
+    <script src="{{ asset('js/ppaManagement/forms.js') }}"></script>
+    <script src="{{ asset('js/ppaManagement/activity.js') }}"></script>
+    <script src="{{ asset('js/ppaManagement/project.js') }}"></script>
+    <script src="{{ asset('js/ppaManagement/subProject.js') }}"></script>
+    <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
 
-     <!-- Hover on Button -->
-     <script src="{{ asset('js/buttonHover.js') }}"></script>
+    <!-- Table Switching -->
+    <script src="{{ asset('js/ppaManagement/manageTable.js') }}"></script>
+
+    <!-- Hover on Button -->
+    <script src="{{ asset('js/functionalities.js') }}"></script>
 
     <script>
         $('#adminLoginModal').on('shown.bs.modal', function () {

@@ -14,7 +14,7 @@ class authorizationController extends Controller
     public function adminLogin(Request $request)
     {  
         // Check if the user exists in the tbl_admin table
-        $admin = Admin::where('username', $request->username)->first();
+        $admin = Admin::where('username', $request->adminUsername)->first();
 
         // Ensure the admin exists
         if (!$admin) {
@@ -65,6 +65,14 @@ class authorizationController extends Controller
         $request->session()->invalidate();  // Invalidate the session
         $request->session()->regenerateToken();  // Regenerate CSRF token
 
-        return response()->json(['message' => 'Logged out successfully'], 200);  // Return a response
+        return redirect('/');
     }
+
+    public function logout(Request $request)
+{
+    $request->session()->flush(); // Clear all session data
+    Auth::guard('admin')->logout();
+    return redirect('/login')->with('message', 'You have been logged out successfully!');
+}
+
 }
