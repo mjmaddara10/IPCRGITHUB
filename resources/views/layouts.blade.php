@@ -70,9 +70,9 @@
     <!-- PPA Management -->
     <script src="{{ asset('js/ppaManagement/forms.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/activity.js') }}"></script>
+    <script src="{{ asset('js/ppaManagement/subActivity.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/project.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/subProject.js') }}"></script>
-    <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
 
     <!-- Table Switching -->
     <script src="{{ asset('js/ppaManagement/manageTable.js') }}"></script>
@@ -85,6 +85,7 @@
             $('#adminUsername').focus();
         });
     </script>
+    <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
 </body>
 
 </html>

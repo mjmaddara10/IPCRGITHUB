@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Activity;
+use App\Models\SubActivity;
 use App\Models\Project;
-use App\Models\Program;
 use App\Models\SubProject;
+use App\Models\Program;
+use App\Models\Employee;
+use App\Models\Division;
 
 class ppaController extends Controller
 {
@@ -100,23 +103,50 @@ class ppaController extends Controller
 
     // =====================Program========================= //
     public function addProgram(Request $request){
-        $program = new Program();
-        $program->name = $request->addProgramName;
-        $program->save();
+        $program = Program::create([
+            'name' => $request->addProgramName,
+            'successIndicator' => $request->addSuccessIndicator,
+            'quality' => $request->addQuality,
+            'efficiency' => $request->addEfficiency,
+            'timeliness' => $request->addTimeliness,
+            'remarks' => $request->addRemarks,
+        ]);
+    
+        // Check if 'all' is selected
+        if (in_array('all', $request->divisions)) {
+            $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
+            $program->divisions()->attach($allDivisionIds);
+        } else {
+            $program->divisions()->attach($request->divisions);
+        }
+    
+        return redirect()->back()->with('success', 'Program added successfully.');
     }
 
     public function updateProgram(Request $request){
         // Find the program and update it
         $program = Program::findOrFail($request->editProgramId);
-        $program->update([
-            'id'=> $request->editProgramId,
-            'name' => $request->editProgramName,
-        ]);
 
-        // Return a response (this is what your AJAX call will use)
-        return response()->json(['message' => 'Program updated successfully!']);
+        // Update fields
+        $program->name = $request->editProgramName;
+        $program->successIndicator = $request->editSuccessIndicator;
+        $program->quality = $request->editQuality;
+        $program->efficiency = $request->editEfficiency;
+        $program->timeliness = $request->editTimeliness;
+        $program->remarks = $request->editRemarks;
+        $program->save();
+    
+        // Handle "all" divisions
+        if (in_array('all', $request->divisions)) {
+            $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
+            $program->divisions()->sync($allDivisionIds);
+        } else {
+            $program->divisions()->sync($request->divisions);
+        }
+    
+        return redirect()->back()->with('success', 'Program updated successfully.');
     }
-
+    
     public function deleteProgram(Request $request){
         try{
             $program = Program::findOrFail($request->programId);
@@ -132,6 +162,25 @@ class ppaController extends Controller
         }
 
     }
+
+    /*public function filterProgram(Request $request) {
+        $divisionId = $request->query('division_id');
+
+        // If 'all' is selected, get programs assigned to all divisions
+        if ($divisionId == 'all') {
+            $programs = Program::whereHas('divisions')->get(); // All programs with at least one division assigned
+        } else {
+            // Otherwise, get programs assigned to the selected division
+            $programs = Program::whereHas('divisions', function ($query) use ($divisionId) {
+                $query->where('id', $divisionId);
+            })->get();
+        }
+
+        // Return programs as JSON
+        return response()->json([
+            'programs' => $programs
+        ]);
+    }*/
 
     // =====================Sub-Project========================= //
     public function addSubProject(Request $request){
@@ -190,5 +239,57 @@ class ppaController extends Controller
         $subProject->activities()->save($activity);
     }
 
+    // =====================Add Activity in Program========================= //
+    public function addActivityInProgram(Request $request){
+        $activity = new Activity([
+            'name' => $request->addActivityName,
+            'successIndicator' => $request->addSuccessIndicator,
+            'quality' => $request->addQuality,
+            'efficiency' => $request->addEfficiency,
+            'timeliness' => $request->addTimeliness,
+            'remarks' => $request->addRemarks,
+            'accountable' => $request->addAccountable,
+            'program_Id' => $request->programIdProg,
+        ]);
+
+        // Find the program and associate the activity with it
+        $program = Program::findOrFail($request->programIdProg);
+        $program->activities()->save($activity);
+    }
     
+    // =====================Add Sub-Activity========================= //
+    public function addSubActivity(Request $request){
+        $subActivity = new SubActivity([
+            'name' => $request->addSubActivityName,
+            'successIndicator' => $request->addSuccessIndicator,
+            'quality' => $request->addQuality,
+            'efficiency' => $request->addEfficiency,
+            'timeliness' => $request->addTimeliness,
+            'remarks' => $request->addRemarks,
+            'accountable' => $request->addAccountable,
+            'activity_id' => $request->activityIdSub,
+        ]);
+    
+        // Find the activity and associate the activity with it
+        $activity = Activity::findOrFail($request->activityIdSub);
+        $activity->subActivities()->save($subActivity);
+    }
+
+    // =====================Update Sub-Activity========================= //
+    public function updateSubActivity(Request $request){
+        // Find the sub-activity and update it
+        $subActivity = SubActivity::findOrFail($request->editActivityIdSub);
+        $subActivity->update([
+            'name' => $request->editActivityNameSub,
+            'successIndicator' => $request->editSuccessIndicatorSub,
+            'quality' => $request->editQualitySub,
+            'efficiency' => $request->editEfficiencySub,
+            'timeliness' => $request->editTimelinessSub,
+            'remarks' => $request->editRemarksSub,
+            'accountable' => $request->editAccountableSub,
+        ]);
+
+        // Return a response (this is what your AJAX call will use)
+        return response()->json(['message' => 'Sub-Activity updated successfully!']);
+    }
 }

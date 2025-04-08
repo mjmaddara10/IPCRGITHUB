@@ -7,9 +7,14 @@ use App\Http\Controllers\usersController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
 use App\Http\Controllers\adminPagesController;
+use App\Models\SubActivity;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\SubProject;
+use App\Models\Employee;
+use App\Models\Activity;
+use App\Models\Division;
+
 
 
 Route::get('/', function () {
@@ -24,6 +29,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/deleteActivity', [ppaController::class, 'deleteActivity'])->name('deleteActivity');
     Route::post('/addActivity', [ppaController::class, 'addActivity'])->name('addActivity');
 
+    Route::post('/addSubActivity', [ppaController::class, 'addSubActivity'])->name('addSubActivity');
+    Route::post('/updateSubActivity', [ppaController::class, 'updateSubActivity'])->name('updateSubActivity');
+
     Route::post('/addSubProject', [ppaController::class, 'addSubProject'])->name('addSubProject');
     Route::post('/updateSubProject', [ppaController::class, 'updateSubProject'])->name('updateSubProject');
     Route::post('/deleteSubProject', [ppaController::class, 'deleteSubProject'])->name('deleteSubProject');
@@ -37,6 +45,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/deleteProgram', [ppaController::class, 'deleteProgram'])->name('deleteProgram');
 
     Route::post('/addActivityInSub', [ppaController::class, 'addActivityInSub'])->name('addActivityInSub');
+    Route::post('/addActivityInProgram', [ppaController::class, 'addActivityInProgram'])->name('addActivityInProgram');
+
+    Route::post('/filterProgram', [ppaController::class, 'filterProgram'])->name('filterProgram');
 });
 
 Route::group(['middleware' => 'admin'], function () {
@@ -61,8 +72,9 @@ Route::group(['middleware' => 'admin'], function () {
             $programs = Program::with('projects')->get();
             $projects = Project::with('activities', 'subProjects')->get();
             $subProjects = SubProject::with('activities')->get();
+            $activities = Activity::with('employees')->get();
 
-            return view("adminBlades.tables.$table", compact('programs', 'projects', 'subProjects'));
+            return view("adminBlades.tables.$table", compact('programs', 'projects', 'subProjects','employees'));
         }
         return response("Table not found", 404);
     });

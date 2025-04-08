@@ -17,8 +17,16 @@ class Activity extends Model
         'efficiency',
         'timeliness',
         'remarks',
-        'project_id'
+        'accountable',
+        'program_id',
+        'project_id',
+        'sub_project_id'
     ];
+    public function programs()
+    {
+        return $this->belongsTo(Program::class);
+    }
+
     public function projects()
     {
         return $this->belongsTo(Project::class);
@@ -27,5 +35,10 @@ class Activity extends Model
     public function subProjects()
     {
         return $this->belongsTo(SubProject::class);
+    }
+
+    public function subActivities()
+    {
+        return $this->hasMany(SubActivity::class);
     }
 }

@@ -36,6 +36,7 @@ $('#addProgramForm').on('submit', function(e) {
                         icon: 'error',
                         confirmButtonColor: '#bc0c0c'
                     });
+                    alert('Response: ' + JSON.stringify(xhr));
                 }
             });
         }
@@ -47,10 +48,20 @@ $(document).on('click', '.editProgramBtn', function() {
     // Get data from the button clicked
     var programId = $(this).data('program-id');
     var programName = $(this).data('program-name');
+    var programSuccessIndicator = $(this).data('program-success');
+    var programQuality = $(this).data('program-quality');
+    var programEfficiency = $(this).data('program-efficiency');
+    var programTimeliness = $(this).data('program-timeliness');
+    var programRemarks = $(this).data('program-remarks');
 
     // Populate the modal fields with the data
     $('#editProgramId').val(programId);
     $('#editProgramName').val(programName);
+    $('#editSuccessIndicator').val(programSuccessIndicator);
+    $('#editQuality').val(programQuality);
+    $('#editEfficiency').val(programEfficiency);
+    $('#editTimeliness').val(programTimeliness);
+    $('#editRemarks').val(programRemarks);
 });
 
 // Edit Program
@@ -156,3 +167,139 @@ $(document).on('click', '.deleteProgramBtn', function(e) {
         }
     });
 });
+
+// Adding more division responsible
+/*document.getElementById('addDivisionBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const selectGroupHTML = `
+        <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+            <select class="form-select selectDivision" name="divisions[]">
+                <option value="Permanent">Organizational Development Division</option>
+                <option value="COS">Benefits and Welfare Division</option>
+                <option value="Casual">Organizational Development Division</option>
+                <option value="Casual">Personnel and Administrative Division</option>
+            </select>
+            <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    `;
+
+    document.getElementById('divisionSelectContainer').insertAdjacentHTML('beforeend', selectGroupHTML);
+});*/
+
+document.getElementById('addDivisionBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    // Get the divisions data from the data attribute on the container
+    const divisions = JSON.parse(document.getElementById('divisionSelectContainer').getAttribute('data-divisions'));
+
+    // Start building the select options
+    let optionsHTML = '<option value="all">All Divisions</option>';
+    divisions.forEach(function (division) {
+        optionsHTML += `<option value="${division.id}">${division.name}</option>`;
+    });
+
+    const selectGroupHTML = `
+        <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+            <select class="form-select selectDivision" name="divisions[]">
+                ${optionsHTML}
+            </select>
+            <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    `;
+
+    document.getElementById('divisionSelectContainer').insertAdjacentHTML('beforeend', selectGroupHTML);
+});
+
+
+// Delegate remove button event listener
+document.getElementById('divisionSelectContainer').addEventListener('click', function (e) {
+    if (e.target.closest('.removeDivisionBtn')) {
+        e.preventDefault();
+        e.target.closest('.division-select-group').remove();
+    }
+});
+
+// Edit Program
+document.addEventListener('DOMContentLoaded', function () {
+    const editDivisionContainer = document.getElementById('editDivisionSelectContainer');
+    const allDivisions = JSON.parse(editDivisionContainer.getAttribute('data-divisions'));
+    
+    document.getElementById('editAddDivisionBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+
+        let optionsHTML = '';
+        allDivisions.forEach(function (division) {
+            optionsHTML += `<option value="${division.id}">${division.name}</option>`;
+        });
+
+        const selectGroupHTML = `
+            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                <select class="form-select" name="divisions[]">${optionsHTML}</select>
+                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        `;
+
+        editDivisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
+    });
+
+    // Delegate remove button functionality
+    editDivisionContainer.addEventListener('click', function (e) {
+        if (e.target.closest('.removeDivisionBtn')) {
+            e.target.closest('.division-select-group').remove();
+        }
+    });
+});
+
+document.getElementById('divisionFilter').addEventListener('change', function () {
+    const selectedDivisionId = this.value;
+
+    // Loop through each program row
+    document.querySelectorAll('.programRow').forEach(row => {
+        const divisionIds = row.dataset.divisionIds.split(',');
+        const programId = row.dataset.programId;
+
+        const match = selectedDivisionId === '' || divisionIds.includes(selectedDivisionId);
+
+        // Show/hide the program row and all related child rows
+        row.style.display = match ? '' : 'none';
+
+        document.querySelectorAll(`[data-program-id="${programId}"]`).forEach(childRow => {
+            childRow.style.display = match ? '' : 'none';
+        });
+    });
+});
+
+
+
+// Division Filtering
+/*document.getElementById('divisionFilter').addEventListener('change', function () {
+    var selectedDivision = this.value;
+
+    // Send AJAX request to fetch filtered programs
+    fetch(`/filterProgram?division_id=${selectedDivision}`)
+        .then(response => response.json())
+        .then(data => {
+            // Empty the current table content
+            const tableBody = document.getElementById('programTableBody');
+            tableBody.innerHTML = '';
+
+            // Insert the filtered data into the table
+            data.programs.forEach(program => {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="text-center">${program.name}</td>
+                    <td class="text-center">${program.divisions.map(division => division.name).join(', ')}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+    }
+);*/

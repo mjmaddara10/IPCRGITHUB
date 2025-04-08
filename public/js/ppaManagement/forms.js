@@ -18,6 +18,7 @@ $(document).on('click', '.closeEditModal', function(e) {
             $('#editProgramModal').modal('hide');
             $('#editProjectModal').modal('hide');
             $('#editSubProjectModal').modal('hide');
+            $('#editSubActivityModal').modal('hide');
         }
     });
 });
@@ -42,7 +43,9 @@ $(document).on('click', '.closeAddModal', function(e) {
             $('#addProjectModal').modal('hide');
             $('#addActivityModal').modal('hide');
             $('#addActivityInSubModal').modal('hide');
+            $('#addActivityInProgramModal').modal('hide');
             $('#addSubProjectModal').modal('hide');
+            $('#addSubActivityModal').modal('hide');
         }
     });
 });

@@ -231,3 +231,59 @@ $('#addActivityInSubForm').on('submit', function(e) {
         }
     });    
 });
+
+// Add Activity in Program Fill Form
+$(document).on('click', '.addActivityInProgramBtn', function() {
+    // Get data from the button clicked
+    var programIdProg = $(this).data('program-id');
+    var programNameProg = $(this).data('program-name');
+
+    // Populate the modal fields with the data
+    $('#programIdProg').val(programIdProg);
+    $('#programNameProg').val(programNameProg);
+});
+
+// Add Activity in Program
+$('#addActivityInProgramForm').on('submit', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to add this activity?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#03592c",
+        cancelButtonColor: "#bc0c0c",
+        confirmButtonText: "Yes, add activity"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'addActivityInProgram',
+                method: 'POST',
+                data: $(this).serialize(), // Serialize form data
+                success: function(response) {
+                    // Handle success response (close the modal and give feedback)
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Activity added successfully.',
+                        icon: 'success',
+                        confirmButtonColor: '#03592c'
+                    }).then(() => {
+                        $('#addActivityInProgramModal').modal('hide'); // Close the modal
+                        location.reload(); // Optionally reload the page to see the new activity
+                    });
+                },
+                error: function(xhr) {
+                    // Handle error response
+                    Swal.fire({
+                        title: 'Error!',
+                        text: xhr.responseJSON.message || 'An error occurred while adding the activity.',
+                        icon: 'error',
+                        confirmButtonColor: '#bc0c0c'
+                    });
+                    alert('Response: ' + JSON.stringify(xhr));
+                }
+            });
+        }
+    });    
+});
