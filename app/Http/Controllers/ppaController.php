@@ -65,6 +65,11 @@ class ppaController extends Controller
     public function addProject(Request $request){
         $project = new Project([
             'name' => $request->addProjectName,
+            'successIndicator' => $request->addSuccessIndicatorProject,
+            'quality' => $request->addQualityProject,
+            'efficiency' => $request->addEfficiencyProject,
+            'timeliness' => $request->addTimelinessProject,
+            'remarks' => $request->addRemarksProject,
             'program_id' => $request->programId,
         ]);
     
@@ -186,6 +191,11 @@ class ppaController extends Controller
     public function addSubProject(Request $request){
         $subProject = new SubProject([
             'name' => $request->addSubProjectTitle,
+            'successIndicator' => $request->addSuccessIndicatorSubProject,
+            'quality' => $request->addQualitySubProject,
+            'efficiency' => $request->addEfficiencySubProject,
+            'timeliness' => $request->addTimelinessSubProject,
+            'remarks' => $request->addRemarksSubProject,
             'project_id' => $request->projectIdSub,
         ]);
     
@@ -200,6 +210,11 @@ class ppaController extends Controller
         $subProject->update([
             'id'=> $request->editSubProjectId,
             'name' => $request->editSubProjectName,
+            'successIndicator' => $request->editSuccessIndicatorSubProject,
+            'quality' => $request->editQualitySubProject,
+            'efficiency' => $request->editEfficiencySubProject,
+            'timeliness' => $request->editTimelinessSubProject,
+            'remarks' => $request->editRemarksSubProject,
         ]);
 
         // Return a response (this is what your AJAX call will use)
@@ -291,5 +306,21 @@ class ppaController extends Controller
 
         // Return a response (this is what your AJAX call will use)
         return response()->json(['message' => 'Sub-Activity updated successfully!']);
+    }
+
+    // =====================Delete Sub-Activity========================= //
+    public function deleteSubActivity(Request $request){
+        try{
+            $subActivity = SubActivity::findOrFail($request->subActivityId);
+            $subActivity->delete();
+
+            return response()->json(['message' => 'Sub-activity deleted successfully!'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // If sub-activity is not found
+            return response()->json(['error' => 'Sub-activity not found!'], 404);
+        } catch (\Exception $e) {
+            // For any other errors
+            return response()->json(['error' => 'An error occurred while trying to delete the sub-activity.'], 500);
+        }
     }
 }
