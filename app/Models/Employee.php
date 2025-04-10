@@ -9,6 +9,7 @@ class Employee extends Authenticatable
     protected $table = 'tbl_employee';
 
     protected $fillable = [
+        'id',
         'username',
         'password',
         'firstName',
@@ -18,6 +19,11 @@ class Employee extends Authenticatable
         'division',
         'status',
     ];
+
+    public function employees()
+    {
+        return $this->belongsTo(Activity::class);
+    }
 
     protected $hidden = [
         'password',

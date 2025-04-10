@@ -11,8 +11,8 @@
         </a>
         <!-- Logout Button -->
         <div class="d-flex align-items-center">
-            <a href="{{ route('admin.manageUsers') }}" class="btn btn-hover px-4 nv-green">
-               Manage Users
+            <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover px-4 nv-green">
+               View Employees
             </a>
             <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">
                View IPCR
@@ -26,12 +26,16 @@
             <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
                Settings
             </a>
-            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover px-4 nv-red">
+            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover px-4 nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
                Logout
             </a>
         </div>
     </div>
 </nav>
+
+<form id="logoutForm" action="{{ route('adminLogout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
 
 <!-- Decorative Gold Gradient Bar -->
 <div style="background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03); height: 10px; width: 100%;"></div>

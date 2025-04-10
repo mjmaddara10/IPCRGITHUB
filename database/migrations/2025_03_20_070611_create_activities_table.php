@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id(); // Primary key
@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('quality'); // Quality
             $table->string('efficiency'); // Efficiency
             $table->string('timeliness'); // Timeliness
+            $table->string('remarks'); // Remarks
+            $table->string('accountable'); // Accountable
+            $table->foreignId('program_id')->constrained()->onDelete('cascade');
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->timestamps(); // Created at and updated at timestamps
         });

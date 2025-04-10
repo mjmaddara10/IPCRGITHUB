@@ -7,6 +7,8 @@ use App\Models\Program;
 use App\Models\Project;
 use App\Models\Activity;
 use App\Models\Employee;
+use App\Models\SubProject;
+use App\Models\Division;
 
 class adminPagesController extends Controller
 {
@@ -18,19 +20,33 @@ class adminPagesController extends Controller
         return view('adminBlades.adminSettings');
     }
 
-    public function manageUsers(){
+    public function viewEmployees(){
         $employees = Employee::all();
 
-        return view('adminBlades.adminManageUsers', compact('employees'));
+        return view('adminBlades.adminViewEmployees', compact('employees'));
     }
     
     public function managePpa(){
         // Fetch all programs with their related projects
-        $programs = Program::with('projects')->get();
-        $projects = Project::with('activities')->get();
+        $programs = Program::with('projects','divisions')->get();
+        $projects = Project::with('activities' , 'subProjects')->get();
+        $subProjects = SubProject::with('activities')->get();
+        $activities = Activity::with('subActivities')->get();
+        $employees = Employee::all(); // Fetch all employees 
+        $divisions = Division::all();
 
         // Pass the data to the view
-        return view('adminBlades.adminManagePpa', compact('programs','projects'));
+        return view('adminBlades.adminManagePpa', compact('programs','projects','subProjects','employees','activities','divisions'));
+    }
+
+    public function managePpa2(){
+        // Fetch all programs with their related projects
+        $programs = Program::with('projects')->get();
+        $projects = Project::with('activities' , 'subProjects')->get();
+        $subProjects = SubProject::with('activities')->get();
+
+        // Pass the data to the view
+        return view('adminBlades.adminManagePpa2', compact('programs','projects','subProjects'));
     }
 
     public function viewIpcr(){

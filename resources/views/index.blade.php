@@ -33,7 +33,7 @@
                      </li>
                      <li>
                          <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                             data-bs-target="#employeeLoginModalLabel" data-role="employee">Employee</a>
+                             data-bs-target="#employeeLoginModal" data-role="employee">Employee</a>
                      </li>
                  </ul>
              </div>
@@ -74,7 +74,7 @@
                         <label for="username" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-user me-2"></i>Username
                         </label>
-                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="username" name="username" placeholder="Enter username">
+                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="adminUsername" name="adminUsername" placeholder="Enter username">
                     </div>
                     <div class="mb-4">
                         <label for="password" class="form-label fw-bold text-dark mb-2">
@@ -103,7 +103,7 @@
 </div>
 
  <!-- Employee Login Modal -->
-<div class="modal fade" id="employeeLoginModalLabel" tabindex="-1" aria-labelledby="employeeLoginModalLabel" aria-hidden="true">
+<div class="modal fade" id="employeeLoginModal" tabindex="-1" aria-labelledby="employeeLoginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <!-- Modal Header -->
@@ -121,7 +121,7 @@
                         <label for="employeeUsername" class="form-label fw-bold text-dark mb-2">
                             <i class="fas fa-user me-2"></i>Username
                         </label>
-                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="employeeUsername" name="username" placeholder="Enter username">
+                        <input type="text" class="form-control form-control-lg border-2" style="border-color: #03592c; background-color: #ffffff;" id="employeeUsername" name="username" placeholder="Enter username" autofocus>
                     </div>
                     <div class="mb-4">
                         <label for="employeePassword" class="form-label fw-bold text-dark mb-2">
