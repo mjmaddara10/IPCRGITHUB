@@ -1,7 +1,7 @@
 <table id="ppaTable" class="table">
     <thead class="text-center">
         <tr>
-            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Major Programs/Project/Activities</th>
+            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Programs/Projects/Activities</th>
             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Success Indicator</th>
             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Quality</th>
             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Efficiency</th>
@@ -49,13 +49,13 @@
                     </button>
 
                     <!-- Add Project -->
-                    <button class="btn btn-sm addProjectBtn buttonHover" title="Add a project"
+                    <!-- <button class="btn btn-sm addProjectBtn buttonHover" title="Add a project"
                         data-program-id="{{ $program->id }}" 
                         data-program-name="{{ $program->name }}" data-bs-toggle="modal" data-bs-target="#addProjectModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
-                    </button>
+                    </button> -->
 
-                    <!-- Edit Program -->
-                    <button class="btn btn-sm editProgramBtn buttonHover" title="Edit program name"
+                    <!-- Edit Program/Project -->
+                    <button class="btn btn-sm editProgramBtn buttonHover" title="Edit details"
                         data-program-id="{{ $program->id }}" 
                         data-program-name="{{ $program->name }}"
                         data-program-success="{{ $program->successIndicator }}"
@@ -66,7 +66,7 @@
                     </button>
 
                     <!-- Delete Program -->
-                    <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete program"
+                    <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete"
                         data-program-id="{{ $program->id }}"
                         data-url="{{ route('deleteProgram') }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
                     </button>

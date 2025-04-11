@@ -41,7 +41,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
 
                 <!-- Add Program -->
-                    <a class="btn" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program</a>
+                    <a class="btn" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
                 
                     <!-- Buttons -->
                 <div class="d-flex align-items-center">
@@ -62,20 +62,20 @@
 </div>
 
 <!------------------------------------Modals-------------------------------------->
-<!-- Add Program Modal -->
+<!-- Add Program/Project Modal -->
 <div class="modal fade" id="addProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="addProgramModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header border-0" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addProgramModalLabel">
-                    <i class="fas fa-edit me-2"></i>Add Program
+                    <i class="fas fa-edit me-2"></i>Add Program/Project
                 </h5>
             </div>
             <div class="modal-body" style="background-color: #f8f9fa;">
                 <form id="addProgramForm" class="p-2">
                     @csrf
                     <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Program Name:</label>
+                        <label class="form-label fw-bold text-dark mb-1">Program/Project Name:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; min-height: 50px; resize: vertical;"
                             name="addProgramName" id="addProgramName" autofocus></textarea>

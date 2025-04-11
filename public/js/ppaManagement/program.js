@@ -123,12 +123,12 @@ $(document).on('click', '.deleteProgramBtn', function(e) {
 
     Swal.fire({
         title: "Are you sure?",
-        text: "Do you want to delete this program? All projects and activities under it will also be deleted.",
+        html: "Do you want to delete this?<br><strong>All activities under it will also be deleted.</strong>",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#03592c",
         cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, delete project"
+        confirmButtonText: "Confirm"
     }).then((result) => {
         if (result.isConfirmed) {
             // Make an AJAX request to delete the project
