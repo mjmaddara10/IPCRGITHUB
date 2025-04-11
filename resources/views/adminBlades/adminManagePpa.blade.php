@@ -120,12 +120,13 @@
                         <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
                             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select selectDivision" name="divisions[]">
-                                    <option value="all">All Divisions</option>
+                                    
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}">{{ $division->name }}</option>
                                     @endforeach
+                                    <option value="all">All Divisions</option>
                                 </select>
-                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
                                     <i class="fas fa-minus"></i>
                                 </button>
                             </div>
@@ -197,12 +198,11 @@
                     <div class="col-12">
                         <div class="py-2">
                             <label class="form-label fw-bold text-dark mb-1">Division/s Responsible:</label>
-                            <button class="btn btn-sm buttonHover" title="Add division responsible" id="editAddDivisionBtn" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
-                            
+                            <button class="btn btn-sm buttonHover" title="Add division responsible" id="editAddDivisionBtn" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
                         </div>
                         
                         <!-- Division Selection -->
-                        <div id="editDivisionSelectContainer">
+                        <div id="editDivisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
                             @foreach ($divisions as $division)
                                 <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
                                     <select class="form-select division-select" name="divisions[]">
@@ -219,24 +219,6 @@
                                 </div>
                             @endforeach
                         </div>
-
-                        <!-- <div id="editDivisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
-                            @foreach ($divisions as $division)
-                                <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-                                    <select class="form-select selectDivision" name="divisions[]">
-                                        <option value="all">All Divisions</option>
-                                        @foreach ($divisions as $div)
-                                            <option value="{{ $div->id }}" {{ $div->id == $division->id ? 'selected' : '' }}>
-                                                {{ $div->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
-                            @endforeach
-                        </div> -->
                     </div>    
             </div>
             <div class="modal-footer border-0" style="background-color: #f8f9fa;">
@@ -276,6 +258,58 @@
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
                             name="addProjectName" id="addProjectName" required></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addSuccessIndicatorProject" id="addSuccessIndicatorProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Quality:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addQualityProject" id="addQualityProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addEfficiencyProject" id="addEfficiencyProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addTimelinessProject" id="addTimelinessProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Remarks:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addRemarksProject" id="addRemarksProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <div class="py-2">
+                            <label class="form-label fw-bold text-dark mb-1">Individual/s Responsible:</label>
+                            <button class="btn btn-sm buttonHover" title="Add division responsible" id="addDivisionBtn" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
+                        </div>
+                        
+                        <!-- Division Selection -->
+                        <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
+                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                                <select class="form-select selectDivision" name="divisions[]">
+                                    
+                                    @foreach ($divisions as $division)
+                                        <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                    @endforeach
+                                    <option value="all">All Divisions</option>
+                                </select>
+                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
             </div>
             <div class="modal-footer border-0" style="background-color: #f8f9fa;">
@@ -417,31 +451,37 @@
                         <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editSuccessIndicator" id="editSuccessIndicator" required></textarea>
+                            name="editSuccessIndicatorActivity" id="editSuccessIndicatorActivity" required></textarea>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Quality:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editQuality" id="editQuality" required></textarea>
+                            name="editQualityActivity" id="editQualityActivity" required></textarea>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editEfficiency" id="editEfficiency" required></textarea>
+                            name="editEfficiencyActivity" id="editEfficiencyActivity" required></textarea>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editTimeliness" id="editTimeliness" required></textarea>
+                            name="editTimelinessActivity" id="editTimelinessActivity" required></textarea>
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Remarks:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editRemarks" id="editRemarks"></textarea>
+                            name="editRemarksActivity" id="editRemarksActivity"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Individual Responsible:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="editRemarksActivity" id="editRemarksActivity"></textarea>
                     </div>
             </div>
             <div class="modal-footer border-0" style="background-color: #f8f9fa;">
@@ -482,6 +522,58 @@
                             style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
                             name="addSubProjectTitle" id="addSubProjectTitle" required></textarea>
                     </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addSuccessIndicatorSubProject" id="addSuccessIndicatorSubProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Quality:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addQualitySubProject" id="addQualitySubProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addEfficiencySubProject" id="addEfficiencySubProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addTimelinessSubProject" id="addTimelinessSubProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Remarks:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="addRemarksSubProject" id="addRemarksSubProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <div class="py-2">
+                            <label class="form-label fw-bold text-dark mb-1">Individual/s Responsible:</label>
+                            <button class="btn btn-sm buttonHover" title="Add division responsible" id="addDivisionBtn" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
+                        </div>
+                        
+                        <!-- Division Selection -->
+                        <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
+                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                                <select class="form-select selectDivision" name="divisions[]">
+                                    
+                                    @foreach ($divisions as $division)
+                                        <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                    @endforeach
+                                    <option value="all">All Divisions</option>
+                                </select>
+                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
             </div>
             <div class="modal-footer border-0" style="background-color: #f8f9fa;">
                 <button type="button" class="btn btn-hover px-3 nv-red closeAddModal">
@@ -515,7 +607,42 @@
                             style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
                             name="editSubProjectName" id="editSubProjectName"></textarea>
                     </div>
-                    
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="editSuccessIndicatorSubProject" id="editSuccessIndicatorSubProject" required></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Quality:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="editQualitySubProject" id="editQualitySubProject" required></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="editEfficiencySubProject" id="editEfficiencySubProject" required></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="editTimelinessSubProject" id="editTimelinessSubProject" required></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Remarks:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="editRemarksSubProject" id="editRemarksSubProject"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-dark mb-1">Individual Responsible:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
+                            name="editAccountableSubProject" id="editAccountableSubProject"></textarea>
+                    </div>
             </div>
             <div class="modal-footer border-0" style="background-color: #f8f9fa;">
                 <button type="button" class="btn btn-hover px-3 nv-red closeEditModal">

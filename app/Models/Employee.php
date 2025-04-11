@@ -18,6 +18,7 @@ class Employee extends Authenticatable
         'position',
         'division',
         'status',
+        'role',
     ];
 
     public function employees()

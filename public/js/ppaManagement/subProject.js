@@ -58,10 +58,22 @@ $(document).on('click', '.editSubProjectBtn', function() {
     // Get data from the button clicked
     var subProjectId = $(this).data('subProject-id');
     var subProjectName = $(this).data('subProject-name');
+    var successIndicator = $(this).data('success-indicator');
+    var quality = $(this).data('quality');
+    var efficiency = $(this).data('efficiency');
+    var timeliness = $(this).data('timeliness');
+    var remarks = $(this).data('remarks');
+    var accountable = $(this).data('accountable');
 
     // Populate the modal fields with the data
     $('#editSubProjectId').val(subProjectId);
     $('#editSubProjectName').val(subProjectName);
+    $('#editSuccessIndicatorSubProject').val(successIndicator);
+    $('#editQualitySubProject').val(quality);
+    $('#editEfficiencySubProject').val(efficiency);
+    $('#editTimelinessSubProject').val(timeliness);
+    $('#editRemarksSubProject').val(remarks);
+    $('#editAccountableSubProject').val(accountable);
 });
 
 // Edit Sub-Project

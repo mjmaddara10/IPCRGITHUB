@@ -12,6 +12,11 @@ class Project extends Model
     protected $fillable = [
         'id',
         'name',
+        'successIndicator',
+        'quality',
+        'efficiency',
+        'timeliness',
+        'remarks',
         'program_id',
     ];
 

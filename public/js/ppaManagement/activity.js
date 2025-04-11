@@ -12,11 +12,11 @@ $(document).on('click', '.editActivityBtn', function() {
     // Populate the modal fields with the data
     $('#activityId').val(activityId);
     $('#editActivityName').val(activityName);
-    $('#editSuccessIndicator').val(successIndicator);
-    $('#editQuality').val(quality);
-    $('#editEfficiency').val(efficiency);
-    $('#editTimeliness').val(timeliness);
-    $('#editRemarks').val(remarks);
+    $('#editSuccessIndicatorActivity').val(successIndicator);
+    $('#editQualityActivity').val(quality);
+    $('#editEfficiencyActivity').val(efficiency);
+    $('#editTimelinessActivity').val(timeliness);
+    $('#editRemarksActivity ').val(remarks);
 });
 
 // Edit Activity
