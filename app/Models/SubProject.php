@@ -14,6 +14,11 @@ class SubProject extends Model
     protected $fillable = [
         'id',
         'name',
+        'successIndicator',
+        'quality',
+        'efficiency',
+        'timeliness',
+        'remarks',
         'project_id',
     ];
 

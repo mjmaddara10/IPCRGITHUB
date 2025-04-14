@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('division');
             $table->string('username');
             $table->string('password');
+            $table->string('role');
             $table->timestamps();
         });
     }

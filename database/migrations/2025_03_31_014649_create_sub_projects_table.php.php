@@ -12,10 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sub_projects', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('name'); // Sub-project name
+            $table->id();
+            $table->string('name');
+            $table->string('successIndicator');
+            $table->string('quality');
+            $table->string('efficiency');
+            $table->string('timeliness');
+            $table->string('remarks');
+            $table->string('accountable');
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->timestamps(); // Created at and updated at timestamps
+            $table->timestamps();
         });
     }
 

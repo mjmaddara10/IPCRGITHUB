@@ -31,6 +31,7 @@ Route::prefix('admin')->group(function () {
 
     Route::post('/addSubActivity', [ppaController::class, 'addSubActivity'])->name('addSubActivity');
     Route::post('/updateSubActivity', [ppaController::class, 'updateSubActivity'])->name('updateSubActivity');
+    Route::post('/deleteSubActivity', [ppaController::class, 'deleteSubActivity'])->name('deleteSubActivity');
 
     Route::post('/addSubProject', [ppaController::class, 'addSubProject'])->name('addSubProject');
     Route::post('/updateSubProject', [ppaController::class, 'updateSubProject'])->name('updateSubProject');

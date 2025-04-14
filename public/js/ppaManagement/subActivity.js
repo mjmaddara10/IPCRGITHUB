@@ -124,3 +124,57 @@ $('#editSubActivityForm').on('submit', function(e) {
         }
     });
 });
+
+$(document).on('click', '.deleteSubActivityBtn', function(e) {
+    e.preventDefault();
+
+    var subActivityId = $(this).data('subActivity-id');
+    var deleteUrl  = $(this).data('url');
+    console.log(subActivityId);
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to delete this sub-activity?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#03592c",
+        cancelButtonColor: "#bc0c0c",
+        confirmButtonText: "Yes, delete activity"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Make an AJAX request to delete the activity
+            $.ajax({
+                url: deleteUrl,  // Your delete URL
+                method: 'POST',
+                data: {
+                    subActivityId: subActivityId // Pass the activity ID
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Add CSRF token in the headers
+                },
+                success: function(response) {
+                    // Show success Swal alert
+                    Swal.fire({
+                        title: 'Activity deleted',
+                        text: 'PPA has been updated',
+                        icon: 'success',
+                        confirmButtonColor: "#03592c",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        location.reload(); // Reload the page to see the changes
+                    });
+                },
+                error: function(response) {
+                    // Handle the error response
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'An error occurred. Please try again.',
+                        icon: 'error',
+                        confirmButtonColor: "#bc0c0c"
+                    });
+                    alert('Response: ' + JSON.stringify(response));
+                }
+            });
+        }
+    });
+});

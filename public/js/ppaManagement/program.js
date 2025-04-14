@@ -168,51 +168,130 @@ $(document).on('click', '.deleteProgramBtn', function(e) {
     });
 });
 
-// Adding more division responsible
-/*document.getElementById('addDivisionBtn').addEventListener('click', function (e) {
-    e.preventDefault();
+// Add more division in adding program
+document.addEventListener('DOMContentLoaded', function () {
+    const divisionContainer = document.getElementById('divisionSelectContainer');
+    const addDivisionBtn = document.getElementById('addDivisionBtn');
 
-    const selectGroupHTML = `
-        <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-            <select class="form-select selectDivision" name="divisions[]">
-                <option value="Permanent">Organizational Development Division</option>
-                <option value="COS">Benefits and Welfare Division</option>
-                <option value="Casual">Organizational Development Division</option>
-                <option value="Casual">Personnel and Administrative Division</option>
-            </select>
-            <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-                <i class="fas fa-minus"></i>
-            </button>
-        </div>
-    `;
+    // Check if "All Divisions" is selected in any select input
+    function isAllDivisionsSelected() {
+        return [...divisionContainer.querySelectorAll('.selectDivision')].some(select => select.value === 'all');
+    }
 
-    document.getElementById('divisionSelectContainer').insertAdjacentHTML('beforeend', selectGroupHTML);
-});*/
+    // Remove all select groups except the first
+    function removeExtraSelects() {
+        const allSelectGroups = divisionContainer.querySelectorAll('.division-select-group');
+        allSelectGroups.forEach((group, index) => {
+            if (index > 0) group.remove();
+        });
+    }
 
-document.getElementById('addDivisionBtn').addEventListener('click', function (e) {
-    e.preventDefault();
+    // Reset to only one select if "All Divisions" is selected
+    function resetToAllDivisions() {
+        divisionContainer.innerHTML = ''; // Clear all
+        const divisions = JSON.parse(divisionContainer.getAttribute('data-divisions'));
 
-    // Get the divisions data from the data attribute on the container
-    const divisions = JSON.parse(document.getElementById('divisionSelectContainer').getAttribute('data-divisions'));
+        let optionsHTML = '';
+        divisions.forEach(function (division) {
+            optionsHTML += `<option value="${division.id}">${division.name}</option>`;
+        });
+        optionsHTML += '<option value="all" selected>All Divisions</option>';
 
-    // Start building the select options
-    let optionsHTML = '<option value="all">All Divisions</option>';
-    divisions.forEach(function (division) {
-        optionsHTML += `<option value="${division.id}">${division.name}</option>`;
+        const selectGroupHTML = `
+            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                <select class="form-select selectDivision" name="divisions[]">
+                    ${optionsHTML}
+                </select>
+                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled title="Cannot remove when 'All Divisions' is selected">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        `;
+        divisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
+        addDivisionBtn.disabled = true;
+    }
+
+    // Disable options that have been selected already in other select elements
+    function updateDisabledOptions() {
+        const allSelects = divisionContainer.querySelectorAll('.selectDivision');
+        const selectedValues = [];
+
+        allSelects.forEach(select => {
+            if (select.value !== 'all') {
+                selectedValues.push(select.value);
+            }
+        });
+
+        allSelects.forEach(currentSelect => {
+            const currentValue = currentSelect.value;
+
+            // Enable all options first
+            currentSelect.querySelectorAll('option').forEach(option => {
+                option.disabled = false;
+            });
+
+            // Disable selected options in other selects
+            selectedValues.forEach(value => {
+                if (value !== currentValue) {
+                    const optionToDisable = currentSelect.querySelector(`option[value="${value}"]`);
+                    if (optionToDisable) optionToDisable.disabled = true;
+                }
+            });
+        });
+    }
+
+    // Listen to changes in ANY select input
+    divisionContainer.addEventListener('change', function (e) {
+        if (e.target.classList.contains('selectDivision')) {
+            if (e.target.value === 'all') {
+                resetToAllDivisions(); // From earlier
+            } else {
+                addDivisionBtn.disabled = false;
+            }
+            updateDisabledOptions(); // Call to update disabled options
+        }
     });
 
-    const selectGroupHTML = `
-        <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-            <select class="form-select selectDivision" name="divisions[]">
-                ${optionsHTML}
-            </select>
-            <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-                <i class="fas fa-minus"></i>
-            </button>
-        </div>
-    `;
+    // Add new select input
+    addDivisionBtn.addEventListener('click', function (e) {
+        e.preventDefault();
 
-    document.getElementById('divisionSelectContainer').insertAdjacentHTML('beforeend', selectGroupHTML);
+        if (isAllDivisionsSelected()) return;
+
+        const divisions = JSON.parse(divisionContainer.getAttribute('data-divisions'));
+        let optionsHTML = '';
+        divisions.forEach(function (division) {
+            optionsHTML += `<option value="${division.id}">${division.name}</option>`;
+        });
+        optionsHTML += '<option value="all">All Divisions</option>';
+
+        const selectGroupHTML = `
+            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                <select class="form-select selectDivision" name="divisions[]">
+                    ${optionsHTML}
+                </select>
+                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        `;
+
+        divisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
+        updateDisabledOptions(); // Call to update disabled options
+    });
+
+    // Remove individual select input
+    divisionContainer.addEventListener('click', function (e) {
+        if (e.target.closest('.removeDivisionBtn')) {
+            const group = e.target.closest('.division-select-group');
+            group.remove();
+
+            if (!isAllDivisionsSelected()) {
+                addDivisionBtn.disabled = false;
+            }
+            updateDisabledOptions(); // Call to update disabled options after removal
+        }
+    });
 });
 
 
@@ -257,8 +336,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Filtering thru Division
 document.getElementById('divisionFilter').addEventListener('change', function () {
     const selectedDivisionId = this.value;
+    // console.log(selectedDivisionId)
 
     // Loop through each program row
     document.querySelectorAll('.programRow').forEach(row => {
@@ -275,31 +356,3 @@ document.getElementById('divisionFilter').addEventListener('change', function ()
         });
     });
 });
-
-
-
-// Division Filtering
-/*document.getElementById('divisionFilter').addEventListener('change', function () {
-    var selectedDivision = this.value;
-
-    // Send AJAX request to fetch filtered programs
-    fetch(`/filterProgram?division_id=${selectedDivision}`)
-        .then(response => response.json())
-        .then(data => {
-            // Empty the current table content
-            const tableBody = document.getElementById('programTableBody');
-            tableBody.innerHTML = '';
-
-            // Insert the filtered data into the table
-            data.programs.forEach(program => {
-                let row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="text-center">${program.name}</td>
-                    <td class="text-center">${program.divisions.map(division => division.name).join(', ')}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error:', error));
-    }
-);*/
