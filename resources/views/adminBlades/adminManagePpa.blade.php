@@ -783,9 +783,9 @@
                     </div>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Individual/s Responsible:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addAccountable" id="addAccountable"></textarea>
+                        <select class="form-select border-2 py-2" style="border-color: #03592c; background-color: #ffffff;" name="addAccountableId" id="addAccountableId">
+                            <option value="">Select accountable person</option>
+                        </select>
                     </div>
             </div>
             <div class="modal-footer border-0" style="background-color: #f8f9fa;">
@@ -813,7 +813,7 @@
             <div class="modal-body" style="background-color: #f8f9fa;">
                 <form id="addSubActivityForm" class="p-2">
                     @csrf
-                    <input type="text" id="activityIdSub" name="activityIdSub" required>
+                    <input type="hidden" id="activityIdSub" name="activityIdSub" required>
                     <div class="col-12">
                         <label class="form-label fw-bold text-dark mb-1">Activity Name:</label>
                         <textarea class="form-control border-2 py-2"

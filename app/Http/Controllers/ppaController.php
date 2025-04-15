@@ -323,4 +323,39 @@ class ppaController extends Controller
             return response()->json(['error' => 'An error occurred while trying to delete the sub-activity.'], 500);
         }
     }
+
+    // =====================Autofill Accountable========================= //
+    /*public function getAccountable($divisionName){
+        dd($divisionName);
+        $accountable = Employee::where('division', $divisionName)
+        ->where('role', "Department Chief") // or however you define responsibility
+        ->first();
+    
+        if ($accountable) {
+            return response()->json($accountable);
+        } else {
+            return response()->json(['error' => 'No accountable found'], 404);
+        }
+    }*/
+
+    // Test
+    public function getAccountable($divisionName){
+        $accountable = Employee::whereRaw('LOWER(division) = ?', [strtolower($divisionName)])
+            ->where('role', 'Department Chief')
+            ->get();
+    
+        if ($accountable->isEmpty()) {
+            return response()->json([], 404);
+        }
+    
+        $results = $accountable->map(function ($a) {
+            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $a->id,
+                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
+            ];
+        });
+    
+        return response()->json($results);
+    }
 }

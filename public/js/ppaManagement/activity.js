@@ -234,13 +234,52 @@ $('#addActivityInSubForm').on('submit', function(e) {
 
 // Add Activity in Program Fill Form
 $(document).on('click', '.addActivityInProgramBtn', function() {
-    // Get data from the button clicked
-    var programIdProg = $(this).data('program-id');
-    var programNameProg = $(this).data('program-name');
+    var programId = $(this).data('program-id');
+    var programName = $(this).data('program-name');
 
-    // Populate the modal fields with the data
-    $('#programIdProg').val(programIdProg);
-    $('#programNameProg').val(programNameProg);
+    $('#programIdProg').val(programId);
+    $('#programNameProg').val(programName);
+
+    var divisionNameRaw = $(this).data('division-name');
+    let divisionNames = [];
+
+    if (Array.isArray(divisionNameRaw)) {
+        divisionNames = divisionNameRaw;
+    } else if (typeof divisionNameRaw === 'string') {
+        divisionNames = divisionNameRaw.split(',').map(name => name.trim());
+    }
+
+    var primaryDivisionName = divisionNames[0]; // or handle multiple if needed
+
+    if (primaryDivisionName) {
+        $.ajax({
+            url: '/admin/getAccountable/' + encodeURIComponent(primaryDivisionName),
+            type: 'GET',
+            success: function (response) {
+                const $select = $('#addAccountableId');
+                $select.empty(); // clear previous options
+                $select.append('<option value="">Select accountable person</option>');
+            
+                if (Array.isArray(response) && response.length > 0) {
+                    response.forEach(function(person) {
+                        $select.append(`<option value="${person.id}">${person.name}</option>`);
+                    });
+            
+                    // ✅ Bonus: Auto-select if only one option is returned
+                    if (response.length === 1) {
+                        $select.val(response[0].id);
+                    }
+            
+                } else {
+                    $select.append('<option value="">No accountable found</option>');
+                }
+            },
+            error: function () {
+                const $select = $('#addAccountableId');
+                $select.empty().append('<option value="">Error fetching data</option>');
+            }
+        });
+    }
 });
 
 // Add Activity in Program

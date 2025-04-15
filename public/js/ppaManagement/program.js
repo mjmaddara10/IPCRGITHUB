@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isAllDivisionsSelected()) return;
 
         const divisions = JSON.parse(divisionContainer.getAttribute('data-divisions'));
-        let optionsHTML = '';
+        let optionsHTML = '<option value="all">Select Division</option>';
         divisions.forEach(function (division) {
             optionsHTML += `<option value="${division.id}">${division.name}</option>`;
         });

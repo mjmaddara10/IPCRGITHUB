@@ -39,16 +39,6 @@ class adminPagesController extends Controller
         return view('adminBlades.adminManagePpa', compact('programs','projects','subProjects','employees','activities','divisions'));
     }
 
-    public function managePpa2(){
-        // Fetch all programs with their related projects
-        $programs = Program::with('projects')->get();
-        $projects = Project::with('activities' , 'subProjects')->get();
-        $subProjects = SubProject::with('activities')->get();
-
-        // Pass the data to the view
-        return view('adminBlades.adminManagePpa2', compact('programs','projects','subProjects'));
-    }
-
     public function viewIpcr(){
         return view('adminBlades.adminIpcr');
     }

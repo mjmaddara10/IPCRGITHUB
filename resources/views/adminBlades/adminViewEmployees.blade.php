@@ -52,7 +52,7 @@
                                 <td>{{ $employee->position }}</td>
                                 <td>{{ $employee->division }}</td>
                                 <td>{{ $employee->status }}</td>
-                                <td>{{ $employee->status }}</td>
+                                <td>{{ $employee->role }}</td>
                                 <td>{{ $employee->username }}</td>
                                 <td>{{ $employee->password }}</td>
                             </tr>

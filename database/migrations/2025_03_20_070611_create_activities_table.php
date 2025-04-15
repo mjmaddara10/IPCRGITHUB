@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id(); // Primary key
-            $table->string('name'); // Activity name
-            $table->string('successIndicator'); // Success indicator
-            $table->string('quality'); // Quality
-            $table->string('efficiency'); // Efficiency
-            $table->string('timeliness'); // Timeliness
-            $table->string('remarks'); // Remarks
-            $table->string('accountable'); // Accountable
+            $table->string('name')->nullable();
+            $table->string('successIndicator')->nullable();
+            $table->string('quality')->nullable();
+            $table->string('efficiency')->nullable();
+            $table->string('timeliness')->nullable();
+            $table->string('remarks')->nullable();
+            $table->string('accountable')->nullable();
             $table->foreignId('program_id')->constrained()->onDelete('cascade');
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->timestamps(); // Created at and updated at timestamps

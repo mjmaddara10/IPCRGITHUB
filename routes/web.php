@@ -49,6 +49,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/addActivityInProgram', [ppaController::class, 'addActivityInProgram'])->name('addActivityInProgram');
 
     Route::post('/filterProgram', [ppaController::class, 'filterProgram'])->name('filterProgram');
+    Route::get('/getAccountable/{divisionName}', [ppaController::class, 'getAccountable'])->where('divisionName', '.*');
 });
 
 Route::group(['middleware' => 'admin'], function () {
