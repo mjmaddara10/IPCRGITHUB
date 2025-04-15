@@ -26,7 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Application Specific Styles -->
-     
+
     <!-- Custom Admin Styles -->
     <link href="{{ asset('admin/admin.css') }}" rel="stylesheet">
 
@@ -41,6 +41,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+
 </head>
 
 <body>
