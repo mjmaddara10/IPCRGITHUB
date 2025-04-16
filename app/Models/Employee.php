@@ -26,6 +26,12 @@ class Employee extends Authenticatable
         return $this->belongsTo(Activity::class);
     }
 
+    public function division()
+    {
+        return $this->belongsTo(Division::class, 'division');
+    }
+    
+
     protected $hidden = [
         'password',
     ];

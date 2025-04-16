@@ -306,13 +306,68 @@ document.getElementById('divisionSelectContainer').addEventListener('click', fun
 // Edit Program
 document.addEventListener('DOMContentLoaded', function () {
     const editDivisionContainer = document.getElementById('editDivisionSelectContainer');
-    const allDivisions = JSON.parse(editDivisionContainer.getAttribute('data-divisions'));
-    
+
+    // Handle edit button click
+    document.querySelectorAll('.editProgramBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const programId = this.getAttribute('data-id');
+
+            fetch(`/programs/${programId}/edit`)
+                .then(response => response.json())
+                .then(data => {
+                    const program = data.program;
+                    const allDivisions = data.divisions;
+                    const selectedDivisions = data.selectedDivisions;
+
+                    // Fill in other form fields
+                    document.getElementById('editProgramId').value = program.id;
+                    document.getElementById('editProgramName').value = program.title ?? '';
+                    document.getElementById('editSuccessIndicator').value = program.success_indicator ?? '';
+                    document.getElementById('editQuality').value = program.quality ?? '';
+                    document.getElementById('editEfficiency').value = program.efficiency ?? '';
+                    document.getElementById('editTimeliness').value = program.timeliness ?? '';
+                    document.getElementById('editRemarks').value = program.remarks ?? '';
+
+                    // Clear previous division selects
+                    editDivisionContainer.innerHTML = '';
+
+                    // Add select inputs for selected divisions
+                    selectedDivisions.forEach(division => {
+                        let optionsHTML = `<option value="all">All Divisions</option>`;
+                        allDivisions.forEach(div => {
+                            optionsHTML += `<option value="${div.id}" ${div.id === division.id ? 'selected' : ''}>${div.name}</option>`;
+                        });
+
+                        const selectGroupHTML = `
+                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                                <select class="form-select" name="divisions[]">${optionsHTML}</select>
+                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        `;
+
+                        editDivisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
+                    });
+
+                    // Show modal (assuming you use Bootstrap modal or similar)
+                    const editModal = new bootstrap.Modal(document.getElementById('editProgramModal'));
+                    editModal.show();
+                })
+                .catch(error => {
+                    console.error('Failed to fetch program data:', error);
+                });
+        });
+    });
+
+    // Add new division select
     document.getElementById('editAddDivisionBtn').addEventListener('click', function (e) {
         e.preventDefault();
 
-        let optionsHTML = '';
-        allDivisions.forEach(function (division) {
+        const allDivisions = JSON.parse(editDivisionContainer.getAttribute('data-divisions'));
+        let optionsHTML = '<option value="all">All Divisions</option>';
+
+        allDivisions.forEach(division => {
             optionsHTML += `<option value="${division.id}">${division.name}</option>`;
         });
 
@@ -328,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function () {
         editDivisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
     });
 
-    // Delegate remove button functionality
+    // Remove division select
     editDivisionContainer.addEventListener('click', function (e) {
         if (e.target.closest('.removeDivisionBtn')) {
             e.target.closest('.division-select-group').remove();

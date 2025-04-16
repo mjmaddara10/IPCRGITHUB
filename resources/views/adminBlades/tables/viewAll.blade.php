@@ -11,26 +11,27 @@
             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Actions</th>
         </tr>
     </thead>
+    
     <tbody id="programTableBody">
         <!-- Program  -->
         @foreach($programs as $program)
             @php
                 // Get all the division IDs for the current program
-                $divisionIds = $program->divisions->pluck('id')->implode(',');
+                $divisionIds = $program->divisions->pluck('id')->toArray();
             @endphp
-            <tr class="programRow" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}">
-                <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->successIndicator }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->quality }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->efficiency }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->timeliness }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->remarks }}</td>
+            <tr class="programRow" data-division-ids="{{ json_encode($divisionIds) }}" data-program-id="{{ $program->id }}">
+                <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->name }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->successIndicator }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->quality }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->efficiency }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->timeliness }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->remarks }}</td>
                 @php
                     $allDivisionCount = \App\Models\Division::count();
                     $assignedCount = $program->divisions->count();
                 @endphp
 
-                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">
+                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 5%;">
                     @if ($assignedCount === $allDivisionCount)
                         All Divisions
                     @else
@@ -41,12 +42,12 @@
                 </td>
 
                 <!-- Buttons -->
-                <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;" colspan="3">
+                <td class="text-center" style= "color: #FFFFFF; background-color: #03592c; width: 13.57%;">
                     <!-- Add Activity -->
                     <button class="btn btn-sm addActivityInProgramBtn buttonHover" title="Add an activity"
                         data-program-id="{{ $program->id }}" 
                         data-program-name="{{ $program->name }}"
-                        data-division-name="{{ json_encode($program->divisions->pluck('name')) }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
+                        data-division-ids="{{ json_encode($divisionIds) }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
                     </button>
 
                     <!-- Add Project -->
@@ -149,237 +150,6 @@
                 </tr>
                 
             @endforeach        
-        
-            
-            <!-- Projects -->
-            @foreach($program->projects as $project)
-                <tr data-program-id="{{ $program->id }}">
-                    <td class="text-left" style= "color: #FFFFFF; background-color:rgb(0, 136, 66);">{{ $project->name }}</td>
-                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(0, 136, 66);; color: #FFFFFF;">{{ $project->successIndicator }}</td>
-                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(0, 136, 66);; color: #FFFFFF;">{{ $project->quality }}</td>
-                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(0, 136, 66);; color: #FFFFFF;">{{ $project->efficiency }}</td>
-                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(0, 136, 66);; color: #FFFFFF;">{{ $project->timeliness }}</td>
-                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(0, 136, 66);; color: #FFFFFF;">{{ $project->remarks }}</td>
-                    <td class="text-center border border-muted"style="white-space: pre-wrap; background-color:rgb(0, 136, 66);; color: #FFFFFF;">{{ $project->accountable }}</td>
-                    <td class="text-center" style= "color: #FFFFFF; background-color:rgb(0, 136, 66);">
-
-                        <!-- Add Sub-Project -->
-                        <button class="btn btn-sm addSubProjectBtn buttonHover" title="Add sub-project" style="background-color: #03592c; color: #ffffff;" 
-                            data-project-id="{{ $project->id }}" 
-                            data-project-name="{{ $project->name }}" data-bs-toggle="modal" data-bs-target="#addSubProjectModal"><i class="fas fa-caret-down"></i>
-                        </button>
-
-                        <!-- Add Activity -->
-                        <button class="btn btn-sm addActivityBtn buttonHover" title="Add an activity" style="background-color: #03592c;" 
-                            data-project-id="{{ $project->id }}" 
-                            data-project-name="{{ $project->name }}" data-bs-toggle="modal" data-bs-target="#addActivityModal"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
-                        </button>
-
-                        <!-- Edit Project -->
-                        <button class="btn btn-sm editProjectBtn buttonHover" title="Edit project name" style="color: #ffffff;background-color: #03592c;" 
-                            data-project-id="{{ $project->id }}" 
-                            data-project-name="{{ $project->name }}" data-bs-toggle="modal" data-bs-target="#editProjectModal"><i class="fas fa-edit"></i>
-                        </button>
-
-                        <!-- Delete Project -->
-                        <button class="btn btn-sm deleteProjectBtn buttonHover" title="Delete project" style="color: #ffffff; background-color: #03592c;" 
-                            data-project-id="{{ $project->id }}"
-                            data-url="{{ route('deleteProject') }}"><i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-
-                <!-- Sub-Projects -->
-                @foreach($project->subProjects as $subProject)
-                    <tr data-program-id="{{ $program->id }}">
-                        <td class="text-left" hidden>{{ $subProject->id }}</td>
-                        <td class="text-left ps-3" style= "background-color:rgb(1, 165, 80); color:#FFFFFF;">{{ $subProject->name }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(1, 165, 80); color: #FFFFFF;">{{ $subProject->successIndicator }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(1, 165, 80); color: #FFFFFF;">{{ $subProject->quality }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(1, 165, 80); color: #FFFFFF;">{{ $subProject->efficiency }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(1, 165, 80); color: #FFFFFF;">{{ $subProject->timeliness }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(1, 165, 80); color: #FFFFFF;">{{ $subProject->remarks }}</td>
-                        <td class="text-center border border-muted"style="white-space: pre-wrap; background-color:rgb(1, 165, 80); color: #FFFFFF;">{{ $subProject->accountable }}</td>
-                        <td class="text-center" style= "background-color:rgb(1, 165, 80); color: #FFFFFF;" colspan="2">
-
-                            <!-- Add Activity in Sub-Project -->
-                            <button class="btn btn-sm addActivityInSubBtn buttonHover" title="Add an activity" style="background-color:rgb(144, 144, 144);"
-                                data-sub-project-id="{{ $subProject->id }}" 
-                                data-sub-project-name="{{ $subProject->name }}" data-bs-toggle="modal" data-bs-target="#addActivityInSubModal"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
-                            </button>
-
-                            <!-- Edit Sub-Project -->
-                            <button class="btn btn-sm editSubProjectBtn buttonHover" title="Edit sub-project name" style="background-color: rgb(144, 144, 144);"
-                                data-sub-project-id="{{ $subProject->id }}"
-                                data-sub-project-name="{{ $subProject->name }}"
-                                data-success-indicator="{{ $subProject->successIndicator }}"
-                                data-quality="{{ $subProject->quality }}"
-                                data-efficiency="{{ $subProject->efficiency }}"
-                                data-timeliness="{{ $subProject->timeliness }}"
-                                data-remarks="{{ $subProject->remarks }}"
-                                data-accountable="{{ $subProject->accountable }}" data-bs-toggle="modal" data-bs-target="#editSubProjectModal"><i class="fas fa-edit" style= "color: #FFFFFF;"></i>
-                            </button>
-
-                            <!-- Delete Sub-Project -->
-                            <button class="btn btn-sm deleteSubProjectBtn buttonHover" title="Delete sub-project" style="background-color: rgb(144, 144, 144);"
-                                data-sub-project-id="{{ $subProject->id }}"
-                                data-url="{{ route('deleteSubProject') }}"><i class="fas fa-trash" style= "color: #FFFFFF;"></i>
-                            </button>
-                        </td>
-
-                        <!-- Activities in Sub-Project -->
-                        @foreach($subProject->activities as $activity)
-                            <tr data-program-id="{{ $program->id }}">
-                                <td class="text-left" hidden>{{ $activity->id }}</td>
-                                <td class="text-left ps-4 border border-muted">{{ $activity->name }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $activity->successIndicator }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $activity->quality }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $activity->efficiency }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $activity->timeliness }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $activity->remarks }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $activity->accountable }}</td>
-                                <td class="text-center border border-muted">
-                                    <!-- Add Sub-Activity -->
-                                    <button class="btn btn-sm addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144); background-color: rgb(212, 212, 212);"
-                                        data-activity-id="{{ $activity->id }}" 
-                                        data-activity-name="{{ $activity->name }}" data-bs-toggle="modal" data-bs-target="#addSubActivityModal"><i class="fas fa-plus" style= "-webkit-text-stroke: 1px rgb(144, 144, 144);"></i>
-                                    </button>
-
-                                    <!-- Edit Activity -->
-                                    <button class="btn btn-sm editActivityBtn buttonHover" title="Edit activity" style="color: rgb(144, 144, 144); background-color: rgb(212, 212, 212);"
-                                        data-activity-id="{{ $activity->id }}" 
-                                        data-activity-name="{{ $activity->name }}" 
-                                        data-success-indicator="{{ $activity->successIndicator }}"
-                                        data-quality="{{ $activity->quality }}"
-                                        data-efficiency="{{ $activity->efficiency }}"
-                                        data-timeliness="{{ $activity->timeliness }}"
-                                        data-remarks="{{ $activity->remarks }}"
-                                        data-bs-toggle="modal" data-bs-target="#editActivityModal"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Activity -->
-                                    <button class="btn btn-sm deleteActivityBtn buttonHover" title="Delete activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                        data-activity-id="{{ $activity->id }}"
-                                        data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <!-- Sub-Activities in Activities in Sub-Project -->
-                            @foreach($activity->subActivities as $subActivity)
-                                <tr data-program-id="{{ $program->id }}">
-                                    <td class="text-left" hidden>{{ $subActivity->id }}</td>
-                                    <td class="text-left ps-5 border border-muted">{{ $subActivity->name }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
-                                    <td class="text-center border border-muted"style="white-space: pre-wrap;">{{ $subActivity->accountable }}</td>
-                                    <td class="text-center border border-muted">
-
-                                        <!-- Edit Sub-Activity -->
-                                        <button class="btn btn-sm editSubActivityBtn buttonHover" title="Edit sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                            data-sub-activity-id="{{ $subActivity->id }}" 
-                                            data-sub-activity-name="{{ $subActivity->name }}" 
-                                            data-success-indicator="{{ $subActivity->successIndicator }}"
-                                            data-quality="{{ $subActivity->quality }}"
-                                            data-efficiency="{{ $subActivity->efficiency }}"
-                                            data-timeliness="{{ $subActivity->timeliness }}"
-                                            data-remarks="{{ $subActivity->remarks }}"
-                                            data-accountable="{{ $subActivity->accountable }}"
-                                            data-bs-toggle="modal" data-bs-target="#editSubActivityModal"><i class="fas fa-edit"></i>
-                                        </button>
-
-                                        <!-- Delete Sub-Activity -->
-                                        <button class="btn btn-sm deleteSubActivityBtn buttonHover" title="Delete sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                            data-sub-activity-id="{{ $subActivity->id }}"
-                                            data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endforeach
-
-                    </tr>
-                @endforeach
-
-                <!-- Activities in Project -->
-                @foreach($project->activities as $activity)
-                    <tr data-program-id="{{ $program->id }}">
-                        <td class="text-left" hidden>{{ $activity->id }}</td>
-                        <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->successIndicator }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->quality }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->timeliness }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->remarks }}</td>
-                        <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->accountable }}</td>
-                        <td class="text-center border border-muted" style="background-color:rgb(212, 212, 212);">
-                            <!-- Add Sub-Activity -->
-                            <button class="btn btn-sm addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
-                                data-activity-id="{{ $activity->id }}" 
-                                data-activity-name="{{ $activity->name }}" data-bs-toggle="modal" data-bs-target="#addSubActivityModal"><i class="fas fa-plus" style= "-webkit-text-stroke: 1px white; color: #FFFFFF;"></i>
-                            </button>
-
-                            <!-- Edit Activity -->
-                            <button class="btn btn-sm editActivityBtn buttonHover" title="Edit activity" style="color: rgb(144, 144, 144); background-color: rgb(144, 144, 144);"
-                                data-activity-id="{{ $activity->id }}" 
-                                data-activity-name="{{ $activity->name }}" 
-                                data-success-indicator="{{ $activity->successIndicator }}"
-                                data-quality="{{ $activity->quality }}"
-                                data-efficiency="{{ $activity->efficiency }}"
-                                data-timeliness="{{ $activity->timeliness }}"
-                                data-remarks="{{ $activity->remarks }}"
-                                data-bs-toggle="modal" data-bs-target="#editActivityModal"><i class="fas fa-edit" style="color:#FFFFFF;"></i>
-                            </button>
-
-                            <!-- Delete Activity -->
-                            <button class="btn btn-sm deleteActivityBtn buttonHover" title="Delete activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
-                                data-activity-id="{{ $activity->id }}"
-                                data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash" style="color:#FFFFFF;"></i>
-                            </button>
-                        </td>
-                    </tr>
-
-                    <!-- Sub-Activities in Activities in Project -->
-                    @foreach($activity->subActivities as $subActivity)
-                        <tr data-program-id="{{ $program->id }}">
-                            <td class="text-left" hidden>{{ $subActivity->id }}</td>
-                            <td class="text-left ps-3 border border-muted">{{ $subActivity->name }}</td>
-                            <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
-                            <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
-                            <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
-                            <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
-                            <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
-                            <td class="text-center border border-muted"style="white-space: pre-wrap;">{{ $subActivity->accountable }}</td>
-                            <td class="text-center border border-muted">
-
-                                <!-- Edit Sub-Activity -->
-                                <button class="btn btn-sm editSubActivityBtn buttonHover" title="Edit sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                    data-sub-activity-id="{{ $subActivity->id }}" 
-                                    data-sub-activity-name="{{ $subActivity->name }}" 
-                                    data-success-indicator="{{ $subActivity->successIndicator }}"
-                                    data-quality="{{ $subActivity->quality }}"
-                                    data-efficiency="{{ $subActivity->efficiency }}"
-                                    data-timeliness="{{ $subActivity->timeliness }}"
-                                    data-remarks="{{ $subActivity->remarks }}"
-                                    data-accountable="{{ $subActivity->accountable }}"
-                                    data-bs-toggle="modal" data-bs-target="#editSubActivityModal"><i class="fas fa-edit"></i>
-                                </button>
-
-                                <!-- Delete Sub-Activity -->
-                                <button class="btn btn-sm deleteSubActivityBtn buttonHover" title="Delete sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                    data-sub-activity-id="{{ $subActivity->id }}"
-                                    data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
-
-                @endforeach
-
-            @endforeach
 
         @endforeach
     </tbody>

@@ -28,15 +28,17 @@ class adminPagesController extends Controller
     
     public function managePpa(){
         // Fetch all programs with their related projects
-        $programs = Program::with('projects','divisions')->get();
-        $projects = Project::with('activities' , 'subProjects')->get();
-        $subProjects = SubProject::with('activities')->get();
+        $programs = Program::with('divisions')->get();
         $activities = Activity::with('subActivities')->get();
-        $employees = Employee::all(); // Fetch all employees 
+        $employees = Employee::all();
         $divisions = Division::all();
-
-        // Pass the data to the view
-        return view('adminBlades.adminManagePpa', compact('programs','projects','subProjects','employees','activities','divisions'));
+    
+        return view('adminBlades.adminManagePpa', compact(
+            'programs',
+            'employees',
+            'activities',
+            'divisions'
+        ));
     }
 
     public function viewIpcr(){
@@ -44,6 +46,17 @@ class adminPagesController extends Controller
     }
 
     public function assignIpcr(){
-        return view('adminBlades.adminAssign');
+        // Fetch all programs with their related projects
+        $programs = Program::with('divisions')->get();
+        $activities = Activity::with('subActivities')->get();
+        $employees = Employee::all();
+        $divisions = Division::all();
+    
+        return view('adminBlades.adminAssign', compact(
+            'programs',
+            'employees',
+            'activities',
+            'divisions'
+        ));
     }
 }

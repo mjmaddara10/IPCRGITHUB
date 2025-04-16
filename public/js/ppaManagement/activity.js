@@ -1,3 +1,128 @@
+// Add Activity Fill Form
+$(document).on('click', '.addActivityInProgramBtn', function () {
+    const programId = $(this).data('program-id');
+    const programName = $(this).data('program-name');
+    const divisionIdsRaw = $(this).data('division-ids');
+    let divisionIds = [];
+
+    if (Array.isArray(divisionIdsRaw)) {
+        divisionIds = divisionIdsRaw;
+    } else if (typeof divisionIdsRaw === 'string') {
+        try {
+            divisionIds = JSON.parse(divisionIdsRaw);
+        } catch (e) {
+            console.error('Invalid JSON in division-ids:', divisionIdsRaw);
+        }
+    }
+
+    $('#programIdProg').val(programId);
+    $('#programNameProg').val(programName);
+
+    const $container = $('#accountableSelectContainer');
+    $container.find('.accountable-select-group:gt(0)').remove();
+    $container.find('.accountable-select-group select').val('');
+    $container.find('.removeAccountableBtn').prop('disabled', true);
+
+    if (divisionIds.length > 0) {
+        $.ajax({
+            url: '/admin/getAccountableByIds',
+            type: 'POST',
+            data: {
+                divisionIds: divisionIds,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                populateAccountableOptions(response);
+            },
+            error: function () {
+                $('.accountableSelect').each(function () {
+                    $(this).empty().append('<option value="">Error fetching data</option>');
+                });
+            }
+        });
+    }
+});
+
+// Populate accountable select inputs
+function populateAccountableOptions(options) {
+    const htmlOptions = options.map(person =>
+        `<option value="${person.id}">${person.name}</option>`
+    ).join('');
+
+    $('.accountableSelect').each(function () {
+        $(this)
+            .empty()
+            .append('<option value="">Select accountable person</option>')
+            .append(htmlOptions);
+    });
+}
+
+// Add new accountable person input
+$('#addAccountablePersonBtn').on('click', function () {
+    const $container = $('#accountableSelectContainer');
+    const $firstGroup = $container.find('.accountable-select-group:first');
+    const $newGroup = $firstGroup.clone();
+
+    $newGroup.find('select').val('');
+    $newGroup.find('.removeAccountableBtn').prop('disabled', false);
+
+    $container.append($newGroup);
+});
+
+// Remove a responsible person input
+$(document).on('click', '.removeAccountableBtn', function () {
+    const $groups = $('.accountable-select-group');
+    if ($groups.length > 1) {
+        $(this).closest('.accountable-select-group').remove();
+    }
+});
+
+
+// Add Activity
+$('#addActivityInProgramForm').on('submit', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to add this activity?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#03592c",
+        cancelButtonColor: "#bc0c0c",
+        confirmButtonText: "Yes, add activity"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: 'addActivityInProgram',
+                method: 'POST',
+                data: $(this).serialize(), // Serialize form data
+                success: function(response) {
+                    // Handle success response (close the modal and give feedback)
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Activity added successfully.',
+                        icon: 'success',
+                        confirmButtonColor: '#03592c'
+                    }).then(() => {
+                        $('#addActivityInProgramModal').modal('hide'); // Close the modal
+                        location.reload(); // Optionally reload the page to see the new activity
+                    });
+                },
+                error: function(xhr) {
+                    // Handle error response
+                    Swal.fire({
+                        title: 'Error!',
+                        text: xhr.responseJSON.message || 'An error occurred while adding the activity.',
+                        icon: 'error',
+                        confirmButtonColor: '#bc0c0c'
+                    });
+                    alert('Response: ' + JSON.stringify(xhr));
+                }
+            });
+        }
+    });    
+});
+
 // Edit Activity Fill Form
 $(document).on('click', '.editActivityBtn', function() {
     // Get data from the button clicked
@@ -67,61 +192,6 @@ $('#editActivityForm').on('submit', function(e) {
     });
 });
 
-// Add Activity Fill Form
-$(document).on('click', '.addActivityBtn', function() {
-    // Get data from the button clicked
-    var projectId = $(this).data('project-id');
-    var projectName = $(this).data('project-name');
-
-    // Populate the modal fields with the data
-    $('#projectId').val(projectId);
-    $('#projectName').val(projectName);
-});
-
-// Add Activity
-$('#addActivityForm').on('submit', function(e) {
-    e.preventDefault(); // Prevent the default form submission
-
-    Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to add this activity?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#03592c",
-        cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, add activity"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: 'addActivity',
-                method: 'POST',
-                data: $(this).serialize(), // Serialize form data
-                success: function(response) {
-                    // Handle success response (close the modal and give feedback)
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'Activity added successfully.',
-                        icon: 'success',
-                        confirmButtonColor: '#03592c'
-                    }).then(() => {
-                        $('#addActivityModal').modal('hide'); // Close the modal
-                        location.reload(); // Optionally reload the page to see the new activity
-                    });
-                },
-                error: function(xhr) {
-                    // Handle error response
-                    Swal.fire({
-                        title: 'Error!',
-                        text: xhr.responseJSON.message || 'An error occurred while adding the activity.',
-                        icon: 'error',
-                        confirmButtonColor: '#bc0c0c'
-                    });
-                }
-            });
-        }
-    });    
-});
-
 // Delete Activity
 $(document).on('click', '.deleteActivityBtn', function(e) {
     e.preventDefault();
@@ -175,154 +245,4 @@ $(document).on('click', '.deleteActivityBtn', function(e) {
             });
         }
     });
-});
-
-// Add Activity in Sub-Project Fill Form
-$(document).on('click', '.addActivityInSubBtn', function() {
-    // Get data from the button clicked
-    var subProjectId = $(this).data('subProject-id');
-    var subProjectName = $(this).data('subProject-name');
-
-    // Populate the modal fields with the data
-    $('#subProjectId').val(subProjectId);
-    $('#subProjectName').val(subProjectName);
-});
-
-// Add Activity in Sub-Project
-$('#addActivityInSubForm').on('submit', function(e) {
-    e.preventDefault(); // Prevent the default form submission
-
-    Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to add this activity?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#03592c",
-        cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, add activity"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: 'addActivityInSub',
-                method: 'POST',
-                data: $(this).serialize(), // Serialize form data
-                success: function(response) {
-                    // Handle success response (close the modal and give feedback)
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'Activity added successfully.',
-                        icon: 'success',
-                        confirmButtonColor: '#03592c'
-                    }).then(() => {
-                        $('#addActivityInSubModal').modal('hide'); // Close the modal
-                        location.reload(); // Optionally reload the page to see the new activity
-                    });
-                },
-                error: function(xhr) {
-                    // Handle error response
-                    Swal.fire({
-                        title: 'Error!',
-                        text: xhr.responseJSON.message || 'An error occurred while adding the activity.',
-                        icon: 'error',
-                        confirmButtonColor: '#bc0c0c'
-                    });
-                }
-            });
-        }
-    });    
-});
-
-// Add Activity in Program Fill Form
-$(document).on('click', '.addActivityInProgramBtn', function() {
-    var programId = $(this).data('program-id');
-    var programName = $(this).data('program-name');
-
-    $('#programIdProg').val(programId);
-    $('#programNameProg').val(programName);
-
-    var divisionNameRaw = $(this).data('division-name');
-    let divisionNames = [];
-
-    if (Array.isArray(divisionNameRaw)) {
-        divisionNames = divisionNameRaw;
-    } else if (typeof divisionNameRaw === 'string') {
-        divisionNames = divisionNameRaw.split(',').map(name => name.trim());
-    }
-
-    var primaryDivisionName = divisionNames[0]; // or handle multiple if needed
-
-    if (primaryDivisionName) {
-        $.ajax({
-            url: '/admin/getAccountable/' + encodeURIComponent(primaryDivisionName),
-            type: 'GET',
-            success: function (response) {
-                const $select = $('#addAccountableId');
-                $select.empty(); // clear previous options
-                $select.append('<option value="">Select accountable person</option>');
-            
-                if (Array.isArray(response) && response.length > 0) {
-                    response.forEach(function(person) {
-                        $select.append(`<option value="${person.id}">${person.name}</option>`);
-                    });
-            
-                    // ✅ Bonus: Auto-select if only one option is returned
-                    if (response.length === 1) {
-                        $select.val(response[0].id);
-                    }
-            
-                } else {
-                    $select.append('<option value="">No accountable found</option>');
-                }
-            },
-            error: function () {
-                const $select = $('#addAccountableId');
-                $select.empty().append('<option value="">Error fetching data</option>');
-            }
-        });
-    }
-});
-
-// Add Activity in Program
-$('#addActivityInProgramForm').on('submit', function(e) {
-    e.preventDefault(); // Prevent the default form submission
-
-    Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to add this activity?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#03592c",
-        cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, add activity"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: 'addActivityInProgram',
-                method: 'POST',
-                data: $(this).serialize(), // Serialize form data
-                success: function(response) {
-                    // Handle success response (close the modal and give feedback)
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'Activity added successfully.',
-                        icon: 'success',
-                        confirmButtonColor: '#03592c'
-                    }).then(() => {
-                        $('#addActivityInProgramModal').modal('hide'); // Close the modal
-                        location.reload(); // Optionally reload the page to see the new activity
-                    });
-                },
-                error: function(xhr) {
-                    // Handle error response
-                    Swal.fire({
-                        title: 'Error!',
-                        text: xhr.responseJSON.message || 'An error occurred while adding the activity.',
-                        icon: 'error',
-                        confirmButtonColor: '#bc0c0c'
-                    });
-                    alert('Response: ' + JSON.stringify(xhr));
-                }
-            });
-        }
-    });    
 });
