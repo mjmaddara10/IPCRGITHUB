@@ -11,7 +11,7 @@
 
 @section('content')
 <div class="page-background"></div>
-<div>
+<div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
     <div class="container-fluid mt-3">
         <div class="bg-white">
             <!-- Header -->
@@ -45,16 +45,171 @@
                 
                     <!-- Buttons -->
                 <div class="d-flex align-items-center">
-                    <a onclick="showTable('viewAll')" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">View All</a>
-                    <a onclick="showTable('opcrTable')" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">OPCR</a>
-                    <a onclick="showTable('dpcrTable')" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">DPCR</a>
-                    <a onclick="showTable('ipcrTable')" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">IPCR</a>
+                    <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover nv-green">
+                    View Employees
+                    </a>
+                    <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                    View IPCR
+                    </a>
+                    <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover nv-green">
+                    Manage PPA
+                    </a>
+                    <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                    Logout
+                    </a>
                 </div>
             </div>
 
                 <!-- PPA Table -->
                 <div class="table-responsive" id="tableContainer">
-                    @include('adminBlades.tables.viewAll')
+                <table id="ppaTable" class="table">
+                    <thead class="text-center">
+                        <tr>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Programs/Project/Activities</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Success Indicator</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Quality</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Efficiency</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Timeliness</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Remarks/MOV</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 5%;">Division/Individuals Responsible</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="programTableBody">
+                        <!-- Program  -->
+                        @foreach($programs as $program)
+                            @php
+                                // Get all the division IDs for the current program
+                                $divisionIds = $program->divisions->pluck('id')->implode(',');
+                            @endphp
+                            <tr class="programRow" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}">
+                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->successIndicator }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->quality }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->efficiency }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->timeliness }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->remarks }}</td>
+                                @php
+                                    $allDivisionCount = \App\Models\Division::count();
+                                    $assignedCount = $program->divisions->count();
+                                @endphp
+
+                                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">
+                                    @if ($assignedCount === $allDivisionCount)
+                                        All Divisions
+                                    @else
+                                        @foreach ($program->divisions as $division)
+                                            {{ $division->name }}
+                                        @endforeach
+                                    @endif
+                                </td>
+
+                                <!-- Buttons -->
+                                <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;" colspan="3">
+                                    <!-- Add Activity -->
+                                    <button class="btn btn-sm addActivityInProgramBtn buttonHover" title="Add an activity"
+                                        data-program-id="{{ $program->id }}" 
+                                        data-program-name="{{ $program->name }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
+                                    </button>
+
+                                    <!-- Edit Program -->
+                                    <button class="btn btn-sm editProgramBtn buttonHover" title="Edit program name"
+                                        data-program-id="{{ $program->id }}" 
+                                        data-program-name="{{ $program->name }}"
+                                        data-program-success="{{ $program->successIndicator }}"
+                                        data-program-quality="{{ $program->quality }}"
+                                        data-program-efficiency="{{ $program->efficiency }}"
+                                        data-program-timeliness="{{ $program->timeliness }}"
+                                        data-program-remarks="{{ $program->remarks }}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
+                                    </button>
+
+                                    <!-- Delete Program -->
+                                    <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete program"
+                                        data-program-id="{{ $program->id }}"
+                                        data-url="{{ route('deleteProgram') }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Activities in Program-->
+                            @foreach($program->activities as $activity)
+                                <tr data-program-id="{{ $program->id }}">
+                                    <td class="text-left" hidden>{{ $activity->id }}</td>
+                                    <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->successIndicator }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->quality }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->timeliness }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->remarks }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->accountable }}</td>
+                                    <td class="text-center border border-muted" style="background-color:rgb(212, 212, 212);">
+                                        <!-- Add Sub-Activity -->
+                                        <button class="btn btn-sm addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
+                                            data-activity-id="{{ $activity->id }}" 
+                                            data-activity-name="{{ $activity->name }}" data-bs-toggle="modal" data-bs-target="#addSubActivityModal"><i class="fas fa-plus" style= "-webkit-text-stroke: 1px white; color: #FFFFFF;"></i>
+                                        </button>
+
+                                        <!-- Edit Activity -->
+                                        <button class="btn btn-sm editActivityBtn buttonHover" title="Edit activity" style="color: rgb(144, 144, 144); background-color: rgb(144, 144, 144);"
+                                            data-activity-id="{{ $activity->id }}" 
+                                            data-activity-name="{{ $activity->name }}" 
+                                            data-success-indicator="{{ $activity->successIndicator }}"
+                                            data-quality="{{ $activity->quality }}"
+                                            data-efficiency="{{ $activity->efficiency }}"
+                                            data-timeliness="{{ $activity->timeliness }}"
+                                            data-remarks="{{ $activity->remarks }}"
+                                            data-bs-toggle="modal" data-bs-target="#editActivityModal"><i class="fas fa-edit" style="color:#FFFFFF;"></i>
+                                        </button>
+
+                                        <!-- Delete Activity -->
+                                        <button class="btn btn-sm deleteActivityBtn buttonHover" title="Delete activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
+                                            data-activity-id="{{ $activity->id }}"
+                                            data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash" style="color:#FFFFFF;"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Sub-Activities -->
+                                @foreach($activity->subActivities as $subActivity)
+                                    <tr data-program-id="{{ $program->id }}">
+                                        <td class="text-left" hidden>{{ $subActivity->id }}</td>
+                                        <td class="text-left ps-3 border border-muted">{{ $subActivity->name }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
+                                        <td class="text-center border border-muted"style="white-space: pre-wrap;">{{ $subActivity->accountable }}</td>
+                                        <td class="text-center border border-muted">
+
+                                            <!-- Edit Sub-Activity -->
+                                            <button class="btn btn-sm editSubActivityBtn buttonHover" title="Edit sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
+                                                data-sub-activity-id="{{ $subActivity->id }}" 
+                                                data-sub-activity-name="{{ $subActivity->name }}" 
+                                                data-success-indicator="{{ $subActivity->successIndicator }}"
+                                                data-quality="{{ $subActivity->quality }}"
+                                                data-efficiency="{{ $subActivity->efficiency }}"
+                                                data-timeliness="{{ $subActivity->timeliness }}"
+                                                data-remarks="{{ $subActivity->remarks }}"
+                                                data-accountable="{{ $subActivity->accountable }}"
+                                                data-bs-toggle="modal" data-bs-target="#editSubActivityModal"><i class="fas fa-edit"></i>
+                                            </button>
+
+                                            <!-- Delete Sub-Activity -->
+                                            <button class="btn btn-sm deleteSubActivityBtn buttonHover" title="Delete sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
+                                                data-sub-activity-id="{{ $subActivity->id }}"
+                                                data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tr>
+                                
+                            @endforeach        
+                        
+                        @endforeach
+                    </tbody>
+                </table>
                 </div>
             </div>
         </div>
@@ -62,6 +217,97 @@
 </div>
 
 <!------------------------------------Modals-------------------------------------->
+<!-- Add Program Modal -->
+<div class="modal fade" id="addProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="addProgramModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
+        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -7%;">
+            <!-- Header -->
+            <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
+                <h5 class="modal-title text-white fw-bold" id="addProgramModalLabel">
+                    <i class="fas fa-edit me-2"></i>Add Program
+                </h5>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body" style="background-color: #ffffff;">
+                <form id="addProgramForm" class="p-2">
+                    @csrf
+
+                    <!-- Division Responsible -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
+                            Division/s Responsible:
+                            <button class="btn btn-sm text-white me-2 buttonHover" id="addDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </label>
+                        <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
+                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                                <select class="form-select border border-success selectDivision" name="divisions[]">
+                                    @foreach ($divisions as $division)
+                                        <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                    @endforeach
+                                    <option value="all">All Divisions</option>
+                                </select>
+                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle text-center border-success">
+                            <thead class="table-light fw-bold text-dark">
+                                <tr>
+                                    <th style="min-width: 200px;">Programs/Project/Activities</th>
+                                    <th style="min-width: 200px;">Success Indicator</th>
+                                    <th style="min-width: 200px;">Quality</th>
+                                    <th style="min-width: 200px;">Efficiency</th>
+                                    <th style="min-width: 200px;">Timeliness</th>
+                                    <th style="min-width: 200px;">Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addProgramName" id="addProgramName" autofocus></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addSuccessIndicator" id="addSuccessIndicator"></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addQuality" id="addQuality"></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addEfficiency" id="addEfficiency"></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addTimeliness" id="addTimeliness"></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addRemarks" id="addRemarks"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                        <button type="button" class="btn btn-danger px-3 closeAddModal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success px-3">
+                            <i class="fas fa-save me-2"></i>Save Program
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Add Program/Project Modal -->
 <div class="modal fade" id="addProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="addProgramModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -145,6 +391,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!-- Edit Program/Project Modal -->
 <div class="modal fade" id="editProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="editProgramModalLabel" aria-hidden="true">
