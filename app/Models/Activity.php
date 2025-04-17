@@ -27,16 +27,6 @@ class Activity extends Model
         return $this->belongsTo(Program::class);
     }
 
-    public function projects()
-    {
-        return $this->belongsTo(Project::class);
-    }
-
-    public function subProjects()
-    {
-        return $this->belongsTo(SubProject::class);
-    }
-
     public function subActivities()
     {
         return $this->hasMany(SubActivity::class);

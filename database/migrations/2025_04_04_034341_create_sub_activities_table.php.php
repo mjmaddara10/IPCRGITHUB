@@ -12,22 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sub_activities', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('name'); // Activity name
-            $table->string('successIndicator'); // Success indicator
-            $table->string('quality'); // Quality
-            $table->string('efficiency'); // Efficiency
-            $table->string('timeliness'); // Timeliness
-            $table->string('remarks'); // Remarks
-            $table->string('accountable'); // Accountable
+            $table->id(); 
+            $table->string('name')->nullable(); 
+            $table->string('successIndicator')->nullable(); 
+            $table->string('quality')->nullable(); 
+            $table->string('efficiency')->nullable(); 
+            $table->string('timeliness')->nullable(); 
+            $table->string('remarks')->nullable();
+            $table->string('accountable')->nullable(); 
             $table->foreignId('activity_id')->constrained()->onDelete('cascade');
-            $table->timestamps(); // Created at and updated at timestamps
+            $table->timestamps(); 
         });
     }
 
     /**
      * Reverse the migrations.
-     */
+     */ 
     public function down(): void
     {
         Schema::dropIfExists('sub_activities');

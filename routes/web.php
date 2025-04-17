@@ -51,8 +51,8 @@ Route::prefix('admin')->group(function () {
 
     Route::post('/filterProgram', [ppaController::class, 'filterProgram'])->name('filterProgram');
     Route::get('/getAccountable/{divisionName}', [ppaController::class, 'getAccountable'])->where('divisionName', '.*');
-    Route::post('/getAccountableMultiple', [ppaController::class, 'getAccountableMultiple']);
-    Route::post('/getAccountableByIds', [ppaController::class, 'getAccountableByIds']);
+    // Route::post('/getAccountableMultiple', [ppaController::class, 'getAccountableMultiple']);
+    // Route::post('/getAccountableByIds', [ppaController::class, 'getAccountableByIds']);
     Route::get('/getEmployeeDivision/{id}', [assignController::class, 'getEmployeeDivision']);
 
 

@@ -49,7 +49,7 @@ class adminPagesController extends Controller
         // Fetch all programs with their related projects
         $programs = Program::with('divisions')->get();
         $activities = Activity::with('subActivities')->get();
-        $employees = Employee::all();
+        $employees = Employee::with('division')->get();
         $divisions = Division::all();
     
         return view('adminBlades.adminAssign', compact(

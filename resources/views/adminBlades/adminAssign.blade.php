@@ -38,7 +38,8 @@
                                 data-name="{{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}"
                                 data-position="{{ $employee->position }}"
                                 data-status="{{ $employee->status }}"
-                                data-division="{{ $employee->division }}">
+                                data-division-id="{{ $employee->division->id }}"
+                                data-division-name="{{ $employee->division->name }}">
                                 {{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}
                             </option>
                         @endforeach

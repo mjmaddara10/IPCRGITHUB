@@ -1,7 +1,7 @@
 <table id="ppaTable" class="table">
     <thead class="text-center">
         <tr>
-            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Programs/Projects/Activities</th>
+            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Major Programs/Project/Activities</th>
             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Success Indicator</th>
             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Quality</th>
             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Efficiency</th>
@@ -11,27 +11,26 @@
             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Actions</th>
         </tr>
     </thead>
-    
     <tbody id="programTableBody">
         <!-- Program  -->
         @foreach($programs as $program)
             @php
                 // Get all the division IDs for the current program
-                $divisionIds = $program->divisions->pluck('id')->toArray();
+                $divisionIds = $program->divisions->pluck('id')->implode(',');
             @endphp
-            <tr class="programRow" data-division-ids="{{ json_encode($divisionIds) }}" data-program-id="{{ $program->id }}">
-                <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->name }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->successIndicator }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->quality }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->efficiency }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->timeliness }}</td>
-                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->remarks }}</td>
+            <tr class="programRow" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}">
+                <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->successIndicator }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->quality }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->efficiency }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->timeliness }}</td>
+                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->remarks }}</td>
                 @php
                     $allDivisionCount = \App\Models\Division::count();
                     $assignedCount = $program->divisions->count();
                 @endphp
 
-                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 5%;">
+                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">
                     @if ($assignedCount === $allDivisionCount)
                         All Divisions
                     @else
@@ -42,12 +41,11 @@
                 </td>
 
                 <!-- Buttons -->
-                <td class="text-center" style= "color: #FFFFFF; background-color: #03592c; width: 13.57%;">
+                <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;" colspan="3">
                     <!-- Add Activity -->
                     <button class="btn btn-sm addActivityInProgramBtn buttonHover" title="Add an activity"
                         data-program-id="{{ $program->id }}" 
-                        data-program-name="{{ $program->name }}"
-                        data-division-ids="{{ json_encode($divisionIds) }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
+                        data-program-name="{{ $program->name }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
                     </button>
 
                     <!-- Add Project -->
@@ -56,8 +54,8 @@
                         data-program-name="{{ $program->name }}" data-bs-toggle="modal" data-bs-target="#addProjectModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
                     </button> -->
 
-                    <!-- Edit Program/Project -->
-                    <button class="btn btn-sm editProgramBtn buttonHover" title="Edit details"
+                    <!-- Edit Program -->
+                    <button class="btn btn-sm editProgramBtn buttonHover" title="Edit program name"
                         data-program-id="{{ $program->id }}" 
                         data-program-name="{{ $program->name }}"
                         data-program-success="{{ $program->successIndicator }}"
@@ -68,7 +66,7 @@
                     </button>
 
                     <!-- Delete Program -->
-                    <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete"
+                    <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete program"
                         data-program-id="{{ $program->id }}"
                         data-url="{{ route('deleteProgram') }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
                     </button>
@@ -150,7 +148,7 @@
                 </tr>
                 
             @endforeach        
-
+        
         @endforeach
     </tbody>
 </table>

@@ -6,12 +6,15 @@ $(document).ready(function () {
         const name = selectedOption.data('name') || '________';
         const position = selectedOption.data('position') || '________';
         const status = selectedOption.data('status') || '________';
-        const division = selectedOption.data('division') || '________';
+        const divisionName = selectedOption.data('division-name') || '________';
+        const divisionId = selectedOption.data('division-id') || '';
 
         $('#empName').text(name);
         $('#empPosition').text(position);
         $('#empStatus').text(status);
-        $('#empDivision').text(division);
+        $('#empDivision').text(divisionName);
+
+        console.log('Division ID:', divisionId);
     });
 });
 

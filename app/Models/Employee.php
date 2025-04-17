@@ -16,7 +16,7 @@ class Employee extends Authenticatable
         'middleName',
         'lastName',
         'position',
-        'division',
+        'division_id',
         'status',
         'role',
     ];
@@ -28,7 +28,7 @@ class Employee extends Authenticatable
 
     public function division()
     {
-        return $this->belongsTo(Division::class, 'division');
+        return $this->belongsTo(Division::class, 'division_id');
     }
     
 
