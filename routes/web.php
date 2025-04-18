@@ -58,7 +58,7 @@ Route::prefix('admin')->group(function () {
 
 
     // Edit Program (Division<-->Program)
-    Route::get('/programs/{id}/edit', [ppaController::class, 'edit']);
+    Route::get('/programs/{id}/getDivisionResponsible', [ppaController::class, 'getDivisionResponsible']);
 });
 
 Route::group(['middleware' => 'admin'], function () {

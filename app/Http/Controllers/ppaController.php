@@ -242,15 +242,10 @@ class ppaController extends Controller
         return response()->json($results);
     }
 
-    // =====================Autofill Accountable (Edit Program)========================= //
-    public function edit($id){
+    // =====================Autofill Responsible Division (Edit Program)========================= //
+    public function getDivisionResponsible($id){
         $program = Program::with('divisions')->findOrFail($id);
-
-        return response()->json([
-            'program' => $program,
-            'divisions' => Division::all(),
-            'selectedDivisions' => $program->divisions
-        ]);
+        return response()->json($program->divisions);
     }
 
 }

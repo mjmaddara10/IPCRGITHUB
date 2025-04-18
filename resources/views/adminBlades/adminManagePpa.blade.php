@@ -308,65 +308,34 @@
     </div>
 </div>
 
-<!-- Add Program/Project Modal -->
-<div class="modal fade" id="addProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="addProgramModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0" style="background-color: #03592c;">
-                <h5 class="modal-title text-white fw-bold" id="addProgramModalLabel">
-                    <i class="fas fa-edit me-2"></i>Add Program/Project
+<!-- Edit Program Modal -->
+<div class="modal fade" id="editProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="editProgramModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
+        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -7%;">
+            <!-- Header -->
+            <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
+                <h5 class="modal-title text-white fw-bold" id="editProgramModalLabel">
+                    <i class="fas fa-edit me-2"></i>Edit Program
                 </h5>
             </div>
-            <div class="modal-body" style="background-color: #f8f9fa;">
-                <form id="addProgramForm" class="p-2">
+
+            <!-- Body -->
+            <div class="modal-body" style="background-color: #ffffff;">
+                <form id="editProgramForm" class="p-2">
                     @csrf
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Program/Project Name:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; min-height: 50px; resize: vertical;"
-                            name="addProgramName" id="addProgramName" autofocus></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addSuccessIndicator" id="addSuccessIndicator"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Quality:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addQuality" id="addQuality"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addEfficiency" id="addEfficiency"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addTimeliness" id="addTimeliness"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Remarks:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addRemarks" id="addRemarks"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <div class="py-2">
-                            <label class="form-label fw-bold text-dark mb-1">Division/s Responsible:</label>
-                            <button class="btn btn-sm buttonHover" title="Add division responsible" id="addDivisionBtn" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
-                        </div>
-                        
-                        <!-- Division Selection -->
-                        <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
+                    <input type="hidden" id="editProgramId" name="editProgramId" required>
+
+                    <!-- Division Responsible -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
+                            Division/s Responsible:
+                            <button class="btn btn-sm text-white me-2" id="editAddDivisionBtn" type="button" title="Add division responsible" style="background-color: #01a550;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </label>
+                        <div id="editDivisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
                             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-                                <select class="form-select selectDivision" name="divisions[]">
-                                    
+                                <select class="form-select border border-success" name="divisions[]">
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}">{{ $division->name }}</option>
                                     @endforeach
@@ -378,21 +347,58 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle text-center border-success">
+                            <thead class="table-light fw-bold text-dark">
+                                <tr>
+                                    <th style="min-width: 200px;">Programs/Project/Activities</th>
+                                    <th style="min-width: 200px;">Success Indicator</th>
+                                    <th style="min-width: 200px;">Quality</th>
+                                    <th style="min-width: 200px;">Efficiency</th>
+                                    <th style="min-width: 200px;">Timeliness</th>
+                                    <th style="min-width: 200px;">Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editProgramName" id="editProgramName" autofocus></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editSuccessIndicator" id="editSuccessIndicator"></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editQuality" id="editQuality"></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editEfficiency" id="editEfficiency"></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editTimeliness" id="editTimeliness"></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editRemarks" id="editRemarks"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                        <button type="button" class="btn btn-danger px-3 closeEditModal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success px-3">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer border-0" style="background-color: #f8f9fa;">
-                <button type="button" class="btn btn-hover px-3 nv-red closeAddModal">
-                    <i class="fas fa-times me-2"></i>Cancel
-                </button>
-                <button type="submit" class="btn btn-hover px-3 nv-green">
-                    <i class="fas fa-save me-2"></i>Add Program
-                </button>
-            </div>
-            </form>
         </div>
     </div>
 </div>
-
-
 
 <!-- Edit Program/Project Modal -->
 <div class="modal fade" id="editProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="editProgramModalLabel" aria-hidden="true">
