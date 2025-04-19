@@ -50,7 +50,7 @@
                                 <table id="manageUserTable" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th style="color: #03592c;">ID</th>
+                                            <!-- <th style="color: #03592c;">ID</th> -->
                                             <th style="color: #03592c;">First Name</th>
                                             <th style="color: #03592c;">Middle Name</th>
                                             <th style="color: #03592c;">Last Name</th>
@@ -65,7 +65,7 @@
                                     <tbody>
                                         @foreach ($employees as $employee)
                                         <tr>
-                                            <td>{{ $employee->id }}</td>
+                                            <!-- <td>{{ $employee->id }}</td> -->
                                             <td>{{ $employee->firstName }}</td>
                                             <td>{{ $employee->middleName }}</td>
                                             <td>{{ $employee->lastName }}</td>
