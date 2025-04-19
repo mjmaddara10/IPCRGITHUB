@@ -20,11 +20,6 @@ class Program extends Model
         'division_id'
     ];
 
-    public function projects()
-    {
-        return $this->hasMany(Project::class);
-    }
-
     public function activities()
     {
         return $this->hasMany(Activity::class);

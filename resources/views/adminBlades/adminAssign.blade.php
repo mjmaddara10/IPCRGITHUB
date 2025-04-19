@@ -12,7 +12,7 @@
 
 @section('content')
 <div class="page-background"></div>
-<!-- DataTable -->
+
 <div class="container-fluid mt-3">
     <div class="bg-white">
 
@@ -31,11 +31,18 @@
             <div class="d-flex justify-content-between align-items-center mb-1">
                 <div class="d-flex align-items-center" style="color: #FFFFFF; font-weight: 500;">
                     <span>Select User:</span>
-                    <select class="form-select ms-2" style="width: 250px; border: 2px solid #FFFFFF;">
-                        <option selected disabled></option>
-                        <option value="1">User 1</option>
-                        <option value="2">User 2</option>
-                        <option value="3">User 3</option>
+                    <select class="form-select" name="employeeSelect" id="employeeSelect">
+                        <option value="">Select an Employee</option>
+                        @foreach ($employees as $employee)
+                            <option value="{{ $employee->id }}"
+                                data-name="{{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}"
+                                data-position="{{ $employee->position }}"
+                                data-status="{{ $employee->status }}"
+                                data-division-id="{{ $employee->division->id }}"
+                                data-division-name="{{ $employee->division->name }}">
+                                {{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -45,16 +52,13 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12" style="font-family: 'Montserrat'; background: #0d5cba; padding: 50px; color: #FFFFFF; text-align: justify;">
-                    <p class="justified-text">
-                        I, JULIUS N. IGLESIAS, Administrative Officer IV (HRMO II)- Permanent of the PROVINCIAL
-                        HUMAN
-                        RESOURCE MANAGEMENT
-                        OFFICE, BENEFITS AND WELFARE DIVISION, commit to deliver and agree to be rated on the
-                        attainment
-                        of
-                        the following targets in accordance with the indicated measures for the period January to
-                        December 2025.
-                    </p>
+                <p class="justified-text" id="employeeCommitmentText">
+                    I, <span id="empName" class="fw-bold text-light text-uppercase">________</span>,
+                    <span id="empPosition" class="fw-bold text-light">________</span> -
+                    <span id="empStatus" class="fw-bold text-light ">________</span><strong> of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE</strong>,
+                    <span id="empDivision" class="fw-bold text-light text-uppercase">________</span>,
+                    commit to deliver and agree to be rated on the attainment of the following targets in accordance with the indicated measures for the period January to December 2025.
+                </p>
 
                     <!-- Nested row for inputs -->
                     <div class="row mt-3 align-items-center">
@@ -118,19 +122,54 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <tr>
-                            <td class="text-left" style= "color: #FFFFFF; background-color: #03592c;" colspan="7">D. CAPABILITY BUILDING PROGRAM</td>
-                        </tr>
-                        <tr style="background-color: #ffffff;">
-                            <td class="text-center"><input type="checkbox"></td>
-                            <td class="text-center">1.1 Prepare Training Calendar</td>
-                            <td class="text-center">Success Indicator</td>
-                            <td class="text-center">Quality</td>
-                            <td class="text-center">Efficiency</td>
-                            <td class="text-center">Timeliness</td>
-                            <td class="text-center">Remarks</td>
-                        </tr>
+                    <tbody id="programTableBody">
+                        <!-- Program  -->
+                        @foreach($programs as $program)
+                            @php
+                                // Get all the division IDs for the current program
+                                $divisionIds = $program->divisions->pluck('id')->implode(',');
+                            @endphp
+                            <tr class="programRow" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}">
+                                <td class="text-center" style="background-color: #03592c; color:#FFFFFF; width: 5%;"><input type="checkbox"></td>
+                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->name }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->successIndicator }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->quality }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->efficiency }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->timeliness }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; width: 13.57%;">{{ $program->remarks }}</td>
+                                
+                            </tr>
+
+                            <!-- Activities in Program-->
+                            @foreach($program->activities as $activity)
+                                <tr data-program-id="{{ $program->id }}">
+                                    <td class="text-center" style="background-color:rgb(212, 212, 212);"><input type="checkbox"></td>
+                                    <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->successIndicator }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->quality }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->timeliness }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->remarks }}</td>
+                                </tr>
+
+                                <!-- Sub-Activities -->
+                                @foreach($activity->subActivities as $subActivity)
+                                    <tr data-program-id="{{ $program->id }}">
+                                        <td class="text-center"><input type="checkbox"></td>
+                                        <td class="text-left" hidden>{{ $subActivity->id }}</td>
+                                        <td class="text-left ps-3 border border-muted">{{ $subActivity->name }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tr>
+                                
+                            @endforeach        
+
+                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Models\SubActivity;
@@ -14,7 +15,7 @@ use App\Models\Division;
 class ppaController extends Controller
 {
     // =====================Activity========================= //
-    public function addActivity(Request $request){
+    public function addActivityInProgram(Request $request){
         $activity = new Activity([
             'name' => $request->addActivityName,
             'successIndicator' => $request->addSuccessIndicator,
@@ -22,12 +23,13 @@ class ppaController extends Controller
             'efficiency' => $request->addEfficiency,
             'timeliness' => $request->addTimeliness,
             'remarks' => $request->addRemarks,
-            'project_id' => $request->projectId,
+            'accountable' => $request->addAccountable,
+            'program_Id' => $request->programIdProg,
         ]);
-    
-        // Find the project and associate the activity with it
-        $project = Project::findOrFail($request->projectId);
-        $project->activities()->save($activity);
+
+        // Find the program and associate the activity with it
+        $program = Program::findOrFail($request->programIdProg);
+        $program->activities()->save($activity);
     }
 
     public function updateActivity(Request $request){
@@ -35,11 +37,11 @@ class ppaController extends Controller
         $activity = Activity::findOrFail($request->activityId);
         $activity->update([
             'name' => $request->editActivityName,
-            'successIndicator' => $request->editSuccessIndicator,
-            'quality' => $request->editQuality,
-            'efficiency' => $request->editEfficiency,
-            'timeliness' => $request->editTimeliness,
-            'remarks' => $request->editRemarks,
+            'successIndicator' => $request->editSuccessIndicatorActivity,
+            'quality' => $request->editQualityActivity,
+            'efficiency' => $request->editEfficiencyActivity,
+            'timeliness' => $request->editTimelinessActivity,
+            'remarks' => $request->editRemarksActivity,
         ]);
 
         // Return a response (this is what your AJAX call will use)
@@ -59,51 +61,6 @@ class ppaController extends Controller
             // For any other errors
             return response()->json(['error' => 'An error occurred while trying to delete the activity.'], 500);
         }
-    }
-
-    // =====================Project========================= //
-    public function addProject(Request $request){
-        $project = new Project([
-            'name' => $request->addProjectName,
-            'successIndicator' => $request->addSuccessIndicatorProject,
-            'quality' => $request->addQualityProject,
-            'efficiency' => $request->addEfficiencyProject,
-            'timeliness' => $request->addTimelinessProject,
-            'remarks' => $request->addRemarksProject,
-            'program_id' => $request->programId,
-        ]);
-    
-        // Find the project and associate the sub-project with it
-        $program = Program::findOrFail($request->programId);
-        $program->projects()->save($project);
-    }
-
-    public function updateProject(Request $request){
-        // Find the project and update it
-        $project = Project::findOrFail($request->editProjectId);
-        $project->update([
-            'id'=> $request->editProjectId,
-            'name' => $request->editProjectName,
-        ]);
-
-        // Return a response (this is what your AJAX call will use)
-        return response()->json(['message' => 'Project updated successfully!']);
-    }
-
-    public function deleteProject(Request $request){
-        try{
-            $project = Project::findOrFail($request->projectId);
-            $project->delete();
-
-            return response()->json(['message' => 'Project deleted successfully!'], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            // If project is not found
-            return response()->json(['error' => 'Project not found!'], 404);
-        } catch (\Exception $e) {
-            // For any other errors
-            return response()->json(['error' => 'An error occurred while trying to delete the project.'], 500);
-        }
-
     }
 
     // =====================Program========================= //
@@ -168,110 +125,6 @@ class ppaController extends Controller
 
     }
 
-    /*public function filterProgram(Request $request) {
-        $divisionId = $request->query('division_id');
-
-        // If 'all' is selected, get programs assigned to all divisions
-        if ($divisionId == 'all') {
-            $programs = Program::whereHas('divisions')->get(); // All programs with at least one division assigned
-        } else {
-            // Otherwise, get programs assigned to the selected division
-            $programs = Program::whereHas('divisions', function ($query) use ($divisionId) {
-                $query->where('id', $divisionId);
-            })->get();
-        }
-
-        // Return programs as JSON
-        return response()->json([
-            'programs' => $programs
-        ]);
-    }*/
-
-    // =====================Sub-Project========================= //
-    public function addSubProject(Request $request){
-        $subProject = new SubProject([
-            'name' => $request->addSubProjectTitle,
-            'successIndicator' => $request->addSuccessIndicatorSubProject,
-            'quality' => $request->addQualitySubProject,
-            'efficiency' => $request->addEfficiencySubProject,
-            'timeliness' => $request->addTimelinessSubProject,
-            'remarks' => $request->addRemarksSubProject,
-            'project_id' => $request->projectIdSub,
-        ]);
-    
-        // Find the project and associate the sub-project with it
-        $project = Project::findOrFail($request->projectIdSub);
-        $project->subProjects()->save($subProject);
-    }
-
-    public function updateSubProject(Request $request){
-        // Find the project and update it
-        $subProject = SubProject::findOrFail($request->editSubProjectId);
-        $subProject->update([
-            'id'=> $request->editSubProjectId,
-            'name' => $request->editSubProjectName,
-            'successIndicator' => $request->editSuccessIndicatorSubProject,
-            'quality' => $request->editQualitySubProject,
-            'efficiency' => $request->editEfficiencySubProject,
-            'timeliness' => $request->editTimelinessSubProject,
-            'remarks' => $request->editRemarksSubProject,
-        ]);
-
-        // Return a response (this is what your AJAX call will use)
-        return response()->json(['message' => 'Project updated successfully!']);
-    }
-
-    public function deleteSubProject(Request $request){
-        try{
-            $subProject = SubProject::findOrFail($request->subProjectId);
-            $subProject->delete();
-
-            return response()->json(['message' => 'Sub-Project deleted successfully!'], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            // If project is not found
-            return response()->json(['error' => 'Project not found!'], 404);
-        } catch (\Exception $e) {
-            // For any other errors
-            return response()->json(['error' => $e->getMessage()], 500);
-            // return response()->json(['error' => 'An error occurred while trying to delete the project.'], 500);
-        }
-    }
-
-    // =====================Add Activity in Sub-Project========================= //
-    public function addActivityInSub(Request $request){
-        $activity = new Activity([
-            'name' => $request->addActivityName,
-            'successIndicator' => $request->addSuccessIndicator,
-            'quality' => $request->addQuality,
-            'efficiency' => $request->addEfficiency,
-            'timeliness' => $request->addTimeliness,
-            'remarks' => $request->addRemarks,
-            'subProjectId' => $request->subProjectId,
-        ]);
-    
-        // Find the sub-project and associate the activity with it
-        $subProject = SubProject::findOrFail($request->subProjectId);
-        $subProject->activities()->save($activity);
-    }
-
-    // =====================Add Activity in Program========================= //
-    public function addActivityInProgram(Request $request){
-        $activity = new Activity([
-            'name' => $request->addActivityName,
-            'successIndicator' => $request->addSuccessIndicator,
-            'quality' => $request->addQuality,
-            'efficiency' => $request->addEfficiency,
-            'timeliness' => $request->addTimeliness,
-            'remarks' => $request->addRemarks,
-            'accountable' => $request->addAccountable,
-            'program_Id' => $request->programIdProg,
-        ]);
-
-        // Find the program and associate the activity with it
-        $program = Program::findOrFail($request->programIdProg);
-        $program->activities()->save($activity);
-    }
-    
     // =====================Add Sub-Activity========================= //
     public function addSubActivity(Request $request){
         $subActivity = new SubActivity([
@@ -323,4 +176,76 @@ class ppaController extends Controller
             return response()->json(['error' => 'An error occurred while trying to delete the sub-activity.'], 500);
         }
     }
+
+    // =====================Autofill Accountable (Add Activity)========================= //
+    public function getAccountable($divisionName){
+        $accountable = Employee::whereRaw('LOWER(division) = ?', [strtolower($divisionName)])
+            ->where('role', 'Department Chief')
+            ->get();
+    
+        if ($accountable->isEmpty()) {
+            return response()->json([], 404);
+        }
+    
+        $results = $accountable->map(function ($a) {
+            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $a->id,
+                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
+            ];
+        });
+    
+        return response()->json($results);
+    }
+
+    public function getAccountableMultiple(Request $request) {
+        $divisionNames = $request->input('divisionNames', []);
+
+        if (empty($divisionNames)) {
+            return response()->json([], 400);
+        }
+
+        $accountable = Employee::whereIn(DB::raw('LOWER(division)'), array_map('strtolower', $divisionNames))
+            ->where('role', 'Department Chief')
+            ->get();
+
+        $results = $accountable->map(function ($a) {
+            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $a->id,
+                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
+            ];
+        });
+
+        return response()->json($results);
+    }
+
+    public function getAccountableByIds(Request $request) {
+        $divisionIds = $request->input('divisionIds', []);
+    
+        if (empty($divisionIds)) {
+            return response()->json([], 400);
+        }
+    
+        $accountable = Employee::whereIn('division', $divisionIds)
+            ->where('role', 'Department Chief')
+            ->get();
+    
+        $results = $accountable->map(function ($a) {
+            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $a->id,
+                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
+            ];
+        });
+    
+        return response()->json($results);
+    }
+
+    // =====================Autofill Responsible Division (Edit Program)========================= //
+    public function getDivisionResponsible($id){
+        $program = Program::with('divisions')->findOrFail($id);
+        return response()->json($program->divisions);
+    }
+
 }

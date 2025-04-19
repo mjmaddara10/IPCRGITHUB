@@ -11,77 +11,96 @@
 <div class="container mt-4 position-relative">
     <div class="row">
         <div class="col-12">
-
             <div class="bg-white">
-
-                <div class="card-header py-3 d-flex align-items-center nv-green">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-cog fa-2x text-white me-3"></i>
-                        <div>
-                            <h4 class="mb-0 text-white"
-                                style="font-family: 'Montserrat', sans-serif; font-weight: 600;">Admin Settings</h4>
-                            <small class="text-white-50">Personal Information</small>
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex align-items-center ms-auto">
+                            <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover nv-green">
+                                View Employees
+                            </a>
+                            <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                View IPCR
+                            </a>
+                            <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                Manage PPA
+                            </a>
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                Logout
+                            </a>
                         </div>
                     </div>
-                </div>
 
-                <div class="card-body">
-                    <div class="row">
-
-                        <div class="col-md-6">
-                            <table class="table table-bordered table-fixed">
-                                <tr>
-                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Name:</td>
-                                    <td class="bg-white">{{ session('firstName') }} {{ session('middleInitial') }} {{ session('lastName') }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Position:</td>
-                                    <td class="bg-white">{{ session('position') }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Status:</td>
-                                    <td class="bg-white">{{ session('status') }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Division:</td>
-                                    <td class="bg-white">{{ session('division') }}</td>
-                                </tr>
-                            </table>
+                    <div class="card-header py-3 d-flex align-items-center nv-green">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-cog fa-2x text-white me-3"></i>
+                            <div>
+                                <h4 class="mb-0 text-white"
+                                    style="font-family: 'Montserrat', sans-serif; font-weight: 600;">My Profile</h4>
+                                <small class="text-white-50">Personal Information</small>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-6">
-                            <table class="table table-bordered table-fixed">
-                                <tr>
-                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Username:</td>
-                                    <td class="bg-white">{{ session('username') }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="info-label fw-bold text-end" style="color: #03592c;">Password:</td>
-                                    <td class="bg-white" id="showPassword">********</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-end" colspan="2">
-                                        <button type="button" onclick="togglePassword()" style="border: none; cursor: pointer;" class="btn btn-hover px-4 ms-2 nv-green">
-                                            Show Password
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                    <div class="card-body">
+                        <div class="row">
 
-                        <div class="text-end mt-4">
-                            <button type="button" class="btn btn-hover px-4 ms-2 nv-green" data-bs-toggle="modal"
-                                data-bs-target="#adminAccountEditModal">
-                                <i class="fas fa-edit me-2"></i>Update Account
-                            </button>
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-fixed">
+                                    <tr>
+                                        <td class="info-label fw-bold text-end" style="color: #03592c;">Name:</td>
+                                        <td class="bg-white">{{ session('firstName') }} {{ session('middleInitial') }} {{ session('lastName') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info-label fw-bold text-end" style="color: #03592c;">Position:</td>
+                                        <td class="bg-white">{{ session('position') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info-label fw-bold text-end" style="color: #03592c;">Status:</td>
+                                        <td class="bg-white">{{ session('status') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info-label fw-bold text-end" style="color: #03592c;">Division:</td>
+                                        <td class="bg-white">{{ session('division') }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-fixed">
+                                    <tr>
+                                        <td class="info-label fw-bold text-end" style="color: #03592c;">Username:</td>
+                                        <td class="bg-white">{{ session('username') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="info-label fw-bold text-end" style="color: #03592c;">Password:</td>
+                                        <td class="bg-white" id="showPassword">********</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-end" colspan="2">
+                                            <button type="button" onclick="togglePassword()" style="border: none; cursor: pointer;" class="btn btn-hover px-4 ms-2 nv-green">
+                                                Show Password
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="text-end mt-4">
+                                <button type="button" class="btn btn-hover px-4 ms-2 nv-green" data-bs-toggle="modal"
+                                    data-bs-target="#adminAccountEditModal">
+                                    <i class="fas fa-edit me-2"></i>Update Account
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
+<!-- MODAL -->
 <!-- Update Admin Account Modal -->
 <div class="modal fade" id="adminAccountEditModal" tabindex="-1" aria-labelledby="adminAccountEditModal" aria-hidden="true">
     <div class="modal-dialog" style="max-width: 40%;">

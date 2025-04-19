@@ -44,7 +44,7 @@ $('#addProgramForm').on('submit', function(e) {
 });
 
 // Edit Program Fill Form
-$(document).on('click', '.editProgramBtn', function() {
+$(document).on('click', '.editProgramBtn', function () {
     // Get data from the button clicked
     var programId = $(this).data('program-id');
     var programName = $(this).data('program-name');
@@ -54,7 +54,7 @@ $(document).on('click', '.editProgramBtn', function() {
     var programTimeliness = $(this).data('program-timeliness');
     var programRemarks = $(this).data('program-remarks');
 
-    // Populate the modal fields with the data
+    // Populate modal fields
     $('#editProgramId').val(programId);
     $('#editProgramName').val(programName);
     $('#editSuccessIndicator').val(programSuccessIndicator);
@@ -62,6 +62,142 @@ $(document).on('click', '.editProgramBtn', function() {
     $('#editEfficiency').val(programEfficiency);
     $('#editTimeliness').val(programTimeliness);
     $('#editRemarks').val(programRemarks);
+
+    // Clear previous selects
+    $('#editDivisionSelectContainer').empty();
+
+    let allDivisions = $('#editDivisionSelectContainer').data('divisions');
+
+    // Fetch assigned divisions
+    $.get(`/admin/programs/${programId}/getDivisionResponsible`, function (assignedDivisions) {
+        assignedDivisions.forEach((assignedDiv) => {
+            addDivisionSelect(assignedDiv.id);
+        });
+
+        if (assignedDivisions.length === 0) {
+            addDivisionSelect();
+        }
+
+        updateRemoveButtons();
+        updateDivisionOptions();
+        handleAllDivisionsLogic();
+    });
+
+    // Util: Add a division select with optional selected value
+    function addDivisionSelect(selectedId = null) {
+        let selectHtml = `
+        <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+            <select class="form-select border border-success" name="divisions[]">`;
+
+        allDivisions.forEach(div => {
+            const isSelected = div.id === selectedId ? 'selected' : '';
+            selectHtml += `<option value="${div.id}" ${isSelected}>${div.name}</option>`;
+        });
+
+        const allSelected = selectedId === 'all' ? 'selected' : '';
+        selectHtml += `<option value="all" ${allSelected}>All Divisions</option>`;
+
+        selectHtml += `</select>
+            <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>`;
+
+        $('#editDivisionSelectContainer').append(selectHtml);
+    }
+
+    // Util: Disable first remove button
+    function updateRemoveButtons() {
+        const removeBtns = $('#editDivisionSelectContainer .removeDivisionBtn');
+        removeBtns.prop('disabled', false);
+        removeBtns.first().prop('disabled', true);
+    }
+
+    // Util: Disable already selected divisions
+    function updateDivisionOptions() {
+        // Selects only inside the modal
+        const $container = $('#editDivisionSelectContainer');
+        const $selects = $container.find('select');
+    
+        $selects.each(function () {
+            const $currentSelect = $(this);
+            const currentVal = $currentSelect.val();
+    
+            // Get all selected values excluding the current select's value
+            const selectedValues = $selects
+                .not($currentSelect)
+                .map(function () {
+                    return $(this).val();
+                })
+                .get();
+    
+            $currentSelect.find('option').each(function () {
+                const $option = $(this);
+                const optionVal = $option.val();
+    
+                if (optionVal === 'all') {
+                    $option.prop('disabled', false);
+                    return;
+                }
+    
+                // Disable only if it's selected in another select
+                if (selectedValues.includes(optionVal)) {
+                    $option.prop('disabled', true);
+                } else {
+                    $option.prop('disabled', false);
+                }
+            });
+        });
+    }
+
+    // Util: Handle "All Divisions" logic
+    function handleAllDivisionsLogic() {
+        const hasAll = $('#editDivisionSelectContainer select').filter(function () {
+            return $(this).val() === 'all';
+        }).length > 0;
+
+        if (hasAll) {
+            // Keep only the select with value "all"
+            $('#editDivisionSelectContainer .division-select-group').each(function () {
+                if ($(this).find('select').val() !== 'all') {
+                    $(this).remove();
+                }
+            });
+            $('#editAddDivisionBtn').prop('disabled', true);
+        } else {
+            $('#editAddDivisionBtn').prop('disabled', false);
+        }
+
+        updateRemoveButtons();
+    }
+
+    // Make utilities available globally in this scope
+    window.addDivisionSelect = addDivisionSelect;
+    window.updateRemoveButtons = updateRemoveButtons;
+    window.updateDivisionOptions = updateDivisionOptions;
+    window.handleAllDivisionsLogic = handleAllDivisionsLogic;
+});
+
+// Add new select input
+$('#editAddDivisionBtn').on('click', function () {
+    addDivisionSelect();
+    updateRemoveButtons();
+    updateDivisionOptions();
+    handleAllDivisionsLogic();
+});
+
+// Remove division row
+$(document).on('click', '.removeDivisionBtn', function () {
+    $(this).closest('.division-select-group').remove();
+    updateRemoveButtons();
+    updateDivisionOptions();
+    handleAllDivisionsLogic();
+});
+
+// Change division selection
+$(document).on('change', '#editDivisionSelectContainer select', function () {
+    updateDivisionOptions();
+    handleAllDivisionsLogic();
 });
 
 // Edit Program
@@ -123,12 +259,12 @@ $(document).on('click', '.deleteProgramBtn', function(e) {
 
     Swal.fire({
         title: "Are you sure?",
-        text: "Do you want to delete this program? All projects and activities under it will also be deleted.",
+        html: "Do you want to delete this?<br><strong>All activities under it will also be deleted.</strong>",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#03592c",
         cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, delete project"
+        confirmButtonText: "Confirm"
     }).then((result) => {
         if (result.isConfirmed) {
             // Make an AJAX request to delete the project
@@ -259,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isAllDivisionsSelected()) return;
 
         const divisions = JSON.parse(divisionContainer.getAttribute('data-divisions'));
-        let optionsHTML = '';
+        let optionsHTML = '<option value="all">Select Division</option>';
         divisions.forEach(function (division) {
             optionsHTML += `<option value="${division.id}">${division.name}</option>`;
         });
@@ -304,37 +440,92 @@ document.getElementById('divisionSelectContainer').addEventListener('click', fun
 });
 
 // Edit Program
-document.addEventListener('DOMContentLoaded', function () {
-    const editDivisionContainer = document.getElementById('editDivisionSelectContainer');
-    const allDivisions = JSON.parse(editDivisionContainer.getAttribute('data-divisions'));
-    
-    document.getElementById('editAddDivisionBtn').addEventListener('click', function (e) {
-        e.preventDefault();
+// document.addEventListener('DOMContentLoaded', function () {
+//     const editDivisionContainer = document.getElementById('editDivisionSelectContainer');
 
-        let optionsHTML = '';
-        allDivisions.forEach(function (division) {
-            optionsHTML += `<option value="${division.id}">${division.name}</option>`;
-        });
+//     // Handle edit button click
+//     document.querySelectorAll('.editProgramBtn').forEach(button => {
+//         button.addEventListener('click', function () {
+//             const programId = this.getAttribute('data-id');
 
-        const selectGroupHTML = `
-            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-                <select class="form-select" name="divisions[]">${optionsHTML}</select>
-                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
-        `;
+//             fetch(`/programs/${programId}/edit`)
+//                 .then(response => response.json())
+//                 .then(data => {
+//                     const program = data.program;
+//                     const allDivisions = data.divisions;
+//                     const selectedDivisions = data.selectedDivisions;
 
-        editDivisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
-    });
+//                     // Fill in other form fields
+//                     document.getElementById('editProgramId').value = program.id;
+//                     document.getElementById('editProgramName').value = program.title ?? '';
+//                     document.getElementById('editSuccessIndicator').value = program.success_indicator ?? '';
+//                     document.getElementById('editQuality').value = program.quality ?? '';
+//                     document.getElementById('editEfficiency').value = program.efficiency ?? '';
+//                     document.getElementById('editTimeliness').value = program.timeliness ?? '';
+//                     document.getElementById('editRemarks').value = program.remarks ?? '';
 
-    // Delegate remove button functionality
-    editDivisionContainer.addEventListener('click', function (e) {
-        if (e.target.closest('.removeDivisionBtn')) {
-            e.target.closest('.division-select-group').remove();
-        }
-    });
-});
+//                     // Clear previous division selects
+//                     editDivisionContainer.innerHTML = '';
+
+//                     // Add select inputs for selected divisions
+//                     selectedDivisions.forEach(division => {
+//                         let optionsHTML = `<option value="all">All Divisions</option>`;
+//                         allDivisions.forEach(div => {
+//                             optionsHTML += `<option value="${div.id}" ${div.id === division.id ? 'selected' : ''}>${div.name}</option>`;
+//                         });
+
+//                         const selectGroupHTML = `
+//                             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+//                                 <select class="form-select" name="divisions[]">${optionsHTML}</select>
+//                                 <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+//                                     <i class="fas fa-minus"></i>
+//                                 </button>
+//                             </div>
+//                         `;
+
+//                         editDivisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
+//                     });
+
+//                     // Show modal (assuming you use Bootstrap modal or similar)
+//                     const editModal = new bootstrap.Modal(document.getElementById('editProgramModal'));
+//                     editModal.show();
+//                 })
+//                 .catch(error => {
+//                     console.error('Failed to fetch program data:', error);
+//                 });
+//         });
+//     });
+
+//     // Add new division select
+//     document.getElementById('editAddDivisionBtn').addEventListener('click', function (e) {
+//         e.preventDefault();
+
+//         const allDivisions = JSON.parse(editDivisionContainer.getAttribute('data-divisions'));
+//         let optionsHTML = '<option value="all">All Divisions</option>';
+
+//         allDivisions.forEach(division => {
+//             optionsHTML += `<option value="${division.id}">${division.name}</option>`;
+//         });
+
+//         const selectGroupHTML = `
+//             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+//                 <select class="form-select" name="divisions[]">${optionsHTML}</select>
+//                 <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+//                     <i class="fas fa-minus"></i>
+//                 </button>
+//             </div>
+//         `;
+
+//         editDivisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
+//     });
+
+//     // Remove division select
+//     editDivisionContainer.addEventListener('click', function (e) {
+//         if (e.target.closest('.removeDivisionBtn')) {
+//             e.target.closest('.division-select-group').remove();
+//         }
+//     });
+// });
 
 // Filtering thru Division
 document.getElementById('divisionFilter').addEventListener('change', function () {

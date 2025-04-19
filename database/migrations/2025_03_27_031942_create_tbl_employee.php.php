@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('tbl_employee', function (Blueprint $table) {
             $table->id();
             $table->string('firstName');
-            $table->string('middleName');
+            $table->string('middleName')->nullable();
             $table->string('lastName');
             $table->string('position');
             $table->string('status');
-            $table->string('division');
+            $table->foreignId('division')->constrained()->onDelete('cascade');
             $table->string('username');
             $table->string('password');
             $table->string('role');

@@ -7,7 +7,7 @@ var tooltipElements = document.querySelectorAll('.buttonHover'); // Select all e
 
 
 // Form autofocus
-const modals = [
+/*const modals = [
   { modalId: 'adminLoginModal', inputId: 'adminUsername' },
   { modalId: 'employeeLoginModal', inputId: 'employeeUsername' },
   { modalId: 'editProgramModal', inputId: 'editProgramName' },
@@ -24,4 +24,4 @@ modals.forEach(({ modalId, inputId }) => {
   document.getElementById(modalId).addEventListener('shown.bs.modal', function () {
       document.getElementById(inputId).focus();
   });
-});
+});*/

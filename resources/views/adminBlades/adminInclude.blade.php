@@ -4,31 +4,21 @@
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <!-- Logo and Brand Name -->
         <a class="navbar-brand fw-bold text-success d-flex align-items-center">
-            <!-- Provincial Logo -->
             <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
-            <!-- System Name -->
             <span class="brand-text" onclick="window.location.href='{{ route('admin.index') }}'" style="cursor: pointer;">SPMS</span>
         </a>
-        <!-- Logout Button -->
-        <div class="d-flex align-items-center">
-            <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover px-4 nv-green">
-               View Employees
-            </a>
-            <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover px-4 nv-green">
-               View IPCR
-            </a>
-            <a href="{{ route('admin.assignIpcr') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Assign PPA
-            </a>
-            <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Manage PPA
-            </a>
-            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" href="" class="btn btn-hover px-4 nv-green">
-               Settings
-            </a>
-            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover px-4 nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
-               Logout
-            </a>
+
+        <!-- User Info on the right -->
+        <div class="d-flex align-items-center ms-auto">
+            <!-- Name + Position -->
+            <div class="d-flex flex-column align-items-end text-end me-3">
+                <span class="fw-bold text-success">{{ session('firstName') }} {{ session('middleInitial') }} {{ session('lastName') }}</span>
+                <small class="text-muted">{{ session('position') }}</small>
+            </div>
+            <!-- Button -->
+            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                <i class="fas fa-user text-white mx-1"></i>
+            </a>       
         </div>
     </div>
 </nav>

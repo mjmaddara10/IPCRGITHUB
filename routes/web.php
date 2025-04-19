@@ -7,6 +7,7 @@ use App\Http\Controllers\usersController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
 use App\Http\Controllers\adminPagesController;
+use App\Http\Controllers\assignController;
 use App\Models\SubActivity;
 use App\Models\Program;
 use App\Models\Project;
@@ -49,6 +50,15 @@ Route::prefix('admin')->group(function () {
     Route::post('/addActivityInProgram', [ppaController::class, 'addActivityInProgram'])->name('addActivityInProgram');
 
     Route::post('/filterProgram', [ppaController::class, 'filterProgram'])->name('filterProgram');
+    Route::get('/getAccountable/{divisionName}', [ppaController::class, 'getAccountable'])->where('divisionName', '.*');
+    // Route::post('/getAccountableMultiple', [ppaController::class, 'getAccountableMultiple']);
+    // Route::post('/getAccountableByIds', [ppaController::class, 'getAccountableByIds']);
+    Route::get('/getEmployeeDivision/{id}', [assignController::class, 'getEmployeeDivision']);
+
+
+
+    // Edit Program (Division<-->Program)
+    Route::get('/programs/{id}/getDivisionResponsible', [ppaController::class, 'getDivisionResponsible']);
 });
 
 Route::group(['middleware' => 'admin'], function () {

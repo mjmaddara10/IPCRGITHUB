@@ -14,14 +14,14 @@ class CreateProgramsTable extends Migration
     public function up()
     {
         Schema::create('programs', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('name'); // Program name
-            $table->string('successIndicator'); // Success indicator
-            $table->string('quality'); // Quality
-            $table->string('efficiency'); // Efficiency
-            $table->string('timeliness'); // Timeliness
-            $table->string('remarks'); // Remarks
-            $table->timestamps(); // Created at and updated at timestamps
+            $table->id();
+            $table->string('name');
+            $table->string('successIndicator')->nullable(); 
+            $table->string('quality')->nullable(); 
+            $table->string('efficiency')->nullable(); 
+            $table->string('timeliness')->nullable(); 
+            $table->string('remarks')->nullable(); 
+            $table->timestamps();
         });
     }
 
