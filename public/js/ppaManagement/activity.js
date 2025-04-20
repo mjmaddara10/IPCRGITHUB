@@ -15,14 +15,17 @@ $(document).on('click', '.addActivityInProgramBtn', function () {
         }
     }
 
+    // Set program data in modal
     $('#programIdProg').val(programId);
     $('#programNameProg').val(programName);
 
+    // Reset form: remove extra selects and clear first one
     const $container = $('#accountableSelectContainer');
     $container.find('.accountable-select-group:gt(0)').remove();
-    $container.find('.accountable-select-group select').val('');
+    $container.find('.accountable-select-group select').empty().append('<option value="">Select accountable person</option>');
     $container.find('.removeAccountableBtn').prop('disabled', true);
 
+    // Fetch employees from server
     if (divisionIds.length > 0) {
         $.ajax({
             url: '/admin/getAccountableByIds',
@@ -42,6 +45,58 @@ $(document).on('click', '.addActivityInProgramBtn', function () {
         });
     }
 });
+
+// Helper to populate all select dropdowns with fetched employees
+function populateAccountableOptions(accountables) {
+    const $selects = $('.accountableSelect');
+    $selects.each(function () {
+        const $select = $(this);
+        $select.empty();
+        $select.append('<option value="">Select accountable person</option>');
+
+        accountables.forEach(accountable => {
+            $select.append(`<option value="${accountable.id}">${accountable.name} (${accountable.role})</option>`);
+        });
+    });
+}
+
+// Add accountable person input
+$('#addAccountablePersonBtn').on('click', function () {
+    const $container = $('#accountableSelectContainer');
+    const $newGroup = $(`
+        <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
+            <select class="form-select border-2 py-2 accountableSelect" name="addAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
+                <option value="">Loading...</option>
+            </select>
+            <button type="button" class="btn btn-danger btn-sm removeAccountableBtn">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    `);
+    
+    $container.append($newGroup);
+
+    // Populate newly added select with existing options
+    const firstSelect = $('.accountableSelect').first();
+    const newSelect = $newGroup.find('select');
+    newSelect.html(firstSelect.html()); // Copy all options
+
+    // Enable remove button if there's more than one
+    updateAccountableRemoveButtons();
+});
+
+// Remove accountable person input
+$(document).on('click', '.removeAccountableBtn', function () {
+    $(this).closest('.accountable-select-group').remove();
+    updateAccountableRemoveButtons();
+});
+
+// Disable first remove button if it's the only one left
+function updateAccountableRemoveButtons() {
+    const $buttons = $('.removeAccountableBtn');
+    $buttons.prop('disabled', false);
+    $buttons.first().prop('disabled', true);
+}
 
 // Populate accountable select inputs
 function populateAccountableOptions(options) {

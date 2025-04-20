@@ -109,7 +109,8 @@
                                     <!-- Add Activity -->
                                     <button class="btn btn-sm addActivityInProgramBtn buttonHover" title="Add an activity"
                                         data-program-id="{{ $program->id }}" 
-                                        data-program-name="{{ $program->name }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
+                                        data-program-name="{{ $program->name }}" 
+                                        data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
                                     </button>
 
                                     <!-- Edit Program -->

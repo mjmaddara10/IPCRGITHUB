@@ -222,23 +222,24 @@ class ppaController extends Controller
 
     public function getAccountableByIds(Request $request) {
         $divisionIds = $request->input('divisionIds', []);
-    
+
         if (empty($divisionIds)) {
-            return response()->json([], 400);
+            return response()->json([]);
         }
-    
-        $accountable = Employee::whereIn('division', $divisionIds)
-            ->where('role', 'Department Chief')
+
+        $accountables = Employee::whereIn('division_id', $divisionIds)
+            ->whereIn('role', ['Staff', 'Division Chief']) // Include both roles
             ->get();
-    
-        $results = $accountable->map(function ($a) {
-            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
+
+        $results = $accountables->map(function ($employee) {
+            $middleInitial = $employee->middleName ? strtoupper(substr($employee->middleName, 0, 1)) . '. ' : '';
             return [
-                'id' => $a->id,
-                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
+                'id' => $employee->id,
+                'name' => $employee->firstName . ' ' . $middleInitial . $employee->lastName,
+                'role' => $employee->role, // include role for display in the dropdown
             ];
         });
-    
+
         return response()->json($results);
     }
 

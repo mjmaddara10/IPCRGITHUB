@@ -26,13 +26,6 @@ class authorizationController extends Controller
 
         // Compare the decrypted password with the plain password from the request
         if ($decryptedPassword === $request->password) {
-            // If login is successful, log in the admin
-            // dd($decryptedPassword);
-
-            // if (!Auth::guard('admin')->check()) {
-            //     dd('User is not authenticated');
-            // }
-
             Auth::guard('admin')->login($admin);
 
             // Set session variables
@@ -51,7 +44,7 @@ class authorizationController extends Controller
             ]);
 
             // Redirect to the admin dashboard or another route
-            return redirect()->route('admin.index');
+            return redirect()->route('admin.managePpa');
         } else {
             // If login fails, redirect back with an error message
             return redirect()->back()->withErrors(['username' => 'Invalid credentials']);
