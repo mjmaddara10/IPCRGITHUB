@@ -25,6 +25,7 @@ class ppaController extends Controller
             'remarks' => $request->addRemarks,
             'accountable' => $request->addAccountable,
             'program_Id' => $request->programIdProg,
+            'project_id' => $request->project_id,
         ]);
 
         // Find the program and associate the activity with it
@@ -73,7 +74,7 @@ class ppaController extends Controller
             'timeliness' => $request->addTimeliness,
             'remarks' => $request->addRemarks,
         ]);
-    
+
         // Check if 'all' is selected
         if (in_array('all', $request->divisions)) {
             $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
@@ -81,7 +82,7 @@ class ppaController extends Controller
         } else {
             $program->divisions()->attach($request->divisions);
         }
-    
+
         return redirect()->back()->with('success', 'Program added successfully.');
     }
 
@@ -97,7 +98,7 @@ class ppaController extends Controller
         $program->timeliness = $request->editTimeliness;
         $program->remarks = $request->editRemarks;
         $program->save();
-    
+
         // Handle "all" divisions
         if (in_array('all', $request->divisions)) {
             $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
@@ -105,10 +106,10 @@ class ppaController extends Controller
         } else {
             $program->divisions()->sync($request->divisions);
         }
-    
+
         return redirect()->back()->with('success', 'Program updated successfully.');
     }
-    
+
     public function deleteProgram(Request $request){
         try{
             $program = Program::findOrFail($request->programId);
@@ -137,7 +138,7 @@ class ppaController extends Controller
             'accountable' => $request->addAccountable,
             'activity_id' => $request->activityIdSub,
         ]);
-    
+
         // Find the activity and associate the activity with it
         $activity = Activity::findOrFail($request->activityIdSub);
         $activity->subActivities()->save($subActivity);
@@ -182,11 +183,11 @@ class ppaController extends Controller
         $accountable = Employee::whereRaw('LOWER(division) = ?', [strtolower($divisionName)])
             ->where('role', 'Department Chief')
             ->get();
-    
+
         if ($accountable->isEmpty()) {
             return response()->json([], 404);
         }
-    
+
         $results = $accountable->map(function ($a) {
             $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
             return [
@@ -194,7 +195,7 @@ class ppaController extends Controller
                 'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
             ];
         });
-    
+
         return response()->json($results);
     }
 
@@ -222,15 +223,15 @@ class ppaController extends Controller
 
     public function getAccountableByIds(Request $request) {
         $divisionIds = $request->input('divisionIds', []);
-    
+
         if (empty($divisionIds)) {
             return response()->json([], 400);
         }
-    
+
         $accountable = Employee::whereIn('division', $divisionIds)
             ->where('role', 'Department Chief')
             ->get();
-    
+
         $results = $accountable->map(function ($a) {
             $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
             return [
@@ -238,7 +239,7 @@ class ppaController extends Controller
                 'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
             ];
         });
-    
+
         return response()->json($results);
     }
 

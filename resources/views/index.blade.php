@@ -11,7 +11,7 @@
 <!-- Navigation Section -->
 @section('navbar')
 <!-- Main Navigation Bar -->
-<div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
+
     <nav class="navbar navbar-expand-sm navbar-light border-bottom" style="height: 55px; width: 100%; background-color: #ffffff">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <!-- Logo and Brand Name -->
@@ -39,7 +39,7 @@
     <!-- Decorative Gold Gradient Bar -->
     <div style="background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03); height: 10px; width: 100%;"></div>
 </div>
-@endsection
+
  @endsection
 
  @section('content')
