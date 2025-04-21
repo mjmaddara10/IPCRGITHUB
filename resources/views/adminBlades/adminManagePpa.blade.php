@@ -292,7 +292,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl"
         style="display: flex; align-items: center; margin: 1.75rem auto;">
         <div class="modal-content border-0 shadow rounded-3"
-            style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -7%;">
+            style="transform: scale(1.10); transform-origin: center; width: 120%; margin-left: -7%;">
 
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
@@ -404,7 +404,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl"
         style="display: flex; align-items: center; margin: 1.75rem auto;">
         <div class="modal-content border-0 shadow rounded-3"
-            style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -7%;">
+            style="transform: scale(1.10); transform-origin: center; width: 120%; margin-left: -7%;">
 
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
@@ -756,7 +756,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl"
         style="display: flex; align-items: center; margin: 1.75rem auto;">
         <div class="modal-content border-0 shadow rounded-3"
-            style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -10%;">
+            style="transform: scale(1.10); transform-origin: center; width: 120%; margin-left: -2%;">
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="editActivityModalLabel">
@@ -1144,7 +1144,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl"
         style="display: flex; align-items: center; margin: 1.75rem auto;">
         <div class="modal-content border-0 shadow rounded-3"
-            style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
+            style="transform: scale(1.10); transform-origin: center; width: 120%; margin-left: -5%;">
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addActivityInProgramModalLabel">
@@ -1167,29 +1167,30 @@
                             name="programNameProg" id="programNameProg" disabled></textarea>
                     </div>
 
-                    <!-- Division Responsible -->
                     <div class="mb-3">
                         <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
-                            Division/s Responsible:
-                            <button class="btn btn-sm text-white me-2" id="addDivisionBtn" type="button"
-                                title="Add division responsible" style="background-color: #01a550;">
+                            Individual/s Responsible:
+                            <button class="btn btn-sm text-white me-2" id="addAccountableBtn" type="button"
+                                title="Add individual responsible" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </label>
-                        <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
-                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-                                <select class="form-select border border-success" name="divisions[]">
+                        <div id="accountableSelectContainer" data-accountables="{{ json_encode($divisions) }}">
+                            <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
+                                <select class="form-select border border-success" name="addAccountable"
+                                    id="addAccountable">
                                     @foreach ($divisions as $division)
                                     <option value="{{ $division->id }}">{{ $division->name }}</option>
                                     @endforeach
-                                    <option value="all">All Divisions</option>
+                                    <option value="all">All Individuals</option>
                                 </select>
-                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
+                                <button type="button" class="btn btn-danger btn-sm removeAccountableBtn" disabled>
                                     <i class="fas fa-minus"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- Activity Table -->
                     <div class="table-responsive">
@@ -1267,7 +1268,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl"
         style="display: flex; align-items: center; margin: 1.75rem auto;">
         <div class="modal-content border-0 shadow rounded-3"
-            style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -10%;">
+            style="transform: scale(1.10); transform-origin: center; width: 120%; margin-left: -4%;">
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addSubActivityModalLabel">
@@ -1287,6 +1288,31 @@
                             name="activityNameSub" id="activityNameSub" disabled></textarea>
                     </div>
 
+                    <!-- Division Responsible -->
+                    <div class="mb-3" style="margin-top: 1px;">
+                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
+                            Division/s Responsible:
+                            <button class="btn btn-sm text-white me-2" id="addDivisionBtn" type="button"
+                                title="Add division responsible" style="background-color: #01a550;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </label>
+                        <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
+                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                                <select class="form-select border border-success" name="addAccountable">
+                                    @foreach ($divisions as $division)
+                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                    @endforeach
+                                    <option value="all">All Divisions</option>
+                                </select>
+                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <!-- Sub-Activity Table -->
                     <div class="table-responsive">
                         <table class="table table-bordered align-middle text-center border-success">
@@ -1298,7 +1324,7 @@
                                     <th style="min-width: 200px;">Efficiency</th>
                                     <th style="min-width: 200px;">Timeliness</th>
                                     <th style="min-width: 200px;">Remarks</th>
-                                    <th style="min-width: 200px;">Individual/s Responsible</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -1333,11 +1359,7 @@
                                             style="min-height: 100px; resize: vertical;" name="addRemarks"
                                             id="addRemarks" required></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none"
-                                            style="min-height: 100px; resize: vertical;" name="addAccountable"
-                                            id="addAccountable" required></textarea>
-                                    </td>
+
                                 </tr>
                             </tbody>
                         </table>
@@ -1365,7 +1387,7 @@
     <div class="modal-dialog modal-dialog-centered modal-xl"
         style="display: flex; align-items: center; margin: 1.75rem auto;">
         <div class="modal-content border-0 shadow rounded-3"
-            style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -10%;">
+            style="transform: scale(1.10); transform-origin: center; width: 120%; margin-left: -2%;">
 
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
@@ -1374,12 +1396,35 @@
                 </h5>
             </div>
 
+
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
                 <form id="editSubActivityForm" class="p-2">
                     @csrf
                     <input type="hidden" id="editActivityIdSub" name="editActivityIdSub" required>
-
+                    <!-- Division Responsible -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
+                            Division/s Responsible:
+                            <button class="btn btn-sm text-white me-2" id="addDivisionBtn" type="button"
+                                title="Add division responsible" style="background-color: #01a550;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </label>
+                        <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
+                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                                <select class="form-select border border-success" name="addAccountable">
+                                    @foreach ($divisions as $division)
+                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                    @endforeach
+                                    <option value="all">All Divisions</option>
+                                </select>
+                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Table Input Fields -->
                     <div class="table-responsive">
                         <table class="table table-bordered align-middle text-center border-success">
