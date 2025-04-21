@@ -236,7 +236,8 @@ class ppaController extends Controller
             return [
                 'id' => $employee->id,
                 'name' => $employee->firstName . ' ' . $middleInitial . $employee->lastName,
-                'role' => $employee->role, // include role for display in the dropdown
+                'role' => $employee->role,
+                'position' => $employee->position, 
             ];
         });
 

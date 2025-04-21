@@ -101,7 +101,7 @@ function updateAccountableRemoveButtons() {
 // Populate accountable select inputs
 function populateAccountableOptions(options) {
     const htmlOptions = options.map(person =>
-        `<option value="${person.id}">${person.name}</option>`
+        `<option value="${person.id}">${person.name} - ${person.position}</option>`
     ).join('');
 
     $('.accountableSelect').each(function () {
@@ -113,24 +113,24 @@ function populateAccountableOptions(options) {
 }
 
 // Add new accountable person input
-$('#addAccountablePersonBtn').on('click', function () {
-    const $container = $('#accountableSelectContainer');
-    const $firstGroup = $container.find('.accountable-select-group:first');
-    const $newGroup = $firstGroup.clone();
+// $('#addAccountablePersonBtn').on('click', function () {
+//     const $container = $('#accountableSelectContainer');
+//     const $firstGroup = $container.find('.accountable-select-group:first');
+//     const $newGroup = $firstGroup.clone();
 
-    $newGroup.find('select').val('');
-    $newGroup.find('.removeAccountableBtn').prop('disabled', false);
+//     $newGroup.find('select').val('');
+//     $newGroup.find('.removeAccountableBtn').prop('disabled', false);
 
-    $container.append($newGroup);
-});
+//     $container.append($newGroup);
+// });
 
 // Remove a responsible person input
-$(document).on('click', '.removeAccountableBtn', function () {
-    const $groups = $('.accountable-select-group');
-    if ($groups.length > 1) {
-        $(this).closest('.accountable-select-group').remove();
-    }
-});
+// $(document).on('click', '.removeAccountableBtn', function () {
+//     const $groups = $('.accountable-select-group');
+//     if ($groups.length > 1) {
+//         $(this).closest('.accountable-select-group').remove();
+//     }
+// });
 
 
 // Add Activity
