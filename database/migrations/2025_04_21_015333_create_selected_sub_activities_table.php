@@ -11,29 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_activities', function (Blueprint $table) {
-            $table->id(); 
-            $table->string('name')->nullable(); 
-            $table->string('successIndicator')->nullable(); 
-            $table->string('quality')->nullable(); 
-            $table->string('efficiency')->nullable(); 
-            $table->string('timeliness')->nullable(); 
+        Schema::create('selected_sub_activities', function (Blueprint $table) {
+            $table->id(); // Primary key
+            $table->string('name')->nullable();
+            $table->string('successIndicator')->nullable();
+            $table->string('quality')->nullable();
+            $table->string('efficiency')->nullable();
+            $table->string('timeliness')->nullable();
             $table->string('remarks')->nullable();
-            
+
             $table->unsignedBigInteger('accountable_id')->nullable();
             $table->foreign('accountable_id')->references('id')->on('tbl_employee')->onDelete('cascade');
-            
+
             $table->unsignedBigInteger('activity_id')->nullable();
             $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
-            $table->timestamps(); 
+            $table->timestamps(); // Created at and updated at timestamps
         });
     }
 
     /**
      * Reverse the migrations.
-     */ 
+     */
     public function down(): void
     {
-        Schema::dropIfExists('sub_activities');
+        Schema::dropIfExists('selected_sub_activities');
     }
 };

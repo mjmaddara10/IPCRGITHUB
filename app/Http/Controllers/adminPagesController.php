@@ -28,8 +28,8 @@ class adminPagesController extends Controller
     
     public function managePpa(){
         // Fetch all programs with their related projects
-        $programs = Program::with('divisions')->get();
-        $activities = Activity::with('subActivities')->get();
+        $programs = Program::with(['divisions', 'activities.employees'])->get();
+        $activities = Activity::with('subActivities','employees')->get();
         $employees = Employee::all();
         $divisions = Division::all();
     

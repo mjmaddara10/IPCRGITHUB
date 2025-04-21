@@ -31,6 +31,15 @@ class Employee extends Authenticatable
         return $this->belongsTo(Division::class, 'division_id');
     }
     
+    public function activities()
+    {
+        return $this->belongsToMany(Activity::class, 'activity_employee', 'employee_id', 'activity_id');
+    }
+
+    public function selectedSubActivities()
+    {
+        return $this->hasMany(SelectedSubActivity::class);
+    }
 
     protected $hidden = [
         'password',

@@ -142,7 +142,20 @@
                                     <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
                                     <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->timeliness }}</td>
                                     <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->remarks }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->accountable }}</td>
+                                    @php
+                                        $allEmployeeCount = \App\Models\Employee::count();
+                                        $assignedCountAccountable = $activity->employees->count();
+                                    @endphp
+
+                                    <td class="text-center border border-muted" style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">
+                                    @if ($activity->employees->count() === $allEmployeeCount)
+                                        All Employees
+                                    @else
+                                        @foreach ($activity->employees as $employee)
+                                            {{ $employee->firstName }} {{ strtoupper(substr($employee->middleName, 0, 1)) }}. {{ $employee->lastName }}
+                                        @endforeach
+                                    @endif
+                                    </td>
                                     <td class="text-center border border-muted" style="background-color:rgb(212, 212, 212);">
                                         <!-- Add Sub-Activity -->
                                         <button class="btn btn-sm addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
@@ -525,11 +538,8 @@
                         </label>
                         <div id="accountableSelectContainer" data-divisions="{{ json_encode($divisions) }}">
                             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-                                <select class="form-select border border-success accountableSelect" name="addAccountableId[]">
-                                    @foreach ($divisions as $division)
-                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
-                                    @endforeach
-                                    <option value="all">All Divisions</option>
+                                <select class="form-select border border-success accountableSelect" id="addAccountableId" name="addAccountableId[]">
+                                    
                                 </select>
                                 <button type="button" class="btn btn-danger btn-sm removeAccountableBtn" disabled>
                                     <i class="fas fa-minus"></i>

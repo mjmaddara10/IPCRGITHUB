@@ -112,27 +112,6 @@ function populateAccountableOptions(options) {
     });
 }
 
-// Add new accountable person input
-// $('#addAccountablePersonBtn').on('click', function () {
-//     const $container = $('#accountableSelectContainer');
-//     const $firstGroup = $container.find('.accountable-select-group:first');
-//     const $newGroup = $firstGroup.clone();
-
-//     $newGroup.find('select').val('');
-//     $newGroup.find('.removeAccountableBtn').prop('disabled', false);
-
-//     $container.append($newGroup);
-// });
-
-// Remove a responsible person input
-// $(document).on('click', '.removeAccountableBtn', function () {
-//     const $groups = $('.accountable-select-group');
-//     if ($groups.length > 1) {
-//         $(this).closest('.accountable-select-group').remove();
-//     }
-// });
-
-
 // Add Activity
 $('#addActivityInProgramForm').on('submit', function(e) {
     e.preventDefault(); // Prevent the default form submission

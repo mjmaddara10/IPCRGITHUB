@@ -11,9 +11,63 @@ use App\Models\SubProject;
 use App\Models\Program;
 use App\Models\Employee;
 use App\Models\Division;
+use App\Models\SelectedActivity;
+use App\Models\SelectedSubActivity;
 
 class ppaController extends Controller
 {
+    // =====================Add Sub-Activity========================= //
+    public function addSubActivity(Request $request){
+        $subActivity = new SubActivity([
+            'name' => $request->addSubActivityName,
+            'successIndicator' => $request->addSuccessIndicator,
+            'quality' => $request->addQuality,
+            'efficiency' => $request->addEfficiency,
+            'timeliness' => $request->addTimeliness,
+            'remarks' => $request->addRemarks,
+            'accountable' => $request->addAccountable,
+            'activity_id' => $request->activityIdSub,
+        ]);
+
+        // Find the activity and associate the activity with it
+        $activity = Activity::findOrFail($request->activityIdSub);
+        $activity->subActivities()->save($subActivity);
+    }
+
+    // =====================Update Sub-Activity========================= //
+    public function updateSubActivity(Request $request){
+        // Find the sub-activity and update it
+        $subActivity = SubActivity::findOrFail($request->editActivityIdSub);
+        $subActivity->update([
+            'name' => $request->editActivityNameSub,
+            'successIndicator' => $request->editSuccessIndicatorSub,
+            'quality' => $request->editQualitySub,
+            'efficiency' => $request->editEfficiencySub,
+            'timeliness' => $request->editTimelinessSub,
+            'remarks' => $request->editRemarksSub,
+            'accountable' => $request->editAccountableSub,
+        ]);
+
+        // Return a response (this is what your AJAX call will use)
+        return response()->json(['message' => 'Sub-Activity updated successfully!']);
+    }
+
+    // =====================Delete Sub-Activity========================= //
+    public function deleteSubActivity(Request $request){
+        try{
+            $subActivity = SubActivity::findOrFail($request->subActivityId);
+            $subActivity->delete();
+
+            return response()->json(['message' => 'Sub-activity deleted successfully!'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // If sub-activity is not found
+            return response()->json(['error' => 'Sub-activity not found!'], 404);
+        } catch (\Exception $e) {
+            // For any other errors
+            return response()->json(['error' => 'An error occurred while trying to delete the sub-activity.'], 500);
+        }
+    }
+
     // =====================Activity========================= //
     public function addActivityInProgram(Request $request){
         $activity = new Activity([
@@ -23,13 +77,28 @@ class ppaController extends Controller
             'efficiency' => $request->addEfficiency,
             'timeliness' => $request->addTimeliness,
             'remarks' => $request->addRemarks,
-            'accountable' => $request->addAccountable,
+            'program_Id' => $request->programIdProg,
+        ]);
+
+        $selectedActivity = new SelectedActivity([
+            'name' => $request->addActivityName,
+            'successIndicator' => $request->addSuccessIndicator,
+            'quality' => $request->addQuality,
+            'efficiency' => $request->addEfficiency,
+            'timeliness' => $request->addTimeliness,
+            'remarks' => $request->addRemarks,
             'program_Id' => $request->programIdProg,
         ]);
 
         // Find the program and associate the activity with it
         $program = Program::findOrFail($request->programIdProg);
         $program->activities()->save($activity);
+        $selectedActivity->save();
+
+        if ($request->has('addAccountableId')) {
+            // $selectedActivity->employees()->attach($request->addAccountableId);
+            $activity->employees()->attach($request->addAccountableId);
+        }
     }
 
     public function updateActivity(Request $request){
@@ -125,57 +194,7 @@ class ppaController extends Controller
 
     }
 
-    // =====================Add Sub-Activity========================= //
-    public function addSubActivity(Request $request){
-        $subActivity = new SubActivity([
-            'name' => $request->addSubActivityName,
-            'successIndicator' => $request->addSuccessIndicator,
-            'quality' => $request->addQuality,
-            'efficiency' => $request->addEfficiency,
-            'timeliness' => $request->addTimeliness,
-            'remarks' => $request->addRemarks,
-            'accountable' => $request->addAccountable,
-            'activity_id' => $request->activityIdSub,
-        ]);
     
-        // Find the activity and associate the activity with it
-        $activity = Activity::findOrFail($request->activityIdSub);
-        $activity->subActivities()->save($subActivity);
-    }
-
-    // =====================Update Sub-Activity========================= //
-    public function updateSubActivity(Request $request){
-        // Find the sub-activity and update it
-        $subActivity = SubActivity::findOrFail($request->editActivityIdSub);
-        $subActivity->update([
-            'name' => $request->editActivityNameSub,
-            'successIndicator' => $request->editSuccessIndicatorSub,
-            'quality' => $request->editQualitySub,
-            'efficiency' => $request->editEfficiencySub,
-            'timeliness' => $request->editTimelinessSub,
-            'remarks' => $request->editRemarksSub,
-            'accountable' => $request->editAccountableSub,
-        ]);
-
-        // Return a response (this is what your AJAX call will use)
-        return response()->json(['message' => 'Sub-Activity updated successfully!']);
-    }
-
-    // =====================Delete Sub-Activity========================= //
-    public function deleteSubActivity(Request $request){
-        try{
-            $subActivity = SubActivity::findOrFail($request->subActivityId);
-            $subActivity->delete();
-
-            return response()->json(['message' => 'Sub-activity deleted successfully!'], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            // If sub-activity is not found
-            return response()->json(['error' => 'Sub-activity not found!'], 404);
-        } catch (\Exception $e) {
-            // For any other errors
-            return response()->json(['error' => 'An error occurred while trying to delete the sub-activity.'], 500);
-        }
-    }
 
     // =====================Autofill Accountable (Add Activity)========================= //
     public function getAccountable($divisionName){

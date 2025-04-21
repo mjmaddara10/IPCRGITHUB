@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubActivity extends Model
+class SelectedSubActivity extends Model
 {
     use HasFactory;
 
@@ -21,13 +21,13 @@ class SubActivity extends Model
         'activity_id',
     ];
 
-    public function activities()
-    {
-        return $this->belongsTo(Activity::class);
-    }
-
     public function employees()
     {
         return $this->hasMany(Employee::class);
+    }
+
+    public function activities()
+    {
+        return $this->belongsTo(Activity::class);
     }
 }
