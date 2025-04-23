@@ -21,11 +21,6 @@ class Employee extends Authenticatable
         'role',
     ];
 
-    public function employees()
-    {
-        return $this->belongsToMany(Employee::class, 'activity_employee', 'activity_id', 'employee_id');
-    }
-
     public function division()
     {
         return $this->belongsTo(Division::class, 'division_id');

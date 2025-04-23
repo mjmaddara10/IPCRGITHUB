@@ -174,7 +174,7 @@ $(document).on('click', '.editActivityBtn', function () {
                         <select class="form-select border-2 py-2 editAccountableSelect" name="editAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
                             <option value="${person.id}" selected>${person.name} | ${person.position}</option>
                         </select>
-                        <button type="button" class="btn btn-danger btn-sm removeAccountableBtn" ${isFirst ? 'disabled' : ''}>
+                        <button type="button" class="btn btn-danger btn-sm removeAccountableBtn" >
                             <i class="fas fa-minus"></i>
                         </button>
                     </div>`;

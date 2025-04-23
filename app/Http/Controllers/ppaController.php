@@ -55,9 +55,7 @@ class ppaController extends Controller
         ]);
 
         // Sync the individuals responsible
-        if ($request->has('editAccountableId')) {
-            $subActivity->employees()->sync($request->editAccountableId);
-        }
+        $subActivity->employees()->sync($request->input('editAccountableId', []));
 
         // Return a response (this is what your AJAX call will use)
         return response()->json(['message' => 'Sub-Activity updated successfully!']);
@@ -126,9 +124,7 @@ class ppaController extends Controller
         ]);
 
         // Sync the individuals responsible
-        if ($request->has('editAccountableId')) {
-            $activity->employees()->sync($request->editAccountableId);
-        }
+        $activity->employees()->sync($request->input('editAccountableId', []));
 
         // Return a response (this is what your AJAX call will use)
         return response()->json(['message' => 'Activity updated successfully!']);

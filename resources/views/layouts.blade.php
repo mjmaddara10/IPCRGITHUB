@@ -71,8 +71,7 @@
     <script src="{{ asset('js/ppaManagement/forms.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/activity.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/subActivity.js') }}"></script>
-    <script src="{{ asset('js/ppaManagement/project.js') }}"></script>
-    <script src="{{ asset('js/ppaManagement/subProject.js') }}"></script>
+    <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
 
     <!-- Assign PPA -->
     <script src="{{ asset('js/ppaView/user.js') }}"></script>

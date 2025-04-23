@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\programController;
 use App\Http\Controllers\ppaController;
+use App\Http\Controllers\viewPpaController;
 use App\Http\Controllers\usersController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
@@ -58,8 +59,9 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::prefix('viewPpa')->group(function () {
-
     Route::get('/{id}/getEmployeeDivision', [viewPpaController::class, 'getEmployeeDivision']);
+    Route::get('/{id}/getEmployeeTargets', [viewPpaController::class, 'getEmployeeTargets']);
+
 });
 
 Route::group(['middleware' => 'admin'], function () {

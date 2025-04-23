@@ -36,9 +36,8 @@
 
 @section('content')
 <div class="page-background"></div>
-<div style="transform: scale(0.85); transform-origin: top center; width: 117.65%; margin-left: -8.825%;">
+<div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
 
-    <!-- DataTable -->
     <div style="padding-top: 2px;">
         <div class="container-fluid mt-2">
             <div class="bg-white">
@@ -56,10 +55,22 @@
 
                 <div class="px-4 pt-4">
                     <div class="d-flex justify-content-between align-items-center flex-wrap mb-1">
-                        <!-- User Select -->
+                        <!-- Division Select -->
                         <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
-                            <label for="employeeSelect" class="me-2 fw-bold mb-0">Select User:</label>
-                            <select class="form-select form-select-sm w-auto" name="employeeSelect" id="employeeSelect">
+                            <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
+                            <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
+                                @foreach ($divisions as $division)
+                                    <option value="{{ $division->id }}"
+                                        data-name="{{ $division->name }}">
+                                        {{ $division->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        
+
+                            <!-- User Select -->
+                            <label for="employeeSelect" class="mx-2 fw-bold mb-0">Select User:</label>
+                            <select class="form-select form-select-md w-auto" name="employeeSelect" id="employeeSelect">
                                 <!-- <option value="">Select an Employee</option> -->
                                 @foreach ($employees as $employee)
                                     <option value="{{ $employee->id }}"
@@ -123,32 +134,20 @@
                 
                 <!-- Table Section -->
                 <div class="container-fluid" style="padding: 0 0px;">
-
                     <div class="table-responsive">
                         <table id="usersTable" class="table table-hover" style="width: 100%;">
                             <thead class="text-center">
                                 <tr>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:25%;">Programs/Project/Activities</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Programs/Project/Activities</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Success Indicator</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Quality</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Efficiency</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Timeliness</th>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Remarks/MOV</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Remarks/MOV</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-left" style= "color: #FFFFFF; background-color: #03592c;" colspan="6">D. CAPABILITY BUILDING PROGRAM</td>
-                                </tr>
-                                <tr style="background-color: #ffffff;">
-                                    <!-- <td class="text-center"><input type="checkbox"></td> -->
-                                    <td class="text-center">1.1 Prepare Training Calendar</td>
-                                    <td class="text-center">Success Indicator</td>
-                                    <td class="text-center">Quality</td>
-                                    <td class="text-center">Efficiency</td>
-                                    <td class="text-center">Timeliness</td>
-                                    <td class="text-center">Remarks</td>
-                                </tr>
+                            <tbody id="usersTableBody">
+                                <!-- Target PPAs here -->
                             </tbody>
                         </table>
                     </div>

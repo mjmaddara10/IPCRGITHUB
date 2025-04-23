@@ -20,6 +20,7 @@ class Activity extends Model
         'accountable_id',
         'program_id',
     ];
+    
     public function program()
     {
         return $this->belongsTo(Program::class);
