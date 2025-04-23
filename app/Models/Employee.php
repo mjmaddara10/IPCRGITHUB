@@ -21,16 +21,20 @@ class Employee extends Authenticatable
         'role',
     ];
 
-    public function employees()
-    {
-        return $this->belongsTo(Activity::class);
-    }
-
     public function division()
     {
         return $this->belongsTo(Division::class, 'division_id');
     }
     
+    public function activities()
+    {
+        return $this->belongsToMany(Activity::class, 'activity_employee', 'employee_id', 'activity_id');
+    }
+
+    public function subActivities()
+    {
+        return $this->belongsToMany(SubActivity::class, 'sub_activity_employee', 'employee_id', 'sub_activity_id');
+    }
 
     protected $hidden = [
         'password',

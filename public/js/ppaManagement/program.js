@@ -44,8 +44,89 @@ $('#addProgramForm').on('submit', function(e) {
 });
 
 // Edit Program Fill Form
-$(document).on('click', '.editProgramBtn', function () {
-    // Get data from the button clicked
+// Utility: Add a division select with optional selected value
+function addDivisionSelect(selectedId = null) {
+    let allDivisions = $('#editDivisionSelectContainer').data('divisions');
+    let selectHtml = `
+    <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+        <select class="form-select border border-success" name="divisions[]">`;
+
+    allDivisions.forEach(div => {
+        const isSelected = div.id === selectedId ? 'selected' : '';
+        selectHtml += `<option value="${div.id}" ${isSelected}>${div.name}</option>`;
+    });
+
+    const allSelected = selectedId === 'all' ? 'selected' : '';
+    selectHtml += `<option value="all" ${allSelected}>All Divisions</option>`;
+
+    selectHtml += `</select>
+        <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+            <i class="fas fa-minus"></i>
+        </button>
+    </div>`;
+
+    $('#editDivisionSelectContainer').append(selectHtml);
+}
+
+// Utility: Disable first remove button
+function updateRemoveButtons() {
+    const removeBtns = $('#editDivisionSelectContainer .removeDivisionBtn');
+    removeBtns.prop('disabled', false);
+    removeBtns.first().prop('disabled', true);
+}
+
+// Utility: Disable already selected divisions
+function updateDivisionOptions() {
+    const $container = $('#editDivisionSelectContainer');
+    const $selects = $container.find('select');
+
+    $selects.each(function () {
+        const $currentSelect = $(this);
+        const currentVal = $currentSelect.val();
+
+        const selectedValues = $selects
+            .not($currentSelect)
+            .map(function () {
+                return $(this).val();
+            })
+            .get();
+
+        $currentSelect.find('option').each(function () {
+            const $option = $(this);
+            const optionVal = $option.val();
+
+            if (optionVal === 'all') {
+                $option.prop('disabled', false);
+                return;
+            }
+
+            $option.prop('disabled', selectedValues.includes(optionVal));
+        });
+    });
+}
+
+// Utility: Handle "All Divisions" logic
+// function handleAllDivisionsLogic() {
+//     const hasAll = $('#editDivisionSelectContainer select').filter(function () {
+//         return $(this).val() === 'all';
+//     }).length > 0;
+
+//     if (hasAll) {
+//         $('#editDivisionSelectContainer .division-select-group').each(function () {
+//             if ($(this).find('select').val() !== 'all') {
+//                 $(this).remove();
+//             }
+//         });
+//         $('#editAddDivisionBtn').prop('disabled', true);
+//     } else {
+//         $('#editAddDivisionBtn').prop('disabled', false);
+//     }
+
+//     updateRemoveButtons();
+// }
+
+// Main click handler
+$(document).off('click', '.editProgramBtn').on('click', '.editProgramBtn', function () {
     var programId = $(this).data('program-id');
     var programName = $(this).data('program-name');
     var programSuccessIndicator = $(this).data('program-success');
@@ -54,7 +135,6 @@ $(document).on('click', '.editProgramBtn', function () {
     var programTimeliness = $(this).data('program-timeliness');
     var programRemarks = $(this).data('program-remarks');
 
-    // Populate modal fields
     $('#editProgramId').val(programId);
     $('#editProgramName').val(programName);
     $('#editSuccessIndicator').val(programSuccessIndicator);
@@ -63,12 +143,8 @@ $(document).on('click', '.editProgramBtn', function () {
     $('#editTimeliness').val(programTimeliness);
     $('#editRemarks').val(programRemarks);
 
-    // Clear previous selects
     $('#editDivisionSelectContainer').empty();
 
-    let allDivisions = $('#editDivisionSelectContainer').data('divisions');
-
-    // Fetch assigned divisions
     $.get(`/admin/programs/${programId}/getDivisionResponsible`, function (assignedDivisions) {
         assignedDivisions.forEach((assignedDiv) => {
             addDivisionSelect(assignedDiv.id);
@@ -80,110 +156,15 @@ $(document).on('click', '.editProgramBtn', function () {
 
         updateRemoveButtons();
         updateDivisionOptions();
-        handleAllDivisionsLogic();
     });
-
-    // Util: Add a division select with optional selected value
-    function addDivisionSelect(selectedId = null) {
-        let selectHtml = `
-        <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-            <select class="form-select border border-success" name="divisions[]">`;
-
-        allDivisions.forEach(div => {
-            const isSelected = div.id === selectedId ? 'selected' : '';
-            selectHtml += `<option value="${div.id}" ${isSelected}>${div.name}</option>`;
-        });
-
-        const allSelected = selectedId === 'all' ? 'selected' : '';
-        selectHtml += `<option value="all" ${allSelected}>All Divisions</option>`;
-
-        selectHtml += `</select>
-            <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-                <i class="fas fa-minus"></i>
-            </button>
-        </div>`;
-
-        $('#editDivisionSelectContainer').append(selectHtml);
-    }
-
-    // Util: Disable first remove button
-    function updateRemoveButtons() {
-        const removeBtns = $('#editDivisionSelectContainer .removeDivisionBtn');
-        removeBtns.prop('disabled', false);
-        removeBtns.first().prop('disabled', true);
-    }
-
-    // Util: Disable already selected divisions
-    function updateDivisionOptions() {
-        // Selects only inside the modal
-        const $container = $('#editDivisionSelectContainer');
-        const $selects = $container.find('select');
-    
-        $selects.each(function () {
-            const $currentSelect = $(this);
-            const currentVal = $currentSelect.val();
-    
-            // Get all selected values excluding the current select's value
-            const selectedValues = $selects
-                .not($currentSelect)
-                .map(function () {
-                    return $(this).val();
-                })
-                .get();
-    
-            $currentSelect.find('option').each(function () {
-                const $option = $(this);
-                const optionVal = $option.val();
-    
-                if (optionVal === 'all') {
-                    $option.prop('disabled', false);
-                    return;
-                }
-    
-                // Disable only if it's selected in another select
-                if (selectedValues.includes(optionVal)) {
-                    $option.prop('disabled', true);
-                } else {
-                    $option.prop('disabled', false);
-                }
-            });
-        });
-    }
-
-    // Util: Handle "All Divisions" logic
-    function handleAllDivisionsLogic() {
-        const hasAll = $('#editDivisionSelectContainer select').filter(function () {
-            return $(this).val() === 'all';
-        }).length > 0;
-
-        if (hasAll) {
-            // Keep only the select with value "all"
-            $('#editDivisionSelectContainer .division-select-group').each(function () {
-                if ($(this).find('select').val() !== 'all') {
-                    $(this).remove();
-                }
-            });
-            $('#editAddDivisionBtn').prop('disabled', true);
-        } else {
-            $('#editAddDivisionBtn').prop('disabled', false);
-        }
-
-        updateRemoveButtons();
-    }
-
-    // Make utilities available globally in this scope
-    window.addDivisionSelect = addDivisionSelect;
-    window.updateRemoveButtons = updateRemoveButtons;
-    window.updateDivisionOptions = updateDivisionOptions;
-    window.handleAllDivisionsLogic = handleAllDivisionsLogic;
 });
 
 // Add new select input
-$('#editAddDivisionBtn').on('click', function () {
+$(document).off('click', '#editAddDivisionBtn').on('click', '#editAddDivisionBtn', function () {
     addDivisionSelect();
     updateRemoveButtons();
     updateDivisionOptions();
-    handleAllDivisionsLogic();
+    // handleAllDivisionsLogic();
 });
 
 // Remove division row
@@ -191,13 +172,13 @@ $(document).on('click', '.removeDivisionBtn', function () {
     $(this).closest('.division-select-group').remove();
     updateRemoveButtons();
     updateDivisionOptions();
-    handleAllDivisionsLogic();
+    // handleAllDivisionsLogic();
 });
 
 // Change division selection
 $(document).on('change', '#editDivisionSelectContainer select', function () {
     updateDivisionOptions();
-    handleAllDivisionsLogic();
+    // handleAllDivisionsLogic();
 });
 
 // Edit Program
@@ -438,94 +419,6 @@ document.getElementById('divisionSelectContainer').addEventListener('click', fun
         e.target.closest('.division-select-group').remove();
     }
 });
-
-// Edit Program
-// document.addEventListener('DOMContentLoaded', function () {
-//     const editDivisionContainer = document.getElementById('editDivisionSelectContainer');
-
-//     // Handle edit button click
-//     document.querySelectorAll('.editProgramBtn').forEach(button => {
-//         button.addEventListener('click', function () {
-//             const programId = this.getAttribute('data-id');
-
-//             fetch(`/programs/${programId}/edit`)
-//                 .then(response => response.json())
-//                 .then(data => {
-//                     const program = data.program;
-//                     const allDivisions = data.divisions;
-//                     const selectedDivisions = data.selectedDivisions;
-
-//                     // Fill in other form fields
-//                     document.getElementById('editProgramId').value = program.id;
-//                     document.getElementById('editProgramName').value = program.title ?? '';
-//                     document.getElementById('editSuccessIndicator').value = program.success_indicator ?? '';
-//                     document.getElementById('editQuality').value = program.quality ?? '';
-//                     document.getElementById('editEfficiency').value = program.efficiency ?? '';
-//                     document.getElementById('editTimeliness').value = program.timeliness ?? '';
-//                     document.getElementById('editRemarks').value = program.remarks ?? '';
-
-//                     // Clear previous division selects
-//                     editDivisionContainer.innerHTML = '';
-
-//                     // Add select inputs for selected divisions
-//                     selectedDivisions.forEach(division => {
-//                         let optionsHTML = `<option value="all">All Divisions</option>`;
-//                         allDivisions.forEach(div => {
-//                             optionsHTML += `<option value="${div.id}" ${div.id === division.id ? 'selected' : ''}>${div.name}</option>`;
-//                         });
-
-//                         const selectGroupHTML = `
-//                             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-//                                 <select class="form-select" name="divisions[]">${optionsHTML}</select>
-//                                 <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-//                                     <i class="fas fa-minus"></i>
-//                                 </button>
-//                             </div>
-//                         `;
-
-//                         editDivisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
-//                     });
-
-//                     // Show modal (assuming you use Bootstrap modal or similar)
-//                     const editModal = new bootstrap.Modal(document.getElementById('editProgramModal'));
-//                     editModal.show();
-//                 })
-//                 .catch(error => {
-//                     console.error('Failed to fetch program data:', error);
-//                 });
-//         });
-//     });
-
-//     // Add new division select
-//     document.getElementById('editAddDivisionBtn').addEventListener('click', function (e) {
-//         e.preventDefault();
-
-//         const allDivisions = JSON.parse(editDivisionContainer.getAttribute('data-divisions'));
-//         let optionsHTML = '<option value="all">All Divisions</option>';
-
-//         allDivisions.forEach(division => {
-//             optionsHTML += `<option value="${division.id}">${division.name}</option>`;
-//         });
-
-//         const selectGroupHTML = `
-//             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-//                 <select class="form-select" name="divisions[]">${optionsHTML}</select>
-//                 <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-//                     <i class="fas fa-minus"></i>
-//                 </button>
-//             </div>
-//         `;
-
-//         editDivisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
-//     });
-
-//     // Remove division select
-//     editDivisionContainer.addEventListener('click', function (e) {
-//         if (e.target.closest('.removeDivisionBtn')) {
-//             e.target.closest('.division-select-group').remove();
-//         }
-//     });
-// });
 
 // Filtering thru Division
 document.getElementById('divisionFilter').addEventListener('change', function () {

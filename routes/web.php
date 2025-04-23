@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\programController;
 use App\Http\Controllers\ppaController;
+use App\Http\Controllers\viewPpaController;
 use App\Http\Controllers\usersController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
@@ -28,37 +29,39 @@ Route::post('/admin/adminIndex', [authorizationController::class, 'adminLogin'])
 Route::prefix('admin')->group(function () {
     Route::post('/updateActivity', [ppaController::class, 'updateActivity'])->name('updateActivity');
     Route::post('/deleteActivity', [ppaController::class, 'deleteActivity'])->name('deleteActivity');
-    Route::post('/addActivity', [ppaController::class, 'addActivity'])->name('addActivity');
+    Route::post('/addActivityInProgram', [ppaController::class, 'addActivityInProgram'])->name('addActivityInProgram');
 
     Route::post('/addSubActivity', [ppaController::class, 'addSubActivity'])->name('addSubActivity');
     Route::post('/updateSubActivity', [ppaController::class, 'updateSubActivity'])->name('updateSubActivity');
     Route::post('/deleteSubActivity', [ppaController::class, 'deleteSubActivity'])->name('deleteSubActivity');
-
-    Route::post('/addSubProject', [ppaController::class, 'addSubProject'])->name('addSubProject');
-    Route::post('/updateSubProject', [ppaController::class, 'updateSubProject'])->name('updateSubProject');
-    Route::post('/deleteSubProject', [ppaController::class, 'deleteSubProject'])->name('deleteSubProject');
-
-    Route::post('/addProject', [ppaController::class, 'addProject'])->name('addProject');
-    Route::post('/updateProject', [ppaController::class, 'updateProject'])->name('updateProject');
-    Route::post('/deleteProject', [ppaController::class, 'deleteProject'])->name('deleteProject');
     
     Route::post('/addProgram', [ppaController::class, 'addProgram'])->name('addProgram');
     Route::post('/updateProgram', [ppaController::class, 'updateProgram'])->name('updateProgram');
     Route::post('/deleteProgram', [ppaController::class, 'deleteProgram'])->name('deleteProgram');
 
-    Route::post('/addActivityInSub', [ppaController::class, 'addActivityInSub'])->name('addActivityInSub');
-    Route::post('/addActivityInProgram', [ppaController::class, 'addActivityInProgram'])->name('addActivityInProgram');
-
-    Route::post('/filterProgram', [ppaController::class, 'filterProgram'])->name('filterProgram');
-    Route::get('/getAccountable/{divisionName}', [ppaController::class, 'getAccountable'])->where('divisionName', '.*');
-    // Route::post('/getAccountableMultiple', [ppaController::class, 'getAccountableMultiple']);
-    // Route::post('/getAccountableByIds', [ppaController::class, 'getAccountableByIds']);
-    Route::get('/getEmployeeDivision/{id}', [assignController::class, 'getEmployeeDivision']);
-
-
+    Route::post('/getAccountableByIds', [ppaController::class, 'getAccountableByIds']);
 
     // Edit Program (Division<-->Program)
     Route::get('/programs/{id}/getDivisionResponsible', [ppaController::class, 'getDivisionResponsible']);
+
+    // Edit Activity (Individual<-->Activity)
+    Route::get('/activity/{id}/getActivityAccountables', [ppaController::class, 'getActivityAccountables']);
+
+    // Edit Sub-Activity (Individual<-->Sub-Activity)
+    Route::get('/subActivity/{id}/getSubActivityAccountables', [ppaController::class, 'getSubActivityAccountables']);
+
+    // Fetch employee for autofill (Edit activity)
+    Route::get('/activity/{id}/fetchEmployee', [ppaController::class, 'fetchEmployee']);
+
+    // Fetch employee for autofill (Edit sub-activity)
+    Route::get('/subActivity/{id}/fetchEmployeeSub', [ppaController::class, 'fetchEmployeeSub']);
+
+});
+
+Route::prefix('viewPpa')->group(function () {
+    Route::get('/{id}/getEmployeeDivision', [viewPpaController::class, 'getEmployeeDivision']);
+    Route::get('/{id}/getEmployeeTargets', [viewPpaController::class, 'getEmployeeTargets']);
+
 });
 
 Route::group(['middleware' => 'admin'], function () {

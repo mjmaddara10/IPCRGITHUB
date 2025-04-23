@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('efficiency')->nullable(); 
             $table->string('timeliness')->nullable(); 
             $table->string('remarks')->nullable();
-            $table->string('accountable')->nullable(); 
-            $table->foreignId('activity_id')->constrained()->onDelete('cascade');
+            
+            $table->unsignedBigInteger('activity_id')->nullable();
+            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
             $table->timestamps(); 
         });
     }

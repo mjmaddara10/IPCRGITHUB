@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activities', function (Blueprint $table) {
+        Schema::create('selected_sub_activities', function (Blueprint $table) {
             $table->id(); // Primary key
             $table->string('name')->nullable();
             $table->string('successIndicator')->nullable();
@@ -19,10 +19,12 @@ return new class extends Migration
             $table->string('efficiency')->nullable();
             $table->string('timeliness')->nullable();
             $table->string('remarks')->nullable();
-            
-            $table->unsignedBigInteger('program_id')->nullable();
-            $table->foreign('program_id')->references('id')->on('programs')->onDelete('cascade');
-            
+
+            $table->unsignedBigInteger('accountable_id')->nullable();
+            $table->foreign('accountable_id')->references('id')->on('tbl_employee')->onDelete('cascade');
+
+            $table->unsignedBigInteger('activity_id')->nullable();
+            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
             $table->timestamps(); // Created at and updated at timestamps
         });
     }
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activities');
+        Schema::dropIfExists('selected_sub_activities');
     }
 };

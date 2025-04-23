@@ -21,7 +21,7 @@ class AdminMiddleware
         if (Auth::guard('admin')->check()) {
             return $next($request);  // Allow access if the user is authenticated as admin
         }else{
-            return redirect('/unauthorized');  // Or return abort(403);
+            return redirect('/');  // Or return abort(403);
         }   
     }
 }

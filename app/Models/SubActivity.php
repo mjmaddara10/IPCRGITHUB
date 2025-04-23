@@ -17,12 +17,17 @@ class SubActivity extends Model
         'efficiency',
         'timeliness',
         'remarks',
-        'accountable',
+        'accountable_id',
         'activity_id',
     ];
 
-    public function activities()
+    public function activity()
     {
         return $this->belongsTo(Activity::class);
+    }
+
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class, 'sub_activity_employee', 'sub_activity_id', 'employee_id');
     }
 }

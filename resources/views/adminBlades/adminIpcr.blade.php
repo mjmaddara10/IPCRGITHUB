@@ -1,5 +1,29 @@
-<!-- view and export employee IPCR -->
-<!-- view and export buttons only, wala nang "Save Changes" -->
+@php
+    $divisionChiefsArray = [];
+
+    foreach ($divisions as $division) {
+        $chief = $division->employees->first();
+
+        $fullName = '________';
+        $position = '________';
+
+        if ($chief) {
+            $middleInitial = $chief->middleName ? substr($chief->middleName, 0, 1) . '.' : '';
+            $fullName = $chief->firstName . ' ' . $middleInitial . ' ' . $chief->lastName;
+            $position = $chief->position;
+        }
+
+        $divisionChiefsArray[$division->id] = [
+            'name' => $fullName,
+            'position' => $position,
+        ];
+    }
+@endphp
+
+<script>
+    const divisionChiefs = @json($divisionChiefsArray);
+</script>
+
 @extends('layouts')
 
 <!-- Sets the page title in the browser tab -->
@@ -12,140 +36,132 @@
 
 @section('content')
 <div class="page-background"></div>
+<div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
 
-<!-- DataTable -->
-<div style="padding-top: 2px;">
-    <div class="container-fluid mt-2">
-        <div class="bg-white">
-
-            <!-- Card Header -->
-            <div class="card-header py-3 d-flex align-items-center nv-green">
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-tasks fa-2x text-white me-3"></i>
-                    <div>
-                        <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
-                            Admin IPCR </h4>
-                        <small class="text-white-50">View IPCR</small>
+    <div style="padding-top: 2px;">
+        <div class="container-fluid mt-2">
+            <div class="bg-white">
+                <!-- Card Header -->
+                <div class="card-header py-3 d-flex align-items-center nv-green">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-tasks fa-2x text-white me-3"></i>
+                        <div>
+                            <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
+                                View Targets </h4>
+                            <small class="text-white-50">View all the users' targets</small>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="p-4 nv-green">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <div class="d-flex align-items-center" style="color: #FFFFFF; font-weight: 500;">
-                        <span>Select User:</span>
-                        <select class="form-select ms-2" style="width: 250px; border: 2px solid #FFFFFF;">
-                            <option selected disabled></option>
-                            <option value="1">User 1</option>
-                            <option value="2">User 2</option>
-                            <option value="3">User 3</option>
-                        </select>
+                <div class="px-4 pt-4">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap mb-1">
+                        <!-- Division Select -->
+                        <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
+                            <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
+                            <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
+                                @foreach ($divisions as $division)
+                                    <option value="{{ $division->id }}"
+                                        data-name="{{ $division->name }}">
+                                        {{ $division->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        
+
+                            <!-- User Select -->
+                            <label for="employeeSelect" class="mx-2 fw-bold mb-0">Select User:</label>
+                            <select class="form-select form-select-md w-auto" name="employeeSelect" id="employeeSelect">
+                                <!-- <option value="">Select an Employee</option> -->
+                                @foreach ($employees as $employee)
+                                    <option value="{{ $employee->id }}"
+                                        data-name="{{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}"
+                                        data-position="{{ $employee->position }}"
+                                        data-status="{{ $employee->status }}"
+                                        data-division-id="{{ $employee->division->id }}"
+                                        data-division-name="{{ $employee->division->name }}">
+                                        {{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex align-items-center flex-wrap">
+                            <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover nv-green mb-1 me-1">View Users</a>
+                            <a href="{{ route('admin.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
+                            <a href="{{ route('admin.managePpa') }}" class="btn btn-hover nv-green mb-1 me-1">Manage PPA</a>
+                            <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                Logout
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12" style="font-family: 'Montserrat'; background: #0d5cba; padding: 50px; color: #FFFFFF; text-align: justify;">
-                        <p class="justified-text">
-                            I, JULIUS N. IGLESIAS, Administrative Officer IV (HRMO II)- Permanent of the PROVINCIAL
-                            HUMAN
-                            RESOURCE MANAGEMENT
-                            OFFICE, BENEFITS AND WELFARE DIVISION, commit to deliver and agree to be rated on the
-                            attainment
-                            of
-                            the following targets in accordance with the indicated measures for the period January to
-                            December 2025.
-                        </p>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 p-3" style="font-family: 'Montserrat'; text-align: justify; font-weight: 1000;">
+                            <p class="justified-text" id="employeeCommitmentText">
+                                I, <span id="empName" class="fw-bold text-uppercase">________</span>,
+                                <span id="empPosition" class="fw-bold">________</span> -
+                                <span id="empStatus" class="fw-bold ">________</span><strong> of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE</strong>,
+                                <span id="empDivision" class="fw-bold text-uppercase">________</span>,
+                                commit to deliver and agree to be rated on the attainment of the following targets in accordance with the indicated measures for the period January to December 2025.
+                            </p>
 
-                        <!-- Nested row for inputs -->
-                        <div class="row mt-3 align-items-center">
-                            <!-- First Row -->
-                            <div class="col-md-6 col-sm-12 d-flex align-items-center flex-nowrap mb-3"
-                                style="font-size: 0.875rem;">
-                                <h6 class="mb-0 me-1 text-nowrap">Reviewed by:</h6>
-                                <select class="form-select" style="width: 100%;">
-                                    <option value="">Select Reviewer</option>
-                                    <option value="reviewer1">Marc Jay Maddara</option>
-                                    <option value="reviewer2">Marc Justin Manzano</option>
-                                    <option value="reviewer3">Reviewer 3</option>
-                                </select>
+                            <div class="d-flex justify-content-center">
+                                <div class="row mt-3 align-items-center" style="width: 100%; max-width: 1200px;">
+                                    <table style="width: 1200px;">
+                                        <tr>
+                                            <td class="text-end"><h6 class="mb-0 text-nowrap">Reviewed by: </h6></td>
+                                            <td><h6 id="reviewedByName" class="mb-0 text-nowrap fw-bold ps-2"></h6></td>
+                                            <td class="text-end"><h6 class="mb-0 text-nowrap">Approved by: </h6></td>
+                                            <td><h6 class="mb-0 text-nowrap fw-bold ps-2">Ma. Carla Lucia M. Torralba</h6></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-end"><h6 class="mb-0 text-nowrap"></h6></td>
+                                            <td><h6 id="reviewedByPosition" class="mb-0 text-nowrap ps-2"></h6></td>
+                                            <td class="text-end"><h6 class="mb-0 text-nowrap"></h6></td>
+                                            <td><h6 class="mb-0 text-nowrap ps-2">Provincial Human Resource Management Officer</h6></td>
+                                        </tr>
+
+                                    </table>
+                                </div>
                             </div>
-                            <div class="col-md-6 col-sm-12 d-flex align-items-center flex-nowrap mb-3"
-                                style="font-size: 0.875rem;">
-                                <h6 class="mb-0 me-1 text-nowrap" style="margin-left: 105px;"></h6>
-                                <select class="form-select" style="width: 100%;">
-                                    <option value="">Select Reviewer</option>
-                                    <option value="reviewer1">Reviewer 1</option>
-                                    <option value="reviewer2">Reviewer 2</option>
-                                    <option value="reviewer3">Reviewer 3</option>
-                                </select>
-                            </div>
-                            <!-- Second Row -->
-                            <div class="col-md-6 col-sm-12 d-flex align-items-center flex-nowrap mb-3"
-                                style="font-size: 0.875rem;">
-                                <h6 class="mb-0 me-1 text-nowrap" style="margin-left: 36px;">Position:</h6>
-                                <input type="text" class="form-control" style="width: 100%;" placeholder="Position">
-                            </div>
-                            <div class="col-md-6 col-sm-12 d-flex align-items-center flex-nowrap mb-3"
-                                style="font-size: 0.875rem;">
-                                <h6 class="mb-0 me-1 text-nowrap">Approved by:</h6>
-                                <select class="form-select" style="width: 100%;">
-                                    <option value="">Approved by:</option>
-                                    <option value="department1">Department 1</option>
-                                    <option value="department2">Department 2</option>
-                                    <option value="department3">Department 3</option>
-                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Table Section -->
-            <div class="container-fluid" style="padding: 0 0px;">
-
-                <div class="table-responsive">
-                    <table id="usersTable" class="table table-hover" style="width: 100%;">
-                        <thead class="text-center">
-                            <tr>
-                                <!-- <th style="color: #FFFFFF; background-color: #dd9f03;">Assign</th> -->
-                                <th style="color: #FFFFFF; background-color: #dd9f03;">Major Programs
-                                    /Project/Activities
-                                </th>
-                                <th style="color: #FFFFFF; background-color: #dd9f03;">Success Indicator</th>
-                                <th style="color: #FFFFFF; background-color: #dd9f03;">Quality</th>
-                                <th style="color: #FFFFFF; background-color: #dd9f03;">Efficiency</th>
-                                <th style="color: #FFFFFF; background-color: #dd9f03;">Timeliness</th>
-                                <th style="color: #FFFFFF; background-color: #dd9f03;">Remarks/MOV</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-left" style= "color: #FFFFFF; background-color: #03592c;" colspan="6">D. CAPABILITY BUILDING PROGRAM</td>
-                            </tr>
-                            <tr style="background-color: #ffffff;">
-                                <!-- <td class="text-center"><input type="checkbox"></td> -->
-                                <td class="text-center">1.1 Prepare Training Calendar</td>
-                                <td class="text-center">Success Indicator</td>
-                                <td class="text-center">Quality</td>
-                                <td class="text-center">Efficiency</td>
-                                <td class="text-center">Timeliness</td>
-                                <td class="text-center">Remarks</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Save Button -->
-                <div class="row mt-3">
-                    <div class="col-12 d-flex justify-content-start mb-3 ms-4">
-                        <a href="javascript:void(0)" onclick="exportToPDF()" class="btn nv-red px-2">
-                            <i class="fas fa-file-pdf me-2"></i> Export to PDF
-                        </a>
+                
+                <!-- Table Section -->
+                <div class="container-fluid" style="padding: 0 0px;">
+                    <div class="table-responsive">
+                        <table id="usersTable" class="table table-hover" style="width: 100%;">
+                            <thead class="text-center">
+                                <tr>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Programs/Project/Activities</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Success Indicator</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Quality</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Efficiency</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Timeliness</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Remarks/MOV</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <!-- Target PPAs here -->
+                            </tbody>
+                        </table>
                     </div>
-                </div>
 
+                    <!-- Save Button -->
+                    <div class="row mt-3">
+                        <div class="col-12 d-flex justify-content-start mb-3 ms-4">
+                            <a href="javascript:void(0)" onclick="exportToPDF()" class="btn nv-red px-2">
+                                <i class="fas fa-file-pdf me-2"></i> Export as PDF
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>

@@ -15,14 +15,17 @@ $(document).on('click', '.addActivityInProgramBtn', function () {
         }
     }
 
+    // Set program data in modal
     $('#programIdProg').val(programId);
     $('#programNameProg').val(programName);
 
+    // Reset form: remove extra selects and clear first one
     const $container = $('#accountableSelectContainer');
     $container.find('.accountable-select-group:gt(0)').remove();
-    $container.find('.accountable-select-group select').val('');
+    $container.find('.accountable-select-group select').empty().append('<option value="">Select accountable person</option>');
     $container.find('.removeAccountableBtn').prop('disabled', true);
 
+    // Fetch employees from server
     if (divisionIds.length > 0) {
         $.ajax({
             url: '/admin/getAccountableByIds',
@@ -43,39 +46,57 @@ $(document).on('click', '.addActivityInProgramBtn', function () {
     }
 });
 
-// Populate accountable select inputs
-function populateAccountableOptions(options) {
-    const htmlOptions = options.map(person =>
-        `<option value="${person.id}">${person.name}</option>`
-    ).join('');
+// Helper to populate all select dropdowns with fetched employees
+function populateAccountableOptions(accountables) {
+    const $selects = $('.accountableSelect');
+    $selects.each(function () {
+        const $select = $(this);
+        $select.empty();
+        $select.append('<option value="">Select accountable person</option>');
 
-    $('.accountableSelect').each(function () {
-        $(this)
-            .empty()
-            .append('<option value="">Select accountable person</option>')
-            .append(htmlOptions);
+        accountables.forEach(accountable => {
+            $select.append(`<option value="${accountable.id}">${accountable.name} | ${accountable.position}</option>`);
+        });
     });
 }
 
-// Add new accountable person input
+// Add accountable person input
 $('#addAccountablePersonBtn').on('click', function () {
     const $container = $('#accountableSelectContainer');
-    const $firstGroup = $container.find('.accountable-select-group:first');
-    const $newGroup = $firstGroup.clone();
-
-    $newGroup.find('select').val('');
-    $newGroup.find('.removeAccountableBtn').prop('disabled', false);
-
+    const $newGroup = $(`
+        <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
+            <select class="form-select border-2 py-2 accountableSelect" name="addAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
+                <option value="">Loading...</option>
+            </select>
+            <button type="button" class="btn btn-danger btn-sm removeAccountableBtn">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    `);
+    
     $container.append($newGroup);
+
+    // Populate newly added select with existing options
+    const firstSelect = $('.accountableSelect').first();
+    const newSelect = $newGroup.find('select');
+    newSelect.html(firstSelect.html()); // Copy all options
+
+    // Enable remove button if there's more than one
+    updateAccountableRemoveButtons();
 });
 
-// Remove a responsible person input
+// Remove accountable person input
 $(document).on('click', '.removeAccountableBtn', function () {
-    const $groups = $('.accountable-select-group');
-    if ($groups.length > 1) {
-        $(this).closest('.accountable-select-group').remove();
-    }
+    $(this).closest('.accountable-select-group').remove();
+    updateAccountableRemoveButtons();
 });
+
+// Disable first remove button if it's the only one left
+function updateAccountableRemoveButtons() {
+    const $buttons = $('.removeAccountableBtn');
+    $buttons.prop('disabled', false);
+    $buttons.first().prop('disabled', true);
+}
 
 
 // Add Activity
@@ -124,24 +145,79 @@ $('#addActivityInProgramForm').on('submit', function(e) {
 });
 
 // Edit Activity Fill Form
-$(document).on('click', '.editActivityBtn', function() {
-    // Get data from the button clicked
-    var activityId = $(this).data('activity-id');
-    var activityName = $(this).data('activity-name');
-    var successIndicator = $(this).data('success-indicator');
-    var quality = $(this).data('quality');
-    var efficiency = $(this).data('efficiency');
-    var timeliness = $(this).data('timeliness');
-    var remarks = $(this).data('remarks');
+let editActivityId;
 
-    // Populate the modal fields with the data
-    $('#activityId').val(activityId);
-    $('#editActivityName').val(activityName);
-    $('#editSuccessIndicatorActivity').val(successIndicator);
-    $('#editQualityActivity').val(quality);
-    $('#editEfficiencyActivity').val(efficiency);
-    $('#editTimelinessActivity').val(timeliness);
-    $('#editRemarksActivity ').val(remarks);
+$(document).on('click', '.editActivityBtn', function () {
+    editActivityId = $(this).data('activity-id');
+
+    // Existing autofill for other fields...
+    $('#editActivityId').val(editActivityId);
+    $('#editActivityName').val($(this).data('activity-name'));
+    $('#editSuccessIndicatorActivity').val($(this).data('success-indicator'));
+    $('#editQualityActivity').val($(this).data('quality'));
+    $('#editEfficiencyActivity').val($(this).data('efficiency'));
+    $('#editTimelinessActivity').val($(this).data('timeliness'));
+    $('#editRemarksActivity').val($(this).data('remarks'));
+    
+    // Clear previous selects
+    const $editContainer = $('#editContainer');
+    $editContainer.empty();
+
+    $.ajax({
+        url:  `/admin/activity/${editActivityId}/getActivityAccountables`,
+        method: 'GET',
+        success: function (response) {
+            response.forEach(function (person, index) {
+                const isFirst = index === 0;
+                const selectGroup = `
+                    <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
+                        <select class="form-select border-2 py-2 editAccountableSelect" name="editAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
+                            <option value="${person.id}" selected>${person.name} | ${person.position}</option>
+                        </select>
+                        <button type="button" class="btn btn-danger btn-sm removeAccountableBtn" >
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>`;
+                $editContainer.append(selectGroup);
+            });
+        },
+        error: function () {
+            console.error('Failed to fetch individuals responsible.');
+        }
+    });
+});
+
+$('#addAccountableEditBtn').on('click', function () {
+    if (!editActivityId) return;
+
+    $.ajax({
+        url: `/admin/activity/${editActivityId}/fetchEmployee`,
+        method: 'GET',
+        success: function (employees) {
+            let optionsHtml = employees.map(e =>
+                `<option value="${e.id}">${e.name} | ${e.position}</option>`
+            ).join('');
+
+            const selectGroup = `
+                <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
+                    <select class="form-select border-2 py-2 editAccountableSelect" name="editAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
+                        ${optionsHtml}
+                    </select>
+                    <button type="button" class="btn btn-danger btn-sm removeAccountableBtn">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>`;
+
+            $('#editContainer').append(selectGroup);
+        },
+        error: function () {
+            console.error('Failed to fetch employees for program.');
+        }
+    });
+});
+
+$(document).on('click', '.removeAccountableBtn', function () {
+    $(this).closest('.accountable-select-group').remove();
 });
 
 // Edit Activity
@@ -163,9 +239,12 @@ $('#editActivityForm').on('submit', function(e) {
 
             // Make an AJAX request to update the activity
             $.ajax({
-                url: 'updateActivity',  // Your update URL
+                url: '/admin/updateActivity',  // Your update URL
                 method: 'POST',
                 data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function(response) {
                     // Show success Swal alert
                     Swal.fire({
@@ -178,8 +257,8 @@ $('#editActivityForm').on('submit', function(e) {
                         location.reload(); // Reload the page to see the changes
                     });
                 },
-                error: function(response) {
-                    // Handle the error response
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText); // 👈 this will show the server error
                     Swal.fire({
                         title: 'Error!',
                         text: 'An error occurred. Please try again.',

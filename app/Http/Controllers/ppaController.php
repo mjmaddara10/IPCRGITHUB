@@ -11,9 +11,72 @@ use App\Models\SubProject;
 use App\Models\Program;
 use App\Models\Employee;
 use App\Models\Division;
+use App\Models\SelectedActivity;
+use App\Models\SelectedSubActivity;
 
 class ppaController extends Controller
 {
+    // =====================Add Sub-Activity========================= //
+    public function addSubActivity(Request $request){
+        $subActivity = new SubActivity([
+            'name' => $request->addSubActivityName,
+            'successIndicator' => $request->addSuccessIndicator,
+            'quality' => $request->addQuality,
+            'efficiency' => $request->addEfficiency,
+            'timeliness' => $request->addTimeliness,
+            'remarks' => $request->addRemarks,
+            'accountable' => $request->addAccountable,
+            'activity_id' => $request->activityIdSub,
+        ]);
+
+        // Find the activity and associate the activity with it
+        $activity = Activity::findOrFail($request->activityIdSub);
+        $activity->subActivities()->save($subActivity);
+        // $selectedActivity->save();
+
+        if ($request->has('addAccountableId')) {
+            // $selectedActivity->employees()->attach($request->addAccountableId);
+            $subActivity->employees()->attach($request->addAccountableId);
+        }
+    }
+
+    // =====================Update Sub-Activity========================= //
+    public function updateSubActivity(Request $request){
+        // Find the sub-activity and update it
+        $subActivity = SubActivity::findOrFail($request->editActivityIdSub);
+        $subActivity->update([
+            'name' => $request->editActivityNameSub,
+            'successIndicator' => $request->editSuccessIndicatorSub,
+            'quality' => $request->editQualitySub,
+            'efficiency' => $request->editEfficiencySub,
+            'timeliness' => $request->editTimelinessSub,
+            'remarks' => $request->editRemarksSub,
+            'accountable' => $request->editAccountableSub,
+        ]);
+
+        // Sync the individuals responsible
+        $subActivity->employees()->sync($request->input('editAccountableId', []));
+
+        // Return a response (this is what your AJAX call will use)
+        return response()->json(['message' => 'Sub-Activity updated successfully!']);
+    }
+
+    // =====================Delete Sub-Activity========================= //
+    public function deleteSubActivity(Request $request){
+        try{
+            $subActivity = SubActivity::findOrFail($request->subActivityId);
+            $subActivity->delete();
+
+            return response()->json(['message' => 'Sub-activity deleted successfully!'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // If sub-activity is not found
+            return response()->json(['error' => 'Sub-activity not found!'], 404);
+        } catch (\Exception $e) {
+            // For any other errors
+            return response()->json(['error' => 'An error occurred while trying to delete the sub-activity.'], 500);
+        }
+    }
+
     // =====================Activity========================= //
     public function addActivityInProgram(Request $request){
         $activity = new Activity([
@@ -23,7 +86,16 @@ class ppaController extends Controller
             'efficiency' => $request->addEfficiency,
             'timeliness' => $request->addTimeliness,
             'remarks' => $request->addRemarks,
-            'accountable' => $request->addAccountable,
+            'program_Id' => $request->programIdProg,
+        ]);
+
+        $selectedActivity = new SelectedActivity([
+            'name' => $request->addActivityName,
+            'successIndicator' => $request->addSuccessIndicator,
+            'quality' => $request->addQuality,
+            'efficiency' => $request->addEfficiency,
+            'timeliness' => $request->addTimeliness,
+            'remarks' => $request->addRemarks,
             'program_Id' => $request->programIdProg,
             'project_id' => $request->project_id,
         ]);
@@ -31,11 +103,18 @@ class ppaController extends Controller
         // Find the program and associate the activity with it
         $program = Program::findOrFail($request->programIdProg);
         $program->activities()->save($activity);
+        $selectedActivity->save();
+
+        if ($request->has('addAccountableId')) {
+            // $selectedActivity->employees()->attach($request->addAccountableId);
+            $activity->employees()->attach($request->addAccountableId);
+        }
     }
 
     public function updateActivity(Request $request){
+        // dd($request->all());
         // Find the activity and update it
-        $activity = Activity::findOrFail($request->activityId);
+        $activity = Activity::findOrFail($request->editActivityId);
         $activity->update([
             'name' => $request->editActivityName,
             'successIndicator' => $request->editSuccessIndicatorActivity,
@@ -44,6 +123,9 @@ class ppaController extends Controller
             'timeliness' => $request->editTimelinessActivity,
             'remarks' => $request->editRemarksActivity,
         ]);
+
+        // Sync the individuals responsible
+        $activity->employees()->sync($request->input('editAccountableId', []));
 
         // Return a response (this is what your AJAX call will use)
         return response()->json(['message' => 'Activity updated successfully!']);
@@ -126,117 +208,27 @@ class ppaController extends Controller
 
     }
 
-    // =====================Add Sub-Activity========================= //
-    public function addSubActivity(Request $request){
-        $subActivity = new SubActivity([
-            'name' => $request->addSubActivityName,
-            'successIndicator' => $request->addSuccessIndicator,
-            'quality' => $request->addQuality,
-            'efficiency' => $request->addEfficiency,
-            'timeliness' => $request->addTimeliness,
-            'remarks' => $request->addRemarks,
-            'accountable' => $request->addAccountable,
-            'activity_id' => $request->activityIdSub,
-        ]);
-
-        // Find the activity and associate the activity with it
-        $activity = Activity::findOrFail($request->activityIdSub);
-        $activity->subActivities()->save($subActivity);
-    }
-
-    // =====================Update Sub-Activity========================= //
-    public function updateSubActivity(Request $request){
-        // Find the sub-activity and update it
-        $subActivity = SubActivity::findOrFail($request->editActivityIdSub);
-        $subActivity->update([
-            'name' => $request->editActivityNameSub,
-            'successIndicator' => $request->editSuccessIndicatorSub,
-            'quality' => $request->editQualitySub,
-            'efficiency' => $request->editEfficiencySub,
-            'timeliness' => $request->editTimelinessSub,
-            'remarks' => $request->editRemarksSub,
-            'accountable' => $request->editAccountableSub,
-        ]);
-
-        // Return a response (this is what your AJAX call will use)
-        return response()->json(['message' => 'Sub-Activity updated successfully!']);
-    }
-
-    // =====================Delete Sub-Activity========================= //
-    public function deleteSubActivity(Request $request){
-        try{
-            $subActivity = SubActivity::findOrFail($request->subActivityId);
-            $subActivity->delete();
-
-            return response()->json(['message' => 'Sub-activity deleted successfully!'], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            // If sub-activity is not found
-            return response()->json(['error' => 'Sub-activity not found!'], 404);
-        } catch (\Exception $e) {
-            // For any other errors
-            return response()->json(['error' => 'An error occurred while trying to delete the sub-activity.'], 500);
-        }
-    }
+    
 
     // =====================Autofill Accountable (Add Activity)========================= //
-    public function getAccountable($divisionName){
-        $accountable = Employee::whereRaw('LOWER(division) = ?', [strtolower($divisionName)])
-            ->where('role', 'Department Chief')
-            ->get();
-
-        if ($accountable->isEmpty()) {
-            return response()->json([], 404);
-        }
-
-        $results = $accountable->map(function ($a) {
-            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
-            return [
-                'id' => $a->id,
-                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
-            ];
-        });
-
-        return response()->json($results);
-    }
-
-    public function getAccountableMultiple(Request $request) {
-        $divisionNames = $request->input('divisionNames', []);
-
-        if (empty($divisionNames)) {
-            return response()->json([], 400);
-        }
-
-        $accountable = Employee::whereIn(DB::raw('LOWER(division)'), array_map('strtolower', $divisionNames))
-            ->where('role', 'Department Chief')
-            ->get();
-
-        $results = $accountable->map(function ($a) {
-            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
-            return [
-                'id' => $a->id,
-                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
-            ];
-        });
-
-        return response()->json($results);
-    }
-
-    public function getAccountableByIds(Request $request) {
+        public function getAccountableByIds(Request $request) {
         $divisionIds = $request->input('divisionIds', []);
 
         if (empty($divisionIds)) {
-            return response()->json([], 400);
+            return response()->json([]);
         }
 
-        $accountable = Employee::whereIn('division', $divisionIds)
-            ->where('role', 'Department Chief')
+        $accountables = Employee::whereIn('division_id', $divisionIds)
+            ->whereIn('role', ['Staff', 'Division Chief']) // Include both roles
             ->get();
 
-        $results = $accountable->map(function ($a) {
-            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
+        $results = $accountables->map(function ($employee) {
+            $middleInitial = $employee->middleName ? strtoupper(substr($employee->middleName, 0, 1)) . '. ' : '';
             return [
-                'id' => $a->id,
-                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
+                'id' => $employee->id,
+                'name' => $employee->firstName . ' ' . $middleInitial . $employee->lastName,
+                'role' => $employee->role,
+                'position' => $employee->position, 
             ];
         });
 
@@ -249,4 +241,81 @@ class ppaController extends Controller
         return response()->json($program->divisions);
     }
 
+    // =====================Autofill Responsible Individual (Edit Activity)========================= //
+    public function getActivityAccountables($id) {
+        $activity = Activity::with('employees')->findOrFail($id);
+
+        $employees = $activity->employees->map(function ($e) {
+            $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $e->id,
+                'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                'position' => $e->position,
+            ];
+        });
+
+        return response()->json($employees);
+    }
+
+    public function fetchEmployee($activityId) {
+        $activity = Activity::with('program.divisions.employees')->findOrFail($activityId);
+
+        $employees = collect();
+
+        if ($activity->program && $activity->program->divisions) {
+            foreach ($activity->program->divisions as $division) {
+                foreach ($division->employees as $e) {
+                    $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+                    $employees->push([
+                        'id' => $e->id,
+                        'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                        'position' => $e->position,
+                    ]);
+                }
+            }
+        }
+
+        return response()->json($employees->unique('id')->values());
+    }
+
+    // =====================Autofill Responsible Individual (Edit SubActivity)========================= //
+    public function getSubActivityAccountables($id) {
+        $subActivity = SubActivity::with('employees')->findOrFail($id);
+
+        $employees = $subActivity->employees->map(function ($e) {
+            $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $e->id,
+                'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                'position' => $e->position,
+            ];
+        });
+
+        return response()->json($employees);
+    }
+
+    public function fetchEmployeeSub($subActivityId) {
+        $subActivity = SubActivity::with('activity.program.divisions.employees')->findOrFail($subActivityId);
+
+        $employees = collect();
+
+        if (
+            $subActivity->activity &&
+            $subActivity->activity->program &&
+            $subActivity->activity->program->divisions
+        ) {
+            foreach ($subActivity->activity->program->divisions as $division) {
+                foreach ($division->employees as $e) {
+                    $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+                    $employees->push([
+                        'id' => $e->id,
+                        'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                        'position' => $e->position,
+                    ]);
+                }
+            }
+        }
+
+        return response()->json($employees->unique('id')->values());
+    }
 }
