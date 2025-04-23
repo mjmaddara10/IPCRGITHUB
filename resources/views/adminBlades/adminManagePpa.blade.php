@@ -4,14 +4,12 @@
 @section('title', 'Manage PPA')
 
 @section('navbar')
-@include('adminBlades.adminInclude')
+    @include('adminBlades.adminInclude')
 @endsection
 
 
 
 @section('content')
-
-
 <div class="page-background"></div>
 <div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
     <div class="container-fluid mt-3">
@@ -29,11 +27,10 @@
 
                 <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
                     <span>Select Division:</span>
-                    <select class="form-select ms-2" id="divisionFilter"
-                        style="width: 250px; border: 2px solid #FFFFFF;">
+                    <select class="form-select ms-2" id="divisionFilter" style="width: 250px; border: 2px solid #FFFFFF;">
                         <option value="">All Divisions</option>
                         @foreach ($divisions as $division)
-                        <option value="{{ $division->id }}">{{ $division->name }}</option>
+                            <option value="{{ $division->id }}">{{ $division->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -61,6 +58,7 @@
                     Logout
                     </a>
                 </div>
+            </div>
 
                 <!-- PPA Table -->
                 <div class="table-responsive" id="tableContainer">
@@ -81,41 +79,28 @@
                         <!-- Program  -->
                         @foreach($programs as $program)
                             @php
-                            // Get all the division IDs for the current program
-                            $divisionIds = $program->divisions->pluck('id')->implode(',');
+                                // Get all the division IDs for the current program
+                                $divisionIds = $program->divisions->pluck('id')->implode(',');
                             @endphp
-                            <tr class="programRow" data-division-ids="{{ $divisionIds }}"
-                                data-program-id="{{ $program->id }}">
-                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase"
-                                    style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
-                                <td class="text-left border border-muted"
-                                    style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{
-                                    $program->successIndicator }}</td>
-                                <td class="text-left border border-muted"
-                                    style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{
-                                    $program->quality }}</td>
-                                <td class="text-left border border-muted"
-                                    style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{
-                                    $program->efficiency }}</td>
-                                <td class="text-left border border-muted"
-                                    style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{
-                                    $program->timeliness }}</td>
-                                <td class="text-left border border-muted"
-                                    style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{
-                                    $program->remarks }}</td>
+                            <tr class="programRow" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}">
+                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->successIndicator }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->quality }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->efficiency }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->timeliness }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->remarks }}</td>
                                 @php
-                                $allDivisionCount = \App\Models\Division::count();
-                                $assignedCount = $program->divisions->count();
+                                    $allDivisionCount = \App\Models\Division::count();
+                                    $assignedCount = $program->divisions->count();
                                 @endphp
 
-                                <td class="text-center border border-muted"
-                                    style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">
+                                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">
                                     @if ($assignedCount === $allDivisionCount)
-                                    All Divisions
+                                        All Divisions
                                     @else
-                                    @foreach ($program->divisions as $division)
-                                    {{ $division->name }}
-                                    @endforeach
+                                        @foreach ($program->divisions as $division)
+                                            {{ $division->name }}
+                                        @endforeach
                                     @endif
                                 </td>
 
@@ -130,22 +115,19 @@
 
                                     <!-- Edit Program -->
                                     <button class="btn btn-sm editProgramBtn buttonHover" title="Edit program name"
-                                        data-program-id="{{ $program->id }}" data-program-name="{{ $program->name }}"
+                                        data-program-id="{{ $program->id }}" 
+                                        data-program-name="{{ $program->name }}"
                                         data-program-success="{{ $program->successIndicator }}"
                                         data-program-quality="{{ $program->quality }}"
                                         data-program-efficiency="{{ $program->efficiency }}"
                                         data-program-timeliness="{{ $program->timeliness }}"
-                                        data-program-remarks="{{ $program->remarks }}" data-bs-toggle="modal"
-                                        data-bs-target="#editProgramModal"
-                                        style="color: #FFFFFF; background-color: rgb(1, 165, 80);"><i
-                                            class="fas fa-edit"></i>
+                                        data-program-remarks="{{ $program->remarks }}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
                                     </button>
 
                                     <!-- Delete Program -->
                                     <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete program"
-                                        data-program-id="{{ $program->id }}" data-url="{{ route('deleteProgram') }}"
-                                        style="color: #FFFFFF; background-color: rgb(1, 165, 80);"><i
-                                            class="fas fa-trash"></i>
+                                        data-program-id="{{ $program->id }}"
+                                        data-url="{{ route('deleteProgram') }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -194,15 +176,13 @@
                                             data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#editActivityModal"><i class="fas fa-edit" style="color:#FFFFFF;"></i>
                                         </button>
 
-                                    <!-- Delete Activity -->
-                                    <button class="btn btn-sm deleteActivityBtn buttonHover" title="Delete activity"
-                                        style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
-                                        data-activity-id="{{ $activity->id }}"
-                                        data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash"
-                                            style="color:#FFFFFF;"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                        <!-- Delete Activity -->
+                                        <button class="btn btn-sm deleteActivityBtn buttonHover" title="Delete activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
+                                            data-activity-id="{{ $activity->id }}"
+                                            data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash" style="color:#FFFFFF;"></i>
+                                        </button>
+                                    </td>
+                                </tr>
 
                                 <!-- Sub-Activities -->
                                 @foreach($activity->subActivities as $subActivity)
@@ -229,53 +209,45 @@
                                         @endif
                                         <td class="text-center border border-muted">
 
-                                    <!-- Edit Sub-Activity -->
-                                    <button class="btn btn-sm editSubActivityBtn buttonHover" title="Edit sub-activity"
-                                        style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                        data-sub-activity-id="{{ $subActivity->id }}"
-                                        data-sub-activity-name="{{ $subActivity->name }}"
-                                        data-success-indicator="{{ $subActivity->successIndicator }}"
-                                        data-quality="{{ $subActivity->quality }}"
-                                        data-efficiency="{{ $subActivity->efficiency }}"
-                                        data-timeliness="{{ $subActivity->timeliness }}"
-                                        data-remarks="{{ $subActivity->remarks }}"
-                                        data-accountable="{{ $subActivity->accountable }}" data-bs-toggle="modal"
-                                        data-bs-target="#editSubActivityModal"><i class="fas fa-edit"></i>
-                                    </button>
+                                            <!-- Edit Sub-Activity -->
+                                            <button class="btn btn-sm editSubActivityBtn buttonHover" title="Edit sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
+                                                data-sub-activity-id="{{ $subActivity->id }}" 
+                                                data-sub-activity-name="{{ $subActivity->name }}" 
+                                                data-success-indicator="{{ $subActivity->successIndicator }}"
+                                                data-quality="{{ $subActivity->quality }}"
+                                                data-efficiency="{{ $subActivity->efficiency }}"
+                                                data-timeliness="{{ $subActivity->timeliness }}"
+                                                data-remarks="{{ $subActivity->remarks }}"
+                                                data-accountable="{{ $subActivity->accountable }}"
+                                                data-bs-toggle="modal" data-bs-target="#editSubActivityModal"><i class="fas fa-edit"></i>
+                                            </button>
 
-                                    <!-- Delete Sub-Activity -->
-                                    <button class="btn btn-sm deleteSubActivityBtn buttonHover"
-                                        title="Delete sub-activity"
-                                        style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                        data-sub-activity-id="{{ $subActivity->id }}"
-                                        data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endforeach
-                            </tr>
-
-                            @endforeach
-
-                            @endforeach
-                        </tbody>
-                    </table>
+                                            <!-- Delete Sub-Activity -->
+                                            <button class="btn btn-sm deleteSubActivityBtn buttonHover" title="Delete sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
+                                                data-sub-activity-id="{{ $subActivity->id }}"
+                                                data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tr>
+                                
+                            @endforeach        
+                        
+                        @endforeach
+                    </tbody>
+                </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-</div>
+
 <!------------------------------------Modals-------------------------------------->
 <!-- Add Program Modal -->
-<div class="modal fade" id="addProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1"
-    aria-labelledby="addProgramModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-xl"
-        style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3"
-            style="transform: scale(1.10); transform-origin: center; width: 120%; margin-left: -7%;">
-
+<div class="modal fade" id="addProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="addProgramModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
+        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -7%;">
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addProgramModalLabel">
@@ -292,16 +264,15 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
                             Division/s Responsible:
-                            <button class="btn btn-sm text-white me-2" id="addDivisionBtn" type="button"
-                                title="Add division responsible" style="background-color: #01a550;">
+                            <button class="btn btn-sm text-white me-2 buttonHover" id="addDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </label>
                         <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
                             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-                                <select class="form-select border border-success" name="divisions[]">
+                                <select class="form-select border border-success selectDivision" name="divisions[]">
                                     @foreach ($divisions as $division)
-                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                        <option value="{{ $division->id }}">{{ $division->name }}</option>
                                     @endforeach
                                     <option value="all">All Divisions</option>
                                 </select>
@@ -312,7 +283,6 @@
                         </div>
                     </div>
 
-                    <!-- Table Layout for Inputs -->
                     <div class="table-responsive">
                         <table class="table table-bordered align-middle text-center border-success">
                             <thead class="table-light fw-bold text-dark">
@@ -367,21 +337,14 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
 
-
-
 <!-- Edit Program Modal -->
-<div class="modal fade" id="editProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1"
-    aria-labelledby="editProgramModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-xl"
-        style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3"
-            style="transform: scale(1.10); transform-origin: center; width: 120%; margin-left: -7%;">
-
+<div class="modal fade" id="editProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="editProgramModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
+        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -7%;">
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="editProgramModalLabel">
@@ -408,7 +371,7 @@
                             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select border border-success" name="divisions[]">
                                     @foreach ($divisions as $division)
-                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                        <option value="{{ $division->id }}">{{ $division->name }}</option>
                                     @endforeach
                                     <option value="all">All Divisions</option>
                                 </select>
@@ -419,7 +382,6 @@
                         </div>
                     </div>
 
-                    <!-- Table Layout -->
                     <div class="table-responsive">
                         <table class="table table-bordered align-middle text-center border-success">
                             <thead class="table-light fw-bold text-dark">
@@ -856,6 +818,5 @@
         </div>
     </div>
 </div>
-
 
 @endsection
