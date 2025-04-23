@@ -75,7 +75,7 @@
     <script src="{{ asset('js/ppaManagement/subProject.js') }}"></script>
 
     <!-- Assign PPA -->
-    <script src="{{ asset('js/ppaAssign/user.js') }}"></script>
+    <script src="{{ asset('js/ppaView/user.js') }}"></script>
 
     <!-- Table Switching -->
     <script src="{{ asset('js/ppaManagement/manageTable.js') }}"></script>

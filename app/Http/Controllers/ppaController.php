@@ -32,6 +32,12 @@ class ppaController extends Controller
         // Find the activity and associate the activity with it
         $activity = Activity::findOrFail($request->activityIdSub);
         $activity->subActivities()->save($subActivity);
+        // $selectedActivity->save();
+
+        if ($request->has('addAccountableId')) {
+            // $selectedActivity->employees()->attach($request->addAccountableId);
+            $subActivity->employees()->attach($request->addAccountableId);
+        }
     }
 
     // =====================Update Sub-Activity========================= //
@@ -47,6 +53,11 @@ class ppaController extends Controller
             'remarks' => $request->editRemarksSub,
             'accountable' => $request->editAccountableSub,
         ]);
+
+        // Sync the individuals responsible
+        if ($request->has('editAccountableId')) {
+            $subActivity->employees()->sync($request->editAccountableId);
+        }
 
         // Return a response (this is what your AJAX call will use)
         return response()->json(['message' => 'Sub-Activity updated successfully!']);
@@ -102,8 +113,9 @@ class ppaController extends Controller
     }
 
     public function updateActivity(Request $request){
+        // dd($request->all());
         // Find the activity and update it
-        $activity = Activity::findOrFail($request->activityId);
+        $activity = Activity::findOrFail($request->editActivityId);
         $activity->update([
             'name' => $request->editActivityName,
             'successIndicator' => $request->editSuccessIndicatorActivity,
@@ -112,6 +124,11 @@ class ppaController extends Controller
             'timeliness' => $request->editTimelinessActivity,
             'remarks' => $request->editRemarksActivity,
         ]);
+
+        // Sync the individuals responsible
+        if ($request->has('editAccountableId')) {
+            $activity->employees()->sync($request->editAccountableId);
+        }
 
         // Return a response (this is what your AJAX call will use)
         return response()->json(['message' => 'Activity updated successfully!']);
@@ -197,49 +214,7 @@ class ppaController extends Controller
     
 
     // =====================Autofill Accountable (Add Activity)========================= //
-    public function getAccountable($divisionName){
-        $accountable = Employee::whereRaw('LOWER(division) = ?', [strtolower($divisionName)])
-            ->where('role', 'Department Chief')
-            ->get();
-    
-        if ($accountable->isEmpty()) {
-            return response()->json([], 404);
-        }
-    
-        $results = $accountable->map(function ($a) {
-            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
-            return [
-                'id' => $a->id,
-                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
-            ];
-        });
-    
-        return response()->json($results);
-    }
-
-    public function getAccountableMultiple(Request $request) {
-        $divisionNames = $request->input('divisionNames', []);
-
-        if (empty($divisionNames)) {
-            return response()->json([], 400);
-        }
-
-        $accountable = Employee::whereIn(DB::raw('LOWER(division)'), array_map('strtolower', $divisionNames))
-            ->where('role', 'Department Chief')
-            ->get();
-
-        $results = $accountable->map(function ($a) {
-            $middleInitial = $a->middleName ? strtoupper(substr($a->middleName, 0, 1)) . '. ' : '';
-            return [
-                'id' => $a->id,
-                'name' => $a->firstName . ' ' . $middleInitial . $a->lastName,
-            ];
-        });
-
-        return response()->json($results);
-    }
-
-    public function getAccountableByIds(Request $request) {
+        public function getAccountableByIds(Request $request) {
         $divisionIds = $request->input('divisionIds', []);
 
         if (empty($divisionIds)) {
@@ -269,4 +244,81 @@ class ppaController extends Controller
         return response()->json($program->divisions);
     }
 
+    // =====================Autofill Responsible Individual (Edit Activity)========================= //
+    public function getActivityAccountables($id) {
+        $activity = Activity::with('employees')->findOrFail($id);
+
+        $employees = $activity->employees->map(function ($e) {
+            $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $e->id,
+                'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                'position' => $e->position,
+            ];
+        });
+
+        return response()->json($employees);
+    }
+
+    public function fetchEmployee($activityId) {
+        $activity = Activity::with('program.divisions.employees')->findOrFail($activityId);
+
+        $employees = collect();
+
+        if ($activity->program && $activity->program->divisions) {
+            foreach ($activity->program->divisions as $division) {
+                foreach ($division->employees as $e) {
+                    $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+                    $employees->push([
+                        'id' => $e->id,
+                        'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                        'position' => $e->position,
+                    ]);
+                }
+            }
+        }
+
+        return response()->json($employees->unique('id')->values());
+    }
+
+    // =====================Autofill Responsible Individual (Edit SubActivity)========================= //
+    public function getSubActivityAccountables($id) {
+        $subActivity = SubActivity::with('employees')->findOrFail($id);
+
+        $employees = $subActivity->employees->map(function ($e) {
+            $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $e->id,
+                'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                'position' => $e->position,
+            ];
+        });
+
+        return response()->json($employees);
+    }
+
+    public function fetchEmployeeSub($subActivityId) {
+        $subActivity = SubActivity::with('activity.program.divisions.employees')->findOrFail($subActivityId);
+
+        $employees = collect();
+
+        if (
+            $subActivity->activity &&
+            $subActivity->activity->program &&
+            $subActivity->activity->program->divisions
+        ) {
+            foreach ($subActivity->activity->program->divisions as $division) {
+                foreach ($division->employees as $e) {
+                    $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+                    $employees->push([
+                        'id' => $e->id,
+                        'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                        'position' => $e->position,
+                    ]);
+                }
+            }
+        }
+
+        return response()->json($employees->unique('id')->values());
+    }
 }

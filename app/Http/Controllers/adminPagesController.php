@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Activity;
+use App\Models\SubActivity;
 use App\Models\Employee;
 use App\Models\SubProject;
 use App\Models\Division;
@@ -32,6 +33,7 @@ class adminPagesController extends Controller
         $activities = Activity::with('subActivities','employees')->get();
         $employees = Employee::all();
         $divisions = Division::all();
+        $subActivities = SubActivity::all();
     
         return view('adminBlades.adminManagePpa', compact(
             'programs',
@@ -42,7 +44,20 @@ class adminPagesController extends Controller
     }
 
     public function viewIpcr(){
-        return view('adminBlades.adminIpcr');
+        // Fetch all programs with their related projects
+        $programs = Program::with('divisions')->get();
+        $activities = Activity::with('subActivities')->get();
+        $employees = Employee::with('division')->get();
+        $divisions = Division::with(['employees' => function ($query) {
+            $query->where('role', 'Division Chief');
+        }])->get(); 
+    
+        return view('adminBlades.adminIpcr', compact(
+            'programs',
+            'employees',
+            'activities',
+            'divisions'
+        ));
     }
 
     public function assignIpcr(){

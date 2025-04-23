@@ -20,9 +20,6 @@ return new class extends Migration
             $table->string('timeliness')->nullable(); 
             $table->string('remarks')->nullable();
             
-            $table->unsignedBigInteger('accountable_id')->nullable();
-            $table->foreign('accountable_id')->references('id')->on('tbl_employee')->onDelete('cascade');
-            
             $table->unsignedBigInteger('activity_id')->nullable();
             $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
             $table->timestamps(); 

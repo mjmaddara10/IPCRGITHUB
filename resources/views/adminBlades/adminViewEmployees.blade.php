@@ -20,11 +20,11 @@
                     <div class="p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center ms-auto">
-                                <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover nv-green">
-                                    View Employees
+                                <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
+                                    View Users
                                 </a>
                                 <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    View IPCR
+                                    View Targets
                                 </a>
                                 <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     Manage PPA
@@ -39,9 +39,8 @@
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-users fa-2x text-white me-3"></i>
                                 <div>
-                                    <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">Manage
-                                        Users</h4>
-                                    <small class="text-white-50">User Management</small>
+                                    <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">View Users</h4>
+                                    <small class="text-white-50">User Overview</small>
                                 </div>
                             </div>
                         </div>
@@ -58,8 +57,6 @@
                                             <th style="color: #03592c;">Division</th>
                                             <th style="color: #03592c;">Status</th>
                                             <th style="color: #03592c;">Role</th>
-                                            <th style="color: #03592c;">Username</th>
-                                            <th style="color: #03592c;">Password</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -73,8 +70,6 @@
                                             <td>{{ $employee->division->name }}</td>
                                             <td>{{ $employee->status }}</td>
                                             <td>{{ $employee->role }}</td>
-                                            <td>{{ $employee->username }}</td>
-                                            <td>{{ $employee->password }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>

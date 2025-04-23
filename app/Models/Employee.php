@@ -23,7 +23,7 @@ class Employee extends Authenticatable
 
     public function employees()
     {
-        return $this->belongsTo(Activity::class);
+        return $this->belongsToMany(Employee::class, 'activity_employee', 'activity_id', 'employee_id');
     }
 
     public function division()
@@ -36,9 +36,9 @@ class Employee extends Authenticatable
         return $this->belongsToMany(Activity::class, 'activity_employee', 'employee_id', 'activity_id');
     }
 
-    public function selectedSubActivities()
+    public function subActivities()
     {
-        return $this->hasMany(SelectedSubActivity::class);
+        return $this->belongsToMany(SubActivity::class, 'sub_activity_employee', 'employee_id', 'sub_activity_id');
     }
 
     protected $hidden = [

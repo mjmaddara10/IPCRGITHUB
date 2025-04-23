@@ -40,18 +40,18 @@
             <div class="p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
 
-                <!-- Add Program -->
+                    <!-- Add Program -->
                     <a class="btn" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
                 
                     <!-- Buttons -->
                 <div class="d-flex align-items-center">
                     <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover nv-green">
-                    View Employees
+                    View Users
                     </a>
                     <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                    View IPCR
+                    View Targets
                     </a>
-                    <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" href="" class="btn btn-hover nv-green">
+                    <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" href="" class="btn btn-hover text-success fw-bold">
                     Manage PPA
                     </a>
                     <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
@@ -62,17 +62,17 @@
 
                 <!-- PPA Table -->
                 <div class="table-responsive" id="tableContainer">
-                <table id="ppaTable" class="table">
+                <table id="ppaTable" class="table" style="table-layout: fixed; width: 100%;">
                     <thead class="text-center">
                         <tr>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Programs/Project/Activities</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Success Indicator</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Quality</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Efficiency</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Timeliness</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Remarks/MOV</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 5%;">Division/Individuals Responsible</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 13.57%;">Actions</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 20%;">Programs/Project/Activities</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12%;">Success Indicator</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12%;">Quality</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12%;">Efficiency</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12%;">Timeliness</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12%;">Remarks/MOV</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12%">Division/Individuals Responsible</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 8%;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="programTableBody">
@@ -105,7 +105,7 @@
                                 </td>
 
                                 <!-- Buttons -->
-                                <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;" colspan="3">
+                                <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;">
                                     <!-- Add Activity -->
                                     <button class="btn btn-sm addActivityInProgramBtn buttonHover" title="Add an activity"
                                         data-program-id="{{ $program->id }}" 
@@ -160,7 +160,8 @@
                                         <!-- Add Sub-Activity -->
                                         <button class="btn btn-sm addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
                                             data-activity-id="{{ $activity->id }}" 
-                                            data-activity-name="{{ $activity->name }}" data-bs-toggle="modal" data-bs-target="#addSubActivityModal"><i class="fas fa-plus" style= "-webkit-text-stroke: 1px white; color: #FFFFFF;"></i>
+                                            data-activity-name="{{ $activity->name }}" 
+                                            data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addSubActivityModal"><i class="fas fa-plus" style= "-webkit-text-stroke: 1px white; color: #FFFFFF;"></i>
                                         </button>
 
                                         <!-- Edit Activity -->
@@ -172,7 +173,7 @@
                                             data-efficiency="{{ $activity->efficiency }}"
                                             data-timeliness="{{ $activity->timeliness }}"
                                             data-remarks="{{ $activity->remarks }}"
-                                            data-bs-toggle="modal" data-bs-target="#editActivityModal"><i class="fas fa-edit" style="color:#FFFFFF;"></i>
+                                            data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#editActivityModal"><i class="fas fa-edit" style="color:#FFFFFF;"></i>
                                         </button>
 
                                         <!-- Delete Activity -->
@@ -193,7 +194,19 @@
                                         <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
                                         <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
                                         <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
-                                        <td class="text-center border border-muted"style="white-space: pre-wrap;">{{ $subActivity->accountable }}</td>
+                                        @php
+                                            $allEmployeeCount = \App\Models\Employee::count();
+                                            $assignedCountAccountable = $activity->employees->count();
+                                        @endphp
+
+                                        <td class="text-center border border-muted" style="white-space: pre-wrap;">
+                                        @if ($subActivity->employees->count() === $allEmployeeCount)
+                                            All Employees
+                                        @else
+                                            @foreach ($subActivity->employees as $employee)
+                                                {{ $employee->firstName }} {{ strtoupper(substr($employee->middleName, 0, 1)) }}. {{ $employee->lastName }}
+                                            @endforeach
+                                        @endif
                                         <td class="text-center border border-muted">
 
                                             <!-- Edit Sub-Activity -->
@@ -284,23 +297,29 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addProgramName" id="addProgramName" autofocus></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramName" id="addProgramName" autofocus></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addSuccessIndicator" id="addSuccessIndicator"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addSuccessIndicator" id="addSuccessIndicator"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addQuality" id="addQuality"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addQuality" id="addQuality"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addEfficiency" id="addEfficiency"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addEfficiency" id="addEfficiency"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addTimeliness" id="addTimeliness"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addTimeliness" id="addTimeliness"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="addRemarks" id="addRemarks"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addRemarks" id="addRemarks"></textarea>
                                     </td>
                                 </tr>
                             </tbody>
@@ -376,23 +395,29 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editProgramName" id="editProgramName" autofocus></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editProgramName" id="editProgramName" autofocus></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editSuccessIndicator" id="editSuccessIndicator"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editSuccessIndicator" id="editSuccessIndicator"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editQuality" id="editQuality"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editQuality" id="editQuality"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editEfficiency" id="editEfficiency"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editEfficiency" id="editEfficiency"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editTimeliness" id="editTimeliness"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editTimeliness" id="editTimeliness"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editRemarks" id="editRemarks"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editRemarks" id="editRemarks"></textarea>
                                     </td>
                                 </tr>
                             </tbody>
@@ -414,101 +439,11 @@
     </div>
 </div>
 
-<!-- Edit Program/Project Modal -->
-<div class="modal fade" id="editProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="editProgramModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0" style="background-color: #03592c;">
-                <h5 class="modal-title text-white fw-bold" id="editProgramModalLabel">
-                    <i class="fas fa-edit me-2"></i>Edit Program
-                </h5>
-            </div>
-            <div class="modal-body" style="background-color: #f8f9fa;">
-            <form id="editProgramForm" class="p-2">
-                    @csrf
-                    <input type="hidden" id="editProgramId" name="editProgramId" required>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Program Name:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; min-height: 50px; resize: vertical;"
-                            name="editProgramName" id="editProgramName" autofocus></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editSuccessIndicator" id="editSuccessIndicator"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Quality:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editQuality" id="editQuality"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editEfficiency" id="editEfficiency"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editTimeliness" id="editTimeliness"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Remarks:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editRemarks" id="editRemarks"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <div class="py-2">
-                            <label class="form-label fw-bold text-dark mb-1">Division/s Responsible:</label>
-                            <button class="btn btn-sm buttonHover" title="Add division responsible" id="editAddDivisionBtn" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
-                        </div>
-                        
-                        <!-- Division Selection -->
-                        <div id="editDivisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
-                            @foreach ($divisions as $division)
-                                <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
-                                    <select class="form-select division-select" name="divisions[]">
-                                        <option value="all">All Divisions</option> <!-- new option -->
-                                        @foreach ($divisions as $div)
-                                            <option value="{{ $div->id }}" {{ $div->id == $division->id ? 'selected' : '' }}>
-                                                {{ $div->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>    
-            </div>
-            <div class="modal-footer border-0" style="background-color: #f8f9fa;">
-                <button type="button" class="btn btn-hover px-3 nv-red closeEditModal">
-                    <i class="fas fa-times me-2"></i>Cancel
-                </button>
-                <button type="submit" class="btn btn-hover px-3 nv-green">
-                    <i class="fas fa-save me-2"></i>Save Changes
-                </button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <!-- Add Activity in Program Modal -->
 <div class="modal fade" id="addActivityInProgramModal" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-hidden="true" tabindex="-1" aria-labelledby="addActivityInProgramModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-xl"
-        style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3"
-            style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
+    <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
+        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addActivityInProgramModalLabel">
                     <i class="fas fa-plus me-2"></i>Add Activity in Program
@@ -537,7 +472,7 @@
                             </button>
                         </label>
                         <div id="accountableSelectContainer" data-divisions="{{ json_encode($divisions) }}">
-                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                            <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select border border-success accountableSelect" id="addAccountableId" name="addAccountableId[]">
                                     
                                 </select>
@@ -563,35 +498,29 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none"
-                                            style="min-height: 100px; resize: vertical;" name="addActivityName"
-                                            id="addActivityName"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addActivityName" id="addActivityName"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none"
-                                            style="min-height: 100px; resize: vertical;" name="addSuccessIndicator"
-                                            id="addSuccessIndicator"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addSuccessIndicator" id="addSuccessIndicator"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none"
-                                            style="min-height: 100px; resize: vertical;" name="addQuality"
-                                            id="addQuality"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addQuality" id="addQuality"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none"
-                                            style="min-height: 100px; resize: vertical;" name="addEfficiency"
-                                            id="addEfficiency"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addEfficiency" id="addEfficiency"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none"
-                                            style="min-height: 100px; resize: vertical;" name="addTimeliness"
-                                            id="addTimeliness"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addTimeliness" id="addTimeliness"></textarea>
                                     </td>
-                                    <td>
-                                        <textarea class="form-control border-0 shadow-none"
-                                            style="min-height: 100px; resize: vertical;" name="addRemarks"
-                                            id="addRemarks"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addRemarks" id="addRemarks"></textarea>
                                     </td>
 
                                 </tr>
@@ -613,74 +542,128 @@
     </div>
 </div>
 
-<!-- Add Activity in Program Modal -->
-<!-- <div class="modal fade" id="addActivityInProgramModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="addActivityInProgramModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0" style="background-color: #03592c;">
-                <h5 class="modal-title text-white fw-bold" id="addActivityInProgramModalLabel">
-                    <i class="fas fa-add me-2"></i>Add Activity in Program
+<!-- Edit Activity Modal -->
+<div class="modal fade" id="editActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="editActivityModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
+        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
+            <!-- Header -->
+            <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
+                <h5 class="modal-title text-white fw-bold" id="editActivityModalLabel">
+                    <i class="fas fa-edit me-2"></i>Edit Activity
                 </h5>
             </div>
-            <div class="modal-body" style="background-color: #f8f9fa;">
-                <form id="addActivityInProgramForm" class="p-2">
+
+            <!-- Body -->
+            <div class="modal-body" style="background-color: #ffffff;">
+                <form id="editActivityForm" class="p-2">
                     @csrf
-                    <input type="hidden" id="programIdProg" name="programIdProg" required>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Program Name:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
-                            name="programNameProg" id="programNameProg" disabled></textarea>
-                    </div>
-                    <div class="col-12">
+                    <input type="hidden" id="editActivityId" name="editActivityId" required>
+
+                    <!-- Activity Name -->
+                    <div class="mb-3">
                         <label class="form-label fw-bold text-dark mb-1">Activity Name:</label>
                         <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addActivityName" id="addActivityName"></textarea>
+                            style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
+                            name="editActivityName" id="editActivityName" required></textarea>
                     </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addSuccessIndicator" id="addSuccessIndicator"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Quality:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addQuality" id="addQuality"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addEfficiency" id="addEfficiency"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addTimeliness" id="addTimeliness"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Remarks:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addRemarks" id="addRemarks"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <div class="py-2">
-                            <label class="form-label fw-bold text-dark mb-1">Individual/s Responsible:</label>
-                            <button type="button" class="btn btn-sm" title="Add person" id="addAccountablePersonBtn" style="background-color: #01a550; color: #fff;">
+                    <!-- Individual Responsible -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
+                            Individual/s Responsible:
+                            <button class="btn btn-sm text-white" id="addAccountableEditBtn" type="button" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
+                        </label>
+                        <div id="editContainer">
+                            <!-- Selects will be added here dynamically -->
                         </div>
+                    </div>
 
-                        <div id="accountableSelectContainer">
+                    <!-- Activity Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle text-center border-success">
+                            <thead class="table-light fw-bold text-dark">
+                                <tr>
+                                    <th style="min-width: 200px;">Success Indicator</th>
+                                    <th style="min-width: 200px;">Quality</th>
+                                    <th style="min-width: 200px;">Efficiency</th>
+                                    <th style="min-width: 200px;">Timeliness</th>
+                                    <th style="min-width: 200px;">Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editSuccessIndicatorActivity" id="editSuccessIndicatorActivity" required></textarea>
+                                    </td>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editQualityActivity" id="editQualityActivity" required></textarea>
+                                    </td>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editEfficiencyActivity" id="editEfficiencyActivity" required></textarea>
+                                    </td>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editTimelinessActivity" id="editTimelinessActivity" required></textarea>
+                                    </td>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editRemarksActivity" id="editRemarksActivity"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                        <button type="button" class="btn btn-danger px-3 closeEditModal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success px-3">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Sub-Activity Modal -->
+<div class="modal fade" id="addSubActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="addSubActivityModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
+        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
+            <!-- Header -->
+            <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
+                <h5 class="modal-title text-white fw-bold" id="addSubActivityModalLabel">
+                    <i class="fas fa-plus me-2"></i>Add Sub-Activity
+                </h5>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body" style="background-color: #ffffff;">
+                <form id="addSubActivityForm" class="p-2">
+                    @csrf
+                    <input type="hidden" id="activityIdSub" name="activityIdSub" required>
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold text-dark mb-1">Activity Name:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
+                            name="activityNameSub" id="activityNameSub" disabled></textarea>
+                    </div>
+
+                    <!-- Individual Responsible -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
+                            Individual/s Responsible:
+                            <button class="btn btn-sm text-white me-2" id="addsAccountablePersonBtn" type="button"
+                                title="Add person" style="background-color: #01a550;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </label>
+                        <div id="accountableSelectContainerSubAct" data-divisions="{{ json_encode($divisions) }}">
                             <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
-                                <select class="form-select border-2 py-2 accountableSelect" name="addAccountableId[]"
-                                    style="border-color: #03592c; background-color: #ffffff;">
-                                    <option value="">Select accountable person</option>
+                                <select class="form-select border border-success accountableSelect" id="addAccountableId" name="addAccountableId[]">
+                                    
                                 </select>
                                 <button type="button" class="btn btn-danger btn-sm removeAccountableBtn" disabled>
                                     <i class="fas fa-minus"></i>
@@ -688,160 +671,161 @@
                             </div>
                         </div>
                     </div>
-            </div>
-            <div class="modal-footer border-0" style="background-color: #f8f9fa;">
-                <button type="button" class="btn btn-hover px-3 nv-red closeAddModal">
-                    <i class="fas fa-times me-2"></i>Cancel
-                </button>
-                <button type="submit" class="btn btn-hover px-3 nv-green">
-                    <i class="fas fa-save me-2"></i>Save Changes
-                </button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div> -->
 
-<!-- Edit Activity Modal -->
-<div class="modal fade" id="editActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="editActivityModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0" style="background-color: #03592c;">
-                <h5 class="modal-title text-white fw-bold" id="editActivityModalLabel">
-                    <i class="fas fa-edit me-2"></i>Edit Activity
-                </h5>
+
+                    <!-- Sub-Activity Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle text-center border-success">
+                            <thead class="table-light fw-bold text-dark">
+                                <tr>
+                                    <th style="min-width: 200px;">Sub-Activity Name</th>
+                                    <th style="min-width: 200px;">Success Indicator</th>
+                                    <th style="min-width: 200px;">Quality</th>
+                                    <th style="min-width: 200px;">Efficiency</th>
+                                    <th style="min-width: 200px;">Timeliness</th>
+                                    <th style="min-width: 200px;">Remarks</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none"
+                                            style="min-height: 100px; resize: vertical;" name="addSubActivityName"
+                                            id="addSubActivityName" required></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none"
+                                            style="min-height: 100px; resize: vertical;" name="addSuccessIndicator"
+                                            id="addSuccessIndicator" required></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none"
+                                            style="min-height: 100px; resize: vertical;" name="addQuality"
+                                            id="addQuality" required></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none"
+                                            style="min-height: 100px; resize: vertical;" name="addEfficiency"
+                                            id="addEfficiency" required></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none"
+                                            style="min-height: 100px; resize: vertical;" name="addTimeliness"
+                                            id="addTimeliness" required></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none"
+                                            style="min-height: 100px; resize: vertical;" name="addRemarks"
+                                            id="addRemarks" required></textarea>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                        <button type="button" class="btn btn-danger px-3 closeAddModal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success px-3">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-body" style="background-color: #f8f9fa;">
-                <form id="editActivityForm" class="p-2">
-                    @csrf
-                    <input type="hidden" id="activityId" name="activityId">
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Activity Name:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editActivityName" id="editActivityName"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editSuccessIndicatorActivity" id="editSuccessIndicatorActivity"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Quality:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editQualityActivity" id="editQualityActivity"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editEfficiencyActivity" id="editEfficiencyActivity"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editTimelinessActivity" id="editTimelinessActivity"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Remarks:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editRemarksActivity" id="editRemarksActivity"></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Individual Responsible:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="editRemarksActivity" id="editRemarksActivity"></textarea>
-                    </div>
-            </div>
-            <div class="modal-footer border-0" style="background-color: #f8f9fa;">
-                <button type="button" class="btn btn-hover px-3 nv-red closeEditModal">
-                    <i class="fas fa-times me-2"></i>Cancel
-                </button>
-                <button type="submit" class="btn btn-hover px-3 nv-green">
-                    <i class="fas fa-save me-2"></i>Save Changes
-                </button>
-            </div>
-            </form>
         </div>
     </div>
 </div>
 
-<!-- Add Sub-Activity -->
-<div class="modal fade" id="addSubActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="addSubActivityModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0" style="background-color: #03592c;">
-                <h5 class="modal-title text-white fw-bold" id="addSubActivityModalLabel">
-                    <i class="fas fa-add me-2"></i>Add Sub-Activity
+<!-- Edit Sub-Activity Modal -->
+<div class="modal fade" id="editSubActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="editSubActivityModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
+        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
+
+            <!-- Header -->
+            <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
+                <h5 class="modal-title text-white fw-bold" id="editSubActivityModalLabel">
+                    <i class="fas fa-edit me-2"></i>Edit Sub-Activity
                 </h5>
             </div>
-            <div class="modal-body" style="background-color: #f8f9fa;">
-                <form id="addSubActivityForm" class="p-2">
+
+
+            <!-- Body -->
+            <div class="modal-body" style="background-color: #ffffff;">
+                <form id="editSubActivityForm" class="p-2">
                     @csrf
-                    <input type="hidden" id="activityIdSub" name="activityIdSub" required>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Activity Name:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
-                            name="activityNameSub" id="activityNameSub" disabled></textarea>
-                    </div>
-                    <div class="col-12">
+                    <input type="hidden" id="editActivityIdSub" name="editActivityIdSub" required>
+
+                    <!-- Sub-Activity Name -->
+                    <div class="mb-3">
                         <label class="form-label fw-bold text-dark mb-1">Sub-Activity Name:</label>
                         <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addSubActivityName" id="addSubActivityName" required></textarea>
+                            style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
+                            name="editActivityNameSub" id="editActivityNameSub" required></textarea>
                     </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Success Indicator:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addSuccessIndicator" id="addSuccessIndicator" required></textarea>
+
+                    <!-- Individual Responsible -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
+                            Individual/s Responsible:
+                            <button class="btn btn-sm text-white" id="addAccountableEditSubBtn" type="button" style="background-color: #01a550;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </label>
+                        <div id="editContainerSub">
+                            <!-- Selects will be added here dynamically -->
+                        </div>
                     </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Quality:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addQuality" id="addQuality" required></textarea>
+
+                    <!-- Table Input Fields -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle text-center border-success">
+                            <thead class="table-light fw-bold text-dark">
+                                <tr>
+                                    <th>Success Indicator</th>
+                                    <th>Quality</th>
+                                    <th>Efficiency</th>
+                                    <th>Timeliness</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editSuccessIndicatorSub" id="editSuccessIndicatorSub" required></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editQualitySub" id="editQualitySub" required></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editEfficiencySub" id="editEfficiencySub" required></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editTimelinessSub" id="editTimelinessSub" required></textarea>
+                                    </td>
+                                    <td>
+                                        <textarea class="form-control border-0 shadow-none" style="min-height: 100px; resize: vertical;" name="editRemarksSub" id="editRemarksSub"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Efficiency:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addEfficiency" id="addEfficiency" required></textarea>
+
+                    <!-- Footer -->
+                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                        <button type="button" class="btn btn-danger px-3 closeEditModal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success px-3">
+                            <i class="fas fa-save me-2"></i>Save Changes
+                        </button>
                     </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Timeliness:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addTimeliness" id="addTimeliness" required></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Remarks:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addRemarks" id="addRemarks" required></textarea>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold text-dark mb-1">Individual/s Responsible:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color: #ffffff; min-height: 80px; resize: vertical;"
-                            name="addAccountable" id="addAccountable" required></textarea>
-                    </div>
+                </form>
             </div>
-            <div class="modal-footer border-0" style="background-color: #f8f9fa;">
-                <button type="button" class="btn btn-hover px-3 nv-red closeAddModal">
-                    <i class="fas fa-times me-2"></i>Cancel
-                </button>
-                <button type="submit" class="btn btn-hover px-3 nv-green">
-                    <i class="fas fa-save me-2"></i>Save Changes
-                </button>
-            </div>
-            </form>
+
         </div>
     </div>
 </div>

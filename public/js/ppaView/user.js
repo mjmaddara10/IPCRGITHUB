@@ -1,5 +1,28 @@
 // Fill blue area
 $(document).ready(function () {
+    const selectedOption = $(this).find(':selected');
+
+        const name = selectedOption.data('name') || '________';
+        const position = selectedOption.data('position') || '________';
+        const status = selectedOption.data('status') || '________';
+        const divisionName = selectedOption.data('division-name') || '________';
+        const divisionId = selectedOption.data('division-id') || '';
+
+        $('#empName').text(name);
+        $('#empPosition').text(position);
+        $('#empStatus').text(status);
+        $('#empDivision').text(divisionName);
+
+        console.log('Division ID:', divisionId);
+
+        const chiefInfo = divisionChiefs[divisionId] || {
+            name: '_________________________',
+            position: '_________________________'
+        };
+        
+        $('#reviewedByName').text(chiefInfo.name);
+        $('#reviewedByPosition').text(chiefInfo.position);
+        
     $('#employeeSelect').on('change', function () {
         const selectedOption = $(this).find(':selected');
 
@@ -15,6 +38,14 @@ $(document).ready(function () {
         $('#empDivision').text(divisionName);
 
         console.log('Division ID:', divisionId);
+
+        const chiefInfo = divisionChiefs[divisionId] || {
+            name: '_________________________',
+            position: '_________________________'
+        };
+        
+        $('#reviewedByName').text(chiefInfo.name);
+        $('#reviewedByPosition').text(chiefInfo.position);
     });
 });
 
@@ -23,7 +54,7 @@ $('#employeeSelect').on('change', function () {
 
     if (employeeId) {
         $.ajax({
-            url: '/admin/getEmployeeDivision/' + employeeId,
+            url: '/viewPpa/' + employeeId + '/getEmployeeDivision',
             type: 'GET',
             success: function (response) {
                 let divisionId = response.id;

@@ -12,7 +12,7 @@ use App\Models\Program;
 use App\Models\Employee;
 use App\Models\Division;
 
-class assignController extends Controller
+class viewPpaController extends Controller
 {
     public function getEmployeeDivision($id)
     {

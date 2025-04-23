@@ -20,14 +20,9 @@ return new class extends Migration
             $table->string('timeliness')->nullable();
             $table->string('remarks')->nullable();
             
-            $table->unsignedBigInteger('accountable_id')->nullable();
-            $table->foreign('accountable_id')->references('id')->on('tbl_employee')->onDelete('cascade');
-            
             $table->unsignedBigInteger('program_id')->nullable();
             $table->foreign('program_id')->references('id')->on('programs')->onDelete('cascade');
-
-            $table->unsignedBigInteger('project_id')->nullable();
-            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            
             $table->timestamps(); // Created at and updated at timestamps
         });
     }

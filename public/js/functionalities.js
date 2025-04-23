@@ -5,23 +5,17 @@ var tooltipElements = document.querySelectorAll('.buttonHover'); // Select all e
       });
     });
 
+// Auto Resize in PPA crud
+document.querySelectorAll('.auto-resize').forEach(textarea => {
+    textarea.style.overflow = 'hidden';
+    textarea.style.resize = 'none';
+    textarea.style.minHeight = '100px';
+    textarea.style.paddingTop = '5px';  // Ensure padding for text alignment
 
-// Form autofocus
-/*const modals = [
-  { modalId: 'adminLoginModal', inputId: 'adminUsername' },
-  { modalId: 'employeeLoginModal', inputId: 'employeeUsername' },
-  { modalId: 'editProgramModal', inputId: 'editProgramName' },
-  { modalId: 'addProjectModal', inputId: 'addProjectName' },
-  { modalId: 'editProjectModal', inputId: 'editProjectName' },
-  { modalId: 'addActivityModal', inputId: 'addActivityName' },
-  { modalId: 'editActivityModal', inputId: 'editActivityName' },
-  { modalId: 'addSubProjectModal', inputId: 'addSubProjectTitle' },
-  { modalId: 'editSubProjectModal', inputId: 'editSubProjectName' },
-  { modalId: 'addActivityInSubModal', inputId: 'addActivityName' }
-];
-
-modals.forEach(({ modalId, inputId }) => {
-  document.getElementById(modalId).addEventListener('shown.bs.modal', function () {
-      document.getElementById(inputId).focus();
-  });
-});*/
+    const resize = () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    };
+    textarea.addEventListener('input', resize);
+    resize(); // Call once on load in case of pre-filled content
+});

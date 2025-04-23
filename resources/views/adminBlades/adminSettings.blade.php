@@ -16,10 +16,10 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center ms-auto">
                             <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover nv-green">
-                                View Employees
+                                View Users
                             </a>
                             <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                View IPCR
+                                View Targets
                             </a>
                             <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 Manage PPA
@@ -35,7 +35,7 @@
                             <i class="fas fa-cog fa-2x text-white me-3"></i>
                             <div>
                                 <h4 class="mb-0 text-white"
-                                    style="font-family: 'Montserrat', sans-serif; font-weight: 600;">My Profile</h4>
+                                    style="font-family: 'Montserrat', sans-serif; font-weight: 600;">User Profile</h4>
                                 <small class="text-white-50">Personal Information</small>
                             </div>
                         </div>
