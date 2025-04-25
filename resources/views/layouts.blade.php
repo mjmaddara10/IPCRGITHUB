@@ -51,6 +51,11 @@
     <!-- Main Content Area -->
     @yield('content')
 
+    <!-- Logging out -->
+    <form id="logoutForm" action="{{ route('userLogout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+
     <!-- JavaScript Dependencies -->
     <!-- Bootstrap Bundle with Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -83,11 +88,11 @@
     <!-- Hover on Button -->
     <script src="{{ asset('js/functionalities.js') }}"></script>
 
-    <script>
+    <!-- <script>
         $('#adminLoginModal').on('shown.bs.modal', function () {
             $('#adminUsername').focus();
         });
-    </script>
+    </script> -->
     <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
 </body>
 

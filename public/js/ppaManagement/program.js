@@ -134,6 +134,7 @@ $(document).off('click', '.editProgramBtn').on('click', '.editProgramBtn', funct
     var programEfficiency = $(this).data('program-efficiency');
     var programTimeliness = $(this).data('program-timeliness');
     var programRemarks = $(this).data('program-remarks');
+    var programBudget = $(this).data('program-budget');
 
     $('#editProgramId').val(programId);
     $('#editProgramName').val(programName);
@@ -142,6 +143,7 @@ $(document).off('click', '.editProgramBtn').on('click', '.editProgramBtn', funct
     $('#editEfficiency').val(programEfficiency);
     $('#editTimeliness').val(programTimeliness);
     $('#editRemarks').val(programRemarks);
+    $('#editBudget').val(programBudget);
 
     $('#editDivisionSelectContainer').empty();
 
@@ -289,6 +291,16 @@ $(document).on('click', '.deleteProgramBtn', function(e) {
 document.addEventListener('DOMContentLoaded', function () {
     const divisionContainer = document.getElementById('divisionSelectContainer');
     const addDivisionBtn = document.getElementById('addDivisionBtn');
+    const savedDivisionId = localStorage.getItem('selectedDivisionId');
+    const select = document.getElementById('divisionFilter');
+
+    if (savedDivisionId && select) {
+        select.value = savedDivisionId;
+
+        // Trigger the change event manually to reapply the filter
+        const event = new Event('change');
+        select.dispatchEvent(event);
+    }
 
     // Check if "All Divisions" is selected in any select input
     function isAllDivisionsSelected() {
@@ -423,20 +435,26 @@ document.getElementById('divisionSelectContainer').addEventListener('click', fun
 // Filtering thru Division
 document.getElementById('divisionFilter').addEventListener('change', function () {
     const selectedDivisionId = this.value;
-    // console.log(selectedDivisionId)
+    localStorage.setItem('selectedDivisionId', selectedDivisionId); // ✅ Save it in localStorage
 
-    // Loop through each program row
+    // Apply filter
     document.querySelectorAll('.programRow').forEach(row => {
         const divisionIds = row.dataset.divisionIds.split(',');
         const programId = row.dataset.programId;
-
         const match = selectedDivisionId === '' || divisionIds.includes(selectedDivisionId);
 
-        // Show/hide the program row and all related child rows
         row.style.display = match ? '' : 'none';
 
         document.querySelectorAll(`[data-program-id="${programId}"]`).forEach(childRow => {
             childRow.style.display = match ? '' : 'none';
         });
     });
+});
+
+$(document).ready(function () {
+    const savedDivisionId = sessionStorage.getItem('selectedDivisionId');
+    if (savedDivisionId !== null) {
+        $('#divisionFilter').val(savedDivisionId).trigger('change');
+        sessionStorage.removeItem('selectedDivisionId'); // Clear after applying
+    }
 });

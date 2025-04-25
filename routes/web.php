@@ -3,28 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\programController;
 use App\Http\Controllers\ppaController;
+use App\Http\Controllers\pdfController;
 use App\Http\Controllers\viewPpaController;
 use App\Http\Controllers\usersController;
 use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
 use App\Http\Controllers\adminPagesController;
 use App\Http\Controllers\assignController;
-use App\Models\SubActivity;
-use App\Models\Program;
-use App\Models\Project;
-use App\Models\SubProject;
-use App\Models\Employee;
-use App\Models\Activity;
-use App\Models\Division;
-
-
 
 Route::get('/', function () {
-    return view('index');
-});
+    return view('/index');
+})->name('login');
 
-// Logging in
-Route::post('/admin/adminIndex', [authorizationController::class, 'adminLogin'])->name('adminLogin');
+Route::post('/userLogin', [authorizationController::class, 'userLogin'])->name('userLogin');
+Route::post('/userLogout', [authorizationController::class, 'userLogout'])->name('userLogout');
 
 Route::prefix('admin')->group(function () {
     Route::post('/updateActivity', [ppaController::class, 'updateActivity'])->name('updateActivity');
@@ -61,67 +53,36 @@ Route::prefix('admin')->group(function () {
 Route::prefix('viewPpa')->group(function () {
     Route::get('/{id}/getEmployeeDivision', [viewPpaController::class, 'getEmployeeDivision']);
     Route::get('/{id}/getEmployeeTargets', [viewPpaController::class, 'getEmployeeTargets']);
-
 });
 
-Route::group(['middleware' => 'admin'], function () {
-    // Updating admin account
-    Route::post('/admin/adminSettings', [adminModificationController::class, 'editAccount'])->name('adminSettings');
+Route::prefix('pdf')->group(function () {
+    Route::get('/generatePdf', [PDFController::class, 'generatePdf'])->name('pdf.generatePdf');
+});
 
-    // Logging out
-    Route::post('/', [authorizationController::class, 'adminLogout'])->name('adminLogout');
-
-    Route::get('/admin/adminIndex', [adminPagesController::class, 'index'])->name('admin.index');
-    Route::get('/admin/adminSettings', [adminPagesController::class, 'settings'])->name('admin.settings');
-    Route::get('/admin/adminViewEmployees', [adminPagesController::class, 'viewEmployees'])->name('admin.viewEmployees');
-    Route::get('/admin/adminManagePpa', [adminPagesController::class, 'managePpa'])->name('admin.managePpa');
-
-    Route::get('/admin/adminManagePpa2', [adminPagesController::class, 'managePpa2'])->name('admin.managePpa2');
-
-    Route::get('/admin/adminIpcr', [adminPagesController::class, 'viewIpcr'])->name('admin.viewIpcr');
-    Route::get('/admin/adminAssign', [adminPagesController::class, 'assignIpcr'])->name('admin.assignIpcr');
-
-    Route::get('/get-table/{table}', function ($table) {
-        if (view()->exists("adminBlades.tables.$table")) {
-            $programs = Program::with('projects')->get();
-            $projects = Project::with('activities', 'subProjects')->get();
-            $subProjects = SubProject::with('activities')->get();
-            $activities = Activity::with('employees')->get();
-
-            return view("adminBlades.tables.$table", compact('programs', 'projects', 'subProjects','employees'));
-        }
-        return response("Table not found", 404);
+//===================Middleware===================//
+Route::middleware(['auth', 'role:Staff'])->group(function () {
+    Route::prefix('staff')->group(function () {
+        Route::get('/settings', [adminPagesController::class, 'settings'])->name('staff.settings');
+        Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('staff.viewIpcr');
     });
 });
 
-Route::prefix('employee')->group(function () {
-    Route::get('/index', function () {
-        return view('employeeBlades.employeeIndex');
-    })->name('employee.index');
-
-    //Employee Assign
-    Route::get('/employee/assignIpcr', function () {
-        return view('employeeBlades.employeeAssign');
-    })->name('employee.assignIpcr');
-
-    //Employee View IPCR
-    Route::get('/employee/viewIpcr', function () {
-        return view('employeeBlades.employeeIpcr');
-    })->name('employee.viewIpcr');
-
-    //Employee Settings
-    Route::get('/employee/settings', function () {
-        return view('employeeBlades.employeeSettings');
-    })->name('employee.settings');
+Route::middleware(['auth', 'role:Division Chief'])->group(function () {
+    Route::prefix('chief')->group(function () {
+        Route::get('/managePpa', [adminPagesController::class, 'managePpa'])->name('chief.managePpa');
+        Route::get('/viewEmployees', [adminPagesController::class, 'viewEmployees'])->name('chief.viewEmployees');
+        Route::get('/settings', [adminPagesController::class, 'settings'])->name('chief.settings');
+        Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('chief.viewIpcr');
+        Route::get('/audit', [adminPagesController::class, 'audit'])->name('chief.audit');
+    });
 });
 
-// ... existing routes ...
-Route::get('/logout', function () {
-    Auth::logout();
-    Session::flush();
-    return redirect('/');
-})->name('logoutUser');
-// ... existing routes ...
-
-Auth::routes();
-
+Route::middleware(['auth', 'role:Department Head'])->group(function () {
+    Route::prefix('head')->group(function () {
+        Route::get('/managePpa', [adminPagesController::class, 'managePpa'])->name('head.managePpa');
+        Route::get('/viewEmployees', [adminPagesController::class, 'viewEmployees'])->name('head.viewEmployees');
+        Route::get('/settings', [adminPagesController::class, 'settings'])->name('head.settings');
+        Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('head.viewIpcr');
+        Route::get('/audit', [adminPagesController::class, 'audit'])->name('head.audit');
+    });
+});

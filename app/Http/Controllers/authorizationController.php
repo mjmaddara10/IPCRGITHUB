@@ -6,66 +6,66 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use App\Models\Admin;
+use App\Models\Employee;
 
 class authorizationController extends Controller
 {
-    // ================== Admin Login =================//
-    public function adminLogin(Request $request)
-    {  
-        // Check if the user exists in the tbl_admin table
-        $admin = Admin::where('username', $request->adminUsername)->first();
+    public function userLogin(Request $request) {
 
-        // Ensure the admin exists
-        if (!$admin) {
-            return redirect()->back()->withErrors(['username' => 'Invalid credentials']);
+        // Retrieve user based on username
+        $user = Employee::where('username', $request->username)->first();
+
+        if (!$user) {
+            \Log::debug('User not found');
+            return back()->withErrors(['username' => 'Invalid credentials']);
         }
 
-        // Decrypt the password stored in the database
-        $decryptedPassword = DB::selectOne("SELECT AES_DECRYPT(password, 'admin') as decrypted_password FROM tbl_admin WHERE id = ?", [$admin->id])->decrypted_password;
+        // Log the user in (default guard)
+        
 
-        // Compare the decrypted password with the plain password from the request
-        if ($decryptedPassword === $request->password) {
-            Auth::guard('admin')->login($admin);
+        // Set session variables if needed
+        session([
+            'id' => $user->id,
+            'username' => $user->username,
+            'password' => $user->password,
+            'firstName' => $user->firstName,
+            'middleName' => $user->middleName,
+            'middleInitial' => $user->middleName ? substr($user->middleName, 0, 1) . '.' : '',
+            'lastName' => $user->lastName,
+            'role' => $user->role,
+            'position' => $user->position,
+            'division_id' => $user->division_id,
+            'division_name' => $user->division ? $user->division->name : null,
+            'status' => $user->status,
+        ]);
 
-            // Set session variables
-            session([
-                'id' => $admin->id,
-                'firstName' => $admin->firstName,
-                'middleName' => $admin->middleName,
-                'middleInitial' => $admin->middleName ? substr($admin->middleName, 0, 1) . '.' : '',
-                'lastName' => $admin->lastName,
-                'username' => $admin->username,
-                'password' => $admin->password,  // The AES encrypted password
-                'position' => $admin->position,
-                'division' => $admin->division,
-                'status' => $admin->status,
-                'plainPassword' => $request->password  // Store plain password in the session for showing purposes
-            ]);
+        Auth::guard('web')->login($user);
 
-            // Redirect to the admin dashboard or another route
-            return redirect()->route('admin.managePpa');
-        } else {
-            // If login fails, redirect back with an error message
-            return redirect()->back()->withErrors(['username' => 'Invalid credentials']);
+        // dd (auth()->user());
+        // dd(auth()->check());
+        
+        
+        // Redirect based on role
+        switch ($user->role) {
+            case 'Staff':
+                return redirect()->route('staff.viewIpcr');
+            case 'Division Chief':
+                return redirect()->route('chief.managePpa');
+            case 'Department Head':
+                return redirect()->route('head.managePpa');
+            break;
         }
     }
 
-    // ==================Admin Logout =================//
-    public function adminLogout(Request $request)
-    {
-        Auth::guard('admin')->logout();  // Logs out the admin
-        $request->session()->invalidate();  // Invalidate the session
-        $request->session()->regenerateToken();  // Regenerate CSRF token
+    public function userLogout() {
+        // Log the user out
+        Auth::logout();
 
-        return redirect('/');
+        // Invalidate the session
+        session()->invalidate();
+        session()->regenerateToken();
+
+        // Redirect to a desired page after logging out (e.g., login page)
+        return redirect()->route('login');
     }
-
-    public function logout(Request $request)
-{
-    $request->session()->flush(); // Clear all session data
-    Auth::guard('admin')->logout();
-    return redirect('/login')->with('message', 'You have been logged out successfully!');
-}
-
 }

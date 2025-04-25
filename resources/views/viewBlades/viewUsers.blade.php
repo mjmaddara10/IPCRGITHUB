@@ -3,11 +3,11 @@
 @extends('layouts')
 
 <!-- Sets the page title in the browser tab -->
-@section('title', 'Admin Manage Users')
+@section('title', 'View Users')
 
 <!-- Navigation Section -->
 @section('navbar')
-    @include('adminBlades.adminInclude')
+    @include('viewBlades.include')
 @endsection
 
 @section('content')
@@ -20,18 +20,40 @@
                     <div class="p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center ms-auto">
-                                <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
+                            @if($role === 'Division Chief')
+                                <a href="{{ route('chief.audit') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                    Audit Trail
+                                </a>
+                                <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">
                                     View Users
                                 </a>
-                                <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     View Targets
                                 </a>
-                                <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     Manage PPA
                                 </a>
                                 <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
+                            @elseif($role === 'Department Head')
+                                <a href="{{ route('head.audit') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                    Audit Trail
+                                </a>
+                                <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">
+                                    View Users
+                                </a>
+                                <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                    View Targets
+                                </a>
+                                <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                    Manage PPA
+                                </a>
+                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                    Logout
+                                </a>
+                            @endif
+                                
                             </div>
                         </div>
 
@@ -67,7 +89,7 @@
                                             <td>{{ $employee->middleName }}</td>
                                             <td>{{ $employee->lastName }}</td>
                                             <td>{{ $employee->position }}</td>
-                                            <td>{{ $employee->division->name }}</td>
+                                            <td>{{ $employee->division->name ?? '' }}</td>
                                             <td>{{ $employee->status }}</td>
                                             <td>{{ $employee->role }}</td>
                                         </tr>

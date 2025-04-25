@@ -5,7 +5,7 @@
         <!-- Logo and Brand Name -->
         <a class="navbar-brand fw-bold text-success d-flex align-items-center">
             <img src="{{ asset('img/NVLogo.png') }}" alt="NV Logo" class="me-2" style="height: 40px; width: auto" />
-            <span class="brand-text" onclick="window.location.href='{{ route('admin.index') }}'" style="cursor: pointer;">SPMS</span>
+            <span class="brand-text" style="cursor: pointer;">SPMS</span>
         </a>
 
         <!-- User Info on the right -->
@@ -16,16 +16,23 @@
                 <small class="text-muted">{{ session('position') }}</small>
             </div>
             <!-- Button -->
-            <a href="{{ route('admin.settings') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                <i class="fas fa-user text-white mx-1"></i>
-            </a>       
+            @if($role === 'Division Chief')
+                <a href="{{ route('chief.settings') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                    <i class="fas fa-user text-white mx-1"></i>
+                </a>
+            @elseif($role === 'Department Head')
+                <a href="{{ route('head.settings') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                    <i class="fas fa-user text-white mx-1"></i>
+                </a>
+            @elseif($role === 'Staff')
+                <a href="{{ route('staff.settings') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                    <i class="fas fa-user text-white mx-1"></i>
+                </a>
+            @endif
+                   
         </div>
     </div>
 </nav>
-
-<form id="logoutForm" action="{{ route('adminLogout') }}" method="POST" style="display: none;">
-    @csrf
-</form>
 
 <!-- Decorative Gold Gradient Bar -->
 <div style="background: linear-gradient(to right, #dd9f03, #eabe03, #dd9f03); height: 10px; width: 100%;"></div>

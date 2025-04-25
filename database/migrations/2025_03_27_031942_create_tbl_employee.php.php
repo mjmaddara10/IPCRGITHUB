@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('lastName');
             $table->string('position');
             $table->string('status');
-            $table->foreignId('division')->constrained()->onDelete('cascade');
+            $table->foreignId('division')->nullable()->constrained()->onDelete('cascade');
             $table->string('username');
             $table->string('password');
             $table->string('role');
