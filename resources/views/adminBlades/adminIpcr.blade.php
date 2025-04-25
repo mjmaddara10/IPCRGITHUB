@@ -51,6 +51,15 @@
                             <small class="text-white-50">View all the users' targets</small>
                         </div>
                     </div>
+
+                    <!-- Exporting -->
+                    <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
+                        <div class="col-12 d-flex justify-content-start">
+                            <a class="btn btn-md btn-primary" href="{{ route('pdf.generatePdf') }}">
+                                <i class="fas fa-file-pdf me-2"></i> Export as PDF
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="px-4 pt-4">
@@ -59,6 +68,7 @@
                         <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
                             <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
                             <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
+                                <option>Select a Division</option>
                                 @foreach ($divisions as $division)
                                     <option value="{{ $division->id }}"
                                         data-name="{{ $division->name }}">
@@ -71,14 +81,14 @@
                             <!-- User Select -->
                             <label for="employeeSelect" class="mx-2 fw-bold mb-0">Select User:</label>
                             <select class="form-select form-select-md w-auto" name="employeeSelect" id="employeeSelect">
-                                <!-- <option value="">Select an Employee</option> -->
+                                <option>Select a User</option>
                                 @foreach ($employees as $employee)
                                     <option value="{{ $employee->id }}"
                                         data-name="{{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}"
                                         data-position="{{ $employee->position }}"
                                         data-status="{{ $employee->status }}"
-                                        data-division-id="{{ $employee->division->id }}"
-                                        data-division-name="{{ $employee->division->name }}">
+                                        data-division-id="{{ $employee->division->id ?? ''}}"
+                                        data-division-name="{{ $employee->division->name ?? ''}}">
                                         {{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}
                                     </option>
                                 @endforeach
@@ -103,9 +113,8 @@
                             <p class="justified-text" id="employeeCommitmentText">
                                 I, <span id="empName" class="fw-bold text-uppercase">________</span>,
                                 <span id="empPosition" class="fw-bold">________</span> -
-                                <span id="empStatus" class="fw-bold ">________</span><strong> of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE</strong>,
-                                <span id="empDivision" class="fw-bold text-uppercase">________</span>,
-                                commit to deliver and agree to be rated on the attainment of the following targets in accordance with the indicated measures for the period January to December 2025.
+                                <span id="empStatus" class="fw-bold ">________</span><strong> of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE</strong>
+                                <span id="empDivision" class="fw-bold text-uppercase">________</span> commit to deliver and agree to be rated on the attainment of the following targets in accordance with the indicated measures for the period January to December 2025.
                             </p>
 
                             <div class="d-flex justify-content-center">
@@ -135,8 +144,8 @@
                 <!-- Table Section -->
                 <div class="container-fluid" style="padding: 0 0px;">
                     <div class="table-responsive">
-                        <table id="usersTable" class="table table-hover" style="width: 100%;">
-                            <thead class="text-center">
+                        <table id="usersTable" class="table table-hover" style="fixed; width: 100%;">
+                            <thead class="text-center d-none" id="thead-default">
                                 <tr>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Programs/Project/Activities</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Success Indicator</th>
@@ -146,21 +155,24 @@
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Remarks/MOV</th>
                                 </tr>
                             </thead>
+                            <thead class="text-center d-none" id="thead-dept-head">
+                                <tr>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Programs/Project/Activities</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:12%;">Success Indicator</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:11%;">Quality</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:11%;">Efficiency</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:11%;">Timeliness</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:16%;">Remarks/MOV</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Allotted Budget</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:14%;">Division/s Responsible</th>
+                                </tr>
+                            </thead>
+
                             <tbody id="usersTableBody">
                                 <!-- Target PPAs here -->
                             </tbody>
                         </table>
                     </div>
-
-                    <!-- Save Button -->
-                    <div class="row mt-3">
-                        <div class="col-12 d-flex justify-content-start mb-3 ms-4">
-                            <a href="javascript:void(0)" onclick="exportToPDF()" class="btn nv-red px-2">
-                                <i class="fas fa-file-pdf me-2"></i> Export as PDF
-                            </a>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

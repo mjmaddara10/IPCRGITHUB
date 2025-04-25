@@ -70,5 +70,32 @@
         </tr>
         @endforeach
     </tr>
+
+    @foreach($programs as $program)
+        @foreach($program->activities as $activity)
+            @foreach($activity->subActivities as $subActivity)
+            @endforeach
+        @endforeach
+    @endforeach
     
 @endforeach  
+
+// if (assignment.sub_activity_name) {
+//     row += `
+//     <tr>
+//         <td class="text-left ps-3 border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_name).replace(/\n/g, '<br><br>')}</td>
+//         <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_success_indicator).replace(/\n/g, '<br><br>')}</td>
+//         <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_quality).replace(/\n/g, '<br><br>')}</td>
+//         <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_efficiency).replace(/\n/g, '<br><br>')}</td>
+//         <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_timeliness).replace(/\n/g, '<br><br>')}</td>
+//         <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>`;
+
+//     if (isDeptHead) {
+//         row += `
+//             <td class="border border-muted" style="background-color: #f8f8f8;"></td>
+//             <td class="border border-muted" style="background-color: #f8f8f8;"></td>
+//         `;
+//     }
+
+//     row += `</tr>`;
+// }

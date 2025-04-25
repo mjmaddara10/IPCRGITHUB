@@ -66,12 +66,13 @@
                     <thead class="text-center">
                         <tr>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 20%;">Programs/Project/Activities</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.5%;">Success Indicator</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.5%;">Quality</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.5%;">Efficiency</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.5%;">Timeliness</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.5%;">Remarks/MOV</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 10%">Division/Individuals Responsible</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Success Indicator</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Quality</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Efficiency</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Timeliness</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.4%;">Remarks/MOV</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Allotted Budget</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 11%">Division/Individuals Responsible</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 8%;">Actions</th>
                         </tr>
                     </thead>
@@ -84,11 +85,12 @@
                             @endphp
                             <tr class="programRow" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}">
                                 <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->successIndicator }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->quality }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->efficiency }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->timeliness }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->remarks }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->successIndicator }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->quality }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->efficiency }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->timeliness }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->remarks }}</td>
+                                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; vertical-align: middle;">{{ $program->budget }}</td>
                                 @php
                                     $allDivisionCount = \App\Models\Division::count();
                                     $assignedCount = $program->divisions->count();
@@ -121,7 +123,8 @@
                                         data-program-quality="{{ $program->quality }}"
                                         data-program-efficiency="{{ $program->efficiency }}"
                                         data-program-timeliness="{{ $program->timeliness }}"
-                                        data-program-remarks="{{ $program->remarks }}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
+                                        data-program-remarks="{{ $program->remarks }}"
+                                        data-program-budget="{{ $program->budget }}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
                                     </button>
 
                                     <!-- Delete Program -->
@@ -142,6 +145,7 @@
                                     <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
                                     <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->timeliness }}</td>
                                     <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->remarks }}</td>
+                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);"></td>
                                     @php
                                         $allEmployeeCount = \App\Models\Employee::count();
                                         $assignedCountAccountable = $activity->employees->count();
@@ -194,6 +198,7 @@
                                         <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
                                         <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
                                         <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
+                                        <td class="text-left border border-muted"style="white-space: pre-wrap;"></td>
                                         @php
                                             $allEmployeeCount = \App\Models\Employee::count();
                                             $assignedCountAccountable = $activity->employees->count();
@@ -262,12 +267,12 @@
 
                     <!-- Division Responsible -->
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
-                            Division/s Responsible:
-                            <button class="btn btn-sm text-white me-2 buttonHover" id="addDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
+                            <button class="btn btn-sm text-white buttonHover" id="addDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
-                        </label>
+                        </div>
                         <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
                             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select border border-success selectDivision" name="divisions[]">
@@ -293,6 +298,7 @@
                                     <th style="min-width: 200px;">Efficiency</th>
                                     <th style="min-width: 200px;">Timeliness</th>
                                     <th style="min-width: 200px;">Remarks</th>
+                                    <th style="min-width: 200px;">Allotted Budget</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -320,6 +326,10 @@
                                     <td style="border: 1px solid #ccc; vertical-align: top;">
                                         <textarea class="form-control border-0 shadow-none auto-resize"
                                             style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addRemarks" id="addRemarks"></textarea>
+                                    </td>
+                                    <td style="border: 1px solid #ccc; vertical-align: top;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize"
+                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addBudget" id="addBudget"></textarea>
                                     </td>
                                 </tr>
                             </tbody>
@@ -358,6 +368,13 @@
                     @csrf
                     <input type="hidden" id="editProgramId" name="editProgramId" required>
 
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark mb-1">Program Name:</label>
+                        <textarea class="form-control border-2 py-2"
+                            style="border-color: #03592c; min-height: 50px; resize: vertical;"
+                            name="editProgramName" id="editProgramName" required></textarea>
+                    </div>
+
                     <!-- Division Responsible -->
                     <div class="mb-3">
                         <div class="d-flex align-items-center gap-2 mb-2">
@@ -386,39 +403,33 @@
                         <table class="table table-bordered align-middle text-center border-success">
                             <thead class="table-light fw-bold text-dark">
                                 <tr>
-                                    <th style="min-width: 200px;">Programs/Project/Activities</th>
                                     <th style="min-width: 200px;">Success Indicator</th>
                                     <th style="min-width: 200px;">Quality</th>
                                     <th style="min-width: 200px;">Efficiency</th>
                                     <th style="min-width: 200px;">Timeliness</th>
                                     <th style="min-width: 200px;">Remarks</th>
+                                    <th style="min-width: 200px;">Budget</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editProgramName" id="editProgramName" autofocus></textarea>
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editSuccessIndicator" id="editSuccessIndicator"></textarea>
                                     </td>
                                     <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editSuccessIndicator" id="editSuccessIndicator"></textarea>
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editQuality" id="editQuality"></textarea>
                                     </td>
                                     <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editQuality" id="editQuality"></textarea>
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editEfficiency" id="editEfficiency"></textarea>
                                     </td>
                                     <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editEfficiency" id="editEfficiency"></textarea>
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editTimeliness" id="editTimeliness"></textarea>
                                     </td>
                                     <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editTimeliness" id="editTimeliness"></textarea>
+                                        <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editRemarks" id="editRemarks"></textarea>
                                     </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editRemarks" id="editRemarks"></textarea>
+                                    <td style="border: 1px solid #ccc; vertical-align: middle;">
+                                        <textarea class="form-control border-0 shadow-none auto-resize text-center" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editBudget" id="editBudget"></textarea>
                                     </td>
                                 </tr>
                             </tbody>
@@ -447,7 +458,7 @@
         <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addActivityInProgramModalLabel">
-                    <i class="fas fa-plus me-2"></i>Add Activity in Program
+                    <i class="fas fa-plus me-2"></i>Add Activity
                 </h5>
             </div>
 
@@ -455,7 +466,6 @@
                 <form id="addActivityInProgramForm" class="p-2">
                     @csrf
                     <input type="hidden" id="programIdProg" name="programIdProg" required>
-
 
                     <div class="mb-3">
                         <label class="form-label fw-bold text-dark mb-1">Program Name:</label>
@@ -465,13 +475,13 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
-                            Individual/s Responsible:
-                            <button class="btn btn-sm text-white me-2" id="addAccountablePersonBtn" type="button"
-                                title="Add person" style="background-color: #01a550;">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <label class="form-label fw-bold text-dark mb-0">Individual/s Responsible:</label>
+                            <button class="btn btn-sm text-white" id="addAccountablePersonBtn" type="button" title="Add person" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
-                        </label>
+                        </div>
+
                         <div id="accountableSelectContainer" data-divisions="{{ json_encode($divisions) }}">
                             <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select border border-success accountableSelect" id="addAccountableId" name="addAccountableId[]">
@@ -564,17 +574,18 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold text-dark mb-1">Activity Name:</label>
                         <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
-                            name="editActivityName" id="editActivityName" required></textarea>
+                            style="border-color: #03592c; min-height: 50px; resize: vertical;"
+                            name="editActivityName" id="editActivityName"></textarea>
                     </div>
                     <!-- Individual Responsible -->
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
-                            Individual/s Responsible:
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <label class="form-label fw-bold text-dark mb-0">Individual/s Responsible:</label>
                             <button class="btn btn-sm text-white" id="addAccountableEditBtn" type="button" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
-                        </label>
+                        </div>
+                        
                         <div id="editContainer">
                             <!-- Selects will be added here dynamically -->
                         </div>
@@ -654,13 +665,14 @@
 
                     <!-- Individual Responsible -->
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
-                            Individual/s Responsible:
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <label class="form-label fw-bold text-dark mb-0">Individual/s Responsible:</label>
                             <button class="btn btn-sm text-white me-2" id="addsAccountablePersonBtn" type="button"
                                 title="Add person" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
-                        </label>
+                        </div>
+
                         <div id="accountableSelectContainerSubAct" data-divisions="{{ json_encode($divisions) }}">
                             <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select border border-success accountableSelect" id="addAccountableId" name="addAccountableId[]">
@@ -728,7 +740,6 @@
     </div>
 </div>
 
-
 <!-- Edit Sub-Activity Modal -->
 <div class="modal fade" id="editSubActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="editSubActivityModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
@@ -752,18 +763,19 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold text-dark mb-1">Sub-Activity Name:</label>
                         <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
+                            style="border-color: #03592c; min-height: 50px; resize: vertical;"
                             name="editActivityNameSub" id="editActivityNameSub" required></textarea>
                     </div>
 
                     <!-- Individual Responsible -->
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-dark d-flex align-items-center gap-2">
-                            Individual/s Responsible:
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <label class="form-label fw-bold text-dark mb-0">Individual/s Responsible:</label>
                             <button class="btn btn-sm text-white" id="addAccountableEditSubBtn" type="button" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
-                        </label>
+                        </div>
+                        
                         <div id="editContainerSub">
                             <!-- Selects will be added here dynamically -->
                         </div>
@@ -818,5 +830,4 @@
         </div>
     </div>
 </div>
-
 @endsection

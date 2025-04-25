@@ -20,7 +20,8 @@ class CreateProgramsTable extends Migration
             $table->string('quality')->nullable(); 
             $table->string('efficiency')->nullable(); 
             $table->string('timeliness')->nullable(); 
-            $table->string('remarks')->nullable(); 
+            $table->string('remarks')->nullable();
+            $table->string('budget')->nullable(); 
             $table->timestamps();
         });
     }

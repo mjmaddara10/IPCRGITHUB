@@ -67,7 +67,7 @@
                                             <td>{{ $employee->middleName }}</td>
                                             <td>{{ $employee->lastName }}</td>
                                             <td>{{ $employee->position }}</td>
-                                            <td>{{ $employee->division->name }}</td>
+                                            <td>{{ $employee->division->name ?? '' }}</td>
                                             <td>{{ $employee->status }}</td>
                                             <td>{{ $employee->role }}</td>
                                         </tr>

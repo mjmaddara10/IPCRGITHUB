@@ -17,6 +17,7 @@ class Program extends Model
         'efficiency',
         'timeliness',
         'remarks',
+        'budget',
         'division_id'
     ];
 

@@ -154,6 +154,7 @@ class ppaController extends Controller
             'efficiency' => $request->addEfficiency,
             'timeliness' => $request->addTimeliness,
             'remarks' => $request->addRemarks,
+            'budget' => $request->addBudget,
         ]);
     
         // Check if 'all' is selected

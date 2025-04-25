@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\programController;
 use App\Http\Controllers\ppaController;
+use App\Http\Controllers\pdfController;
 use App\Http\Controllers\viewPpaController;
 use App\Http\Controllers\usersController;
 use App\Http\Controllers\authorizationController;
@@ -63,6 +64,11 @@ Route::prefix('viewPpa')->group(function () {
     Route::get('/{id}/getEmployeeTargets', [viewPpaController::class, 'getEmployeeTargets']);
 
 });
+
+Route::prefix('pdf')->group(function () {
+    Route::get('/generatePdf', [PDFController::class, 'generatePdf'])->name('pdf.generatePdf');
+});
+
 
 Route::group(['middleware' => 'admin'], function () {
     // Updating admin account
