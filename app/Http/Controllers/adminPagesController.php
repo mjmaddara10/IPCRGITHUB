@@ -13,18 +13,18 @@ use App\Models\Division;
 
 class adminPagesController extends Controller
 {
-    public function index(){
-        return view('adminBlades.adminIndex');
-    }
-
     public function settings(){
-        return view('adminBlades.adminSettings');
+        return view('viewBlades.settings', [
+            'role' => auth()->user()->role
+        ]);
     }
 
     public function viewEmployees(){
         $employees = Employee::all();
 
-        return view('adminBlades.adminViewEmployees', compact('employees'));
+        return view('viewBlades.viewUsers', compact('employees'),[
+            'role' => auth()->user()->role
+        ]);
     }
     
     public function managePpa(){
@@ -35,12 +35,14 @@ class adminPagesController extends Controller
         $divisions = Division::all();
         $subActivities = SubActivity::all();
     
-        return view('adminBlades.adminManagePpa', compact(
+        return view('viewBlades.managePpa', compact(
             'programs',
             'employees',
             'activities',
             'divisions'
-        ));
+        ),[
+            'role' => auth()->user()->role
+        ]);
     }
 
     public function viewIpcr(){
@@ -52,12 +54,14 @@ class adminPagesController extends Controller
             $query->where('role', 'Division Chief');
         }])->get(); 
     
-        return view('adminBlades.adminIpcr', compact(
+        return view('viewBlades.viewTargets', compact(
             'programs',
             'employees',
             'activities',
             'divisions'
-        ));
+        ),[
+            'role' => auth()->user()->role
+        ]);
     }
 
     public function assignIpcr(){
@@ -67,11 +71,13 @@ class adminPagesController extends Controller
         $employees = Employee::with('division')->get();
         $divisions = Division::all();
     
-        return view('adminBlades.adminAssign', compact(
+        return view('viewBlades.adminAssign', compact(
             'programs',
             'employees',
             'activities',
             'divisions'
-        ));
+        ),[
+            'role' => auth()->user()->role
+        ]);
     }
 }

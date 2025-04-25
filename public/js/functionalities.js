@@ -20,7 +20,7 @@ document.querySelectorAll('.auto-resize').forEach(textarea => {
     resize(); // Call once on load
 });
 
-// Edit Program
+// Edit Program Table Resize
 function applyAutoResize() {
     document.querySelectorAll('.auto-resize').forEach(textarea => {
         textarea.style.overflow = 'hidden';
@@ -53,7 +53,7 @@ if (editModal) {
     });
 }
 
-// Edit Activity
+// Edit Activity Table Resize
 function applyAutoResize() {
     document.querySelectorAll('.auto-resize').forEach(textarea => {
         textarea.style.overflow = 'hidden';
@@ -84,7 +84,7 @@ if (editActivityModal) {
     });
 }
 
-// Edit Sub-Activity
+// Edit Sub-Activity Table Resize
 function applyAutoResize() {
     document.querySelectorAll('.auto-resize').forEach(textarea => {
         textarea.style.overflow = 'hidden';

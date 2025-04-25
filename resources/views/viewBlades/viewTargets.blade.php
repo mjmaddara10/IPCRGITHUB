@@ -27,11 +27,11 @@
 @extends('layouts')
 
 <!-- Sets the page title in the browser tab -->
-@section('title', 'Admin IPCR')
+@section('title', 'View Targets')
 
 <!-- Navigation Section -->
 @section('navbar')
-    @include('adminBlades.adminInclude')
+    @include('viewBlades.include')
 @endsection
 
 @section('content')
@@ -97,12 +97,27 @@
 
                         <!-- Buttons -->
                         <div class="d-flex align-items-center flex-wrap">
-                            <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover nv-green mb-1 me-1">View Users</a>
-                            <a href="{{ route('admin.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
-                            <a href="{{ route('admin.managePpa') }}" class="btn btn-hover nv-green mb-1 me-1">Manage PPA</a>
-                            <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
-                                Logout
-                            </a>
+                            
+                            @if($role === 'Division Chief')
+                                <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover nv-green mb-1 me-1">View Users</a>
+                                <a href="{{ route('chief.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
+                                <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green mb-1 me-1">Manage PPA</a>
+                                <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                    Logout
+                                </a>
+                            @elseif($role === 'Department Head')
+                                <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover nv-green mb-1 me-1">View Users</a>
+                                <a href="{{ route('head.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
+                                <a href="{{ route('head.managePpa') }}" class="btn btn-hover nv-green mb-1 me-1">Manage PPA</a>
+                                <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                    Logout
+                                </a>
+                            @elseif($role === 'Staff')
+                                <a href="{{ route('staff.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
+                                <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                    Logout
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>

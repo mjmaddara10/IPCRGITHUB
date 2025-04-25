@@ -4,7 +4,7 @@
 @section('title', 'Manage PPA')
 
 @section('navbar')
-    @include('adminBlades.adminInclude')
+    @include('viewBlades.include')
 @endsection
 
 
@@ -25,6 +25,8 @@
                     </div>
                 </div>
 
+                
+
                 <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
                     <span>Select Division:</span>
                     <select class="form-select ms-2" id="divisionFilter" style="width: 250px; border: 2px solid #FFFFFF;">
@@ -39,24 +41,49 @@
             <!-- Content -->
             <div class="p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <!-- Add Program -->
+                        <a class="btn nv-green" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
+                    </div>
+                    
+                    @if($role === 'Department Head')
+                        <div class="d-flex align-items-center ms-auto">
+                            <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;  color:#FFFFFF;" class="btn btn-hover btn-primary fw-bold">
+                                APPROVE TARGETS
+                            </a>
+                        </div>
+                    @endif
 
-                    <!-- Add Program -->
-                    <a class="btn" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
-                
                     <!-- Buttons -->
-                <div class="d-flex align-items-center">
-                    <a href="{{ route('admin.viewEmployees') }}" class="btn btn-hover nv-green">
-                    View Users
-                    </a>
-                    <a href="{{ route('admin.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                    View Targets
-                    </a>
-                    <a href="{{ route('admin.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" href="" class="btn btn-hover text-success fw-bold">
-                    Manage PPA
-                    </a>
-                    <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
-                    Logout
-                    </a>
+                    <div class="d-flex align-items-center ms-auto">
+                        @if($role === 'Division Chief')
+                            <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover nv-green">
+                                View Users
+                            </a>
+                            <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                View Targets
+                            </a>
+                            <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" href="" class="btn btn-hover text-success fw-bold">
+                                Manage PPA
+                            </a>
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                Logout
+                            </a>
+                        @elseif($role === 'Department Head')
+                            <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover nv-green">
+                                View Users
+                            </a>
+                            <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                View Targets
+                            </a>
+                            <a href="{{ route('head.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" href="" class="btn btn-hover text-success fw-bold">
+                                Manage PPA
+                            </a>
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                Logout
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
 
