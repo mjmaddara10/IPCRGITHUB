@@ -24,7 +24,7 @@
                                 <a href="{{ route('chief.audit') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
                                     Audit Trail
                                 </a>
-                                <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
+                                <a href="{{ route('chief.viewEmployees') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     View Users
                                 </a>
                                 <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
@@ -40,7 +40,7 @@
                                 <a href="{{ route('head.audit') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
                                     Audit Trail
                                 </a>
-                                <a href="{{ route('head.viewEmployees') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                <a href="{{ route('chief.viewEmployees') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     View Users
                                 </a>
                                 <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
