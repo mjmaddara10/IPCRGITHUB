@@ -57,6 +57,7 @@
                     <!-- Buttons -->
                     <div class="d-flex align-items-center ms-auto">
                         @if($role === 'Division Chief')
+                            <a href="{{ route('chief.audit') }}" class="btn btn-hover nv-green me-1">Audit Trail</a>
                             <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover nv-green">
                                 View Users
                             </a>
@@ -70,6 +71,7 @@
                                 Logout
                             </a>
                         @elseif($role === 'Department Head')
+                            <a href="{{ route('head.audit') }}" class="btn btn-hover nv-green me-1">Audit Trail</a>
                             <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover nv-green">
                                 View Users
                             </a>

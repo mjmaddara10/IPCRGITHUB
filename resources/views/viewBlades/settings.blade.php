@@ -16,9 +16,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center ms-auto">
                         @if($role === 'Division Chief')
-                            <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover nv-green">
-                                View Users
-                            </a>
+                            <a href="{{ route('chief.audit') }}" class="btn btn-hover nv-green mb-1 me-1">Audit Trail</a>
                             <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 View Targets
                             </a>
@@ -29,9 +27,7 @@
                                 Logout
                             </a>
                         @elseif($role === 'Department Head')
-                            <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover nv-green">
-                                View Users
-                            </a>
+                            <a href="{{ route('head.audit') }}" class="btn btn-hover nv-green mb-1 me-1">Audit Trail</a>
                             <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 View Targets
                             </a>

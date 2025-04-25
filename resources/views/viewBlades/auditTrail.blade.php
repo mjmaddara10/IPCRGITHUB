@@ -21,10 +21,10 @@
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center ms-auto">
                             @if($role === 'Division Chief')
-                                <a href="{{ route('chief.audit') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                <a href="{{ route('chief.audit') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
                                     Audit Trail
                                 </a>
-                                <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">
+                                <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
                                     View Users
                                 </a>
                                 <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
@@ -37,10 +37,10 @@
                                     Logout
                                 </a>
                             @elseif($role === 'Department Head')
-                                <a href="{{ route('head.audit') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                <a href="{{ route('head.audit') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
                                     Audit Trail
                                 </a>
-                                <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">
+                                <a href="{{ route('head.viewEmployees') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     View Users
                                 </a>
                                 <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
@@ -61,8 +61,8 @@
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-users fa-2x text-white me-3"></i>
                                 <div>
-                                    <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">View Users</h4>
-                                    <small class="text-white-50">User Overview</small>
+                                    <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">Audit Trail</h4>
+                                    <small class="text-white-50">View Actions of Administrators</small>
                                 </div>
                             </div>
                         </div>
@@ -71,27 +71,17 @@
                                 <table id="manageUserTable" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <!-- <th style="color: #03592c;">ID</th> -->
-                                            <th style="color: #03592c;">First Name</th>
-                                            <th style="color: #03592c;">Middle Name</th>
-                                            <th style="color: #03592c;">Last Name</th>
-                                            <th style="color: #03592c;">Position</th>
-                                            <th style="color: #03592c;">Division</th>
-                                            <th style="color: #03592c;">Status</th>
+                                            <th style="color: #03592c;">Name</th>
                                             <th style="color: #03592c;">Role</th>
+                                            <th style="color: #03592c;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($employees as $employee)
                                         <tr>
-                                            <!-- <td>{{ $employee->id }}</td> -->
-                                            <td>{{ $employee->firstName }}</td>
-                                            <td>{{ $employee->middleName }}</td>
-                                            <td>{{ $employee->lastName }}</td>
-                                            <td>{{ $employee->position }}</td>
-                                            <td>{{ $employee->division->name ?? '' }}</td>
-                                            <td>{{ $employee->status }}</td>
-                                            <td>{{ $employee->role }}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         @endforeach
                                     </tbody>

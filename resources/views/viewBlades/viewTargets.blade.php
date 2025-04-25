@@ -99,6 +99,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             
                             @if($role === 'Division Chief')
+                                <a href="{{ route('chief.audit') }}" class="btn btn-hover nv-green mb-1 me-1">Audit Trail</a>
                                 <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover nv-green mb-1 me-1">View Users</a>
                                 <a href="{{ route('chief.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
                                 <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green mb-1 me-1">Manage PPA</a>
@@ -106,6 +107,7 @@
                                     Logout
                                 </a>
                             @elseif($role === 'Department Head')
+                                <a href="{{ route('head.audit') }}" class="btn btn-hover nv-green mb-1 me-1">Audit Trail</a>
                                 <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover nv-green mb-1 me-1">View Users</a>
                                 <a href="{{ route('head.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
                                 <a href="{{ route('head.managePpa') }}" class="btn btn-hover nv-green mb-1 me-1">Manage PPA</a>

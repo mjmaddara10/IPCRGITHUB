@@ -73,6 +73,7 @@ Route::middleware(['auth', 'role:Division Chief'])->group(function () {
         Route::get('/viewEmployees', [adminPagesController::class, 'viewEmployees'])->name('chief.viewEmployees');
         Route::get('/settings', [adminPagesController::class, 'settings'])->name('chief.settings');
         Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('chief.viewIpcr');
+        Route::get('/audit', [adminPagesController::class, 'audit'])->name('chief.audit');
     });
 });
 
@@ -82,5 +83,6 @@ Route::middleware(['auth', 'role:Department Head'])->group(function () {
         Route::get('/viewEmployees', [adminPagesController::class, 'viewEmployees'])->name('head.viewEmployees');
         Route::get('/settings', [adminPagesController::class, 'settings'])->name('head.settings');
         Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('head.viewIpcr');
+        Route::get('/audit', [adminPagesController::class, 'audit'])->name('head.audit');
     });
 });

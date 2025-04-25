@@ -64,6 +64,24 @@ class adminPagesController extends Controller
         ]);
     }
 
+    public function audit(){
+        // Fetch all programs with their related projects
+        $programs = Program::with(['divisions', 'activities.employees'])->get();
+        $activities = Activity::with('subActivities','employees')->get();
+        $employees = Employee::all();
+        $divisions = Division::all();
+        $subActivities = SubActivity::all();
+    
+        return view('viewBlades.auditTrail', compact(
+            'programs',
+            'employees',
+            'activities',
+            'divisions'
+        ),[
+            'role' => auth()->user()->role
+        ]);
+    }
+
     public function assignIpcr(){
         // Fetch all programs with their related projects
         $programs = Program::with('divisions')->get();
