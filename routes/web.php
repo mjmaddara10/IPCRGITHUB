@@ -57,7 +57,7 @@ Route::prefix('viewPpa')->group(function () {
 
 Route::prefix('pdf')->group(function () {
     // Route::post('/generatePdf', [PDFController::class, 'generatePdf'])->name('pdf.generatePdf');
-    Route::get('/generatePdf', [PDFController::class, 'generatePdf'])->name('pdf.generatePdf');
+    Route::get('/{id}/generatePdf', [PDFController::class, 'generatePdf'])->name('pdf.generatePdf');
 });
 
 //===================Middleware===================//

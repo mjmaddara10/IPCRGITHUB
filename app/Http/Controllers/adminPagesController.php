@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Program;
 use App\Models\Project;
@@ -71,14 +72,20 @@ class adminPagesController extends Controller
         $employees = Employee::all();
         $divisions = Division::all();
         $subActivities = SubActivity::all();
-    
+
+        // Add this line to fetch audit trails
+        $auditTrails = DB::table('audit_trails')->get();
+        // Add this line to fetch audit trails
+        $auditTrails = DB::table('audit_trails')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
         return view('viewBlades.auditTrail', compact(
             'programs',
             'employees',
             'activities',
-            'divisions'
-        ),[
-            'role' => auth()->user()->role
+            'divisions',
+            'auditTrails'),['role' => auth()->user()->role
         ]);
     }
 

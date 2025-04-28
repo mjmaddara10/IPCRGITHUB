@@ -51,7 +51,7 @@
     <table style="border: 1px solid black; border-collapse: collapse; fixed; width: 100%;">
         <tr>
             <td colspan="6" style="text-align: justify; padding: 6px; vertical-align: middle;">
-                <p class="small bold">I, CYD JOAN O. SIMBALA, Supervising Administrative Officer (HRMO IV) - Permanent of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE, ORGANIZATIONAL DEVELOPMENT DIVISION, the attainment of the following target in accordance with the indicated measures for the period JANUARY to DECEMBER 2025.</p>
+                <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, {{ $employee->position }} - {{ $employee->status }} of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE, {{ strtoupper($employee->division->name) ?? '' }}, the attainment of the following target in accordance with the indicated measures for the period JANUARY to DECEMBER 2025.</p>
             </td>
         </tr>
 
@@ -63,11 +63,11 @@
         <!-- Employee Information -->
         <tr class="small">
             <td colspan="5"><p>4.8 to 5 – Outstanding  3.9 to 4.79 – Very Satisfactory  3 to 3.89 – Satisfactory  2 – Unsatisfactory  1 – Poor</p></td>
-            <td style="text-align: center; width:16.6%;">CYD JOAN O. SIMBALA</td>
+            <td style="text-align: center; width:16.6%;">{{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}</td>
         </tr>
         <tr class="small">
             <td colspan="5"></td>
-            <td style="text-align: center;">Administrative Officer IV (HRMO II)</td>
+            <td style="text-align: center;">{{ $employee->position }}</td>
         </tr>
         <!-- Spacer -->
         <tr class="small" style="text-align: center;">
@@ -85,12 +85,12 @@
 
         <!-- Signing Individuals -->
         <tr class="smaller bold" style="text-align: center;">
-            <td style="padding-top: 30px; width: 16.7%;">CYD JOAN O. SIMBALA</td>
-            <td style="padding-top: 30px; width: 16.7%;">April 24, 2025</td>
+            <td style="padding-top: 30px; width: 16.7%;">{{ strtoupper ($chiefInfo['name']) }}</td>
+            <td style="padding-top: 30px; width: 16.7%;"></td>
             <td style="padding-top: 30px; width: 16.7%;">CAROL G. GUNTALILIB</td>
-            <td style="padding-top: 30px; width: 16.7%;">April 24, 2025</td>
+            <td style="padding-top: 30px; width: 16.7%;"></td>
             <td style="padding-top: 30px; width: 16.7%;">MA. CARLA LUCIA M. TORRALBA, DDM</td>
-            <td style="padding-top: 30px; width: 16.7%;">April 24, 2025</td>
+            <td style="padding-top: 30px; width: 16.7%;"></td>
         </tr>
 
         <!-- Position -->

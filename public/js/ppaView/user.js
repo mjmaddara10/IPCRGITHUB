@@ -2,6 +2,9 @@ function safeValue(val) {
     return val === null || val === undefined ? '' : val;
 }
 
+let employeeId = null;
+let chiefInfo = {};
+
 // Fill blue area
 $(document).ready(function () {
     const selectedOption = $(this).find(':selected');
@@ -19,7 +22,7 @@ $(document).ready(function () {
 
     // console.log('Division ID:', divisionId);
 
-    const chiefInfo = divisionChiefs[divisionId] || {
+    chiefInfo = divisionChiefs[divisionId] || {
         name: '_________________________',
         position: '_________________________'
     };
@@ -28,7 +31,7 @@ $(document).ready(function () {
     $('#reviewedByPosition').text(chiefInfo.position);
 
     $('#employeeSelect').on('change', function () {
-        let employeeId = $(this).val();
+        employeeId = $(this).val();
         const selectedOption = $(this).find(':selected');
     
         const name = selectedOption.data('name') || '________';
@@ -156,9 +159,9 @@ $(document).ready(function () {
                         }
             
                         tbody.append(row);
-
-                        
                     });
+
+                    
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching assignments:', error);
@@ -192,6 +195,14 @@ $(document).ready(function () {
                 }
             });
         }
+
+        $('#exportBtn').on('click', function() {
+            if (employeeId && chiefInfo) {
+                window.open('/pdf/' + employeeId + '/generatePdf?chiefInfo=' + encodeURIComponent(JSON.stringify(chiefInfo)), '_blank');
+            } else {
+                console.error('No employee selected or chief info available');
+            }
+        });
     });
 
     const allEmployeeOptions = Array.from($('#employeeSelect option'));
@@ -212,17 +223,5 @@ $(document).ready(function () {
         // Trigger change manually to update fields for first visible user
         $('#employeeSelect').trigger('change');
     });
-
-    // $('#exportBtn').on('click', function () {
-    //     const assignments = response.targets;  // Your data
-    //     const role = response.role;  // Your role data
-    
-    //     // Transfer assignments and role to hidden inputs
-    //     $('#assignments').val(JSON.stringify(assignments));  // Convert to JSON string if necessary
-    //     $('#role').val(role);
-    
-    //     // Submit the form to the route
-    //     $('#pdfForm').submit();
-    // });
 });
 

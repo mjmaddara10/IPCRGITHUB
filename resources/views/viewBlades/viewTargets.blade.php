@@ -59,14 +59,11 @@
                     <!-- Exporting -->
                     <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
                         <div class="col-12 d-flex justify-content-start">
-                            <a class="btn btn-md btn-primary" id="exportBtn" href="{{ route('pdf.generatePdf') }}">
+                            <a class="btn btn-md btn-primary" id="exportBtn">
                                 <i class="fas fa-file-pdf me-2"></i> Export as PDF
                             </a>
-                            <!-- <form id="pdfForm" action="{{ route('pdf.generatePdf') }}" method="POST" style="display: none;" target="_blank">
-                                @csrf
-                                <input type="hidden" id="assignments" name="assignments">
-                                <input type="hidden" id="role" name="role">
-                            </form> -->
+
+                            
                         </div>
                     </div>
                 </div>
@@ -198,4 +195,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

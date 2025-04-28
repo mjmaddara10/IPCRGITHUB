@@ -87,11 +87,6 @@
     <!-- Hover on Button -->
     <script src="{{ asset('js/functionalities.js') }}"></script>
 
-    <!-- <script>
-        $('#adminLoginModal').on('shown.bs.modal', function () {
-            $('#adminUsername').focus();
-        });
-    </script> -->
     <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
 </body>
 
