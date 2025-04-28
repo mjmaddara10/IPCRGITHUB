@@ -73,7 +73,7 @@ $('#addAccountablePersonBtn').on('click', function () {
             </button>
         </div>
     `);
-    
+
     $container.append($newGroup);
 
     // Populate newly added select with existing options
@@ -114,7 +114,7 @@ $('#addActivityInProgramForm').on('submit', function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'addActivityInProgram',
+                url: '/admin/addActivityInProgram',
                 method: 'POST',
                 data: $(this).serialize(), // Serialize form data
                 success: function(response) {
@@ -141,7 +141,7 @@ $('#addActivityInProgramForm').on('submit', function(e) {
                 }
             });
         }
-    });    
+    });
 });
 
 // Edit Activity Fill Form
@@ -158,7 +158,7 @@ $(document).on('click', '.editActivityBtn', function () {
     $('#editEfficiencyActivity').val($(this).data('efficiency'));
     $('#editTimelinessActivity').val($(this).data('timeliness'));
     $('#editRemarksActivity').val($(this).data('remarks'));
-    
+
     // Clear previous selects
     const $editContainer = $('#editContainer');
     $editContainer.empty();
@@ -223,7 +223,7 @@ $(document).on('click', '.removeAccountableBtn', function () {
 // Edit Activity
 $('#editActivityForm').on('submit', function(e) {
     e.preventDefault();
-    
+
     Swal.fire({
         title: "Are you sure?",
         text: "Do you want to save these changes?",

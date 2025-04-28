@@ -74,7 +74,7 @@ $('#addsAccountablePersonBtn').on('click', function () {
             </button>
         </div>
     `);
-    
+
     $container.append($newGroup);
 
     // Populate newly added select with existing options
@@ -140,11 +140,11 @@ $('#addSubActivityForm').on('submit', function(e) {
                 }
             });
         }
-    });    
+    });
 });
 
 // Edit Sub-Activity Fill Form
-let subActivityId; 
+let subActivityId;
 
 $(document).on('click', '.editSubActivityBtn', function() {
     // Get data from the button clicked
@@ -229,7 +229,7 @@ $(document).on('click', '.removeAccountableBtn', function () {
 // Edit Sub-Activity
 $('#editSubActivityForm').on('submit', function(e) {
     e.preventDefault();
-    
+
     Swal.fire({
         title: "Are you sure?",
         text: "Do you want to save these changes?",
@@ -245,7 +245,7 @@ $('#editSubActivityForm').on('submit', function(e) {
 
             // Make an AJAX request to update the activity
             $.ajax({
-                url: 'updateSubActivity',  // Your update URL
+                url: '/admin/updateSubActivity',  // Your update URL
                 method: 'POST',
                 data: formData,
                 success: function(response) {

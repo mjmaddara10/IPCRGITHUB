@@ -38,12 +38,34 @@ class ppaController extends Controller
             // $selectedActivity->employees()->attach($request->addAccountableId);
             $subActivity->employees()->attach($request->addAccountableId);
         }
+
+       // Get authenticated user details from Employee model
+    $user = auth()->user();
+    $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+    $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
+
+            // Create audit trail
+        DB::table('audit_trails')->insert([
+            'user_id' => auth()->id(),
+            'full_name' => $fullName,
+            'role' => $user->role,
+            'action' => 'Added Sub Activity: ' . $request->addSubActivityName,
+            'activity_name' => $activity->name,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+    return response()->json(['message' => 'Sub-activity added successfully!']);
     }
 
     // =====================Update Sub-Activity========================= //
     public function updateSubActivity(Request $request){
         // Find the sub-activity and update it
         $subActivity = SubActivity::findOrFail($request->editActivityIdSub);
+
+        // Get the activity name before update
+        $activity = Activity::findOrFail($subActivity->activity_id);
+
         $subActivity->update([
             'name' => $request->editActivityNameSub,
             'successIndicator' => $request->editSuccessIndicatorSub,
@@ -57,7 +79,23 @@ class ppaController extends Controller
         // Sync the individuals responsible
         $subActivity->employees()->sync($request->input('editAccountableId', []));
 
-        // Return a response (this is what your AJAX call will use)
+        // Get authenticated user details
+        $user = auth()->user();
+        $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+        $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
+
+        // Create audit trail
+        DB::table('audit_trails')->insert([
+            'user_id' => auth()->id(),
+            'full_name' => $fullName,
+            'role' => $user->role,
+            'action' => 'Updated Sub Activity: ' . $request->editActivityNameSub,
+            'activity_name' => $activity->name,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Return a response
         return response()->json(['message' => 'Sub-Activity updated successfully!']);
     }
 
@@ -65,6 +103,21 @@ class ppaController extends Controller
     public function deleteSubActivity(Request $request){
         try{
             $subActivity = SubActivity::findOrFail($request->subActivityId);
+             // Get authenticated user details before deletion
+        $user = auth()->user();
+        $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+        $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
+
+        // Create audit trail before deletion
+        DB::table('audit_trails')->insert([
+            'user_id' => auth()->id(),
+            'full_name' => $fullName,
+            'role' => $user->role,
+            'action' => 'Deleted Sub Activity',
+            'activity_name' => $subActivity->name,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
             $subActivity->delete();
 
             return response()->json(['message' => 'Sub-activity deleted successfully!'], 200);
@@ -109,10 +162,27 @@ class ppaController extends Controller
             // $selectedActivity->employees()->attach($request->addAccountableId);
             $activity->employees()->attach($request->addAccountableId);
         }
+
+        // Get authenticated user details
+        $user = auth()->user();
+        $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+        $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
+
+        // Create audit trail
+        DB::table('audit_trails')->insert([
+            'user_id' => auth()->id(),
+            'full_name' => $fullName,
+            'role' => $user->role,
+            'action' => 'Added Activity: ' . $request->addActivityName,
+            'activity_name' => $program->name,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        return response()->json(['message' => 'Activity added successfully!']);
     }
 
     public function updateActivity(Request $request){
-        // dd($request->all());
         // Find the activity and update it
         $activity = Activity::findOrFail($request->editActivityId);
         $activity->update([
@@ -127,89 +197,195 @@ class ppaController extends Controller
         // Sync the individuals responsible
         $activity->employees()->sync($request->input('editAccountableId', []));
 
+        // Get authenticated user details
+        $user = auth()->user();
+        $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+        $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
+
+        // Get the program name
+        $activity = Program::findOrFail($activity->program_id);
+
+        // Create audit trail
+        DB::table('audit_trails')->insert([
+            'user_id' => auth()->id(),
+            'full_name' => $fullName,
+            'role' => $user->role,
+            'action' => 'Updated Activity: ' . $request->editActivityName,
+            'activity_name' => $activity->name,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
         // Return a response (this is what your AJAX call will use)
         return response()->json(['message' => 'Activity updated successfully!']);
     }
 
-    public function deleteActivity(Request $request){
-        try{
-            $activity = Activity::findOrFail($request->activityId);
-            $activity->delete();
+    public function deleteActivity(Request $request)
+{
+    try {
+        // Find the activity by its ID
+        $activity = Activity::findOrFail($request->activityId);
 
-            return response()->json(['message' => 'Activity deleted successfully!'], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            // If activity is not found
-            return response()->json(['error' => 'Activity not found!'], 404);
-        } catch (\Exception $e) {
-            // For any other errors
-            return response()->json(['error' => 'An error occurred while trying to delete the activity.'], 500);
-        }
-    }
+        // Get authenticated user details before deletion
+        $user = auth()->user();
+        $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+        $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
-    // =====================Program========================= //
-    public function addProgram(Request $request){
-        $program = Program::create([
-            'name' => $request->addProgramName,
-            'successIndicator' => $request->addSuccessIndicator,
-            'quality' => $request->addQuality,
-            'efficiency' => $request->addEfficiency,
-            'timeliness' => $request->addTimeliness,
-            'remarks' => $request->addRemarks,
-            'budget' => $request->addBudget,
+        // Find the program related to the activity
+        $program = Program::findOrFail($activity->program_id);
+
+        // Insert audit trail before deleting
+        DB::table('audit_trails')->insert([
+            'user_id'       => auth()->id(),
+            'full_name'     => $fullName,
+            'role'          => $user->role,
+            'action'        => 'Deleted Activity: ' . $activity->name,
+            'activity_name' => $program->name,
+            'created_at'    => now(),
+            'updated_at'    => now()
         ]);
 
-        // Check if 'all' is selected
-        if (in_array('all', $request->divisions)) {
-            $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
-            $program->divisions()->attach($allDivisionIds);
-        } else {
-            $program->divisions()->attach($request->divisions);
-        }
+        // Now delete the activity
+        $activity->delete();
 
-        return redirect()->back()->with('success', 'Program added successfully.');
+        return response()->json(['message' => 'Activity deleted successfully!'], 200);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        // If activity or program is not found
+        return response()->json(['error' => 'Activity or Program not found!'], 404);
+    } catch (\Exception $e) {
+        // Handle any other errors
+        return response()->json(['error' => 'An error occurred while trying to delete the activity.'], 500);
     }
+}
 
-    public function updateProgram(Request $request){
-        // Find the program and update it
-        $program = Program::findOrFail($request->editProgramId);
 
-        // Update fields
-        $program->name = $request->editProgramName;
-        $program->successIndicator = $request->editSuccessIndicator;
-        $program->quality = $request->editQuality;
-        $program->efficiency = $request->editEfficiency;
-        $program->timeliness = $request->editTimeliness;
-        $program->remarks = $request->editRemarks;
-        $program->save();
+    // =====================Program========================= //
+    public function addProgram(Request $request)
+    {
+        try {
+            // Create the program
+            $program = Program::create([
+                'name' => $request->addProgramName,
+                'successIndicator' => $request->addSuccessIndicator,
+                'quality' => $request->addQuality,
+                'efficiency' => $request->addEfficiency,
+                'timeliness' => $request->addTimeliness,
+                'remarks' => $request->addRemarks,
+                'budget' => $request->addBudget,
+            ]);
 
-        // Handle "all" divisions
-        if (in_array('all', $request->divisions)) {
-            $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
-            $program->divisions()->sync($allDivisionIds);
-        } else {
-            $program->divisions()->sync($request->divisions);
-        }
+            // Check if 'all' is selected
+            if (in_array('all', $request->divisions)) {
+                $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
+                $program->divisions()->attach($allDivisionIds);
+            } else {
+                $program->divisions()->attach($request->divisions);
+            }
 
-        return redirect()->back()->with('success', 'Program updated successfully.');
-    }
+            // Audit Trail for adding program
+            $user = auth()->user();
+            $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+            $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
-    public function deleteProgram(Request $request){
-        try{
-            $program = Program::findOrFail($request->programId);
-            $program->delete();
+            DB::table('audit_trails')->insert([
+                'user_id'       => auth()->id(),
+                'full_name'     => $fullName,
+                'role'          => $user->role,
+                'action'        => 'Added Program: ' . $program->name,
+                'activity_name' => $program->name, // storing program name as activity_name
+                'created_at'    => now(),
+                'updated_at'    => now(),
+            ]);
 
-            return response()->json(['message' => 'Program deleted successfully!'], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            // If project is not found
-            return response()->json(['error' => 'Program not found!'], 404);
+            return redirect()->back()->with('success', 'Program added successfully.');
         } catch (\Exception $e) {
-            // For any other errors
-            return response()->json(['error' => 'An error occurred while trying to delete the program.'], 500);
+            return redirect()->back()->with('error', 'An error occurred while adding the program.');
         }
-
     }
 
-    
+
+    public function updateProgram(Request $request)
+    {
+        try {
+            // Find the program
+            $program = Program::findOrFail($request->editProgramId);
+
+            // Update fields
+            $program->name = $request->editProgramName;
+            $program->successIndicator = $request->editSuccessIndicator;
+            $program->quality = $request->editQuality;
+            $program->efficiency = $request->editEfficiency;
+            $program->timeliness = $request->editTimeliness;
+            $program->remarks = $request->editRemarks;
+            $program->save();
+
+            // Handle "all" divisions
+            if (in_array('all', $request->divisions)) {
+                $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
+                $program->divisions()->sync($allDivisionIds);
+            } else {
+                $program->divisions()->sync($request->divisions);
+            }
+
+            // Audit Trail for updating program
+            $user = auth()->user();
+            $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+            $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
+
+            DB::table('audit_trails')->insert([
+                'user_id'       => auth()->id(),
+                'full_name'     => $fullName,
+                'role'          => $user->role,
+                'action'        => 'Updated Program: ' . $program->name,
+                'activity_name' => $program->name,
+                'created_at'    => now(),
+                'updated_at'    => now(),
+            ]);
+
+            return redirect()->back()->with('success', 'Program updated successfully.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->back()->with('error', 'Program not found.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while updating the program.');
+        }
+    }
+
+    public function deleteProgram(Request $request)
+{
+    try {
+        // Find the program
+        $program = Program::findOrFail($request->programId);
+
+        // Audit Trail for deleting program
+        $user = auth()->user();
+        $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+        $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
+
+        DB::table('audit_trails')->insert([
+            'user_id'       => auth()->id(),
+            'full_name'     => $fullName,
+            'role'          => $user->role,
+            'action'        => 'Deleted Program: ' . $program->name,
+            'activity_name' => $program->name, // storing program name as activity_name
+            'created_at'    => now(),
+            'updated_at'    => now(),
+        ]);
+
+        // Now delete the program
+        $program->delete();
+
+        return response()->json(['message' => 'Program deleted successfully!'], 200);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        // If program is not found
+        return response()->json(['error' => 'Program not found!'], 404);
+    } catch (\Exception $e) {
+        // Handle any other errors
+        return response()->json(['error' => 'An error occurred while trying to delete the program.'], 500);
+    }
+}
+
+
+
 
     // =====================Autofill Accountable (Add Activity)========================= //
         public function getAccountableByIds(Request $request) {
@@ -229,7 +405,7 @@ class ppaController extends Controller
                 'id' => $employee->id,
                 'name' => $employee->firstName . ' ' . $middleInitial . $employee->lastName,
                 'role' => $employee->role,
-                'position' => $employee->position, 
+                'position' => $employee->position,
             ];
         });
 

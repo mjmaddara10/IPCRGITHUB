@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Activity;
@@ -26,7 +27,7 @@ class adminPagesController extends Controller
             'role' => auth()->user()->role
         ]);
     }
-    
+
     public function managePpa(){
         // Fetch all programs with their related projects
         $programs = Program::with(['divisions', 'activities.employees'])->get();
@@ -34,7 +35,7 @@ class adminPagesController extends Controller
         $employees = Employee::all();
         $divisions = Division::all();
         $subActivities = SubActivity::all();
-    
+
         return view('viewBlades.managePpa', compact(
             'programs',
             'employees',
@@ -52,8 +53,8 @@ class adminPagesController extends Controller
         $employees = Employee::with('division')->get();
         $divisions = Division::with(['employees' => function ($query) {
             $query->where('role', 'Division Chief');
-        }])->get(); 
-    
+        }])->get();
+
         return view('viewBlades.viewTargets', compact(
             'programs',
             'employees',
@@ -71,13 +72,21 @@ class adminPagesController extends Controller
         $employees = Employee::all();
         $divisions = Division::all();
         $subActivities = SubActivity::all();
-    
-        return view('viewBlades.auditTrail', compact(
-            'programs',
-            'employees',
-            'activities',
-            'divisions'
-        ),[
+
+         // Add this line to fetch audit trails
+        $auditTrails = DB::table('audit_trails')->get();
+        // Add this line to fetch audit trails
+    $auditTrails = DB::table('audit_trails')
+    ->orderBy('created_at', 'desc')
+    ->get();
+
+return view('viewBlades.auditTrail', compact(
+    'programs',
+    'employees',
+    'activities',
+    'divisions',
+    'auditTrails'  // Add auditTrails to the compact function
+),[
             'role' => auth()->user()->role
         ]);
     }
@@ -88,7 +97,7 @@ class adminPagesController extends Controller
         $activities = Activity::with('subActivities')->get();
         $employees = Employee::with('division')->get();
         $divisions = Division::all();
-    
+
         return view('viewBlades.adminAssign', compact(
             'programs',
             'employees',

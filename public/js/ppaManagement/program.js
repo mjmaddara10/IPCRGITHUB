@@ -13,7 +13,7 @@ $('#addProgramForm').on('submit', function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'addProgram',
+                url: '/admin/addProgram',
                 method: 'POST',
                 data: $(this).serialize(), // Serialize form data
                 success: function(response) {
@@ -40,7 +40,7 @@ $('#addProgramForm').on('submit', function(e) {
                 }
             });
         }
-    });    
+    });
 });
 
 // Edit Program Fill Form
@@ -186,7 +186,7 @@ $(document).on('change', '#editDivisionSelectContainer select', function () {
 // Edit Program
 $('#editProgramForm').on('submit', function(e) {
     e.preventDefault();
-    
+
     Swal.fire({
         title: "Are you sure?",
         text: "Do you want to save these changes?",
@@ -202,7 +202,7 @@ $('#editProgramForm').on('submit', function(e) {
 
             // Make an AJAX request to update the activity
             $.ajax({
-                url: 'updateProgram',  // Your update URL
+                url: '/admin/updateProgram',  // Your update URL
                 method: 'POST',
                 data: formData,
                 success: function(response) {

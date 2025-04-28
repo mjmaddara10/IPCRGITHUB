@@ -53,7 +53,7 @@
                                     Logout
                                 </a>
                             @endif
-                                
+
                             </div>
                         </div>
 
@@ -73,15 +73,17 @@
                                         <tr>
                                             <th style="color: #03592c;">Name</th>
                                             <th style="color: #03592c;">Role</th>
+                                            <th style="color: #03592c;">Activity Name</th>
                                             <th style="color: #03592c;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($employees as $employee)
+                                        @foreach ($auditTrails as $audit)
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{ $audit->full_name }}</td>
+                                            <td>{{ $audit->role }}</td>
+                                            <td>{{ $audit->activity_name }}</td>
+                                            <td>{{ $audit->action }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
