@@ -7,13 +7,17 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class pdfController extends Controller
 {
-    public function generatePdf() {
-        $data = [ 'title' => 'My PDF Title', 'content' => 'Hello, this is the content!' ];
+    public function generatePdf(Request $request) {
+        $data = [ 'title' => 'My PDF Title',
+            'content' => 'Hello, this is the content!',
+            'role' => $request->input('role'),
+            'assignments' => json_decode($request->input('assignments'), true), ];
 
-        $pdf = Pdf::loadView('pdf', $data);
+        // $assignments = json_decode($request->input('assignments'));  // Decode if it's JSON
+        // $role = $request->input('role');
 
         $pdf = PDF::loadView('pdf', $data)->setPaper('legal', 'landscape');
-
-        return $pdf->download('my_document.pdf'); // or ->stream() to open in browser
+        
+        return $pdf->stream('my_document.pdf'); // or ->stream() to open in browser
     }
 }

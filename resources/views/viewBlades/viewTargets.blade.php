@@ -48,16 +48,25 @@
                         <div>
                             <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
                                 View Targets </h4>
-                            <small class="text-white-50">View all the users' targets</small>
+                            @if($role === 'Division Chief' || $role === 'Department Head')
+                                <small class="text-white-50">View all the users' targets</small>
+                            @elseif($role === 'Staff')
+                                <small class="text-white-50">View the assigned IPCR targets for you</small>
+                            @endif
                         </div>
                     </div>
 
                     <!-- Exporting -->
                     <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
                         <div class="col-12 d-flex justify-content-start">
-                            <a class="btn btn-md btn-primary" href="{{ route('pdf.generatePdf') }}">
+                            <a class="btn btn-md btn-primary" id="exportBtn" href="{{ route('pdf.generatePdf') }}">
                                 <i class="fas fa-file-pdf me-2"></i> Export as PDF
                             </a>
+                            <!-- <form id="pdfForm" action="{{ route('pdf.generatePdf') }}" method="POST" style="display: none;" target="_blank">
+                                @csrf
+                                <input type="hidden" id="assignments" name="assignments">
+                                <input type="hidden" id="role" name="role">
+                            </form> -->
                         </div>
                     </div>
                 </div>
@@ -66,51 +75,45 @@
                     <div class="d-flex justify-content-between align-items-center flex-wrap mb-1">
                         <!-- Division Select -->
                         <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
-                            <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
-                            <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
-                                <option>Select a Division</option>
-                                @foreach ($divisions as $division)
-                                    <option value="{{ $division->id }}"
-                                        data-name="{{ $division->name }}">
-                                        {{ $division->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        
+                            @if($role === 'Division Chief' || $role === 'Department Head')
+                                <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
+                                <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
+                                    <option>Select a Division</option>
+                                    @foreach ($divisions as $division)
+                                        <option value="{{ $division->id }}"
+                                            data-name="{{ $division->name }}">
+                                            {{ $division->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            
 
-                            <!-- User Select -->
-                            <label for="employeeSelect" class="mx-2 fw-bold mb-0">Select User:</label>
-                            <select class="form-select form-select-md w-auto" name="employeeSelect" id="employeeSelect">
-                                <option>Select a User</option>
-                                @foreach ($employees as $employee)
-                                    <option value="{{ $employee->id }}"
-                                        data-name="{{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}"
-                                        data-position="{{ $employee->position }}"
-                                        data-status="{{ $employee->status }}"
-                                        data-division-id="{{ $employee->division->id ?? ''}}"
-                                        data-division-name="{{ $employee->division->name ?? ''}}">
-                                        {{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}
-                                    </option>
-                                @endforeach
-                            </select>
+                                <!-- User Select -->
+                                <label for="employeeSelect" class="mx-2 fw-bold mb-0">Select User:</label>
+                                <select class="form-select form-select-md w-auto" name="employeeSelect" id="employeeSelect">
+                                    <option>Select a User</option>
+                                    @foreach ($employees as $employee)
+                                        <option value="{{ $employee->id }}"
+                                            data-name="{{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}"
+                                            data-position="{{ $employee->position }}"
+                                            data-status="{{ $employee->status }}"
+                                            data-division-id="{{ $employee->division->id ?? ''}}"
+                                            data-division-name="{{ $employee->division->name ?? ''}}">
+                                            {{ $employee->firstName }} {{ $employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '' }} {{ $employee->lastName }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
 
                         <!-- Buttons -->
                         <div class="d-flex align-items-center flex-wrap">
                             
-                            @if($role === 'Division Chief')
+                            @if($role === 'Division Chief' || $role === 'Department Head')
                                 <a href="{{ route('chief.audit') }}" class="btn btn-hover nv-green mb-1 me-1">Audit Trail</a>
                                 <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover nv-green mb-1 me-1">View Users</a>
                                 <a href="{{ route('chief.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
                                 <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green mb-1 me-1">Manage PPA</a>
-                                <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
-                                    Logout
-                                </a>
-                            @elseif($role === 'Department Head')
-                                <a href="{{ route('head.audit') }}" class="btn btn-hover nv-green mb-1 me-1">Audit Trail</a>
-                                <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover nv-green mb-1 me-1">View Users</a>
-                                <a href="{{ route('head.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
-                                <a href="{{ route('head.managePpa') }}" class="btn btn-hover nv-green mb-1 me-1">Manage PPA</a>
                                 <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>

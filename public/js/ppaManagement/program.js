@@ -13,7 +13,7 @@ $('#addProgramForm').on('submit', function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'addProgram',
+                url: '/admin/addProgram',
                 method: 'POST',
                 data: $(this).serialize(), // Serialize form data
                 success: function(response) {
@@ -202,7 +202,7 @@ $('#editProgramForm').on('submit', function(e) {
 
             // Make an AJAX request to update the activity
             $.ajax({
-                url: 'updateProgram',  // Your update URL
+                url: '/admin/updateProgram',  // Your update URL
                 method: 'POST',
                 data: formData,
                 success: function(response) {

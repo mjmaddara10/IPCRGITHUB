@@ -156,6 +156,8 @@ $(document).ready(function () {
                         }
             
                         tbody.append(row);
+
+                        
                     });
                 },
                 error: function (xhr, status, error) {
@@ -210,5 +212,17 @@ $(document).ready(function () {
         // Trigger change manually to update fields for first visible user
         $('#employeeSelect').trigger('change');
     });
+
+    // $('#exportBtn').on('click', function () {
+    //     const assignments = response.targets;  // Your data
+    //     const role = response.role;  // Your role data
+    
+    //     // Transfer assignments and role to hidden inputs
+    //     $('#assignments').val(JSON.stringify(assignments));  // Convert to JSON string if necessary
+    //     $('#role').val(role);
+    
+    //     // Submit the form to the route
+    //     $('#pdfForm').submit();
+    // });
 });
 

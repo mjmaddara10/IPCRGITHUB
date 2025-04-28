@@ -28,7 +28,7 @@
     <!-- Application Specific Styles -->
      
     <!-- Custom Admin Styles -->
-    <link href="{{ asset('admin/admin.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 
     <!-- Additional Font Weights -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"

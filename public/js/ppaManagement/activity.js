@@ -114,7 +114,7 @@ $('#addActivityInProgramForm').on('submit', function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: 'addActivityInProgram',
+                url: '/admin/addActivityInProgram',
                 method: 'POST',
                 data: $(this).serialize(), // Serialize form data
                 success: function(response) {
