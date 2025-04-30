@@ -9,7 +9,7 @@ class CreateSubActivitiesTable extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('sub_activities', function (Blueprint $table) {
             $table->id(); 
