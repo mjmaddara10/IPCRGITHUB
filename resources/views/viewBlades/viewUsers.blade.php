@@ -11,9 +11,9 @@
 @endsection
 
 @section('content')
-<div class="page-background"></div>
+<!-- <div class="page-background"></div> -->
 <div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
-    <div class="container-fluid mt-4 position-relative">
+    <div class="container-fluid position-relative">
         <div class="row">
             <div class="col-12">
                 <div class="bg-white">
@@ -21,34 +21,52 @@
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center ms-auto">
                             @if($role === 'Division Chief')
-                                <a href="{{ route('chief.audit') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    Audit Trail
-                                </a>
-                                <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">
-                                    View Users
+                                <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                    Manage PPA
                                 </a>
                                 <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     View Targets
                                 </a>
-                                <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    Manage PPA
-                                </a>
+                                
+                                <div class="btn-group" style="margin-left: 3px;">
+                                    <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Lookup Tables
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('chief.audit') }}">Audit Trail</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('chief.viewEmployees') }}">View Users</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
                                 <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
                             @elseif($role === 'Department Head')
-                                <a href="{{ route('head.audit') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    Audit Trail
-                                </a>
-                                <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">
-                                    View Users
+                                <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                    Manage PPA
                                 </a>
                                 <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     View Targets
                                 </a>
-                                <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    Manage PPA
-                                </a>
+
+                                <div class="btn-group" style="margin-left: 3px;">
+                                    <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Lookup Tables
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('head.audit') }}">Audit Trail</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('head.viewEmployees') }}">View Users</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
                                 <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>

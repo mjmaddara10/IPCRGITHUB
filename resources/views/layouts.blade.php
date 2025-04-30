@@ -78,16 +78,16 @@
     <script src="{{ asset('js/ppaManagement/subActivity.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
 
-    <!-- Assign PPA -->
+    <!-- View Target -->
     <script src="{{ asset('js/ppaView/user.js') }}"></script>
+    <script src="{{ asset('js/ppaView/program.js') }}"></script>
+    <script src="{{ asset('js/ppaView/activity.js') }}"></script>
 
     <!-- Table Switching -->
     <script src="{{ asset('js/ppaManagement/manageTable.js') }}"></script>
 
     <!-- Hover on Button -->
     <script src="{{ asset('js/functionalities.js') }}"></script>
-
-    <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
 </body>
 
 </html>

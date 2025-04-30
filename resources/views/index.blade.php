@@ -37,9 +37,9 @@
 
  <!-- Hero Section - Main Header -->
  <div class="container-fluid text-center text-white p-0 hero-section">
-     <h1 class="hero-title">INDIVIDUAL PERFORMANCE</h1>
-     <h2 class="hero-subtitle">COMMITMENT AND REVIEW (TARGETS)</h2>
-     <h3 class="hero-text">PROVINCE OF NUEVA VIZCAYA</h3>
+     <h1 class="hero-title">STRATEGIC PERFORMANCE</h1>
+     <h2 class="hero-title">MANAGEMENT SYSTEM</h2>
+     <h5 class="p-3">PROVINCE OF NUEVA VIZCAYA</h5>
  </div>
 
  <!-- User Login Modal -->

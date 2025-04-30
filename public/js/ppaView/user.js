@@ -83,13 +83,14 @@ $(document).ready(function () {
                     }
             
                     let printedPrograms = new Set();
-            
+                    let printedActivities = new Set(); // <-- NEW set for activities
+
                     assignments.forEach(function (assignment) {
                         let row = '';
-            
+
                         if (!printedPrograms.has(assignment.program_name)) {
                             printedPrograms.add(assignment.program_name);
-            
+
                             if (isDeptHead) {
                                 row += `
                                     <tr style="background-color: #03592c; color: white;">
@@ -103,6 +104,26 @@ $(document).ready(function () {
                                         <td class="text-center border border-light" style="background-color: #03592c; color:#FFFFFF; vertical-align: middle;">
                                             ${Array.isArray(assignment.program_division) ? assignment.program_division.join('<br><br>') : safeValue(assignment.program_division)}
                                         </td>
+
+                                        // Actions
+                                        <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;">
+                                            <!-- Edit Program -->
+                                            <button class="btn btn-sm editProgramBtnTarget buttonHover" title="Edit program name"
+                                                data-program-id="${assignment.program_id}" 
+                                                data-program-name="${assignment.program_name}"
+                                                data-program-success="${assignment.program_success_indicator}"
+                                                data-program-quality="${assignment.program_quality}"
+                                                data-program-efficiency="${assignment.program_efficiency}"
+                                                data-program-timeliness="${assignment.program_timeliness}"
+                                                data-program-remarks="${assignment.program_remarks}"
+                                                data-program-budget="${assignment.program_budget}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
+                                            </button>
+
+                                            <!-- Delete Program -->
+                                            <button class="btn btn-sm deleteProgramBtnTarget buttonHover" title="Delete program"
+                                                data-program-id="${assignment.program_id}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 `;
                             } else {
@@ -113,9 +134,9 @@ $(document).ready(function () {
                                 `;
                             }
                         }
-            
-                        // Activity row
+
                         if (isDeptHead) {
+                            // Always print Activity row if Dept Head
                             row += `
                                 <tr>
                                     <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
@@ -138,15 +159,42 @@ $(document).ready(function () {
                                     </td>
                                     <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
                                     <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
+
+                                    // Actions
+                                    <td class="text-center" style="background-color:rgb(212, 212, 212);">
+                                        <!-- Edit Activity -->
+                                        <button class="btn btn-sm editActivityBtnTarget buttonHover" title="Edit activity name"
+                                            data-activity-id="${assignment.activity_id}" 
+                                            data-activity-name="${assignment.activity_name}"
+                                            data-activity-success="${assignment.activity_success_indicator}"
+                                            data-activity-quality="${assignment.activity_quality}"
+                                            data-activity-efficiency="${assignment.activity_efficiency}"
+                                            data-activity-timeliness="${assignment.activity_timeliness}"
+                                            data-activity-remarks="${assignment.activity_remarks}" data-bs-toggle="modal" data-bs-target="#editActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
+                                        </button>
+
+                                        <!-- Delete Activity -->
+                                        <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete activity"
+                                            data-activity-id="${assignment.activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             `;
                         } else {
+                            // Print activity row ONLY ONCE
+                            if (!printedActivities.has(assignment.activity_name)) {
+                                printedActivities.add(assignment.activity_name);
+                                row += `
+                                    <tr>
+                                        <td colspan="6" class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                            ${safeValue(assignment.activity_name).replace(/\n/g, '<br><br>')}
+                                        </td>
+                                    </tr>
+                                `;
+                            }
+
+                            // Then print sub-activity always
                             row += `
-                                <tr>
-                                    <td colspan="6" class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
-                                        ${safeValue(assignment.activity_name).replace(/\n/g, '<br><br>')}
-                                    </td>
-                                </tr>
                                 <tr>
                                     <td class="text-left ps-3 border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_name).replace(/\n/g, '<br><br>')}</td>
                                     <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_success_indicator).replace(/\n/g, '<br><br>')}</td>
@@ -154,10 +202,11 @@ $(document).ready(function () {
                                     <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_efficiency).replace(/\n/g, '<br><br>')}</td>
                                     <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_timeliness).replace(/\n/g, '<br><br>')}</td>
                                     <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>
                                 </tr>
                             `;
                         }
-            
+
                         tbody.append(row);
                     });
 

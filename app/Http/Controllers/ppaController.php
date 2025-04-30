@@ -11,8 +11,6 @@ use App\Models\SubProject;
 use App\Models\Program;
 use App\Models\Employee;
 use App\Models\Division;
-use App\Models\SelectedActivity;
-use App\Models\SelectedSubActivity;
 
 class ppaController extends Controller
 {
@@ -142,24 +140,11 @@ class ppaController extends Controller
             'program_Id' => $request->programIdProg,
         ]);
 
-        $selectedActivity = new SelectedActivity([
-            'name' => $request->addActivityName,
-            'successIndicator' => $request->addSuccessIndicator,
-            'quality' => $request->addQuality,
-            'efficiency' => $request->addEfficiency,
-            'timeliness' => $request->addTimeliness,
-            'remarks' => $request->addRemarks,
-            'program_Id' => $request->programIdProg,
-            'project_id' => $request->project_id,
-        ]);
-
         // Find the program and associate the activity with it
         $program = Program::findOrFail($request->programIdProg);
         $program->activities()->save($activity);
-        $selectedActivity->save();
 
         if ($request->has('addAccountableId')) {
-            // $selectedActivity->employees()->attach($request->addAccountableId);
             $activity->employees()->attach($request->addAccountableId);
         }
 

@@ -54,6 +54,7 @@ class viewPpaController extends Controller{
                     if ($activity->subActivities->count()) {
                         foreach ($activity->subActivities as $subActivity) {
                             $targets[] = [
+                                'program_id' => $program->id,
                                 'program_name' => $program->name,
                                 'program_division' => $program->divisions->pluck('name')->toArray(),
                                 'program_budget' => $program->budget,
@@ -62,12 +63,14 @@ class viewPpaController extends Controller{
                                 'program_efficiency' => $program->efficiency,
                                 'program_timeliness' => $program->timeliness,
                                 'program_remarks' => $program->remarks,
+                                'activity_id' => $activity->id,
                                 'activity_name' => $activity->name,
                                 'activity_success_indicator' => $activity->successIndicator,
                                 'activity_quality' => $activity->quality,
                                 'activity_efficiency' => $activity->efficiency,
                                 'activity_timeliness' => $activity->timeliness,
                                 'activity_remarks' => $activity->remarks,
+                                'sub_activity_id' => $subActivity->id,
                                 'sub_activity_name' => $subActivity->name,
                                 'sub_activity_success_indicator' => $subActivity->successIndicator,
                                 'sub_activity_quality' => $subActivity->quality,
@@ -79,6 +82,7 @@ class viewPpaController extends Controller{
                     } else {
                         // activity without sub-activities
                         $targets[] = [
+                            'program_id' => $program->id,
                             'program_name' => $program->name,
                             'program_division' => $program->divisions->pluck('name')->toArray(),
                             'program_budget' => $program->budget,
@@ -87,12 +91,14 @@ class viewPpaController extends Controller{
                             'program_efficiency' => $program->efficiency,
                             'program_timeliness' => $program->timeliness,
                             'program_remarks' => $program->remarks,
+                            'activity_id' => $activity->id,
                             'activity_name' => $activity->name,
                             'activity_success_indicator' => $activity->successIndicator,
                             'activity_quality' => $activity->quality,
                             'activity_efficiency' => $activity->efficiency,
                             'activity_timeliness' => $activity->timeliness,
                             'activity_remarks' => $activity->remarks,
+                            'sub_activity_id' => null,
                             'sub_activity_name' => null,
                             'sub_activity_success_indicator' => null,
                             'sub_activity_quality' => null,
@@ -115,8 +121,11 @@ class viewPpaController extends Controller{
                 $program = $activity->program;
     
                 $targets[] = [
+                    'program_id' => $program->id,
                     'program_name' => $program->name,
+                    'activity_id' => $activity->id,
                     'activity_name' => $activity->name,
+                    'sub_activity_id' => $subActivity->id,
                     'sub_activity_name' => $subActivity->name,
                     'sub_activity_success_indicator' => $subActivity->successIndicator,
                     'sub_activity_quality' => $subActivity->quality,
@@ -126,6 +135,8 @@ class viewPpaController extends Controller{
                 ];
             }
         }
+
+        // dd($targets);
     
         return response()->json([
             'role' => $role,
