@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateActivityEmployeeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('activity_employee', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('activity_id')->nullable()->constrained('activities')->onDelete('cascade');
-            $table->foreignId('employee_id')->nullable()->constrained('tbl_employee')->onDelete('cascade');
+
+            $table->unsignedBigInteger('activity_id')->nullable();
+            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
+
+            $table->unsignedBigInteger('employee_id')->nullable();
+            $table->foreign('employee_id')->references('id')->on('tbl_employee')->onDelete('cascade');
         });
     }
 

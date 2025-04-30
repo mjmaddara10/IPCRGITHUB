@@ -110,6 +110,7 @@ class viewPpaController extends Controller{
                 }
             }
         }
+        
         // 🔹 FOR STAFF or DIVISION CHIEF — only get what they are assigned to
         else {
             foreach ($employee->subActivities as $subActivity) {
