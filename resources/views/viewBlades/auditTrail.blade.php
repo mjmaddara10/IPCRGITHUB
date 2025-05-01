@@ -75,7 +75,7 @@
                                             <th style="color: #03592c;">Name</th>
                                             <th style="color: #03592c;">Role</th>
                                             <th style="color: #03592c;">Program Name</th>
-                                            <th style="color: #03592c;">Action</th>
+                                            <th style="color: #03592c;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
