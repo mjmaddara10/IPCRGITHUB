@@ -113,7 +113,7 @@ class pdfController extends Controller
         $chiefInfo = json_decode($request->input('chiefInfo'), true);
 
         $data = [
-            'title' => 'My PDF Title',
+            'title' => $employee->lastName. ', ' .$employee->firstName,
             'content' => 'Hello, this is the content!',
             'employee' => $employee,
             'chiefInfo' => $chiefInfo,
@@ -123,6 +123,12 @@ class pdfController extends Controller
 
         $pdf = PDF::loadView('pdf', $data)->setPaper('legal', 'landscape');
         
-        return $pdf->stream('my_document.pdf'); // or ->stream() to open in browser
+        if ($role === 'Department Head') {
+            return $pdf->stream($employee->lastName. ', ' .$employee->firstName. ' (OPCR).pdf');
+        }else if ($role === 'Division Chief'){
+            return $pdf->stream($employee->lastName. ', ' .$employee->firstName. ' (DPCR).pdf');
+        }else{
+            return $pdf->stream($employee->lastName. ', ' .$employee->firstName. ' (IPCR).pdf');
+        }
     }
 }

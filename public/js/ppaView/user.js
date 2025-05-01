@@ -189,6 +189,25 @@ $(document).ready(function () {
                                         <td colspan="6" class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
                                             ${safeValue(assignment.activity_name).replace(/\n/g, '<br><br>')}
                                         </td>
+
+                                        // Actions
+                                        <td class="text-center" style="background-color:rgb(212, 212, 212);">
+                                            <!-- Edit Activity -->
+                                            <button class="btn btn-sm editActivityBtnTarget buttonHover" title="Edit activity name"
+                                                data-activity-id="${assignment.activity_id}" 
+                                                data-activity-name="${assignment.activity_name}"
+                                                data-activity-success="${assignment.activity_success_indicator}"
+                                                data-activity-quality="${assignment.activity_quality}"
+                                                data-activity-efficiency="${assignment.activity_efficiency}"
+                                                data-activity-timeliness="${assignment.activity_timeliness}"
+                                                data-activity-remarks="${assignment.activity_remarks}" data-bs-toggle="modal" data-bs-target="#editActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
+                                            </button>
+
+                                            <!-- Delete Activity -->
+                                            <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete activity"
+                                                data-activity-id="${assignment.activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 `;
                             }
@@ -202,7 +221,25 @@ $(document).ready(function () {
                                     <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_efficiency).replace(/\n/g, '<br><br>')}</td>
                                     <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_timeliness).replace(/\n/g, '<br><br>')}</td>
                                     <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>
+                                    
+                                    // Actions
+                                    <td class="text-center" style="background-color: #f8f8f8;">
+                                        <!-- Edit Activity -->
+                                        <button class="btn btn-sm editSubActivityBtnTarget buttonHover" title="Edit sub-activity name"
+                                            data-sub-activity-id="${assignment.sub_activity_id}" 
+                                            data-sub-activity-name="${assignment.sub_activity_name}"
+                                            data-sub-activity-success="${assignment.sub_activity_success_indicator}"
+                                            data-sub-activity-quality="${assignment.sub_activity_quality}"
+                                            data-sub-activity-efficiency="${assignment.sub_activity_efficiency}"
+                                            data-sub-activity-timeliness="${assignment.sub_activity_timeliness}"
+                                            data-sub-activity-remarks="${assignment.sub_activity_remarks}" data-bs-toggle="modal" data-bs-target="#editSubActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
+                                        </button>
+
+                                        <!-- Delete Activity -->
+                                        <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete activity"
+                                            data-activity-id="${assignment.sub_activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             `;
                         }

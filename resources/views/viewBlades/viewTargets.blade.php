@@ -160,7 +160,8 @@
                     </div>
                 </div>
 
-                <div class="container-fluid">
+                <!-- Paragraph -->
+                <!-- <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 p-3" style="font-family: 'Montserrat'; text-align: justify; font-weight: 1000;">
                             <p class="justified-text" id="employeeCommitmentText">
@@ -192,11 +193,74 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 
                 <!-- Table Section -->
-                <div class="container-fluid" style="padding: 0 0px;">
+                <div class="container-fluid pt-3">
+                    @if($role === 'Staff')
+                        <table class="table table-hover" style="fixed; width: 100%;">
+                            <thead class="text-center">
+                                <tr>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Programs/Project/Activities</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Success Indicator</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Quality</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Efficiency</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Timeliness</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Remarks/MOV</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @php
+                                    $printedPrograms = [];
+                                    $printedActivities = [];
+                                @endphp
+
+                                @foreach($targets as $target)
+                                    @php
+                                        $programName = $target['program_name'] ?? 'N/A';
+                                        $activityName = $target['activity_name'] ?? '';
+                                    @endphp
+
+                                    {{-- Program --}}
+                                    @if(!in_array($programName, $printedPrograms))
+                                        <tr class="small">
+                                            <td class="bold uppercase border">{{ $programName }}</td>
+                                            <td class="bold border" colspan="5"></td>
+                                        </tr>
+                                        @php $printedPrograms[] = $programName; @endphp
+                                    @endif
+
+                                    {{-- Activity --}}
+                                    @if(!in_array($activityName, $printedActivities))
+                                        <tr class="small">
+                                            <td class="uppercase border" style="padding-left: 5px;">{{ $activityName }}</td>
+                                            <td class="border">{{ $target['activity_success_indicator'] ?? '' }}</td>
+                                            <td class="border">{{ $target['activity_quality'] ?? '' }}</td>
+                                            <td class="border">{{ $target['activity_efficiency'] ?? '' }}</td>
+                                            <td class="border">{{ $target['activity_timeliness'] ?? '' }}</td>
+                                            <td class="border">{{ $target['activity_remarks'] ?? '' }}</td>
+                                        </tr>
+                                        @php $printedActivities[] = $activityName; @endphp
+                                    @endif
+
+                                    {{-- Sub-Activity (always print) --}}
+                                    <tr class="small" style="vertical-align: top;">
+                                        <td style="text-indent: 10px;" class="border">{{ $target['sub_activity_name'] ?? 'N/A' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_success_indicator'] ?? 'N/A' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_quality'] ?? 'N/A' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_efficiency'] ?? 'N/A' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_timeliness'] ?? 'N/A' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_remarks'] ?? 'N/A' }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                     <div class="table-responsive">
+                        
+
+
                         <table id="usersTable" class="table table-hover" style="fixed; width: 100%;">
                             <thead class="text-center d-none" id="thead-default">
                                 <tr>
@@ -206,6 +270,7 @@
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Efficiency</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Timeliness</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Remarks/MOV</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Actions</th>
                                 </tr>
                             </thead>
                             <thead class="text-center d-none" id="thead-dept-head">
@@ -234,7 +299,7 @@
 </div>
 
 <!------------------------------------Modals-------------------------------------->
-<!-- Edit Program Modal -->
+<!-- Edit Program Modal (DH)-->
 <div class="modal fade" id="editProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="editProgramModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
         <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -7%;">
@@ -334,7 +399,7 @@
     </div>
 </div>
 
-<!-- Edit Activity Modal -->
+<!-- Edit Activity Modal (DH)-->
 <div class="modal fade" id="editActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="editActivityModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
         <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
@@ -409,106 +474,6 @@
                     <!-- Footer -->
                     <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
                         <button type="button" class="btn btn-danger px-3 closeEditModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Add Sub-Activity Modal -->
-<div class="modal fade" id="addSubActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="addSubActivityModalLabel">
-    <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
-            <!-- Header -->
-            <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
-                <h5 class="modal-title text-white fw-bold" id="addSubActivityModalLabel">
-                    <i class="fas fa-plus me-2"></i>Add Sub-Activity
-                </h5>
-            </div>
-
-            <!-- Body -->
-            <div class="modal-body" style="background-color: #ffffff;">
-                <form id="addSubActivityForm" class="p-2">
-                    @csrf
-                    <input type="hidden" id="activityIdSub" name="activityIdSub" required>
-                    <div class="col-12 mb-3">
-                        <label class="form-label fw-bold text-dark mb-1">Activity Name:</label>
-                        <textarea class="form-control border-2 py-2"
-                            style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
-                            name="activityNameSub" id="activityNameSub" disabled></textarea>
-                    </div>
-
-                    <!-- Individual Responsible -->
-                    <div class="mb-3">
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <label class="form-label fw-bold text-dark mb-0">Individual/s Responsible:</label>
-                            <button class="btn btn-sm text-white me-2" id="addsAccountablePersonBtn" type="button"
-                                title="Add person" style="background-color: #01a550;">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-
-                        <div id="accountableSelectContainerSubAct" data-divisions="{{ json_encode($divisions) }}">
-                            <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
-                                <select class="form-select border border-success accountableSelect" id="addAccountableId" name="addAccountableId[]">
-                                    
-                                </select>
-                                <button type="button" class="btn btn-danger btn-sm removeAccountableBtn" disabled>
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <!-- Sub-Activity Table -->
-                    <div class="table-responsive">
-                        <table class="table table-bordered align-middle text-center border-success">
-                            <thead class="table-light fw-bold text-dark">
-                                <tr>
-                                    <th style="min-width: 200px;">Sub-Activity Name</th>
-                                    <th style="min-width: 200px;">Success Indicator</th>
-                                    <th style="min-width: 200px;">Quality</th>
-                                    <th style="min-width: 200px;">Efficiency</th>
-                                    <th style="min-width: 200px;">Timeliness</th>
-                                    <th style="min-width: 200px;">Remarks</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize" name="addSubActivityName" id="addSubActivityName"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize" name="addSuccessIndicator" id="addSuccessIndicator"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize" name="addQuality" id="addQuality"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize" name="addEfficiency" id="addEfficiency"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize" name="addTimeliness" id="addTimeliness"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize" name="addRemarks" id="addRemarks"></textarea>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeAddModal">
                             <i class="fas fa-times me-2"></i>Cancel
                         </button>
                         <button type="submit" class="btn btn-success px-3">

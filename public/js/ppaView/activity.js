@@ -20,7 +20,7 @@ $(document).on('click', '.editActivityBtnTarget', function () {
     $('#editEfficiencyActivity').val(activityEfficiency);
     $('#editTimelinessActivity').val(activityTimeliness);
     $('#editRemarksActivity').val(activityRemarks);
-    
+
     // Clear previous selects
     const $editContainer = $('#editContainer');
     $editContainer.empty();

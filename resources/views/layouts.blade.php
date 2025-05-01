@@ -82,6 +82,7 @@
     <script src="{{ asset('js/ppaView/user.js') }}"></script>
     <script src="{{ asset('js/ppaView/program.js') }}"></script>
     <script src="{{ asset('js/ppaView/activity.js') }}"></script>
+    <script src="{{ asset('js/ppaView/subActivity.js') }}"></script>
 
     <!-- Table Switching -->
     <script src="{{ asset('js/ppaManagement/manageTable.js') }}"></script>
