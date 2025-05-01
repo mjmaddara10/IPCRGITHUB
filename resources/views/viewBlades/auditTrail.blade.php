@@ -89,18 +89,20 @@
                                 <table id="manageUserTable" class="table table-hover">
                                     <thead>
                                         <tr>
+                                            <th style="color: #03592c;">Created_At</th>
                                             <th style="color: #03592c;">Name</th>
                                             <th style="color: #03592c;">Role</th>
-                                            <th style="color: #03592c;">Activity Name</th>
-                                            <th style="color: #03592c;">Action</th>
+                                            <th style="color: #03592c;">Program Name</th>
+                                            <th style="color: #03592c;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($auditTrails as $audit)
                                         <tr>
+                                            <td>{{ \Carbon\Carbon::parse($audit->created_at)->format('Y-m-d H:i') }}</td>
                                             <td>{{ $audit->full_name }}</td>
                                             <td>{{ $audit->role }}</td>
-                                            <td>{{ $audit->activity_name }}</td>
+                                            <td>{{ $audit->program_name }}</td>
                                             <td>{{ $audit->action }}</td>
                                         </tr>
                                         @endforeach
