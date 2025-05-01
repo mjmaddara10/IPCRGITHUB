@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('role');
             $table->string('action');
-            $table->string('table_name');
+            $table->string('activity_name');
             $table->unsignedBigInteger('record_id');
             $table->timestamps();
 
