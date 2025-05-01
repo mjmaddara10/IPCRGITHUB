@@ -11,6 +11,7 @@ use App\Models\SubActivity;
 use App\Models\Employee;
 use App\Models\SubProject;
 use App\Models\Division;
+use App\Models\AuditTrail;
 
 class adminPagesController extends Controller
 {
@@ -72,13 +73,7 @@ class adminPagesController extends Controller
         $employees = Employee::all();
         $divisions = Division::all();
         $subActivities = SubActivity::all();
-
-        // Add this line to fetch audit trails
-        $auditTrails = DB::table('audit_trails')->get();
-        // Add this line to fetch audit trails
-        $auditTrails = DB::table('audit_trails')
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $auditTrails = AuditTrail::orderBy('created_at', 'desc')->get();
 
         return view('viewBlades.auditTrail', compact(
             'programs',
