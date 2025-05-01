@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\AuditTrail;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Activity;
@@ -11,7 +12,7 @@ use App\Models\SubActivity;
 use App\Models\Employee;
 use App\Models\SubProject;
 use App\Models\Division;
-use App\Models\AuditTrail;
+
 
 class adminPagesController extends Controller
 {

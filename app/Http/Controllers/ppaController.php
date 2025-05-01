@@ -11,6 +11,7 @@ use App\Models\SubProject;
 use App\Models\Program;
 use App\Models\Employee;
 use App\Models\Division;
+use App\Models\AuditTrail;
 
 class ppaController extends Controller
 {
@@ -43,14 +44,17 @@ class ppaController extends Controller
         $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
 
         // Create audit trail
-        DB::table('audit_trails')->insert([
+        AuditTrail::create([
             'user_id' => auth()->id(),
             'full_name' => $fullName,
             'role' => $user->role,
-            'action' => 'Added Sub Activity: ' . $request->addSubActivityName,
-            'activity_name' => $activity->name,
-            'created_at' => now(),
-            'updated_at' => now()
+            'action' => ($request->addSubActivityName ? "ADDED SUB ACTIVITY: {$request->addSubActivityName} Under the {$activity->name}\n" : "") .
+                ($request->addSuccessIndicator ? "SUCCESS INDICATOR: {$request->addSuccessIndicator}\n" : "") .
+                ($request->addQuality ? "QUALITY: {$request->addQuality}\n" : "") .
+                ($request->addEfficiency ? "EFFICIENCY: {$request->addEfficiency}\n" : "") .
+                ($request->addTimeliness ? "TIMELINESS: {$request->addTimeliness}\n" : "") .
+                ($request->addRemarks ? "REMARKS: {$request->addRemarks}" : ""),
+            'program_name' => $program->name
         ]);
 
         return response()->json(['message' => 'Sub-activity added successfully!']);
@@ -63,6 +67,13 @@ class ppaController extends Controller
 
         // Get the activity name before update
         $activity = Activity::findOrFail($subActivity->activity_id);
+
+        $oldSubActivityName = $subActivity->name;
+        $oldSuccessIndicator = $subActivity->successIndicator;
+        $oldQuality = $subActivity->quality;
+        $oldEfficiency = $subActivity->efficiency;
+        $oldTimeliness = $subActivity->timeliness;
+        $oldRemarks = $subActivity->remarks;
 
         $subActivity->update([
             'name' => $request->editActivityNameSub,
@@ -83,14 +94,17 @@ class ppaController extends Controller
         $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
 
         // Create audit trail
-        DB::table('audit_trails')->insert([
-            'user_id' => auth()->id(),
+        AuditTrail::create([
+            'user_id' => $user->id,
             'full_name' => $fullName,
             'role' => $user->role,
-            'action' => 'Updated Sub Activity: ' . $request->editActivityNameSub,
-            'activity_name' => $activity->name,
-            'created_at' => now(),
-            'updated_at' => now()
+            'action' => "UPDATED SUB ACTIVITY: " . ($oldSubActivityName !== $request->editActivityNameSub ? "{$oldSubActivityName} to {$request->editActivityNameSub}" : $oldSubActivityName) . " Under the {$activity->name}\n" .
+                ($oldSuccessIndicator !== $request->editSuccessIndicatorSub ? "SUCCESS INDICATOR: {$oldSuccessIndicator} to {$request->editSuccessIndicatorSub}\n" : "") .
+                ($oldQuality !== $request->editQualitySub ? "QUALITY: {$oldQuality} to {$request->editQualitySub}\n" : "") .
+                ($oldEfficiency !== $request->editEfficiencySub ? "EFFICIENCY: {$oldEfficiency} to {$request->editEfficiencySub}\n" : "") .
+                ($oldTimeliness !== $request->editTimelinessSub ? "TIMELINESS: {$oldTimeliness} to {$request->editTimelinessSub}\n" : "") .
+                ($oldRemarks !== $request->editRemarksSub ? "REMARKS: {$oldRemarks} to {$request->editRemarksSub}" : ""),
+            'program_name' => $program->name
         ]);
 
         // Return a response
@@ -102,24 +116,29 @@ class ppaController extends Controller
         try{
             $subActivity = SubActivity::findOrFail($request->subActivityId);
              // Get authenticated user details before deletion
-        $user = auth()->user();
-        $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
-        $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
+            $user = auth()->user();
+            $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
+            $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
 
-        // Create audit trail before deletion
-        DB::table('audit_trails')->insert([
-            'user_id' => auth()->id(),
-            'full_name' => $fullName,
-            'role' => $user->role,
-            'action' => 'Deleted Sub Activity',
-            'activity_name' => $subActivity->name,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-            $subActivity->delete();
+            // Create audit trail before deletion
+            AuditTrail::create([
+                'user_id' => $user->id,
+                'full_name' => $fullName,
+                'role' => $user->role,
+                'action' => "DELETED SUB ACTIVITY: {$subActivity->name} Under the {$activity->name}\n" .
+                    "SUCCESS INDICATOR: {$subActivity->successIndicator}\n" .
+                    "QUALITY: {$subActivity->quality}\n" .
+                    "EFFICIENCY: {$subActivity->efficiency}\n" .
+                    "TIMELINESS: {$subActivity->timeliness}\n" .
+                    "REMARKS: {$subActivity->remarks}",
+                'program_name' => $program->name
+            ]);
 
-            return response()->json(['message' => 'Sub-activity deleted successfully!'], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                $subActivity->delete();
+
+                return response()->json(['message' => 'Sub-activity deleted successfully!'], 200);
+            } 
+        catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // If sub-activity is not found
             return response()->json(['error' => 'Sub-activity not found!'], 404);
         } catch (\Exception $e) {
@@ -170,6 +189,15 @@ class ppaController extends Controller
     public function updateActivity(Request $request){
         // Find the activity and update it
         $activity = Activity::findOrFail($request->editActivityId);
+
+        // Save the old values before update
+        $oldName = $activity->name;
+        $oldSuccessIndicator = $activity->successIndicator;
+        $oldQuality = $activity->quality;
+        $oldEfficiency = $activity->efficiency;
+        $oldTimeliness = $activity->timeliness;
+        $oldRemarks = $activity->remarks;
+
         $activity->update([
             'name' => $request->editActivityName,
             'successIndicator' => $request->editSuccessIndicatorActivity,
@@ -191,14 +219,17 @@ class ppaController extends Controller
         $activity = Program::findOrFail($activity->program_id);
 
         // Create audit trail
-        DB::table('audit_trails')->insert([
-            'user_id' => auth()->id(),
+        AuditTrail::create([
+            'user_id' => $user->id,
             'full_name' => $fullName,
             'role' => $user->role,
-            'action' => 'Updated Activity: ' . $request->editActivityName,
-            'activity_name' => $activity->name,
-            'created_at' => now(),
-            'updated_at' => now()
+            'action' => "UPDATED ACTIVITY: " . ($oldName !== $request->editActivityName ? "{$oldName} to {$request->editActivityName}\n" : $oldName . "\n") .
+                ($oldSuccessIndicator !== $request->editSuccessIndicatorActivity ? "SUCCESS INDICATOR: {$oldSuccessIndicator} to {$request->editSuccessIndicatorActivity}\n" : "") .
+                ($oldQuality !== $request->editQualityActivity ? "QUALITY: {$oldQuality} to {$request->editQualityActivity}\n" : "") .
+                ($oldEfficiency !== $request->editEfficiencyActivity ? "EFFICIENCY: {$oldEfficiency} to {$request->editEfficiencyActivity}\n" : "") .
+                ($oldTimeliness !== $request->editTimelinessActivity ? "TIMELINESS: {$oldTimeliness} to {$request->editTimelinessActivity}\n" : "") .
+                ($oldRemarks !== $request->editRemarksActivity ? "REMARKS: {$oldRemarks} to {$request->editRemarksActivity}" : ""),
+            'program_name' => $program->name
         ]);
 
         // Return a response (this is what your AJAX call will use)
@@ -219,14 +250,17 @@ class ppaController extends Controller
             $program = Program::findOrFail($activity->program_id);
 
             // Insert audit trail before deleting
-            DB::table('audit_trails')->insert([
-                'user_id'       => auth()->id(),
-                'full_name'     => $fullName,
-                'role'          => $user->role,
-                'action'        => 'Deleted Activity: ' . $activity->name,
-                'activity_name' => $program->name,
-                'created_at'    => now(),
-                'updated_at'    => now()
+            AuditTrail::create([
+                'user_id' => $user->id,
+                'full_name' => $fullName,
+                'role' => $user->role,
+                'action' => "DELETED ACTIVITY: {$activity->name}\n" .
+                    "SUCCESS INDICATOR: {$activity->successIndicator}\n" .
+                    "QUALITY: {$activity->quality}\n" .
+                    "EFFICIENCY: {$activity->efficiency}\n" .
+                    "TIMELINESS: {$activity->timeliness}\n" .
+                    "REMARKS: {$activity->remarks}",
+                'program_name' => $program->name
             ]);
 
             // Now delete the activity
@@ -271,14 +305,18 @@ class ppaController extends Controller
             $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
             $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
-            DB::table('audit_trails')->insert([
-                'user_id'       => auth()->id(),
-                'full_name'     => $fullName,
-                'role'          => $user->role,
-                'action'        => 'Added Program: ' . $program->name,
-                'activity_name' => $program->name, // storing program name as activity_name
-                'created_at'    => now(),
-                'updated_at'    => now(),
+            AuditTrail::create([
+                'user_id' => $user->id,
+                'full_name' => $fullName,
+                'role' => $user->role,
+                'action' => "ADDED PROGRAM: {$program->name}\n" .
+                    "SUCCESS INDICATOR: {$program->successIndicator}\n" .
+                    "QUALITY: {$program->quality}\n" .
+                    "EFFICIENCY: {$program->efficiency}\n" .
+                    "TIMELINESS: {$program->timeliness}\n" .
+                    "REMARKS: {$program->remarks}\n" .
+                    "BUDGET: {$program->budget}",
+                'program_name' => $program->name
             ]);
 
             return redirect()->back()->with('success', 'Program added successfully.');
@@ -293,6 +331,15 @@ class ppaController extends Controller
         try {
             // Find the program
             $program = Program::findOrFail($request->editProgramId);
+
+            // Save the old values before update
+            $oldName = $program->name;
+            $oldSuccessIndicator = $program->successIndicator;
+            $oldQuality = $program->quality;
+            $oldEfficiency = $program->efficiency;
+            $oldTimeliness = $program->timeliness;
+            $oldRemarks = $program->remarks;
+            $oldBudget = $program->budget;
 
             // Update fields
             $program->name = $request->editProgramName;
@@ -316,14 +363,18 @@ class ppaController extends Controller
             $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
             $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
-            DB::table('audit_trails')->insert([
-                'user_id'       => auth()->id(),
-                'full_name'     => $fullName,
-                'role'          => $user->role,
-                'action'        => 'Updated Program: ' . $program->name,
-                'activity_name' => $program->name,
-                'created_at'    => now(),
-                'updated_at'    => now(),
+            AuditTrail::create([
+                'user_id' => $user->id,
+                'full_name' => $fullName,
+                'role' => $user->role,
+                'action' => "UPDATED PROGRAM: " . ($oldName !== $request->editProgramName ? "{$oldName} to {$request->editProgramName}\n" : $oldName . "\n") .
+                    ($oldSuccessIndicator !== $request->editSuccessIndicator ? "SUCCESS INDICATOR: {$oldSuccessIndicator} to {$request->editSuccessIndicator}\n" : "") .
+                    ($oldQuality !== $request->editQuality ? "QUALITY: {$oldQuality} to {$request->editQuality}\n" : "") .
+                    ($oldEfficiency !== $request->editEfficiency ? "EFFICIENCY: {$oldEfficiency} to {$request->editEfficiency}\n" : "") .
+                    ($oldTimeliness !== $request->editTimeliness ? "TIMELINESS: {$oldTimeliness} to {$request->editTimeliness}\n" : "") .
+                    ($oldRemarks !== $request->editRemarks ? "REMARKS: {$oldRemarks} to {$request->editRemarks}\n" : "") .
+                    ($oldBudget !== $request->editBudget ? "ALLOTTED BUDGET: {$oldBudget} to {$request->editBudget}" : ""),
+                'program_name' => $program->name
             ]);
 
             return redirect()->back()->with('success', 'Program updated successfully.');
