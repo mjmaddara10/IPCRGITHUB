@@ -99,7 +99,8 @@
                                     <tbody>
                                         @foreach ($auditTrails as $audit)
                                         <tr>
-                                            <td>{{ \Carbon\Carbon::parse($audit->created_at)->format('Y-m-d H:i') }}</td>
+                                            <td data-order="{{ $audit->created_at }}">{{ \Carbon\Carbon::parse($audit->created_at)->format('F j, Y') }}<br>
+                                            {{ \Carbon\Carbon::parse($audit->created_at)->format('h:i A') }}</td>
                                             <td>{{ $audit->full_name }}</td>
                                             <td>{{ $audit->role }}</td>
                                             <td>{{ $audit->program_name }}</td>
@@ -116,4 +117,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

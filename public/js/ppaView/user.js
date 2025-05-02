@@ -129,7 +129,7 @@ $(document).ready(function () {
                             } else {
                                 row += `
                                     <tr style="background-color: #03592c; color: white;">
-                                        <td class="text-left border border-light" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${assignment.program_name}</td>
+                                        <td class="text-left border border-light" colspan="7" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${assignment.program_name}</td>
                                     </tr>
                                 `;
                             }
@@ -294,20 +294,53 @@ $(document).ready(function () {
     const allEmployeeOptions = Array.from($('#employeeSelect option'));
 
     $('#divisionSelect').on('change', function () {
-        const selectedDivisionId = $(this).val();
+        var divisionId = $(this).val();  // Get the selected division ID
+        var employeeSelect = $('#employeeSelect');
+        employeeSelect.html('<option>Select a User</option>'); // Reset employee options
+    
+        if (divisionId === "" || divisionId === "All Divisions") {
+            // If "All Divisions" is selected, show all employees
+            employees.forEach(employee => {
+                employeeSelect.append('<option value="' + employee.id + '" ' +
+                    'data-name="' + employee.firstName + ' ' + (employee.middleName ? employee.middleName.charAt(0) + '.' : '') + ' ' + employee.lastName + '" ' +
+                    'data-position="' + employee.position + '" ' +
+                    'data-status="' + employee.status + '" ' +
+                    'data-division-id="' + (employee.division ? employee.division.id : '') + '" ' +
+                    'data-division-name="' + (employee.division ? employee.division.name : '') + '">' +
+                    employee.firstName + ' ' + (employee.middleName ? employee.middleName.charAt(0) + '.' : '') + ' ' + employee.lastName +
+                    '</option>');
+            });
+        } else {
+            // If a division is selected, filter employees by the selected division
+            employees.forEach(employee => {
+                if (employee.division && employee.division.id == divisionId) {
+                    employeeSelect.append('<option value="' + employee.id + '" ' +
+                        'data-name="' + employee.firstName + ' ' + (employee.middleName ? employee.middleName.charAt(0) + '.' : '') + ' ' + employee.lastName + '" ' +
+                        'data-position="' + employee.position + '" ' +
+                        'data-status="' + employee.status + '" ' +
+                        'data-division-id="' + (employee.division ? employee.division.id : '') + '" ' +
+                        'data-division-name="' + (employee.division ? employee.division.name : '') + '">' +
+                        employee.firstName + ' ' + (employee.middleName ? employee.middleName.charAt(0) + '.' : '') + ' ' + employee.lastName +
+                        '</option>');
+                }
+            });
+        }
+    });
 
-        // Filter employees
-        $('#employeeSelect').empty(); // Clear current options
+    $('#exportBtn').on('click', function() {
+        var userId = $(this).data('user-id');
+        var divisionId = $(this).data('user-division');
 
-        // Append only employees from the selected division
-        allEmployeeOptions.forEach(option => {
-            if ($(option).data('division-id') == selectedDivisionId) {
-                $('#employeeSelect').append(option);
-            }
-        });
+        const chiefInfo = divisionChiefs[divisionId] || {
+            name: '_________________________',
+            position: '_________________________'
+        };
 
-        // Trigger change manually to update fields for first visible user
-        $('#employeeSelect').trigger('change');
+        if (userId && chiefInfo) {
+            window.open('/pdf/' + userId + '/generatePdf?chiefInfo=' + encodeURIComponent(JSON.stringify(chiefInfo)), '_blank');
+        } else {
+            console.error('No employee selected or chief info available');
+        }
     });
 });
 

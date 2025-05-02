@@ -112,12 +112,15 @@ class pdfController extends Controller
 
         $chiefInfo = json_decode($request->input('chiefInfo'), true);
 
+        $user = auth()->user();
+
         $data = [
             'title' => $employee->lastName. ', ' .$employee->firstName,
             'content' => 'Hello, this is the content!',
             'employee' => $employee,
             'chiefInfo' => $chiefInfo,
             'targets' => $targets,
+            'user' => $user,
         ];
 
 

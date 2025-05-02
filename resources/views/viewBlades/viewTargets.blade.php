@@ -22,6 +22,7 @@
 
 <script>
     const divisionChiefs = @json($divisionChiefsArray);
+    const employees = @json($employees);
 </script>
 
 @extends('layouts')
@@ -35,8 +36,11 @@
 @endsection
 
 @section('content')
-<!-- <div class="page-background"></div> -->
-<div style="transform: scale(0.70); transform-origin: top center; width: 142.857%; margin-left: -21.4285%;">
+@if($role === 'Division Chief' || $role === 'Department Head')
+    <div style="transform: scale(0.70); transform-origin: top center; width: 142.857%; margin-left: -21.4285%;">
+@elseif($role === 'Staff')
+    <div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
+@endif
 
     <div style="padding-top: 2px;">
         <div class="container-fluid mt-2">
@@ -59,7 +63,9 @@
                     <!-- Exporting -->
                     <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
                         <div class="col-12 d-flex justify-content-start">
-                            <a class="btn btn-md btn-primary" id="exportBtn">
+                            <a class="btn btn-md btn-primary" id="exportBtn"
+                            data-user-id="{{ $user->id }}"
+                            data-user-division="{{ $user->division_id }}">
                                 <i class="fas fa-file-pdf me-2"></i> Export as PDF
                             </a>
 
@@ -75,7 +81,7 @@
                             @if($role === 'Division Chief' || $role === 'Department Head')
                                 <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
                                 <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
-                                    <option>Select a Division</option>
+                                    <option value="">All Divisions</option>
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}"
                                             data-name="{{ $division->name }}">
@@ -225,8 +231,7 @@
                                     {{-- Program --}}
                                     @if(!in_array($programName, $printedPrograms))
                                         <tr class="small">
-                                            <td class="bold uppercase border">{{ $programName }}</td>
-                                            <td class="bold border" colspan="5"></td>
+                                            <td class="text-left border border-light" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">{{ $programName }}</td>
                                         </tr>
                                         @php $printedPrograms[] = $programName; @endphp
                                     @endif
@@ -234,12 +239,7 @@
                                     {{-- Activity --}}
                                     @if(!in_array($activityName, $printedActivities))
                                         <tr class="small">
-                                            <td class="uppercase border" style="padding-left: 5px;">{{ $activityName }}</td>
-                                            <td class="border">{{ $target['activity_success_indicator'] ?? '' }}</td>
-                                            <td class="border">{{ $target['activity_quality'] ?? '' }}</td>
-                                            <td class="border">{{ $target['activity_efficiency'] ?? '' }}</td>
-                                            <td class="border">{{ $target['activity_timeliness'] ?? '' }}</td>
-                                            <td class="border">{{ $target['activity_remarks'] ?? '' }}</td>
+                                            <td colspan="6" class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">{{ $activityName }}</td>
                                         </tr>
                                         @php $printedActivities[] = $activityName; @endphp
                                     @endif

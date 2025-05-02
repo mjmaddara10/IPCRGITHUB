@@ -53,17 +53,44 @@ class adminPagesController extends Controller
         $programs = Program::with('divisions')->get();
         $activities = Activity::with('subActivities')->get();
         $employees = Employee::with('division')->get();
+        $subActivities = SubActivity::with('activity')->get();
         $divisions = Division::with(['employees' => function ($query) {
             $query->where('role', 'Division Chief');
         }])->get(); 
     
+        $targets = [];
+        $user = auth()->user();
+        // For staff
+
+        foreach (auth()->user()->subActivities as $subActivity) {
+            $activity = $subActivity->activity;
+            $program = $activity->program;
+
+            if (!$activity) {
+                \Log::error("Missing activity for SubActivity ID: " . $subActivity->id);
+            }
+            
+            $targets[] = [
+                'program_name' => $program->name,
+                'activity_name' => $activity->name,
+                'sub_activity_name' => $subActivity->name,
+                'sub_activity_success_indicator' => $subActivity->successIndicator,
+                'sub_activity_quality' => $subActivity->quality,
+                'sub_activity_efficiency' => $subActivity->efficiency,
+                'sub_activity_timeliness' => $subActivity->timeliness,
+                'sub_activity_remarks' => $subActivity->remarks,
+            ];
+        }
+
         return view('viewBlades.viewTargets', compact(
             'programs',
             'employees',
             'activities',
             'divisions'
         ),[
-            'role' => auth()->user()->role
+            'role' => auth()->user()->role,
+            'targets' => $targets,
+            'user' => $user,
         ]);
     }
 

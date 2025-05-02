@@ -31,7 +31,7 @@ class ppaController extends Controller
         // Find the activity and associate the activity with it
         $activity = Activity::findOrFail($request->activityIdSub);
         $activity->subActivities()->save($subActivity);
-        // $selectedActivity->save();
+        $program = Program::findOrFail($activity->program_id);
 
         if ($request->has('addAccountableId')) {
             // $selectedActivity->employees()->attach($request->addAccountableId);
@@ -67,6 +67,7 @@ class ppaController extends Controller
 
         // Get the activity name before update
         $activity = Activity::findOrFail($subActivity->activity_id);
+        $program = Program::findOrFail($activity->program_id);
 
         $oldSubActivityName = $subActivity->name;
         $oldSuccessIndicator = $subActivity->successIndicator;
@@ -115,6 +116,9 @@ class ppaController extends Controller
     public function deleteSubActivity(Request $request){
         try{
             $subActivity = SubActivity::findOrFail($request->subActivityId);
+            $activity = Activity::findOrFail($subActivity->activity_id);
+            $program = Program::findOrFail($activity->program_id);
+
              // Get authenticated user details before deletion
             $user = auth()->user();
             $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
@@ -173,14 +177,12 @@ class ppaController extends Controller
         $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
 
         // Create audit trail
-        DB::table('audit_trails')->insert([
+        AuditTrail::create([
             'user_id' => auth()->id(),
             'full_name' => $fullName,
             'role' => $user->role,
             'action' => 'Added Activity: ' . $request->addActivityName,
-            'activity_name' => $program->name,
-            'created_at' => now(),
-            'updated_at' => now()
+            'program_name' => $program->name,
         ]);
 
         return response()->json(['message' => 'Activity added successfully!']);
@@ -216,7 +218,7 @@ class ppaController extends Controller
         $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
 
         // Get the program name
-        $activity = Program::findOrFail($activity->program_id);
+        $program = Program::findOrFail($activity->program_id);
 
         // Create audit trail
         AuditTrail::create([
@@ -395,14 +397,12 @@ class ppaController extends Controller
             $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
             $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
-            DB::table('audit_trails')->insert([
-                'user_id'       => auth()->id(),
-                'full_name'     => $fullName,
-                'role'          => $user->role,
-                'action'        => 'Deleted Program: ' . $program->name,
-                'activity_name' => $program->name, // storing program name as activity_name
-                'created_at'    => now(),
-                'updated_at'    => now(),
+            AuditTrail::create([
+                'user_id'      => $user->id,
+                'full_name'    => $fullName,
+                'role'         => $user->role,
+                'action'       => 'Deleted Program: ' . $program->name,
+                'program_name' => $program->name, // consistent with other logs
             ]);
 
             // Now delete the program
