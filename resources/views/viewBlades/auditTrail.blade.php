@@ -20,7 +20,7 @@
                     <div class="p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center ms-auto">
-                            @if($role === 'Division Chief' || $role === 'Assistant Department Head)
+                            @if($role === 'Division Chief' || $role === 'Assistant Department Head')
                                 <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     Manage PPA
                                 </a>
@@ -86,7 +86,7 @@
                         </div>
                         <div class="p-4">
                             <div class="table-responsive">
-                                <table id="manageUserTable" class="table table-hover">
+                                <table class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th style="color: #03592c;">Created_At</th>
@@ -94,17 +94,20 @@
                                             <th style="color: #03592c;">Role</th>
                                             <th style="color: #03592c;">Program Name</th>
                                             <th style="color: #03592c;">Actions</th>
+                                            <th style="color: #03592c;">From</th>
+                                            <th style="color: #03592c;">To</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($auditTrails as $audit)
                                         <tr>
-                                            <td data-order="{{ $audit->created_at }}">{{ \Carbon\Carbon::parse($audit->created_at)->format('F j, Y') }}<br>
-                                            {{ \Carbon\Carbon::parse($audit->created_at)->format('h:i A') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($audit->created_at)->format('Y-m-d H:i') }}</td>
                                             <td>{{ $audit->full_name }}</td>
                                             <td>{{ $audit->role }}</td>
                                             <td>{{ $audit->program_name }}</td>
                                             <td>{{ $audit->action }}</td>
+                                            <td>{{ $audit->action_from }}</td>
+                                            <td>{{ $audit->action_to }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
