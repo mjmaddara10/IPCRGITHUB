@@ -153,6 +153,8 @@ class ppaController extends Controller
 
     // =====================Activity========================= //
     public function addActivityInProgram(Request $request){
+        $maxOrder = Activity::where('program_id', $request->programIdProg)->max('order') ?? 0;
+
         $activity = new Activity([
             'name' => $request->addActivityName,
             'successIndicator' => $request->addSuccessIndicator,
@@ -160,7 +162,8 @@ class ppaController extends Controller
             'efficiency' => $request->addEfficiency,
             'timeliness' => $request->addTimeliness,
             'remarks' => $request->addRemarks,
-            'program_Id' => $request->programIdProg,
+            'program_id' => $request->programIdProg,
+            'order' => $maxOrder + 1,
         ]);
 
         // Find the program and associate the activity with it
@@ -283,6 +286,9 @@ class ppaController extends Controller
     public function addProgram(Request $request)
     {
         try {
+            
+            $maxOrder = Program::max('order') ?? 0 ;
+
             // Create the program
             $program = Program::create([
                 'name' => $request->addProgramName,
@@ -292,6 +298,7 @@ class ppaController extends Controller
                 'timeliness' => $request->addTimeliness,
                 'remarks' => $request->addRemarks,
                 'budget' => $request->addBudget,
+                'order' => $maxOrder + 1,
             ]);
 
             // Check if 'all' is selected
@@ -350,6 +357,7 @@ class ppaController extends Controller
             $program->efficiency = $request->editEfficiency;
             $program->timeliness = $request->editTimeliness;
             $program->remarks = $request->editRemarks;
+            $program->budget = $request->editBudget;
             $program->save();
 
             // Handle "all" divisions

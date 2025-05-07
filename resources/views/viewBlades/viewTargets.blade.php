@@ -36,7 +36,7 @@
 @endsection
 
 @section('content')
-@if($role === 'Division Chief' || $role === 'Department Head')
+@if($role === 'Division Chief' || $role === 'Assistant Department Head || $role === 'Department Head')
     <div style="transform: scale(0.70); transform-origin: top center; width: 142.857%; margin-left: -21.4285%;">
 @elseif($role === 'Staff')
     <div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
@@ -52,7 +52,7 @@
                         <div>
                             <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
                                 View Targets </h4>
-                            @if($role === 'Division Chief' || $role === 'Department Head')
+                            @if($role === 'Division Chief' || $role === 'Assistant Department Head || $role === 'Department Head')
                                 <small class="text-white-50">View all the users' targets</small>
                             @elseif($role === 'Staff')
                                 <small class="text-white-50">View the assigned IPCR targets for you</small>
@@ -61,24 +61,24 @@
                     </div>
 
                     <!-- Exporting -->
-                    <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
-                        <div class="col-12 d-flex justify-content-start">
-                            <a class="btn btn-md btn-primary" id="exportBtn"
-                            data-user-id="{{ $user->id }}"
-                            data-user-division="{{ $user->division_id }}">
-                                <i class="fas fa-file-pdf me-2"></i> Export as PDF
-                            </a>
-
-                            
+                    @if($role === 'Division Chief' || $role === 'Assistant Department Head || $role === 'Department Head')
+                        <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
+                            <div class="col-12 d-flex justify-content-start">
+                                <a class="btn btn-md btn-primary" id="exportBtn"
+                                data-user-id="{{ $user->id }}"
+                                data-user-division="{{ $user->division_id }}">
+                                    <i class="fas fa-file-pdf me-2"></i> Print O/D/IPCR
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <div class="px-4 pt-4">
                     <div class="d-flex justify-content-between align-items-center flex-wrap mb-1">
                         <!-- Division Select -->
                         <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
-                            @if($role === 'Division Chief' || $role === 'Department Head')
+                            @if($role === 'Division Chief' || $role === 'Assistant Department Head || $role === 'Department Head')
                                 <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
                                 <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
                                     <option value="">All Divisions</option>
@@ -114,7 +114,7 @@
                         <!-- Buttons -->
                         <div class="d-flex align-items-center flex-wrap">
                             
-                            @if($role === 'Division Chief')
+                            @if($role === 'Division Chief || $role === 'Assistant Department Head')
                                 <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;">Manage PPA</a>
                                 <a href="{{ route('chief.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">View Targets</a>
 
@@ -158,6 +158,9 @@
                                 </a>
                             @elseif($role === 'Staff')
                                 <a href="{{ route('staff.viewIpcr') }}" class="btn btn-hover text-success fw-bold mb-1 me-1" style="background-color: rgb(230, 230, 230);">View Targets</a>
+                                <a class="btn btn-primary mb-1 me-1" id="exportBtnStaff" data-user-id="{{ $user->id }}" data-user-division="{{ $user->division_id }}">
+                                    <i class="fas fa-file-pdf me-2"></i> Print IPCR
+                                </a>
                                 <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
@@ -247,24 +250,22 @@
                                     {{-- Sub-Activity (always print) --}}
                                     <tr class="small" style="vertical-align: top;">
                                         <td style="text-indent: 10px;" class="border">{{ $target['sub_activity_name'] ?? 'N/A' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_success_indicator'] ?? 'N/A' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_quality'] ?? 'N/A' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_efficiency'] ?? 'N/A' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_timeliness'] ?? 'N/A' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_remarks'] ?? 'N/A' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_success_indicator'] ?? '' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_quality'] ?? '' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_efficiency'] ?? '' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_timeliness'] ?? '' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border">{{ $target['sub_activity_remarks'] ?? '' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     @endif
+
                     <div class="table-responsive">
-                        
-
-
-                        <table id="usersTable" class="table table-hover" style="fixed; width: 100%;">
+                        <table id="usersTable" class="table table-hover" style="table-layout: fixed; fixed; width: 100%;">
                             <thead class="text-center d-none" id="thead-default">
                                 <tr>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Programs/Project/Activities</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Programs/Project/Activities</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Success Indicator</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Quality</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Efficiency</th>
@@ -275,15 +276,15 @@
                             </thead>
                             <thead class="text-center d-none" id="thead-dept-head">
                                 <tr>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Programs/Project/Activities</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:11%;">Programs/Project/Activities</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Success Indicator</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Quality</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Efficiency</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Timeliness</th>
                                     <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Remarks/MOV</th>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Allotted Budget</th>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Division/s Responsible</th>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Actions</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:8%;">Allotted Budget</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:8%;">Division/s Responsible</th>
+                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:5%;">Actions</th>
                                 </tr>
                             </thead>
 
@@ -438,7 +439,7 @@
                     </div>
 
                     <!-- Activity Table -->
-                    <div class="table-responsive">
+                    <!-- <div class="table-responsive">
                         <table class="table table-bordered align-middle text-center border-success">
                             <thead class="table-light fw-bold text-dark">
                                 <tr>
@@ -469,7 +470,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
+                    </div> -->
 
                     <!-- Footer -->
                     <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
@@ -510,7 +511,7 @@
                         <label class="form-label fw-bold text-dark mb-1">Sub-Activity Name:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; min-height: 50px; resize: vertical;"
-                            name="editActivityNameSub" id="editActivityNameSub" required></textarea>
+                            name="editActivityNameSubTarget" id="editActivityNameSubTarget" required></textarea>
                     </div>
 
                     <!-- Individual Responsible -->

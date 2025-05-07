@@ -49,11 +49,13 @@ class authorizationController extends Controller
         switch ($user->role) {
             case 'Staff':
                 return redirect()->route('staff.viewIpcr');
+        
             case 'Division Chief':
+            case 'Assistant Department Head':
                 return redirect()->route('chief.managePpa');
+        
             case 'Department Head':
                 return redirect()->route('head.managePpa');
-            break;
         }
     }
 

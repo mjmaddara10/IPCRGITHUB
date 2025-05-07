@@ -15,12 +15,12 @@
                 <div class="p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center ms-auto">
-                        @if($role === 'Division Chief')
-                            <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                View Targets
-                            </a>
+                        @if($role === 'Division Chief' || $role === 'Assistant Department Head)
                             <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 Manage PPA
+                            </a>
+                            <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                View Targets
                             </a>
 
                             <div class="btn-group" style="margin-left: 3px;">
@@ -41,11 +41,11 @@
                                 Logout
                             </a>
                         @elseif($role === 'Department Head')
-                            <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                View Targets
-                            </a>
                             <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 Manage PPA
+                            </a>
+                            <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                View Targets
                             </a>
 
                             <div class="btn-group" style="margin-left: 3px;">

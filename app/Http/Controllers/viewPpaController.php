@@ -42,7 +42,7 @@ class viewPpaController extends Controller{
         $targets = [];
     
         // 🔹 FOR DEPARTMENT HEAD — get ALL programs, activities, sub-activities
-        if ($role === 'Department Head' || $role === 'Assistant Department Head') {
+        if ($role === 'Department Head') {
             $allPrograms = Program::with([
                 'divisions',
                 'activities.subActivities'
@@ -56,6 +56,7 @@ class viewPpaController extends Controller{
                             $targets[] = [
                                 'program_id' => $program->id,
                                 'program_name' => $program->name,
+                                'program_order' => $program->order ?? 0,
                                 'program_division' => $program->divisions->pluck('name')->toArray(),
                                 'program_budget' => $program->budget,
                                 'program_success_indicator' => $program->successIndicator,
@@ -65,6 +66,7 @@ class viewPpaController extends Controller{
                                 'program_remarks' => $program->remarks,
                                 'activity_id' => $activity->id,
                                 'activity_name' => $activity->name,
+                                'activity_order' => $activity->order ?? 0,
                                 'activity_success_indicator' => $activity->successIndicator,
                                 'activity_quality' => $activity->quality,
                                 'activity_efficiency' => $activity->efficiency,
@@ -77,6 +79,7 @@ class viewPpaController extends Controller{
                                 'sub_activity_efficiency' => $subActivity->efficiency,
                                 'sub_activity_timeliness' => $subActivity->timeliness,
                                 'sub_activity_remarks' => $subActivity->remarks,
+                                'sub_activity_order' => $subActivity->order ?? 0,
                             ];
                         }
                     } else {
@@ -84,6 +87,7 @@ class viewPpaController extends Controller{
                         $targets[] = [
                             'program_id' => $program->id,
                             'program_name' => $program->name,
+                            'program_order' => $program->order ?? 0,
                             'program_division' => $program->divisions->pluck('name')->toArray(),
                             'program_budget' => $program->budget,
                             'program_success_indicator' => $program->successIndicator,
@@ -93,6 +97,7 @@ class viewPpaController extends Controller{
                             'program_remarks' => $program->remarks,
                             'activity_id' => $activity->id,
                             'activity_name' => $activity->name,
+                            'activity_order' => $activity->order ?? 0,
                             'activity_success_indicator' => $activity->successIndicator,
                             'activity_quality' => $activity->quality,
                             'activity_efficiency' => $activity->efficiency,
@@ -105,6 +110,7 @@ class viewPpaController extends Controller{
                             'sub_activity_efficiency' => null,
                             'sub_activity_timeliness' => null,
                             'sub_activity_remarks' => null,
+                            'sub_activity_order' => $subActivity->order ?? 0,
                         ];
                     }
                 }
@@ -124,8 +130,10 @@ class viewPpaController extends Controller{
                 $targets[] = [
                     'program_id' => $program->id,
                     'program_name' => $program->name,
+                    'program_order' => $program->order ?? 0,
                     'activity_id' => $activity->id,
                     'activity_name' => $activity->name,
+                    'activity_order' => $activity->order ?? 0,
                     'sub_activity_id' => $subActivity->id,
                     'sub_activity_name' => $subActivity->name,
                     'sub_activity_success_indicator' => $subActivity->successIndicator,
@@ -133,9 +141,20 @@ class viewPpaController extends Controller{
                     'sub_activity_efficiency' => $subActivity->efficiency,
                     'sub_activity_timeliness' => $subActivity->timeliness,
                     'sub_activity_remarks' => $subActivity->remarks,
+                    'sub_activity_order' => $subActivity->order ?? 0,
                 ];
             }
         }
+
+        usort($targets, function ($a, $b) {
+            $programCompare = $a['program_order'] <=> $b['program_order'];
+            if ($programCompare !== 0) return $programCompare;
+    
+            $activityCompare = $a['activity_order'] <=> $b['activity_order'];
+            if ($activityCompare !== 0) return $activityCompare;
+    
+            return $a['sub_activity_order'] <=> $b['sub_activity_order'];
+        });
 
         // dd($targets);
     

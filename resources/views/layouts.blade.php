@@ -77,6 +77,7 @@
     <script src="{{ asset('js/ppaManagement/activity.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/subActivity.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
+    <script src="{{ asset('js/ppaManagement/sortCollapse.js') }}"></script>
 
     <!-- View Target -->
     <script src="{{ asset('js/ppaView/user.js') }}"></script>

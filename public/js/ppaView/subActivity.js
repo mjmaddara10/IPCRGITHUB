@@ -150,10 +150,10 @@ $(document).ready(function () {
 
     $(document).on('click', '.editSubActivityBtnTarget', function() {
 
-        console.log($(this).data());
+        // console.log($(this).data());
         // Get data from the button clicked
         subActivityId = $(this).data('sub-activity-id');
-        var subActivityName = $(this).data('sub-activity-name');
+        var subActivityNameTarget = $(this).data('sub-activity-name');
         var successIndicator = $(this).data('sub-activity-success');
         var quality = $(this).data('sub-activity-quality');
         var efficiency = $(this).data('sub-activity-efficiency');
@@ -163,7 +163,7 @@ $(document).ready(function () {
 
         // Populate the modal fields with the data
         $('#editActivityIdSub').val(subActivityId);
-        $('#editActivityNameSub').val(subActivityName);
+        $('#editActivityNameSubTarget').val(subActivityNameTarget);
         $('#editSuccessIndicatorSub').val(successIndicator);
         $('#editQualitySub').val(quality);
         $('#editEfficiencySub').val(efficiency);
@@ -283,11 +283,10 @@ $('#editSubActivityForm').on('submit', function(e) {
     });
 });
 
-$(document).on('click', '.deleteSubActivityBtn', function(e) {
+$(document).on('click', '.deleteSubActivityBtnTarget', function(e) {
     e.preventDefault();
 
-    var subActivityId = $(this).data('subActivity-id');
-    var deleteUrl  = $(this).data('url');
+    var subActivityId = $(this).data('sub-activity-id');
     console.log(subActivityId);
 
     Swal.fire({
@@ -302,7 +301,7 @@ $(document).on('click', '.deleteSubActivityBtn', function(e) {
         if (result.isConfirmed) {
             // Make an AJAX request to delete the activity
             $.ajax({
-                url: deleteUrl,  // Your delete URL
+                url: '/admin/deleteSubActivity',  // Your delete URL
                 method: 'POST',
                 data: {
                     subActivityId: subActivityId // Pass the activity ID

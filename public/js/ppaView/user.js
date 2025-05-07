@@ -100,7 +100,7 @@ $(document).ready(function () {
                                         <td class="text-left border border-light" style="background-color: #03592c; color:#FFFFFF;">${safeValue(assignment.program_efficiency)}</td>
                                         <td class="text-left border border-light" style="background-color: #03592c; color:#FFFFFF;">${safeValue(assignment.program_timeliness)}</td>
                                         <td class="text-left border border-light" style="background-color: #03592c; color:#FFFFFF;">${safeValue(assignment.program_remarks)}</td>
-                                        <td class="text-center border border-light" style="background-color: #03592c; color:#FFFFFF; vertical-align: middle;">${safeValue(assignment.program_budget)}</td>
+                                        <td class="text-center border border-light" style="background-color: #03592c; color:#FFFFFF; vertical-align: top;">${safeValue(assignment.program_budget)}</td>
                                         <td class="text-center border border-light" style="background-color: #03592c; color:#FFFFFF; vertical-align: middle;">
                                             ${Array.isArray(assignment.program_division) ? assignment.program_division.join('<br><br>') : safeValue(assignment.program_division)}
                                         </td>
@@ -174,7 +174,7 @@ $(document).ready(function () {
                                         </button>
 
                                         <!-- Delete Activity -->
-                                        <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete activity"
+                                        <button class="btn btn-sm deleteActivityBtnTarget buttonHover" title="Delete activity"
                                             data-activity-id="${assignment.activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -224,7 +224,7 @@ $(document).ready(function () {
                                     
                                     // Actions
                                     <td class="text-center" style="background-color: #f8f8f8;">
-                                        <!-- Edit Activity -->
+                                        <!-- Edit Sub-Activity -->
                                         <button class="btn btn-sm editSubActivityBtnTarget buttonHover" title="Edit sub-activity name"
                                             data-sub-activity-id="${assignment.sub_activity_id}" 
                                             data-sub-activity-name="${assignment.sub_activity_name}"
@@ -235,9 +235,9 @@ $(document).ready(function () {
                                             data-sub-activity-remarks="${assignment.sub_activity_remarks}" data-bs-toggle="modal" data-bs-target="#editSubActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
                                         </button>
 
-                                        <!-- Delete Activity -->
-                                        <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete activity"
-                                            data-activity-id="${assignment.sub_activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
+                                        <!-- Delete Sub-Activity -->
+                                        <button class="btn btn-sm deleteSubActivityBtnTarget buttonHover" title="Delete activity"
+                                            data-sub-activity-id="${assignment.sub_activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -327,7 +327,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#exportBtn').on('click', function() {
+    $('#exportBtnStaff').on('click', function() {
         var userId = $(this).data('user-id');
         var divisionId = $(this).data('user-division');
 

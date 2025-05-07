@@ -19,6 +19,7 @@ class SubActivity extends Model
         'remarks',
         'accountable_id',
         'activity_id',
+        'order',
     ];
 
     public function activity()

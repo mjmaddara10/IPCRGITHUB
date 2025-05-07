@@ -16,7 +16,7 @@
                 <small class="text-muted">{{ session('position') }}</small>
             </div>
             <!-- Button -->
-            @if($role === 'Division Chief')
+            @if($role === 'Division Chief' || $role === 'Assistant Department Head')
                 <a href="{{ route('chief.settings') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                     <i class="fas fa-user text-white mx-1"></i>
                 </a>

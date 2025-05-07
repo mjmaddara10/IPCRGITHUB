@@ -31,19 +31,20 @@ class adminPagesController extends Controller
     }
     
     public function managePpa(){
-        // Fetch all programs with their related projects
-        $programs = Program::with(['divisions', 'activities.employees'])->get();
-        $activities = Activity::with('subActivities','employees')->get();
+        $programs = Program::with([
+            'divisions',
+            'activities.subActivities',
+            'activities.employees'
+        ])->orderBy('order')->get();
+    
         $employees = Employee::all();
         $divisions = Division::all();
-        $subActivities = SubActivity::all();
     
         return view('viewBlades.managePpa', compact(
             'programs',
             'employees',
-            'activities',
             'divisions'
-        ),[
+        ), [
             'role' => auth()->user()->role
         ]);
     }
@@ -60,8 +61,8 @@ class adminPagesController extends Controller
     
         $targets = [];
         $user = auth()->user();
+        
         // For staff
-
         foreach (auth()->user()->subActivities as $subActivity) {
             $activity = $subActivity->activity;
             $program = $activity->program;
@@ -72,15 +73,28 @@ class adminPagesController extends Controller
             
             $targets[] = [
                 'program_name' => $program->name,
+                'program_order' => $program->order ?? 0,
                 'activity_name' => $activity->name,
+                'activity_order' => $activity->order ?? 0,
                 'sub_activity_name' => $subActivity->name,
                 'sub_activity_success_indicator' => $subActivity->successIndicator,
                 'sub_activity_quality' => $subActivity->quality,
                 'sub_activity_efficiency' => $subActivity->efficiency,
                 'sub_activity_timeliness' => $subActivity->timeliness,
                 'sub_activity_remarks' => $subActivity->remarks,
+                'sub_activity_order' => $subActivity->order ?? 0,
             ];
         }
+
+        usort($targets, function ($a, $b) {
+            $programCompare = $a['program_order'] <=> $b['program_order'];
+            if ($programCompare !== 0) return $programCompare;
+    
+            $activityCompare = $a['activity_order'] <=> $b['activity_order'];
+            if ($activityCompare !== 0) return $activityCompare;
+    
+            return $a['sub_activity_order'] <=> $b['sub_activity_order'];
+        });
 
         return view('viewBlades.viewTargets', compact(
             'programs',

@@ -125,10 +125,12 @@ class pdfController extends Controller
 
 
         $pdf = PDF::loadView('pdf', $data)->setPaper('legal', 'landscape');
+
+        
         
         if ($role === 'Department Head') {
             return $pdf->stream($employee->lastName. ', ' .$employee->firstName. ' (OPCR).pdf');
-        }else if ($role === 'Division Chief'){
+        }else if ($role === 'Division Chief' || $role === 'Assistant Department Head'){
             return $pdf->stream($employee->lastName. ', ' .$employee->firstName. ' (DPCR).pdf');
         }else{
             return $pdf->stream($employee->lastName. ', ' .$employee->firstName. ' (IPCR).pdf');

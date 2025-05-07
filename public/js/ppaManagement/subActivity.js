@@ -62,27 +62,38 @@ function populateAccountableOptions(accountables) {
 }
 
 // Add accountable person input
-$('#addsAccountablePersonBtn').on('click', function () {
+$('#addsAccountablePersonBtn').off('click').on('click', function () {
     const $container = $('#accountableSelectContainerSubAct');
+
+    // Get selected IDs across all accountableSelects
+    const selectedIds = $('.accountableSelect').map(function () {
+        return $(this).val();
+    }).get();
+
+    // Template for the new group
+    const firstSelect = $('.accountableSelect').first();
     const $newGroup = $(`
         <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
             <select class="form-select border-2 py-2 accountableSelect" name="addAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
-                <option value="">Loading...</option>
             </select>
             <button type="button" class="btn btn-danger btn-sm removeAccountableBtn">
                 <i class="fas fa-minus"></i>
             </button>
         </div>
     `);
-    
+
+    const $newSelect = $newGroup.find('select');
+
+    // Rebuild options and disable selected ones
+    firstSelect.find('option').each(function () {
+        const value = $(this).val();
+        const text = $(this).text();
+        const isDisabled = selectedIds.includes(value) ? 'disabled' : '';
+        $newSelect.append(`<option value="${value}" ${isDisabled}>${text}</option>`);
+    });
+
     $container.append($newGroup);
 
-    // Populate newly added select with existing options
-    const firstSelect = $('.accountableSelect').first();
-    const newSelect = $newGroup.find('select');
-    newSelect.html(firstSelect.html()); // Copy all options
-
-    // Enable remove button if there's more than one
     updateAccountableRemoveButtons();
 });
 
@@ -192,16 +203,23 @@ $(document).on('click', '.editSubActivityBtn', function() {
     });
 });
 
-$('#addAccountableEditSubBtn').on('click', function () {
+$('#addAccountableEditSubBtn').off('click').on('click', function () {
     if (!subActivityId) return;
 
     $.ajax({
         url: `/admin/subActivity/${subActivityId}/fetchEmployeeSub`,
         method: 'GET',
         success: function (employees) {
-            console.log(employees);
+            // Get all currently selected employee IDs
+            const selectedIds = $('.editAccountableSelect').map(function () {
+                return $(this).val();
+            }).get();
+
+            // Generate options, disabling already selected employees
             let optionsHtml = employees.map(e =>
-                `<option value="${e.id}">${e.name} | ${e.position}</option>`
+                `<option value="${e.id}" ${selectedIds.includes(e.id.toString()) ? 'disabled' : ''}>
+                    ${e.name} | ${e.position}
+                </option>`
             ).join('');
 
             const selectGroup = `

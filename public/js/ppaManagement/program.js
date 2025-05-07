@@ -105,26 +105,6 @@ function updateDivisionOptions() {
     });
 }
 
-// Utility: Handle "All Divisions" logic
-// function handleAllDivisionsLogic() {
-//     const hasAll = $('#editDivisionSelectContainer select').filter(function () {
-//         return $(this).val() === 'all';
-//     }).length > 0;
-
-//     if (hasAll) {
-//         $('#editDivisionSelectContainer .division-select-group').each(function () {
-//             if ($(this).find('select').val() !== 'all') {
-//                 $(this).remove();
-//             }
-//         });
-//         $('#editAddDivisionBtn').prop('disabled', true);
-//     } else {
-//         $('#editAddDivisionBtn').prop('disabled', false);
-//     }
-
-//     updateRemoveButtons();
-// }
-
 // Main click handler
 $(document).off('click', '.editProgramBtn').on('click', '.editProgramBtn', function () {
     var programId = $(this).data('program-id');

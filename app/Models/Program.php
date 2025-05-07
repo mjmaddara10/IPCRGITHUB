@@ -18,7 +18,8 @@ class Program extends Model
         'timeliness',
         'remarks',
         'budget',
-        'division_id'
+        'division_id',
+        'order',
     ];
 
     public function activities()

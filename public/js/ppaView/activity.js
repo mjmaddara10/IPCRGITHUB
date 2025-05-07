@@ -134,11 +134,10 @@ $('#editActivityForm').on('submit', function(e) {
 });
 
 // Delete Activity
-$(document).on('click', '.deleteActivityBtn', function(e) {
+$(document).on('click', '.deleteActivityBtnTarget', function(e) {
     e.preventDefault();
 
     var activityId = $(this).data('activity-id');
-    var deleteUrl  = $(this).data('url');
     console.log(activityId);
 
     Swal.fire({
@@ -153,7 +152,7 @@ $(document).on('click', '.deleteActivityBtn', function(e) {
         if (result.isConfirmed) {
             // Make an AJAX request to delete the activity
             $.ajax({
-                url: deleteUrl,  // Your delete URL
+                url: '/admin/deleteActivity',  // Your delete URL
                 method: 'POST',
                 data: {
                     activityId: activityId // Pass the activity ID
