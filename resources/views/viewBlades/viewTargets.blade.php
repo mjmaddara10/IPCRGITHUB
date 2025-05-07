@@ -36,7 +36,7 @@
 @endsection
 
 @section('content')
-@if($role === 'Division Chief' || $role === 'Assistant Department Head || $role === 'Department Head')
+@if($role === 'Division Chief' || $role === 'Assistant Department Head' || $role === 'Department Head')
     <div style="transform: scale(0.70); transform-origin: top center; width: 142.857%; margin-left: -21.4285%;">
 @elseif($role === 'Staff')
     <div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
@@ -52,7 +52,7 @@
                         <div>
                             <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
                                 View Targets </h4>
-                            @if($role === 'Division Chief' || $role === 'Assistant Department Head || $role === 'Department Head')
+                            @if($role === 'Division Chief' || $role === 'Assistant Department Head' || $role === 'Department Head')
                                 <small class="text-white-50">View all the users' targets</small>
                             @elseif($role === 'Staff')
                                 <small class="text-white-50">View the assigned IPCR targets for you</small>
@@ -61,7 +61,7 @@
                     </div>
 
                     <!-- Exporting -->
-                    @if($role === 'Division Chief' || $role === 'Assistant Department Head || $role === 'Department Head')
+                    @if($role === 'Division Chief' || $role === 'Assistant Department Head' || $role === 'Department Head')
                         <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
                             <div class="col-12 d-flex justify-content-start">
                                 <a class="btn btn-md btn-primary" id="exportBtn"
@@ -78,7 +78,7 @@
                     <div class="d-flex justify-content-between align-items-center flex-wrap mb-1">
                         <!-- Division Select -->
                         <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
-                            @if($role === 'Division Chief' || $role === 'Assistant Department Head || $role === 'Department Head')
+                            @if($role === 'Division Chief' || $role === 'Assistant Department Head' || $role === 'Department Head')
                                 <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
                                 <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
                                     <option value="">All Divisions</option>
@@ -114,7 +114,7 @@
                         <!-- Buttons -->
                         <div class="d-flex align-items-center flex-wrap">
                             
-                            @if($role === 'Division Chief || $role === 'Assistant Department Head')
+                            @if($role === 'Division Chief' || $role === 'Assistant Department Head')
                                 <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;">Manage PPA</a>
                                 <a href="{{ route('chief.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">View Targets</a>
 
@@ -132,7 +132,7 @@
                                     </ul>
                                 </div>
                                 
-                                <a id="adminLogoutBtn" class="btn btn-hover nv-red" style="margin-left: 3px;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                <a id="adminLogoutBtn" class="btn btn-hover nv-red" style="margin-left: 3px;" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
                             @elseif($role === 'Department Head')
@@ -153,7 +153,7 @@
                                     </ul>
                                 </div>
                                 
-                                <a id="adminLogoutBtn" class="btn btn-hover nv-red" style="margin-left: 3px;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                <a id="adminLogoutBtn" class="btn btn-hover nv-red" style="margin-left: 3px;" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
                             @elseif($role === 'Staff')

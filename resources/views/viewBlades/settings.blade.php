@@ -15,7 +15,7 @@
                 <div class="p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center ms-auto">
-                        @if($role === 'Division Chief' || $role === 'Assistant Department Head)
+                        @if($role === 'Division Chief' || $role === 'Assistant Department Head')
                             <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 Manage PPA
                             </a>
@@ -37,7 +37,7 @@
                                 </ul>
                             </div>
 
-                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a>
                         @elseif($role === 'Department Head')
@@ -62,14 +62,14 @@
                                 </ul>
                             </div>
 
-                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a>
                         @elseif($role === 'Staff')
                             <a href="{{ route('staff.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 View Targets
                             </a>
-                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a>
                         @endif

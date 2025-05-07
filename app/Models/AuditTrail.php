@@ -16,6 +16,8 @@ class AuditTrail extends Model
         'full_name',
         'role',
         'action',
+        'action_from',
+        'action_to',
         'program_name',
     ];
 

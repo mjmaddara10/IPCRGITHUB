@@ -42,7 +42,7 @@
                                     </ul>
                                 </div>
                                 
-                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
                             @elseif($role === 'Department Head')
@@ -67,7 +67,7 @@
                                     </ul>
                                 </div>
 
-                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
                             @endif
@@ -86,22 +86,22 @@
                         </div>
                         <div class="p-4">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover" style="table-layout: fixed; width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th style="color: #03592c;">Created_At</th>
-                                            <th style="color: #03592c;">Name</th>
-                                            <th style="color: #03592c;">Role</th>
-                                            <th style="color: #03592c;">Program Name</th>
-                                            <th style="color: #03592c;">Actions</th>
-                                            <th style="color: #03592c;">From</th>
-                                            <th style="color: #03592c;">To</th>
+                                            <th style="color: #03592c; width: 8%;">Created_At</th>
+                                            <th style="color: #03592c; width: 13%;">Name</th>
+                                            <th style="color: #03592c; width: 8%;">Role</th>
+                                            <th style="color: #03592c; width: 12%;">Program Name</th>
+                                            <th style="color: #03592c; width: 18%;">Actions</th>
+                                            <th style="color: #03592c; width: 20%;">From</th>
+                                            <th style="color: #03592c; width: 20%;">To</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($auditTrails as $audit)
                                         <tr>
-                                            <td>{{ \Carbon\Carbon::parse($audit->created_at)->format('Y-m-d H:i') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($audit->created_at)->format('F j, Y') }}<br>{{ \Carbon\Carbon::parse($audit->created_at)->format('g:i A') }}</td>
                                             <td>{{ $audit->full_name }}</td>
                                             <td>{{ $audit->role }}</td>
                                             <td>{{ $audit->program_name }}</td>
