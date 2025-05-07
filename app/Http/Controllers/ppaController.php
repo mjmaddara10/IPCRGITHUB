@@ -27,39 +27,51 @@ class ppaController extends Controller
             'efficiency' => $request->addEfficiency,
             'timeliness' => $request->addTimeliness,
             'remarks' => $request->addRemarks,
-            'accountable' => $request->addAccountable,
+            'accountable' => $request->addAccountableId,
             'activity_id' => $request->activityIdSub,
         ]);
 
         // Find the activity and associate the activity with it
         $activity = Activity::findOrFail($request->activityIdSub);
         $activity->subActivities()->save($subActivity);
-        // $selectedActivity->save();
 
         $program = Program::findOrFail($activity->program_id);
 
         if ($request->has('addAccountableId')) {
-            // $selectedActivity->employees()->attach($request->addAccountableId);
             $subActivity->employees()->attach($request->addAccountableId);
         }
+
+        // Get the responsible employees after creation
+        $responsibleEmployees = $subActivity->employees()
+            ->get()
+            ->map(function ($employee) {
+                $middleInitial = $employee->middleName ? strtoupper(substr($employee->middleName, 0, 1)) . '.' : '';
+                return trim($employee->firstName . ' ' . $middleInitial . ' ' . $employee->lastName);
+            })
+            ->implode(', ');
 
         // Get authenticated user details from Employee model
         $user = auth()->user();
         $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
         $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
-        // Create detailed audit trail
+        // Create detailed audit trail with separated action fields
         AuditTrail::create([
             'user_id' => auth()->id(),
             'full_name' => $fullName,
             'role' => $user->role,
-            'action' => ($request->addSubActivityName ? "ADDED SUB ACTIVITY: {$request->addSubActivityName} Under the {$activity->name}\n" : "") .
-                ($request->addSuccessIndicator ? "SUCCESS INDICATOR: {$request->addSuccessIndicator}\n" : "") .
-                ($request->addQuality ? "QUALITY: {$request->addQuality}\n" : "") .
-                ($request->addEfficiency ? "EFFICIENCY: {$request->addEfficiency}\n" : "") .
-                ($request->addTimeliness ? "TIMELINESS: {$request->addTimeliness}\n" : "") .
-                ($request->addRemarks ? "REMARKS: {$request->addRemarks}" : ""),
-            'program_name' => $program->name
+            'action' => "ADDED SUB ACTIVITY under {$activity->name}",
+            'action_from' => null,  // No previous value for new items
+            'action_to' => "Sub Activity Name: {$request->addSubActivityName}\n" .
+                "SUCCESS INDICATOR: {$request->addSuccessIndicator}\n" .
+                "QUALITY: {$request->addQuality}\n" .
+                "EFFICIENCY: {$request->addEfficiency}\n" .
+                "TIMELINESS: {$request->addTimeliness}\n" .
+                "REMARKS: {$request->addRemarks}\n" .
+                "RESPONSIBLE PERSON: {$responsibleEmployees}",
+            'program_name' => $program->name,
+            'record_id' => $subActivity->id,
+            'activity_name' => $activity->name
         ]);
 
         return response()->json(['message' => 'Sub-activity added successfully!']);
@@ -74,6 +86,7 @@ class ppaController extends Controller
         // Get the activity related to the sub-activity
         $activity = Activity::findOrFail($subActivity->activity_id);
         $program = Program::findOrFail($activity->program_id);
+
         // Get the OLD sub-activity name BEFORE updating
         $oldSubActivityName = $subActivity->name;
         $oldSuccessIndicator = $subActivity->successIndicator;
@@ -81,6 +94,13 @@ class ppaController extends Controller
         $oldEfficiency = $subActivity->efficiency;
         $oldTimeliness = $subActivity->timeliness;
         $oldRemarks = $subActivity->remarks;
+        $oldResponsibleEmployees = $subActivity->employees()
+            ->get()
+            ->map(function ($employee) {
+                $middleInitial = $employee->middleName ? strtoupper(substr($employee->middleName, 0, 1)) . '.' : '';
+                return trim($employee->firstName . ' ' . $middleInitial . ' ' . $employee->lastName);
+            })
+            ->implode(', ');
 
         // Update the sub-activity
         $subActivity->update([
@@ -96,23 +116,43 @@ class ppaController extends Controller
         // Sync the individuals responsible
         $subActivity->employees()->sync($request->input('editAccountableId', []));
 
+        // Get the new responsible employees after update
+        $newResponsibleEmployees = $subActivity->employees()
+            ->get()
+            ->map(function ($employee) {
+                $middleInitial = $employee->middleName ? strtoupper(substr($employee->middleName, 0, 1)) . '.' : '';
+                return trim($employee->firstName . ' ' . $middleInitial . ' ' . $employee->lastName);
+            })
+            ->implode(', ');
+
         // Get authenticated user details
         $user = auth()->user();
         $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
         $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
-        // Create detailed audit trail with updated format
+        // Create detailed audit trail with separated action fields
         AuditTrail::create([
             'user_id' => $user->id,
             'full_name' => $fullName,
             'role' => $user->role,
-            'action' => "UPDATED SUB ACTIVITY: " . ($oldSubActivityName !== $request->editActivityNameSub ? "{$oldSubActivityName} to {$request->editActivityNameSub}" : $oldSubActivityName) . " Under the {$activity->name}\n" .
-                ($oldSuccessIndicator !== $request->editSuccessIndicatorSub ? "SUCCESS INDICATOR: {$oldSuccessIndicator} to {$request->editSuccessIndicatorSub}\n" : "") .
-                ($oldQuality !== $request->editQualitySub ? "QUALITY: {$oldQuality} to {$request->editQualitySub}\n" : "") .
-                ($oldEfficiency !== $request->editEfficiencySub ? "EFFICIENCY: {$oldEfficiency} to {$request->editEfficiencySub}\n" : "") .
-                ($oldTimeliness !== $request->editTimelinessSub ? "TIMELINESS: {$oldTimeliness} to {$request->editTimelinessSub}\n" : "") .
-                ($oldRemarks !== $request->editRemarksSub ? "REMARKS: {$oldRemarks} to {$request->editRemarksSub}" : ""),
-            'program_name' => $program->name
+            'action' => "UPDATED SUB ACTIVITY {$oldSubActivityName} under {$activity->name}",
+            'action_from' => ($oldSubActivityName !== $request->editActivityNameSub ? "SUB ACTIVITY: {$oldSubActivityName}\n" : "") .
+                ($oldSuccessIndicator !== $request->editSuccessIndicatorSub ? "SUCCESS INDICATOR: {$oldSuccessIndicator}\n" : "") .
+                ($oldQuality !== $request->editQualitySub ? "QUALITY: {$oldQuality}\n" : "") .
+                ($oldEfficiency !== $request->editEfficiencySub ? "EFFICIENCY: {$oldEfficiency}\n" : "") .
+                ($oldTimeliness !== $request->editTimelinessSub ? "TIMELINESS: {$oldTimeliness}\n" : "") .
+                ($oldRemarks !== $request->editRemarksSub ? "REMARKS: {$oldRemarks}\n" : "") .
+                "RESPONSIBLE PERSON: {$oldResponsibleEmployees}",
+            'action_to' => ($oldSubActivityName !== $request->editActivityNameSub ? "SUB ACTIVITY: {$request->editActivityNameSub}\n" : "") .
+                ($oldSuccessIndicator !== $request->editSuccessIndicatorSub ? "SUCCESS INDICATOR: {$request->editSuccessIndicatorSub}\n" : "") .
+                ($oldQuality !== $request->editQualitySub ? "QUALITY: {$request->editQualitySub}\n" : "") .
+                ($oldEfficiency !== $request->editEfficiencySub ? "EFFICIENCY: {$request->editEfficiencySub}\n" : "") .
+                ($oldTimeliness !== $request->editTimelinessSub ? "TIMELINESS: {$request->editTimelinessSub}\n" : "") .
+                ($oldRemarks !== $request->editRemarksSub ? "REMARKS: {$request->editRemarksSub}\n" : "") .
+                "RESPONSIBLE PERSON: {$newResponsibleEmployees}",
+            'activity_name' => $activity->name,
+            'program_name' => $program->name,
+            'record_id' => $subActivity->id
         ]);
 
         // Return a response
@@ -137,18 +177,19 @@ class ppaController extends Controller
             $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
             $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
-            // Create detailed audit trail with program name
+            // Store the sub-activity ID before deletion for audit trail
+            $deletedSubActivityId = $subActivity->id;
+
+            // Create detailed audit trail with program name and record_id
             AuditTrail::create([
                 'user_id' => $user->id,
                 'full_name' => $fullName,
                 'role' => $user->role,
-                'action' => "DELETED SUB ACTIVITY: {$subActivity->name} Under the {$activity->name}\n" .
-                    "SUCCESS INDICATOR: {$subActivity->successIndicator}\n" .
-                    "QUALITY: {$subActivity->quality}\n" .
-                    "EFFICIENCY: {$subActivity->efficiency}\n" .
-                    "TIMELINESS: {$subActivity->timeliness}\n" .
-                    "REMARKS: {$subActivity->remarks}",
-                'program_name' => $program->name
+                'action' => "DELETED SUB ACTIVITY: {$subActivity->name} under ACTIVITY {$activity->name}",
+                'action_from' => null,
+                'action_to' => null,  // No 'to' state for deletions
+                'program_name' => $program->name,
+                'record_id' => $deletedSubActivityId
             ]);
 
             // Delete the sub-activity
@@ -200,6 +241,15 @@ class ppaController extends Controller
         }
 
         // Get authenticated user details
+        $responsibleEmployees = $activity->employees()
+            ->get()
+            ->map(function ($employee) {
+                $middleInitial = $employee->middleName ? strtoupper(substr($employee->middleName, 0, 1)) . '.' : '';
+                return trim($employee->firstName . ' ' . $middleInitial . ' ' . $employee->lastName);
+            })
+            ->implode(', ');
+
+        // Get authenticated user details
         $user = auth()->user();
         $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
         $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
@@ -209,13 +259,18 @@ class ppaController extends Controller
             'user_id' => $user->id,
             'full_name' => $fullName,
             'role' => $user->role,
-            'action' => ($request->addActivityName ? "ADDED ACTIVITY: {$request->addActivityName}\n" : "") .
-                ($request->addSuccessIndicator ? "SUCCESS INDICATOR: {$request->addSuccessIndicator}\n" : "") .
-                ($request->addQuality ? "QUALITY: {$request->addQuality}\n" : "") .
-                ($request->addEfficiency ? "EFFICIENCY: {$request->addEfficiency}\n" : "") .
-                ($request->addTimeliness ? "TIMELINESS: {$request->addTimeliness}\n" : "") .
-                ($request->addRemarks ? "REMARKS: {$request->addRemarks}" : ""),
-            'program_name' => $program->name
+            'action' => "ADDED ACTIVITY under {$program->name}",
+            'action_from' => null,  // No previous value for new items
+            'action_to' => "Activity Name: {$request->addActivityName}\n" .
+                "SUCCESS INDICATOR: {$request->addSuccessIndicator}\n" .
+                "QUALITY: {$request->addQuality}\n" .
+                "EFFICIENCY: {$request->addEfficiency}\n" .
+                "TIMELINESS: {$request->addTimeliness}\n" .
+                "REMARKS: {$request->addRemarks}\n" .
+                "RESPONSIBLE PERSON: {$responsibleEmployees}",
+            'program_name' => $program->name,
+            'record_id' => $activity->id,
+            'activity_name' => $activity->name
         ]);
 
         return response()->json(['message' => 'Activity added successfully!']);
@@ -235,6 +290,15 @@ class ppaController extends Controller
         $oldTimeliness = $activity->timeliness;
         $oldRemarks = $activity->remarks;
 
+        // Get the old responsible employees before update
+        $oldResponsibleEmployees = $activity->employees()
+            ->get()
+            ->map(function ($employee) {
+                $middleInitial = $employee->middleName ? strtoupper(substr($employee->middleName, 0, 1)) . '.' : '';
+                return trim($employee->firstName . ' ' . $middleInitial . ' ' . $employee->lastName);
+            })
+            ->implode(', ');
+
         // Update the activity fields
         $activity->update([
             'name' => $request->editActivityName,
@@ -247,6 +311,15 @@ class ppaController extends Controller
 
         // Sync the individuals responsible
         $activity->employees()->sync($request->input('editAccountableId', []));
+
+        // Get the new responsible employees after update
+        $newResponsibleEmployees = $activity->employees()
+            ->get()
+            ->map(function ($employee) {
+                $middleInitial = $employee->middleName ? strtoupper(substr($employee->middleName, 0, 1)) . '.' : '';
+                return trim($employee->firstName . ' ' . $middleInitial . ' ' . $employee->lastName);
+            })
+            ->implode(', ');
 
         // Get authenticated user details
         $user = auth()->user();
@@ -261,13 +334,24 @@ class ppaController extends Controller
             'user_id' => $user->id,
             'full_name' => $fullName,
             'role' => $user->role,
-            'action' => "UPDATED ACTIVITY: " . ($oldName !== $request->editActivityName ? "{$oldName} to {$request->editActivityName}\n" : $oldName . "\n") .
-                ($oldSuccessIndicator !== $request->editSuccessIndicatorActivity ? "SUCCESS INDICATOR: {$oldSuccessIndicator} to {$request->editSuccessIndicatorActivity}\n" : "") .
-                ($oldQuality !== $request->editQualityActivity ? "QUALITY: {$oldQuality} to {$request->editQualityActivity}\n" : "") .
-                ($oldEfficiency !== $request->editEfficiencyActivity ? "EFFICIENCY: {$oldEfficiency} to {$request->editEfficiencyActivity}\n" : "") .
-                ($oldTimeliness !== $request->editTimelinessActivity ? "TIMELINESS: {$oldTimeliness} to {$request->editTimelinessActivity}\n" : "") .
-                ($oldRemarks !== $request->editRemarksActivity ? "REMARKS: {$oldRemarks} to {$request->editRemarksActivity}" : ""),
-            'program_name' => $program->name
+            'action' => "UPDATED ACTIVITY {$oldName} under {$program->name}",
+            'action_from' => ($oldName !== $request->editActivityName ? "Activity Name: {$oldName}\n" : "") .
+                ($oldSuccessIndicator !== $request->editSuccessIndicatorActivity ? "SUCCESS INDICATOR: {$oldSuccessIndicator}\n" : "") .
+                ($oldQuality !== $request->editQualityActivity ? "QUALITY: {$oldQuality}\n" : "") .
+                ($oldEfficiency !== $request->editEfficiencyActivity ? "EFFICIENCY: {$oldEfficiency}\n" : "") .
+                ($oldTimeliness !== $request->editTimelinessActivity ? "TIMELINESS: {$oldTimeliness}\n" : "") .
+                ($oldRemarks !== $request->editRemarksActivity ? "REMARKS: {$oldRemarks}\n" : "") .
+                ($oldResponsibleEmployees !== $newResponsibleEmployees ? "RESPONSIBLE PERSON: {$oldResponsibleEmployees}\n" : ""),
+            'action_to' => ($oldName !== $request->editActivityName ? "Activity Name: {$request->editActivityName}\n" : "") .
+                ($oldSuccessIndicator !== $request->editSuccessIndicatorActivity ? "SUCCESS INDICATOR: {$request->editSuccessIndicatorActivity}\n" : "") .
+                ($oldQuality !== $request->editQualityActivity ? "QUALITY: {$request->editQualityActivity}\n" : "") .
+                ($oldEfficiency !== $request->editEfficiencyActivity ? "EFFICIENCY: {$request->editEfficiencyActivity}\n" : "") .
+                ($oldTimeliness !== $request->editTimelinessActivity ? "TIMELINESS: {$request->editTimelinessActivity}\n" : "") .
+                ($oldRemarks !== $request->editRemarksActivity ? "REMARKS: {$request->editRemarksActivity}\n" : "") .
+                ($oldResponsibleEmployees !== $newResponsibleEmployees ? "RESPONSIBLE PERSON: {$newResponsibleEmployees}\n" : ""),
+            'program_name' => $program->name,
+            'record_id' => $activity->id,
+            'activity_name' => $activity->name
         ]);
 
         return response()->json(['message' => 'Activity updated successfully!']);
@@ -293,13 +377,12 @@ class ppaController extends Controller
                 'user_id' => $user->id,
                 'full_name' => $fullName,
                 'role' => $user->role,
-                'action' => "DELETED ACTIVITY: {$activity->name}\n" .
-                    "SUCCESS INDICATOR: {$activity->successIndicator}\n" .
-                    "QUALITY: {$activity->quality}\n" .
-                    "EFFICIENCY: {$activity->efficiency}\n" .
-                    "TIMELINESS: {$activity->timeliness}\n" .
-                    "REMARKS: {$activity->remarks}",
-                'program_name' => $program->name
+                'action' => "DELETED ACTIVITY under {$program->name}",
+                'action_from' => null,
+                'action_to' => null,  // No 'to' state for deletions
+                'program_name' => $program->name,
+                'record_id' => $activity->id,
+                'activity_name' => $activity->name
             ]);
 
             // Now delete the activity
@@ -314,8 +397,6 @@ class ppaController extends Controller
             return response()->json(['error' => 'An error occurred while trying to delete the activity.'], 500);
         }
     }
-
-
 
     // =====================Program========================= //
     public function addProgram(Request $request)
@@ -345,19 +426,29 @@ class ppaController extends Controller
             $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
             $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
+            // Get the divisions after creation
+            $divisions = $program->divisions()
+                ->get()
+                ->pluck('name')
+                ->implode(', ');
+
             // Create audit trail using the AuditTrail model
             AuditTrail::create([
                 'user_id' => $user->id,
                 'full_name' => $fullName,
                 'role' => $user->role,
-                'action' => "ADDED PROGRAM: {$program->name}\n" .
+                'action' => "ADDED PROGRAM",
+                'action_from' => null,  // No previous value for new items
+                'action_to' => "Program Name: {$program->name}\n" .
                     "SUCCESS INDICATOR: {$program->successIndicator}\n" .
                     "QUALITY: {$program->quality}\n" .
                     "EFFICIENCY: {$program->efficiency}\n" .
                     "TIMELINESS: {$program->timeliness}\n" .
                     "REMARKS: {$program->remarks}\n" .
-                    "BUDGET: {$program->budget}",
-                'program_name' => $program->name
+                    "BUDGET: {$program->budget}\n" .
+                    "DIVISIONS: {$divisions}",
+                'program_name' => $program->name,
+                'record_id' => $program->id
             ]);
 
             // Return with success message
@@ -367,7 +458,6 @@ class ppaController extends Controller
             return redirect()->back()->with('error', 'An error occurred while adding the program.');
         }
     }
-
 
 
     public function updateProgram(Request $request)
@@ -385,6 +475,12 @@ class ppaController extends Controller
             $oldRemarks = $program->remarks;
             $oldBudget = $program->budget;
 
+            // Get the old divisions before update
+            $oldDivisions = $program->divisions()
+                ->get()
+                ->pluck('name')
+                ->implode(', ');
+
             // Update the program fields
             $program->name = $request->editProgramName;
             $program->successIndicator = $request->editSuccessIndicator;
@@ -395,7 +491,6 @@ class ppaController extends Controller
             $program->budget = $request->editBudget;
             $program->save();
 
-
             // Handle the "all" divisions scenario
             if (in_array('all', $request->divisions)) {
                 $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
@@ -403,6 +498,12 @@ class ppaController extends Controller
             } else {
                 $program->divisions()->sync($request->divisions);
             }
+
+            // Get the new divisions after update
+            $newDivisions = $program->divisions()
+                ->get()
+                ->pluck('name')
+                ->implode(', ');
 
             // Get authenticated user details for the audit trail
             $user = auth()->user();
@@ -414,14 +515,25 @@ class ppaController extends Controller
                 'user_id' => $user->id,
                 'full_name' => $fullName,
                 'role' => $user->role,
-                'action' => "UPDATED PROGRAM: " . ($oldName !== $request->editProgramName ? "{$oldName} to {$request->editProgramName}\n" : $oldName . "\n") .
-                    ($oldSuccessIndicator !== $request->editSuccessIndicator ? "SUCCESS INDICATOR: {$oldSuccessIndicator} to {$request->editSuccessIndicator}\n" : "") .
-                    ($oldQuality !== $request->editQuality ? "QUALITY: {$oldQuality} to {$request->editQuality}\n" : "") .
-                    ($oldEfficiency !== $request->editEfficiency ? "EFFICIENCY: {$oldEfficiency} to {$request->editEfficiency}\n" : "") .
-                    ($oldTimeliness !== $request->editTimeliness ? "TIMELINESS: {$oldTimeliness} to {$request->editTimeliness}\n" : "") .
-                    ($oldRemarks !== $request->editRemarks ? "REMARKS: {$oldRemarks} to {$request->editRemarks}\n" : "") .
-                    ($oldBudget !== $request->editBudget ? "ALLOTTED BUDGET: {$oldBudget} to {$request->editBudget}" : ""),
-                'program_name' => $program->name
+                'action' => "UPDATED PROGRAM {$oldName}",
+                'action_from' => ($oldName !== $request->editProgramName ? "Program Name: {$oldName}\n" : "") .
+                    ($oldSuccessIndicator !== $request->editSuccessIndicator ? "SUCCESS INDICATOR: {$oldSuccessIndicator}\n" : "") .
+                    ($oldQuality !== $request->editQuality ? "QUALITY: {$oldQuality}\n" : "") .
+                    ($oldEfficiency !== $request->editEfficiency ? "EFFICIENCY: {$oldEfficiency}\n" : "") .
+                    ($oldTimeliness !== $request->editTimeliness ? "TIMELINESS: {$oldTimeliness}\n" : "") .
+                    ($oldRemarks !== $request->editRemarks ? "REMARKS: {$oldRemarks}\n" : "") .
+                    ($oldBudget !== $request->editBudget ? "ALLOTTED BUDGET: {$oldBudget}\n" : "") .
+                    ($oldDivisions !== $newDivisions ? "DIVISIONS: {$oldDivisions}\n" : ""),
+                'action_to' => ($oldName !== $request->editProgramName ? "Program Name: {$request->editProgramName}\n" : "") .
+                    ($oldSuccessIndicator !== $request->editSuccessIndicator ? "SUCCESS INDICATOR: {$request->editSuccessIndicator}\n" : "") .
+                    ($oldQuality !== $request->editQuality ? "QUALITY: {$request->editQuality}\n" : "") .
+                    ($oldEfficiency !== $request->editEfficiency ? "EFFICIENCY: {$request->editEfficiency}\n" : "") .
+                    ($oldTimeliness !== $request->editTimeliness ? "TIMELINESS: {$request->editTimeliness}\n" : "") .
+                    ($oldRemarks !== $request->editRemarks ? "REMARKS: {$request->editRemarks}\n" : "") .
+                    ($oldBudget !== $request->editBudget ? "ALLOTTED BUDGET: {$request->editBudget}\n" : "") .
+                    ($oldDivisions !== $newDivisions ? "DIVISIONS: {$newDivisions}\n" : ""),
+                'program_name' => $program->name,
+                'record_id' => $program->id
             ]);
 
             // Return with a success message
@@ -436,31 +548,27 @@ class ppaController extends Controller
     }
 
 
-
     public function deleteProgram(Request $request)
     {
         try {
             // Find the program by its ID
             $program = Program::findOrFail($request->programId);
 
-            // Get authenticated user details for the audit trail
+            // Get authenticated user details before deletion
             $user = auth()->user();
             $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
             $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 
-            // Create an audit trail for deleting the program
+            // Create audit trail before deleting
             AuditTrail::create([
-                'user_id' => auth()->id(),
+                'user_id' => $user->id,
                 'full_name' => $fullName,
                 'role' => $user->role,
-                'action' => "DELETED PROGRAM: {$program->name}\n" .
-                    "SUCCESS INDICATOR: {$program->successIndicator}\n" .
-                    "QUALITY: {$program->quality}\n" .
-                    "EFFICIENCY: {$program->efficiency}\n" .
-                    "TIMELINESS: {$program->timeliness}\n" .
-                    "REMARKS: {$program->remarks}\n" .
-                    "ALLOTTED BUDGET: {$program->budget}",
-                'program_name' => $program->name
+                'action' => "DELETED PROGRAM {$program->name}",
+                'action_from' => null,
+                'action_to' => null,  // No 'to' state for deletions
+                'program_name' => $program->name,
+                'record_id' => $program->id
             ]);
 
             // Now delete the program
@@ -475,9 +583,6 @@ class ppaController extends Controller
             return response()->json(['error' => 'An error occurred while trying to delete the program.'], 500);
         }
     }
-
-
-
 
 
     // =====================Autofill Accountable (Add Activity)========================= //

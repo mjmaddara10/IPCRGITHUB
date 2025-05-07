@@ -13,7 +13,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('full_name');
             $table->string('role');
-            $table->string('action');
+            $table->string('action');  // For storing the type of action (ADDED, UPDATED, DELETED)
+            $table->text('action_from')->nullable();  // For storing the original values
+            $table->text('action_to')->nullable();    // For storing the new values
             $table->string('activity_name');
             $table->unsignedBigInteger('record_id');
             $table->timestamps();

@@ -76,6 +76,8 @@
                                             <th style="color: #03592c;">Role</th>
                                             <th style="color: #03592c;">Program Name</th>
                                             <th style="color: #03592c;">Actions</th>
+                                            <th style="color: #03592c;">From</th>
+                                            <th style="color: #03592c;">To</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -86,6 +88,8 @@
                                             <td>{{ $audit->role }}</td>
                                             <td>{{ $audit->program_name }}</td>
                                             <td>{{ $audit->action }}</td>
+                                            <td>{{ $audit->action_from }}</td>
+                                            <td>{{ $audit->action_to }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
