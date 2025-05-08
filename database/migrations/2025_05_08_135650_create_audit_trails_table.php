@@ -6,7 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::create('audit_trails', function (Blueprint $table) {
             $table->id();
@@ -20,11 +23,15 @@ return new class extends Migration
             $table->unsignedBigInteger('record_id');
             $table->timestamps();
 
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('tbl_employee')->onDelete('cascade');
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('audit_trails');
     }
