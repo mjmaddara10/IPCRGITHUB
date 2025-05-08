@@ -2,6 +2,7 @@
 /*==================================================
   Data Table Formatting
 ==================================================*/
+
 .table-header {
     color: #FFFFFF;
     background-color: #573f03;
@@ -12,8 +13,7 @@
 ==================================================*/
 .hero-section {
     /* Creates a semi-transparent green overlay on the background image */
-    background: linear-gradient(rgba(3, 89, 44, 0.9), rgba(3, 89, 44, 0.9)),
-        url('../img/backgroundimage.jpg') no-repeat center center fixed;
+    background: linear-gradient(rgba(3, 89, 44, 0.9), rgba(3, 89, 44, 0.9));
     /* Makes background image cover entire container */
     background-size: cover;
     /* Takes full viewport height minus navbar height */
@@ -474,5 +474,30 @@ body {
     .dropdown-item {
         padding: 0.75rem 1rem;
     }
+}
+
+.btn:focus, .btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+i.fas {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.btn-sm {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+}
+
+.btn-sm i {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.btn-orange {
+    background-color: rgb(255, 140, 0);
 }
 

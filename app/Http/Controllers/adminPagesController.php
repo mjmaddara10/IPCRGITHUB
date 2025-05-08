@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Models\AuditTrail;
 use App\Models\Program;
 use App\Models\Project;
 use App\Models\Activity;
@@ -11,6 +12,7 @@ use App\Models\SubActivity;
 use App\Models\Employee;
 use App\Models\SubProject;
 use App\Models\Division;
+
 
 class adminPagesController extends Controller
 {
@@ -29,19 +31,20 @@ class adminPagesController extends Controller
     }
 
     public function managePpa(){
-        // Fetch all programs with their related projects
-        $programs = Program::with(['divisions', 'activities.employees'])->get();
-        $activities = Activity::with('subActivities','employees')->get();
+        $programs = Program::with([
+            'divisions',
+            'activities.subActivities',
+            'activities.employees'
+        ])->orderBy('order')->get();
+    
         $employees = Employee::all();
         $divisions = Division::all();
-        $subActivities = SubActivity::all();
-
+    
         return view('viewBlades.managePpa', compact(
             'programs',
             'employees',
-            'activities',
             'divisions'
-        ),[
+        ), [
             'role' => auth()->user()->role
         ]);
     }
@@ -51,9 +54,47 @@ class adminPagesController extends Controller
         $programs = Program::with('divisions')->get();
         $activities = Activity::with('subActivities')->get();
         $employees = Employee::with('division')->get();
+        $subActivities = SubActivity::with('activity')->get();
         $divisions = Division::with(['employees' => function ($query) {
             $query->where('role', 'Division Chief');
-        }])->get();
+        }])->get(); 
+    
+        $targets = [];
+        $user = auth()->user();
+        
+        // For staff
+        foreach (auth()->user()->subActivities as $subActivity) {
+            $activity = $subActivity->activity;
+            $program = $activity->program;
+
+            if (!$activity) {
+                \Log::error("Missing activity for SubActivity ID: " . $subActivity->id);
+            }
+            
+            $targets[] = [
+                'program_name' => $program->name,
+                'program_order' => $program->order ?? 0,
+                'activity_name' => $activity->name,
+                'activity_order' => $activity->order ?? 0,
+                'sub_activity_name' => $subActivity->name,
+                'sub_activity_success_indicator' => $subActivity->successIndicator,
+                'sub_activity_quality' => $subActivity->quality,
+                'sub_activity_efficiency' => $subActivity->efficiency,
+                'sub_activity_timeliness' => $subActivity->timeliness,
+                'sub_activity_remarks' => $subActivity->remarks,
+                'sub_activity_order' => $subActivity->order ?? 0,
+            ];
+        }
+
+        usort($targets, function ($a, $b) {
+            $programCompare = $a['program_order'] <=> $b['program_order'];
+            if ($programCompare !== 0) return $programCompare;
+    
+            $activityCompare = $a['activity_order'] <=> $b['activity_order'];
+            if ($activityCompare !== 0) return $activityCompare;
+    
+            return $a['sub_activity_order'] <=> $b['sub_activity_order'];
+        });
 
         return view('viewBlades.viewTargets', compact(
             'programs',
@@ -61,7 +102,9 @@ class adminPagesController extends Controller
             'activities',
             'divisions'
         ),[
-            'role' => auth()->user()->role
+            'role' => auth()->user()->role,
+            'targets' => $targets,
+            'user' => $user,
         ]);
     }
 
@@ -72,22 +115,14 @@ class adminPagesController extends Controller
         $employees = Employee::all();
         $divisions = Division::all();
         $subActivities = SubActivity::all();
+        $auditTrails = AuditTrail::orderBy('created_at', 'desc')->get();
 
-         // Add this line to fetch audit trails
-        $auditTrails = DB::table('audit_trails')->get();
-        // Add this line to fetch audit trails
-    $auditTrails = DB::table('audit_trails')
-    ->orderBy('created_at', 'desc')
-    ->get();
-
-return view('viewBlades.auditTrail', compact(
-    'programs',
-    'employees',
-    'activities',
-    'divisions',
-    'auditTrails'  // Add auditTrails to the compact function
-),[
-            'role' => auth()->user()->role
+        return view('viewBlades.auditTrail', compact(
+            'programs',
+            'employees',
+            'activities',
+            'divisions',
+            'auditTrails'),['role' => auth()->user()->role
         ]);
     }
 

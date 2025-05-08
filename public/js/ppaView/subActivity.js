@@ -62,38 +62,27 @@ function populateAccountableOptions(accountables) {
 }
 
 // Add accountable person input
-$('#addsAccountablePersonBtn').off('click').on('click', function () {
+$('#addsAccountablePersonBtn').on('click', function () {
     const $container = $('#accountableSelectContainerSubAct');
-
-    // Get selected IDs across all accountableSelects
-    const selectedIds = $('.accountableSelect').map(function () {
-        return $(this).val();
-    }).get();
-
-    // Template for the new group
-    const firstSelect = $('.accountableSelect').first();
     const $newGroup = $(`
         <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
             <select class="form-select border-2 py-2 accountableSelect" name="addAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
+                <option value="">Loading...</option>
             </select>
             <button type="button" class="btn btn-danger btn-sm removeAccountableBtn">
                 <i class="fas fa-minus"></i>
             </button>
         </div>
     `);
-
-    const $newSelect = $newGroup.find('select');
-
-    // Rebuild options and disable selected ones
-    firstSelect.find('option').each(function () {
-        const value = $(this).val();
-        const text = $(this).text();
-        const isDisabled = selectedIds.includes(value) ? 'disabled' : '';
-        $newSelect.append(`<option value="${value}" ${isDisabled}>${text}</option>`);
-    });
-
+    
     $container.append($newGroup);
 
+    // Populate newly added select with existing options
+    const firstSelect = $('.accountableSelect').first();
+    const newSelect = $newGroup.find('select');
+    newSelect.html(firstSelect.html()); // Copy all options
+
+    // Enable remove button if there's more than one
     updateAccountableRemoveButtons();
 });
 
@@ -151,94 +140,95 @@ $('#addSubActivityForm').on('submit', function(e) {
                 }
             });
         }
-    });
+    });    
 });
 
+
+$(document).ready(function () {
 // Edit Sub-Activity Fill Form
-let subActivityId;
+    let subActivityId; 
 
-$(document).on('click', '.editSubActivityBtn', function() {
-    // Get data from the button clicked
-    subActivityId = $(this).data('sub-activity-id');
-    var subActivityName = $(this).data('sub-activity-name');
-    var successIndicator = $(this).data('success-indicator');
-    var quality = $(this).data('quality');
-    var efficiency = $(this).data('efficiency');
-    var timeliness = $(this).data('timeliness');
-    var remarks = $(this).data('remarks');
+    $(document).on('click', '.editSubActivityBtnTarget', function() {
 
-    // Populate the modal fields with the data
-    $('#editActivityIdSub').val(subActivityId);
-    $('#editActivityNameSub').val(subActivityName);
-    $('#editSuccessIndicatorSub').val(successIndicator);
-    $('#editQualitySub').val(quality);
-    $('#editEfficiencySub').val(efficiency);
-    $('#editTimelinessSub').val(timeliness);
-    $('#editRemarksSub').val(remarks);
+        // console.log($(this).data());
+        // Get data from the button clicked
+        subActivityId = $(this).data('sub-activity-id');
+        var subActivityNameTarget = $(this).data('sub-activity-name');
+        var successIndicator = $(this).data('sub-activity-success');
+        var quality = $(this).data('sub-activity-quality');
+        var efficiency = $(this).data('sub-activity-efficiency');
+        var timeliness = $(this).data('sub-activity-timeliness');
+        var remarks = $(this).data('sub-activity-remarks');
+        
 
-    // Clear previous selects
-    const $editContainerSub = $('#editContainerSub');
-    $editContainerSub.empty();
+        // Populate the modal fields with the data
+        $('#editActivityIdSub').val(subActivityId);
+        $('#editActivityNameSubTarget').val(subActivityNameTarget);
+        $('#editSuccessIndicatorSub').val(successIndicator);
+        $('#editQualitySub').val(quality);
+        $('#editEfficiencySub').val(efficiency);
+        $('#editTimelinessSub').val(timeliness);
+        $('#editRemarksSub').val(remarks);
 
-    $.ajax({
-        url:  `/admin/subActivity/${subActivityId}/getSubActivityAccountables`,
-        method: 'GET',
-        success: function (response) {
-            response.forEach(function (person, index) {
+        // Clear previous selects
+        const $editContainerSub = $('#editContainerSub');
+        $editContainerSub.empty();
+
+        $.ajax({
+            url:  `/admin/subActivity/${subActivityId}/getSubActivityAccountables`,
+            method: 'GET',
+            success: function (response) {
+                response.forEach(function (person, index) {
+                    const selectGroup = `
+                        <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
+                            <select class="form-select border-2 py-2 editAccountableSelect" name="editAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
+                                <option value="${person.id}" selected>${person.name} | ${person.position}</option>
+                            </select>
+                            <button type="button" class="btn btn-danger btn-sm removeAccountableBtn">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>`;
+                    $editContainerSub.append(selectGroup);
+                });
+            },
+            error: function () {
+                console.error('Failed to fetch individuals responsible.');
+            }
+        });
+    });
+
+    $('#addAccountableEditSubBtn').on('click', function () {
+        if (!subActivityId) return;
+    
+        $.ajax({
+            url: `/admin/subActivity/${subActivityId}/fetchEmployeeSub`,
+            method: 'GET',
+            success: function (employees) {
+                console.log(employees);
+                let optionsHtml = employees.map(e =>
+                    `<option value="${e.id}">${e.name} | ${e.position}</option>`
+                ).join('');
+    
                 const selectGroup = `
                     <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
                         <select class="form-select border-2 py-2 editAccountableSelect" name="editAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
-                            <option value="${person.id}" selected>${person.name} | ${person.position}</option>
+                            ${optionsHtml}
                         </select>
                         <button type="button" class="btn btn-danger btn-sm removeAccountableBtn">
                             <i class="fas fa-minus"></i>
                         </button>
                     </div>`;
-                $editContainerSub.append(selectGroup);
-            });
-        },
-        error: function () {
-            console.error('Failed to fetch individuals responsible.');
-        }
+    
+                $('#editContainerSub').append(selectGroup);
+            },
+            error: function () {
+                console.error('Failed to fetch employees for program.');
+            }
+        });
     });
 });
 
-$('#addAccountableEditSubBtn').off('click').on('click', function () {
-    if (!subActivityId) return;
 
-    $.ajax({
-        url: `/admin/subActivity/${subActivityId}/fetchEmployeeSub`,
-        method: 'GET',
-        success: function (employees) {
-            // Get all currently selected employee IDs
-            const selectedIds = $('.editAccountableSelect').map(function () {
-                return $(this).val();
-            }).get();
-
-            // Generate options, disabling already selected employees
-            let optionsHtml = employees.map(e =>
-                `<option value="${e.id}" ${selectedIds.includes(e.id.toString()) ? 'disabled' : ''}>
-                    ${e.name} | ${e.position}
-                </option>`
-            ).join('');
-
-            const selectGroup = `
-                <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
-                    <select class="form-select border-2 py-2 editAccountableSelect" name="editAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
-                        ${optionsHtml}
-                    </select>
-                    <button type="button" class="btn btn-danger btn-sm removeAccountableBtn">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                </div>`;
-
-            $('#editContainerSub').append(selectGroup);
-        },
-        error: function () {
-            console.error('Failed to fetch employees for program.');
-        }
-    });
-});
 
 $(document).on('click', '.removeAccountableBtn', function () {
     $(this).closest('.accountable-select-group').remove();
@@ -247,7 +237,7 @@ $(document).on('click', '.removeAccountableBtn', function () {
 // Edit Sub-Activity
 $('#editSubActivityForm').on('submit', function(e) {
     e.preventDefault();
-
+    
     Swal.fire({
         title: "Are you sure?",
         text: "Do you want to save these changes?",
@@ -293,11 +283,10 @@ $('#editSubActivityForm').on('submit', function(e) {
     });
 });
 
-$(document).on('click', '.deleteSubActivityBtn', function(e) {
+$(document).on('click', '.deleteSubActivityBtnTarget', function(e) {
     e.preventDefault();
 
-    var subActivityId = $(this).data('subActivity-id');
-    var deleteUrl  = $(this).data('url');
+    var subActivityId = $(this).data('sub-activity-id');
     console.log(subActivityId);
 
     Swal.fire({
@@ -312,7 +301,7 @@ $(document).on('click', '.deleteSubActivityBtn', function(e) {
         if (result.isConfirmed) {
             // Make an AJAX request to delete the activity
             $.ajax({
-                url: deleteUrl,  // Your delete URL
+                url: '/admin/deleteSubActivity',  // Your delete URL
                 method: 'POST',
                 data: {
                     subActivityId: subActivityId // Pass the activity ID

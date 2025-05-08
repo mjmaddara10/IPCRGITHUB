@@ -10,10 +10,11 @@
 
 
 @section('content')
-<div class="page-background"></div>
-<div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
-    <div class="container-fluid mt-3">
+<!-- <div class="page-background"></div> -->
+<div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;" data-scrolled-id="{{ session('scrolled_id') }}">
+    <div class="container-fluid mt-2">
         <div class="bg-white">
+
             <!-- Header -->
             <div class="card-header py-3 d-flex align-items-center nv-green">
                 <div class="d-flex align-items-center">
@@ -24,8 +25,6 @@
                         <small class="text-white-50">View, add, edit, and delete PPAs</small>
                     </div>
                 </div>
-
-                
 
                 <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
                     <span>Select Division:</span>
@@ -38,50 +37,64 @@
                 </div>
             </div>
 
-            <!-- Content -->
+            <!-- Content || Navigation Buttons -->
             <div class="p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <!-- Add Program -->
                         <a class="btn nv-green" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
                     </div>
-                    
-                    @if($role === 'Department Head')
-                        <div class="d-flex align-items-center ms-auto">
-                            <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;  color:#FFFFFF;" class="btn btn-hover btn-primary fw-bold">
-                                APPROVE TARGETS
-                            </a>
-                        </div>
-                    @endif
 
                     <!-- Buttons -->
                     <div class="d-flex align-items-center ms-auto">
-                        @if($role === 'Division Chief')
-                            <a href="{{ route('chief.audit') }}" class="btn btn-hover nv-green me-1">Audit Trail</a>
-                            <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover nv-green">
-                                View Users
+                        @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                        <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" class="btn btn-hover text-success fw-bold" onclick="localStorage.clear();">
+                                Manage PPA
                             </a>
                             <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 View Targets
                             </a>
-                            <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" href="" class="btn btn-hover text-success fw-bold">
-                                Manage PPA
-                            </a>
-                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+
+                            <div class="btn-group" style="margin-left: 3px;">
+                                <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Lookup Tables
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('chief.audit') }}">Audit Trail</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('chief.viewEmployees') }}">View Users</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a>
                         @elseif($role === 'Department Head')
-                            <a href="{{ route('head.audit') }}" class="btn btn-hover nv-green me-1">Audit Trail</a>
-                            <a href="{{ route('head.viewEmployees') }}" class="btn btn-hover nv-green">
-                                View Users
+                            <a href="{{ route('head.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" class="btn btn-hover text-success fw-bold" onclick="localStorage.clear();">
+                                Manage PPA
                             </a>
                             <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 View Targets
                             </a>
-                            <a href="{{ route('head.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" href="" class="btn btn-hover text-success fw-bold">
-                                Manage PPA
-                            </a>
-                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+
+                            <div class="btn-group" style="margin-left: 3px;">
+                                <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Lookup Tables
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('head.audit') }}">Audit Trail</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('head.viewEmployees') }}">View Users</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a>
                         @endif
@@ -93,16 +106,16 @@
                 <div class="table-responsive" id="tableContainer">
                 <table id="ppaTable" class="table" style="table-layout: fixed; width: 100%;">
                     <thead class="text-center">
-                        <tr>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 20%;">Programs/Project/Activities</th>
+                        <tr style="vertical-align:middle;">
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 15%;">Programs/Project/Activities</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Success Indicator</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Quality</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Efficiency</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Timeliness</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.4%;">Remarks/MOV</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Allotted Budget</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 11%">Division/Individuals Responsible</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 8%;">Actions</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 10%;">Remarks/MOV</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 8%;">Allotted Budget</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division or Individuals Responsible</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="programTableBody">
@@ -112,25 +125,25 @@
                                 // Get all the division IDs for the current program
                                 $divisionIds = $program->divisions->pluck('id')->implode(',');
                             @endphp
-                            <tr class="programRow" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}">
+                            <tr class="programRow" id="program-{{ $program->id }}" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}" style="vertical-align: top;">
                                 <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->successIndicator }}</td>
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->quality }}</td>
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->efficiency }}</td>
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->timeliness }}</td>
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->remarks }}</td>
-                                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF; vertical-align: middle;">{{ $program->budget }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->budget }}</td>
                                 @php
                                     $allDivisionCount = \App\Models\Division::count();
                                     $assignedCount = $program->divisions->count();
                                 @endphp
 
-                                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">
+                                <td class="text-left border border-muted" style="background-color: #03592c; color:#FFFFFF; vertical-align: top;">
                                     @if ($assignedCount === $allDivisionCount)
                                         All Divisions
                                     @else
                                         @foreach ($program->divisions as $division)
-                                            {{ $division->name }}
+                                           {{ $division->name }} <br> <br> 
                                         @endforeach
                                     @endif
                                 </td>
@@ -158,15 +171,30 @@
 
                                     <!-- Delete Program -->
                                     <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete program"
-                                        data-program-id="{{ $program->id }}"
-                                        data-url="{{ route('deleteProgram') }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
+                                        data-program-id="{{ $program->id }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
                                     </button>
+
+                                    <!-- Move -->
+                                    <div style="display: flex; justify-content: center; gap: 4px;">
+                                        <form method="POST" action="{{ route('program.move' , [$program->id , 'up']) }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                        </form>
+
+                                        <form method="POST" action="{{ route('program.move' , [$program->id , 'down']) }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                        </form>
+
+                                        <button type="submit" class="btn btn-sm btn-warning buttonHover programCollapseBtn mt-1"><i class="fas fa-inbox" style= "color: #FFFFFF;"></i></button>
+                                    </div>
+
                                 </td>
                             </tr>
 
                             <!-- Activities in Program-->
-                            @foreach($program->activities as $activity)
-                                <tr data-program-id="{{ $program->id }}">
+                            @foreach ($program->activities->sortBy('order') as $activity)
+                                <tr class="activityRow" id="activity-{{ $activity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
                                     <td class="text-left" hidden>{{ $activity->id }}</td>
                                     <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
                                     <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->successIndicator }}</td>
@@ -214,12 +242,27 @@
                                             data-activity-id="{{ $activity->id }}"
                                             data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash" style="color:#FFFFFF;"></i>
                                         </button>
+
+                                        <!-- Move -->
+                                        <div style="display: flex; justify-content: center; gap: 4px;">
+                                            <form method="POST" action="{{ route('activity.move' , [$activity->id , 'up']) }}">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                            </form>
+
+                                            <form method="POST" action="{{ route('activity.move' , [$activity->id , 'down']) }}">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                            </form>
+
+                                            <button type="submit" class="btn btn-sm btn-warning buttonHover activityCollapseBtn mt-1"><i class="fas fa-inbox" style= "color: #FFFFFF;"></i></button>
+                                        </div>
                                     </td>
                                 </tr>
 
                                 <!-- Sub-Activities -->
-                                @foreach($activity->subActivities as $subActivity)
-                                    <tr data-program-id="{{ $program->id }}">
+                                @foreach($activity->subActivities->sortBy('order') as $subActivity)
+                                    <tr class="subActivityRow" id="subActivity-{{ $subActivity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
                                         <td class="text-left" hidden>{{ $subActivity->id }}</td>
                                         <td class="text-left ps-3 border border-muted">{{ $subActivity->name }}</td>
                                         <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
@@ -261,6 +304,19 @@
                                                 data-sub-activity-id="{{ $subActivity->id }}"
                                                 data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
                                             </button>
+
+                                            <!-- Move -->
+                                            <div style="display: flex; justify-content: center; gap: 4px;">
+                                                <form method="POST" action="{{ route('subActivity.move' , [$subActivity->id , 'up']) }}">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                </form>
+
+                                                <form method="POST" action="{{ route('subActivity.move' , [$subActivity->id , 'down']) }}">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -860,3 +916,16 @@
     </div>
 </div>
 @endsection
+
+@if (session('scrolled_id'))
+<script>
+    window.onload = function () {
+        const element = document.getElementById('{{ session('scrolled_id') }}');
+        if (element) {
+            const rect = element.getBoundingClientRect();
+            const offset = window.pageYOffset + rect.top - (window.innerHeight / 2);
+            window.scrollTo({ top: offset * 0.75, behavior: 'smooth' }); // Adjusted for scale
+        }
+    }
+</script>
+@endif

@@ -3,6 +3,15 @@ $(document).ready(function() {
         "paging": true,
         "searching": true,
         "ordering": true,
-        "pageLength": 10
+        "pageLength": 10,
+        order: [[0, 'desc']]
+    });
+
+    $('#auditTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "pageLength": 10,
+        order: [[0, 'desc']]
     });
 });

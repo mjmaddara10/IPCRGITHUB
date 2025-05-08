@@ -28,7 +28,7 @@
     <!-- Application Specific Styles -->
 
     <!-- Custom Admin Styles -->
-    <link href="{{ asset('admin/admin.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 
     <!-- Additional Font Weights -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
@@ -78,22 +78,19 @@
     <script src="{{ asset('js/ppaManagement/activity.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/subActivity.js') }}"></script>
     <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
+    <script src="{{ asset('js/ppaManagement/sortCollapse.js') }}"></script>
 
-    <!-- Assign PPA -->
+    <!-- View Target -->
     <script src="{{ asset('js/ppaView/user.js') }}"></script>
+    <script src="{{ asset('js/ppaView/program.js') }}"></script>
+    <script src="{{ asset('js/ppaView/activity.js') }}"></script>
+    <script src="{{ asset('js/ppaView/subActivity.js') }}"></script>
 
     <!-- Table Switching -->
     <script src="{{ asset('js/ppaManagement/manageTable.js') }}"></script>
 
     <!-- Hover on Button -->
     <script src="{{ asset('js/functionalities.js') }}"></script>
-
-    <!-- <script>
-        $('#adminLoginModal').on('shown.bs.modal', function () {
-            $('#adminUsername').focus();
-        });
-    </script> -->
-    <script src="{{ asset('js/ppaManagement/program.js') }}"></script>
 </body>
 
 </html>

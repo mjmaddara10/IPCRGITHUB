@@ -10,6 +10,7 @@ use App\Http\Controllers\authorizationController;
 use App\Http\Controllers\adminModificationController;
 use App\Http\Controllers\adminPagesController;
 use App\Http\Controllers\assignController;
+use App\Http\Controllers\sortingController;
 
 Route::get('/', function () {
     return view('/index');
@@ -48,6 +49,11 @@ Route::prefix('admin')->group(function () {
     // Fetch employee for autofill (Edit sub-activity)
     Route::get('/subActivity/{id}/fetchEmployeeSub', [ppaController::class, 'fetchEmployeeSub']);
 
+    // Sorting
+    Route::post('/programs/{id}/move/{direction}', [sortingController::class, 'moveProgram'])->name('program.move');
+    Route::post('/activities/{id}/move/{direction}', [sortingController::class, 'moveActivity'])->name('activity.move');
+    Route::post('/subActivities/{id}/move/{direction}', [sortingController::class, 'moveSubActivity'])->name('subActivity.move');
+
 });
 
 Route::prefix('viewPpa')->group(function () {
@@ -56,7 +62,8 @@ Route::prefix('viewPpa')->group(function () {
 });
 
 Route::prefix('pdf')->group(function () {
-    Route::get('/generatePdf', [PDFController::class, 'generatePdf'])->name('pdf.generatePdf');
+    // Route::post('/generatePdf', [PDFController::class, 'generatePdf'])->name('pdf.generatePdf');
+    Route::get('/{id}/generatePdf', [PDFController::class, 'generatePdf'])->name('pdf.generatePdf');
 });
 
 //===================Middleware===================//
@@ -67,7 +74,7 @@ Route::middleware(['auth', 'role:Staff'])->group(function () {
     });
 });
 
-Route::middleware(['auth', 'role:Division Chief'])->group(function () {
+Route::middleware(['auth', 'role:Division Chief|Assistant Department Head'])->group(function () {
     Route::prefix('chief')->group(function () {
         Route::get('/managePpa', [adminPagesController::class, 'managePpa'])->name('chief.managePpa');
         Route::get('/viewEmployees', [adminPagesController::class, 'viewEmployees'])->name('chief.viewEmployees');

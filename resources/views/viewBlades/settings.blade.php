@@ -15,33 +15,61 @@
                 <div class="p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex align-items-center ms-auto">
-                        @if($role === 'Division Chief')
-                            <a href="{{ route('chief.audit') }}" class="btn btn-hover nv-green mb-1 me-1">Audit Trail</a>
+                        @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                            <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
+                                Manage PPA
+                            </a>
                             <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 View Targets
                             </a>
-                            <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                Manage PPA
-                            </a>
-                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+
+                            <div class="btn-group" style="margin-left: 3px;">
+                                <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Lookup Tables
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('chief.audit') }}">Audit Trail</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('chief.viewEmployees') }}">View Users</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a>
                         @elseif($role === 'Department Head')
-                            <a href="{{ route('head.audit') }}" class="btn btn-hover nv-green mb-1 me-1">Audit Trail</a>
+                            <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
+                                Manage PPA
+                            </a>
                             <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 View Targets
                             </a>
-                            <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                Manage PPA
-                            </a>
-                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+
+                            <div class="btn-group" style="margin-left: 3px;">
+                                <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Lookup Tables
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('head.audit') }}">Audit Trail</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('head.viewEmployees') }}">View Users</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a>
                         @elseif($role === 'Staff')
                             <a href="{{ route('staff.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                 View Targets
                             </a>
-                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                            <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a>
                         @endif

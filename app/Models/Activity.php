@@ -19,6 +19,7 @@ class Activity extends Model
         'remarks',
         'accountable_id',
         'program_id',
+        'order',
     ];
     
     public function program()

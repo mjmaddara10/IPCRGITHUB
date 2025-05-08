@@ -10,12 +10,12 @@ class RoleMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next, $role) {
+    public function handle($request, Closure $next, $roles)
+    {
+        $roles = explode('|', $roles);
 
-        if (auth()->check() && auth()->user()->role === $role) {
+        if (auth()->check() && in_array(auth()->user()->role, $roles)) {
             return $next($request);
         }
 

@@ -3,7 +3,7 @@
 @extends('layouts')
 
 <!-- Sets the page title in the browser tab -->
-@section('title', 'View Users')
+@section('title', 'Audit Trail')
 
 <!-- Navigation Section -->
 @section('navbar')
@@ -11,45 +11,63 @@
 @endsection
 
 @section('content')
-<div class="page-background"></div>
+<!-- <div class="page-background"></div> -->
 <div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
-    <div class="container-fluid mt-4 position-relative">
+    <div class="container-fluid position-relative">
         <div class="row">
             <div class="col-12">
                 <div class="bg-white">
                     <div class="p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center ms-auto">
-                            @if($role === 'Division Chief')
-                                <a href="{{ route('chief.audit') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
-                                    Audit Trail
-                                </a>
-                                <a href="{{ route('chief.viewEmployees') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
-                                    View Users
+                            @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                                <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
+                                    Manage PPA
                                 </a>
                                 <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     View Targets
                                 </a>
-                                <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    Manage PPA
-                                </a>
-                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+
+                                <div class="btn-group" style="margin-left: 3px;">
+                                    <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Lookup Tables
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('chief.audit') }}">Audit Trail</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('chief.viewEmployees') }}">View Users</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
                             @elseif($role === 'Department Head')
-                                <a href="{{ route('head.audit') }}" class="btn btn-hover text-success fw-bold" style="background-color:rgb(230, 230, 230);">
-                                    Audit Trail
-                                </a>
-                                <a href="{{ route('head.viewEmployees') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    View Users
+                                <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
+                                    Manage PPA
                                 </a>
                                 <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
                                     View Targets
                                 </a>
-                                <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    Manage PPA
-                                </a>
-                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+
+                                <div class="btn-group" style="margin-left: 3px;">
+                                    <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Lookup Tables
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('head.audit') }}">Audit Trail</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('head.viewEmployees') }}">View Users</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
                             @endif
@@ -68,22 +86,22 @@
                         </div>
                         <div class="p-4">
                             <div class="table-responsive">
-                                <table id="manageUserTable" class="table table-hover">
+                                <table id="auditTable" class="table table-hover" style="table-layout: fixed; width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th style="color: #03592c;">Created_At</th>
-                                            <th style="color: #03592c;">Name</th>
-                                            <th style="color: #03592c;">Role</th>
-                                            <th style="color: #03592c;">Program Name</th>
-                                            <th style="color: #03592c;">Actions</th>
-                                            <th style="color: #03592c;">From</th>
-                                            <th style="color: #03592c;">To</th>
+                                            <th style="color: #03592c; width: 8%;">Created_At</th>
+                                            <th style="color: #03592c; width: 13%;">Name</th>
+                                            <th style="color: #03592c; width: 8%;">Role</th>
+                                            <th style="color: #03592c; width: 12%;">Program Name</th>
+                                            <th style="color: #03592c; width: 18%;">Actions</th>
+                                            <th style="color: #03592c; width: 20%;">From</th>
+                                            <th style="color: #03592c; width: 20%;">To</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($auditTrails as $audit)
                                         <tr>
-                                            <td>{{ \Carbon\Carbon::parse($audit->created_at)->format('Y-m-d H:i') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($audit->created_at)->format('F j, Y') }}<br>{{ \Carbon\Carbon::parse($audit->created_at)->format('g:i A') }}</td>
                                             <td>{{ $audit->full_name }}</td>
                                             <td>{{ $audit->role }}</td>
                                             <td>{{ $audit->program_name }}</td>
@@ -102,4 +120,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

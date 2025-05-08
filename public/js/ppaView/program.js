@@ -40,7 +40,7 @@ $('#addProgramForm').on('submit', function(e) {
                 }
             });
         }
-    });
+    });    
 });
 
 // Edit Program Fill Form
@@ -106,7 +106,7 @@ function updateDivisionOptions() {
 }
 
 // Main click handler
-$(document).off('click', '.editProgramBtn').on('click', '.editProgramBtn', function () {
+$(document).off('click', '.editProgramBtnTarget').on('click', '.editProgramBtnTarget', function () {
     var programId = $(this).data('program-id');
     var programName = $(this).data('program-name');
     var programSuccessIndicator = $(this).data('program-success');
@@ -166,7 +166,7 @@ $(document).on('change', '#editDivisionSelectContainer select', function () {
 // Edit Program
 $('#editProgramForm').on('submit', function(e) {
     e.preventDefault();
-
+    
     Swal.fire({
         title: "Are you sure?",
         text: "Do you want to save these changes?",
@@ -213,12 +213,10 @@ $('#editProgramForm').on('submit', function(e) {
 });
 
 // Delete Program
-$(document).on('click', '.deleteProgramBtn', function(e) {
+$(document).on('click', '.deleteProgramBtnTarget', function(e) {
     e.preventDefault();
 
     var programId = $(this).data('program-id');
-    // var deleteUrl  = $(this).data('url');
-    // console.log(programId);
 
     Swal.fire({
         title: "Are you sure?",
@@ -409,5 +407,32 @@ document.getElementById('divisionSelectContainer').addEventListener('click', fun
     if (e.target.closest('.removeDivisionBtn')) {
         e.preventDefault();
         e.target.closest('.division-select-group').remove();
+    }
+});
+
+// Filtering thru Division
+document.getElementById('divisionFilter').addEventListener('change', function () {
+    const selectedDivisionId = this.value;
+    localStorage.setItem('selectedDivisionId', selectedDivisionId); // ✅ Save it in localStorage
+
+    // Apply filter
+    document.querySelectorAll('.programRow').forEach(row => {
+        const divisionIds = row.dataset.divisionIds.split(',');
+        const programId = row.dataset.programId;
+        const match = selectedDivisionId === '' || divisionIds.includes(selectedDivisionId);
+
+        row.style.display = match ? '' : 'none';
+
+        document.querySelectorAll(`[data-program-id="${programId}"]`).forEach(childRow => {
+            childRow.style.display = match ? '' : 'none';
+        });
+    });
+});
+
+$(document).ready(function () {
+    const savedDivisionId = sessionStorage.getItem('selectedDivisionId');
+    if (savedDivisionId !== null) {
+        $('#divisionFilter').val(savedDivisionId).trigger('change');
+        sessionStorage.removeItem('selectedDivisionId'); // Clear after applying
     }
 });
