@@ -12,16 +12,16 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tbl_employee', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
             $table->string('firstName');
             $table->string('middleName')->nullable();
             $table->string('lastName');
             $table->string('position');
             $table->string('status');
-
+        
             $table->unsignedBigInteger('division_id')->nullable();
             $table->foreign('division_id')->references('id')->on('divisions')->onDelete('cascade');
-
+        
             $table->string('username');
             $table->string('password');
             $table->string('role');
