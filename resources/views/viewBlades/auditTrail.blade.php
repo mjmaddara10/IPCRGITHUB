@@ -86,7 +86,7 @@
                         </div>
                         <div class="p-4">
                             <div class="table-responsive">
-                                <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                                <table id="auditTable" class="table table-hover" style="table-layout: fixed; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th style="color: #03592c; width: 8%;">Created_At</th>
