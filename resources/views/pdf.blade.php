@@ -56,8 +56,12 @@
                 padding: 5px 0;
             }
 
-            .pageNum:after {
+            .pageNumber:after {
                 content: counter(page);
+            }
+
+            .totalPages:after {
+                content: counter(pages);
             }
         </style>
     </head>
@@ -221,30 +225,30 @@
 
                         @foreach($targets as $target)
                             @php
-                                $programName = $target['program_name'] ?? '';
-                                $activityName = $target['activity_name'] ?? '';
+                                $programId = $target['program_id'] ?? '';
+                                $activityId = $target['activity_id'] ?? '';
                             @endphp
 
                             {{-- Program --}}
-                            @if(!in_array($programName, $printedPrograms))
+                            @if(!in_array($programId, $printedPrograms))
                                 <tr class="small">
-                                    <td class="bold uppercase border">{{ $programName }}</td>
+                                    <td class="bold uppercase border">{{ $target['program_name'] ?? '' }}</td>
                                     <td class="bold border" colspan="5"></td>
                                 </tr>
-                                @php $printedPrograms[] = $programName; @endphp
+                                @php $printedPrograms[] = $programId; @endphp
                             @endif
 
                             {{-- Activity --}}
-                            @if(!in_array($activityName, $printedActivities))
+                            @if(!in_array($activityId, $printedActivities))
                                 <tr class="small">
-                                    <td class="uppercase border" style="padding-left: 5px;">{{ $activityName }}</td>
+                                    <td class="uppercase border" style="padding-left: 5px;">{{ $target['activity_name'] ?? '' }}</td>
                                     <td class="border">{{ $target['activity_success_indicator'] ?? '' }}</td>
                                     <td class="border">{{ $target['activity_quality'] ?? '' }}</td>
                                     <td class="border">{{ $target['activity_efficiency'] ?? '' }}</td>
                                     <td class="border">{{ $target['activity_timeliness'] ?? '' }}</td>
                                     <td class="border">{{ $target['activity_remarks'] ?? '' }}</td>
                                 </tr>
-                                @php $printedActivities[] = $activityName; @endphp
+                                @php $printedActivities[] = $activityId; @endphp
                             @endif
 
                             {{-- Sub-Activity (always print) --}}
@@ -264,7 +268,7 @@
                             <tr class="smaller" style="text-align: center;">
                                 <td rowspan="2" class="bold border" >PROGRAMS/PROJECTS/ACTIVITIES</td>
                                 <td rowspan="2" class="bold border" style="width:12%;">SUCCESS INDICATOR</td>
-                                <td rowspan="2" class="bold border" style="width:8%;">ALLOTTED BUDGET</td>
+                                <td rowspan="2" class="bold border" style="width:9%;">ALLOTTED BUDGET</td>
                                 <td rowspan="2" class="bold border" style="width:12%;">DIVISION/S RESPONSIBLE</td>
                                 <td colspan="3" class="bold small border">RATINGS</td>
                                 <td rowspan="2" class="bold border" style="width:13%;">REMARKS</td>
@@ -283,14 +287,14 @@
 
                         @foreach($targets as $target)
                             @php
-                                $programName = $target['program_name'] ?? '';
-                                $activityName = $target['activity_name'] ?? '';
+                                $programId = $target['program_id'] ?? '';
+                                $activityId = $target['activity_id'] ?? '';
                             @endphp
 
                             {{-- Program --}}
-                            @if(!in_array($programName, $printedPrograms))
+                            @if(!in_array($programId, $printedPrograms))
                                 <tr class="small">
-                                    <td class="bold uppercase border">{{ $programName }}</td>
+                                    <td class="bold uppercase border">{{ $target['program_name'] ?? '' }}</td>
                                     <td class="border">{{ $target['program_success_indicator'] ?? '' }}</td>
                                     <td class="border">{{ $target['program_budget'] ?? '' }}</td>
                                     <td class="border">{!! is_array($target['program_division'] ?? null) ? implode('<br><br>', $target['program_division']) : ($target['program_division'] ?? '') !!}</td>
@@ -299,13 +303,13 @@
                                     <td class="border">{{ $target['program_timeliness'] ?? '' }}</td>
                                     <td class="border">{{ $target['program_remarks'] ?? '' }}</td>
                                 </tr>
-                                @php $printedPrograms[] = $programName; @endphp
+                                @php $printedPrograms[] = $programId; @endphp
                             @endif
 
                             {{-- Activity --}}
-                            @if(!in_array($activityName, $printedActivities))
+                            @if(!in_array($activityId, $printedActivities))
                                 <tr class="small">
-                                    <td class="uppercase border" style="padding-left:5px;">{{ $activityName }}</td>
+                                    <td class="uppercase border" style="padding-left:5px;">{{ $target['activity_name'] ?? '' }}</td>
                                     <td class="border">{{ $target['activity_success_indicator'] ?? '' }}</td>
                                     <td class="border" style="white-space: pre-wrap;"></td>
                                     <td class="border"></td>
@@ -314,7 +318,7 @@
                                     <td class="border" style="white-space: pre-wrap;">{{ $target['activity_timeliness'] ?? '' }}</td>
                                     <td class="border" style="white-space: pre-wrap;">{{ $target['activity_remarks'] ?? '' }}</td>
                                 </tr>
-                                @php $printedActivities[] = $activityName; @endphp
+                                @php $printedActivities[] = $activityId; @endphp
                             @endif
                         @endforeach                    
                     </table>
@@ -324,9 +328,7 @@
         
         
         <footer>
-            <div>
-                <span class="pageNum">Page </span>
-            </div>
+            <div>Page <span class="pageNumber"></span></div>
         </footer>
     </body>
     

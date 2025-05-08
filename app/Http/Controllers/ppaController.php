@@ -507,8 +507,6 @@ class ppaController extends Controller
                 'program_name' => $program->name,
                 'record_id' => $program->id
             ]);
-
-            return redirect()->back()->with('success', 'Program updated successfully.');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return redirect()->back()->with('error', 'Program not found.');
         } catch (\Exception $e) {

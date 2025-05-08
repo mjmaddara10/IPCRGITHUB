@@ -411,30 +411,3 @@ document.getElementById('divisionSelectContainer').addEventListener('click', fun
         e.target.closest('.division-select-group').remove();
     }
 });
-
-// Filtering thru Division
-document.getElementById('divisionFilter').addEventListener('change', function () {
-    const selectedDivisionId = this.value;
-    localStorage.setItem('selectedDivisionId', selectedDivisionId); // ✅ Save it in localStorage
-
-    // Apply filter
-    document.querySelectorAll('.programRow').forEach(row => {
-        const divisionIds = row.dataset.divisionIds.split(',');
-        const programId = row.dataset.programId;
-        const match = selectedDivisionId === '' || divisionIds.includes(selectedDivisionId);
-
-        row.style.display = match ? '' : 'none';
-
-        document.querySelectorAll(`[data-program-id="${programId}"]`).forEach(childRow => {
-            childRow.style.display = match ? '' : 'none';
-        });
-    });
-});
-
-$(document).ready(function () {
-    const savedDivisionId = sessionStorage.getItem('selectedDivisionId');
-    if (savedDivisionId !== null) {
-        $('#divisionFilter').val(savedDivisionId).trigger('change');
-        sessionStorage.removeItem('selectedDivisionId'); // Clear after applying
-    }
-});

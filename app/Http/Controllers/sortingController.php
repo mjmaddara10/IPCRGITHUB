@@ -27,8 +27,10 @@ class sortingController extends Controller
     public function moveActivity($id, $direction) {
         $activity = Activity::findOrFail($id);
 
-        $swapActivity = Activity::where('order', $direction === 'up'
-        ? '<' : '>', $activity->order)->orderBy('order', $direction === 'up' ? 'desc' : 'asc')->first();
+        $swapActivity = Activity::where('program_id', $activity->program_id)
+            ->where('order', $direction === 'up' ? '<' : '>', $activity->order)
+            ->orderBy('order', $direction === 'up' ? 'desc' : 'asc')
+            ->first();
 
         if ($swapActivity) {
             [$activity->order, $swapActivity->order] = [$swapActivity->order, $activity->order];
@@ -42,8 +44,10 @@ class sortingController extends Controller
     public function moveSubActivity($id, $direction) {
         $subActivity = SubActivity::findOrFail($id);
 
-        $swapSubActivity = SubActivity::where('order', $direction === 'up'
-        ? '<' : '>', $subActivity->order)->orderBy('order', $direction === 'up' ? 'desc' : 'asc')->first();
+        $swapSubActivity = SubActivity::where('activity_id', $subActivity->activity_id) // Restrict to same activity
+            ->where('order', $direction === 'up' ? '<' : '>', $subActivity->order)
+            ->orderBy('order', $direction === 'up' ? 'desc' : 'asc')
+            ->first();
 
         if ($swapSubActivity) {
             [$subActivity->order, $swapSubActivity->order] = [$swapSubActivity->order, $subActivity->order];

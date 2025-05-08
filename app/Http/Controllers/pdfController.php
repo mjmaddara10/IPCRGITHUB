@@ -37,6 +37,7 @@ class pdfController extends Controller
                     if ($activity->subActivities->count()) {
                         foreach ($activity->subActivities as $subActivity) {
                             $targets[] = [
+                                'program_id' => $program->id,
                                 'program_name' => $program->name,
                                 'program_division' => $program->divisions->pluck('name')->toArray(),
                                 'program_budget' => $program->budget,
@@ -45,6 +46,7 @@ class pdfController extends Controller
                                 'program_efficiency' => $program->efficiency,
                                 'program_timeliness' => $program->timeliness,
                                 'program_remarks' => $program->remarks,
+                                'activity_id' => $activity->id,
                                 'activity_name' => $activity->name,
                                 'activity_success_indicator' => $activity->successIndicator,
                                 'activity_quality' => $activity->quality,
@@ -62,6 +64,7 @@ class pdfController extends Controller
                     } else {
                         // activity without sub-activities
                         $targets[] = [
+                            'program_id' => $program->id,
                             'program_name' => $program->name,
                             'program_division' => $program->divisions->pluck('name')->toArray(),
                             'program_budget' => $program->budget,
@@ -70,6 +73,7 @@ class pdfController extends Controller
                             'program_efficiency' => $program->efficiency,
                             'program_timeliness' => $program->timeliness,
                             'program_remarks' => $program->remarks,
+                            'activity_id' => $activity->id,
                             'activity_name' => $activity->name,
                             'activity_success_indicator' => $activity->successIndicator,
                             'activity_quality' => $activity->quality,
@@ -98,7 +102,9 @@ class pdfController extends Controller
                 $program = $activity->program;
     
                 $targets[] = [
+                    'program_id' => $program->id,
                     'program_name' => $program->name,
+                    'activity_id' => $activity->id,
                     'activity_name' => $activity->name,
                     'sub_activity_name' => $subActivity->name,
                     'sub_activity_success_indicator' => $subActivity->successIndicator,
@@ -125,6 +131,9 @@ class pdfController extends Controller
 
 
         $pdf = PDF::loadView('pdf', $data)->setPaper('legal', 'landscape');
+        $pdf->set_option("isPhpEnabled", true);
+        $pdf->set_option("isHtml5ParserEnabled", true);
+        $pdf->set_option("isRemoteEnabled", true);
 
         
         

@@ -115,7 +115,7 @@
                         <div class="d-flex align-items-center flex-wrap">
                             
                             @if($role === 'Division Chief' || $role === 'Assistant Department Head')
-                                <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;">Manage PPA</a>
+                                <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;" onclick="localStorage.clear();">Manage PPA</a>
                                 <a href="{{ route('chief.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">View Targets</a>
 
                                 <div class="btn-group" style="margin-left: 3px;">
@@ -136,7 +136,7 @@
                                     Logout
                                 </a>
                             @elseif($role === 'Department Head')
-                            <a href="{{ route('head.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;">Manage PPA</a>
+                            <a href="{{ route('head.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;" onclick="localStorage.clear();">Manage PPA</a>
                                 <a href="{{ route('head.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">View Targets</a>
 
                                 <div class="btn-group" style="margin-left: 3px;">

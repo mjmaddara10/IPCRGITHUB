@@ -48,7 +48,7 @@
                     <!-- Buttons -->
                     <div class="d-flex align-items-center ms-auto">
                         @if($role === 'Division Chief' || $role === 'Assistant Department Head')
-                        <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" class="btn btn-hover text-success fw-bold">
+                        <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" class="btn btn-hover text-success fw-bold" onclick="localStorage.clear();">
                                 Manage PPA
                             </a>
                             <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
@@ -73,7 +73,7 @@
                                 Logout
                             </a>
                         @elseif($role === 'Department Head')
-                            <a href="{{ route('head.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" class="btn btn-hover text-success fw-bold">
+                            <a href="{{ route('head.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" class="btn btn-hover text-success fw-bold" onclick="localStorage.clear();">
                                 Manage PPA
                             </a>
                             <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
@@ -132,7 +132,7 @@
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->efficiency }}</td>
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->timeliness }}</td>
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->remarks }}</td>
-                                <td class="text-center border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->budget }}</td>
+                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->budget }}</td>
                                 @php
                                     $allDivisionCount = \App\Models\Division::count();
                                     $assignedCount = $program->divisions->count();
@@ -262,7 +262,7 @@
 
                                 <!-- Sub-Activities -->
                                 @foreach($activity->subActivities->sortBy('order') as $subActivity)
-                                    <tr class="subActivityRow" id="subActivity-{{ $subActivity->id }}" data-program-id="{{ $program->id }}" data-parent-program-id="{{ $program->id }}">
+                                    <tr class="subActivityRow" id="subActivity-{{ $subActivity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
                                         <td class="text-left" hidden>{{ $subActivity->id }}</td>
                                         <td class="text-left ps-3 border border-muted">{{ $subActivity->name }}</td>
                                         <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
@@ -922,7 +922,9 @@
     window.onload = function () {
         const element = document.getElementById('{{ session('scrolled_id') }}');
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const rect = element.getBoundingClientRect();
+            const offset = window.pageYOffset + rect.top - (window.innerHeight / 2);
+            window.scrollTo({ top: offset * 0.75, behavior: 'smooth' }); // Adjusted for scale
         }
     }
 </script>
