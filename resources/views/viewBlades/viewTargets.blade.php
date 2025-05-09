@@ -63,12 +63,13 @@
                     <!-- Exporting -->
                     @if($role === 'Division Chief' || $role === 'Assistant Department Head' || $role === 'Department Head')
                         <div class="d-flex align-items-center ms-auto" style="color: #FFFFFF; font-weight: 500;">
-                            <div class="col-12 d-flex justify-content-start">
-                                <a class="btn btn-md btn-primary" id="exportBtn"
-                                data-user-id="{{ $user->id }}"
-                                data-user-division="{{ $user->division_id }}">
-                                    <i class="fas fa-file-pdf me-2"></i> Print O/D/IPCR
-                                </a>
+                            <div class="col-12 d-flex flex-column align-items-end">
+                                <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
+                                    {{ now()->format('F j, Y') }}
+                                </h4>
+                                <p class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif;">
+                                    {{ now()->format('h:i A') }}
+                                </p>
                             </div>
                         </div>
                     @endif
@@ -117,6 +118,9 @@
                             @if($role === 'Division Chief' || $role === 'Assistant Department Head')
                                 <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;" onclick="localStorage.clear();">Manage PPA</a>
                                 <a href="{{ route('chief.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">View Targets</a>
+
+                                
+                                <a class="btn nv-green" id="exportBtn" data-user-id="{{ $user->id }}" data-user-division="{{ $user->division_id }}" style="margin-left: 3px;><i class="fas fa-file-pdf me-2"></i> Print O/D/IPCR</a>
 
                                 <div class="btn-group" style="margin-left: 3px;">
                                     <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -169,41 +173,6 @@
                     </div>
                 </div>
 
-                <!-- Paragraph -->
-                <!-- <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12 p-3" style="font-family: 'Montserrat'; text-align: justify; font-weight: 1000;">
-                            <p class="justified-text" id="employeeCommitmentText">
-                                I, <span id="empName" class="fw-bold text-uppercase">________</span>,
-                                <span id="empPosition" class="fw-bold">________</span> -
-                                <span id="empStatus" class="fw-bold ">________</span><strong> of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE</strong>
-                                <span id="empDivision" class="fw-bold text-uppercase">________</span> commit to deliver and agree to be rated on the attainment of the following targets in accordance with the indicated measures for the period January to December 2025.
-                            </p>
-
-                            <div class="d-flex justify-content-center">
-                                <div class="row mt-3 align-items-center" style="width: 100%; max-width: 1200px;">
-                                    <table style="width: 1200px;">
-                                        <tr>
-                                            <td class="text-end"><h6 class="mb-0 text-nowrap">Reviewed by: </h6></td>
-                                            <td><h6 id="reviewedByName" class="mb-0 text-nowrap fw-bold ps-2"></h6></td>
-                                            <td class="text-end"><h6 class="mb-0 text-nowrap">Approved by: </h6></td>
-                                            <td><h6 class="mb-0 text-nowrap fw-bold ps-2">Ma. Carla Lucia M. Torralba</h6></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-end"><h6 class="mb-0 text-nowrap"></h6></td>
-                                            <td><h6 id="reviewedByPosition" class="mb-0 text-nowrap ps-2"></h6></td>
-                                            <td class="text-end"><h6 class="mb-0 text-nowrap"></h6></td>
-                                            <td><h6 class="mb-0 text-nowrap ps-2">Provincial Human Resource Management Officer</h6></td>
-                                        </tr>
-
-                                    </table>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                
                 <!-- Table Section -->
                 <div class="container-fluid pt-3">
                     @if($role === 'Staff')

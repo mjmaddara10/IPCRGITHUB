@@ -107,7 +107,7 @@
                 <table id="ppaTable" class="table" style="table-layout: fixed; width: 100%;">
                     <thead class="text-center">
                         <tr style="vertical-align:middle;">
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 15%;">Programs/Project/Activities</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12%;">Programs/Project/ Activities</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Success Indicator</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Quality</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Efficiency</th>
@@ -132,7 +132,7 @@
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->efficiency }}</td>
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->timeliness }}</td>
                                 <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->remarks }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->budget }}</td>
+                                <td class="text-end border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->budget }}</td>
                                 @php
                                     $allDivisionCount = \App\Models\Division::count();
                                     $assignedCount = $program->divisions->count();
@@ -186,7 +186,7 @@
                                             <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
                                         </form>
 
-                                        <button type="submit" class="btn btn-sm btn-warning buttonHover programCollapseBtn mt-1"><i class="fas fa-inbox" style= "color: #FFFFFF;"></i></button>
+                                        <button type="submit" class="btn btn-sm btn-warning buttonHover programCollapseBtn mt-1"><i class="fas fa-down-left-and-up-right-to-center" style= "color: #FFFFFF;"></i></button>
                                     </div>
 
                                 </td>
@@ -255,7 +255,7 @@
                                                 <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
                                             </form>
 
-                                            <button type="submit" class="btn btn-sm btn-warning buttonHover activityCollapseBtn mt-1"><i class="fas fa-inbox" style= "color: #FFFFFF;"></i></button>
+                                            <button type="submit" class="btn btn-sm btn-warning buttonHover activityCollapseBtn mt-1"><i class="fas fa-down-left-and-up-right-to-center" style= "color: #FFFFFF;"></i></button>
                                         </div>
                                     </td>
                                 </tr>
