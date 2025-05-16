@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="page-background"></div>
-<div class="container mt-4 position-relative">
+<div class="container mt-2 position-relative">
     <div class="row">
         <div class="col-12">
             <div class="bg-white">
@@ -27,7 +27,7 @@
                                 <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     Lookup Tables
                                 </button>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu default-text">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('chief.audit') }}">Audit Trail</a>
                                     </li>
@@ -52,7 +52,7 @@
                                 <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     Lookup Tables
                                 </button>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu default-text">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('head.audit') }}">Audit Trail</a>
                                     </li>

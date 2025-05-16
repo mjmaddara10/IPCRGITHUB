@@ -14,6 +14,9 @@ $(document).on('click', '.closeEditModal', function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             // Close the modal if the user confirms
+            $('#editGassModal').modal('hide');
+            $('#editGassProgramModal').modal('hide');
+            $('#editGassActivityModal').modal('hide');
             $('#editActivityModal').modal('hide');
             $('#editProgramModal').modal('hide');
             $('#editProjectModal').modal('hide');
@@ -46,6 +49,7 @@ $(document).on('click', '.closeAddModal', function(e) {
             $('#addActivityInProgramModal').modal('hide');
             $('#addSubProjectModal').modal('hide');
             $('#addSubActivityModal').modal('hide');
+            $('#addGassProgramModal').modal('hide');
         }
     });
 });

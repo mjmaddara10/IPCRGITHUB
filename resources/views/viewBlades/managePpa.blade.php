@@ -11,10 +11,9 @@
 
 @section('content')
 <!-- <div class="page-background"></div> -->
-<div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;" data-scrolled-id="{{ session('scrolled_id') }}">
+<div data-scrolled-id="{{ session('scrolled_id') }}">
     <div class="container-fluid mt-2">
         <div class="bg-white">
-
             <!-- Header -->
             <div class="card-header py-3 d-flex align-items-center nv-green">
                 <div class="d-flex align-items-center">
@@ -33,16 +32,19 @@
                         @foreach ($divisions as $division)
                             <option value="{{ $division->id }}">{{ $division->name }}</option>
                         @endforeach
+                        <option value="gass">General Administrative and Support Services</option>
                     </select>
                 </div>
             </div>
 
             <!-- Content || Navigation Buttons -->
-            <div class="p-4">
+            <div class="py-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <!-- Add Program -->
-                        <a class="btn nv-green" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
+                        <a class="btn nv-green" id="addProgramBtn" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
+
+                        <a class="btn nv-green" id="addGassProgramBtn" data-bs-toggle="modal" data-bs-target="#addGassProgramModal" style= "color: #FFFFFF; background-color: #03592c; display:none;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
                     </div>
 
                     <!-- Buttons -->
@@ -59,7 +61,7 @@
                                 <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     Lookup Tables
                                 </button>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu default-text">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('chief.audit') }}">Audit Trail</a>
                                     </li>
@@ -84,7 +86,7 @@
                                 <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     Lookup Tables
                                 </button>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu default-text">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('head.audit') }}">Audit Trail</a>
                                     </li>
@@ -102,10 +104,10 @@
                 </div>
             </div>
 
-                <!-- PPA Table -->
-                <div class="table-responsive" id="tableContainer">
+            <!-- PPA Table -->
+            <div class="table-responsive" id="tableContainer">
                 <table id="ppaTable" class="table" style="table-layout: fixed; width: 100%;">
-                    <thead class="text-center">
+                    <thead class="text-center default-text">
                         <tr style="vertical-align:middle;">
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12%;">Programs/Project/ Activities</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Success Indicator</th>
@@ -126,24 +128,24 @@
                                 $divisionIds = $program->divisions->pluck('id')->implode(',');
                             @endphp
                             <tr class="programRow" id="program-{{ $program->id }}" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}" style="vertical-align: top;">
-                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->successIndicator }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->quality }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->efficiency }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->timeliness }}</td>
-                                <td class="text-left border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->remarks }}</td>
-                                <td class="text-end border border-muted"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->budget }}</td>
+                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase default-text" style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
+                                <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->successIndicator }}</td>
+                                <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->quality }}</td>
+                                <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->efficiency }}</td>
+                                <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->timeliness }}</td>
+                                <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->remarks }}</td>
+                                <td class="text-end border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->budget }}</td>
                                 @php
                                     $allDivisionCount = \App\Models\Division::count();
                                     $assignedCount = $program->divisions->count();
                                 @endphp
 
-                                <td class="text-left border border-muted" style="background-color: #03592c; color:#FFFFFF; vertical-align: top;">
+                                <td class="text-left border border-muted default-text" style="background-color: #03592c; color:#FFFFFF; vertical-align: top;">
                                     @if ($assignedCount === $allDivisionCount)
                                         All Divisions
                                     @else
                                         @foreach ($program->divisions as $division)
-                                           {{ $division->name }} <br> <br> 
+                                        {{ $division->name }} <br> <br> 
                                         @endforeach
                                     @endif
                                 </td>
@@ -151,14 +153,14 @@
                                 <!-- Buttons -->
                                 <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;">
                                     <!-- Add Activity -->
-                                    <button class="btn btn-sm addActivityInProgramBtn buttonHover" title="Add an activity"
+                                    <button class="btn action-btn addActivityInProgramBtn buttonHover" title="Add an activity"
                                         data-program-id="{{ $program->id }}" 
                                         data-program-name="{{ $program->name }}" 
                                         data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
                                     </button>
 
                                     <!-- Edit Program -->
-                                    <button class="btn btn-sm editProgramBtn buttonHover" title="Edit program name"
+                                    <button class="btn action-btn editProgramBtn buttonHover" title="Edit program name"
                                         data-program-id="{{ $program->id }}" 
                                         data-program-name="{{ $program->name }}"
                                         data-program-success="{{ $program->successIndicator }}"
@@ -170,23 +172,23 @@
                                     </button>
 
                                     <!-- Delete Program -->
-                                    <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete program"
+                                    <button class="btn action-btn deleteProgramBtn buttonHover" title="Delete program"
                                         data-program-id="{{ $program->id }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
                                     </button>
 
                                     <!-- Move -->
-                                    <div style="display: flex; justify-content: center; gap: 4px;">
+                                    <div style="display: flex; justify-content: center; gap: 3px;">
                                         <form method="POST" action="{{ route('program.move' , [$program->id , 'up']) }}">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                            <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
                                         </form>
 
                                         <form method="POST" action="{{ route('program.move' , [$program->id , 'down']) }}">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                            <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
                                         </form>
 
-                                        <button type="submit" class="btn btn-sm btn-warning buttonHover programCollapseBtn mt-1"><i class="fas fa-down-left-and-up-right-to-center" style= "color: #FFFFFF;"></i></button>
+                                        <button type="submit" class="btn action-btn btn-warning buttonHover programCollapseBtn mt-1"><i class="fas fa-down-left-and-up-right-to-center" style= "color: #FFFFFF;"></i></button>
                                     </div>
 
                                 </td>
@@ -196,19 +198,19 @@
                             @foreach ($program->activities->sortBy('order') as $activity)
                                 <tr class="activityRow" id="activity-{{ $activity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
                                     <td class="text-left" hidden>{{ $activity->id }}</td>
-                                    <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->successIndicator }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->quality }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->timeliness }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->remarks }}</td>
-                                    <td class="text-left border border-muted"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);"></td>
+                                    <td class="text-left border border-muted default-text" style="background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->successIndicator }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->quality }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->timeliness }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->remarks }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);"></td>
                                     @php
                                         $allEmployeeCount = \App\Models\Employee::count();
                                         $assignedCountAccountable = $activity->employees->count();
                                     @endphp
 
-                                    <td class="text-center border border-muted" style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">
+                                    <td class="text-center border border-muted default-text" style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">
                                     @if ($activity->employees->count() === $allEmployeeCount)
                                         All Employees
                                     @else
@@ -219,14 +221,14 @@
                                     </td>
                                     <td class="text-center border border-muted" style="background-color:rgb(212, 212, 212);">
                                         <!-- Add Sub-Activity -->
-                                        <button class="btn btn-sm addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
+                                        <button class="btn action-btn addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
                                             data-activity-id="{{ $activity->id }}" 
                                             data-activity-name="{{ $activity->name }}" 
                                             data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addSubActivityModal"><i class="fas fa-plus" style= "-webkit-text-stroke: 1px white; color: #FFFFFF;"></i>
                                         </button>
 
                                         <!-- Edit Activity -->
-                                        <button class="btn btn-sm editActivityBtn buttonHover" title="Edit activity" style="color: rgb(144, 144, 144); background-color: rgb(144, 144, 144);"
+                                        <button class="btn action-btn editActivityBtn buttonHover" title="Edit activity" style="color: rgb(144, 144, 144); background-color: rgb(144, 144, 144);"
                                             data-activity-id="{{ $activity->id }}" 
                                             data-activity-name="{{ $activity->name }}" 
                                             data-success-indicator="{{ $activity->successIndicator }}"
@@ -238,24 +240,24 @@
                                         </button>
 
                                         <!-- Delete Activity -->
-                                        <button class="btn btn-sm deleteActivityBtn buttonHover" title="Delete activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
+                                        <button class="btn action-btn deleteActivityBtn buttonHover" title="Delete activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
                                             data-activity-id="{{ $activity->id }}"
                                             data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash" style="color:#FFFFFF;"></i>
                                         </button>
 
                                         <!-- Move -->
-                                        <div style="display: flex; justify-content: center; gap: 4px;">
+                                        <div style="display: flex; justify-content: center; gap: 3px;">
                                             <form method="POST" action="{{ route('activity.move' , [$activity->id , 'up']) }}">
                                                 @csrf
-                                                <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
                                             </form>
 
                                             <form method="POST" action="{{ route('activity.move' , [$activity->id , 'down']) }}">
                                                 @csrf
-                                                <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
                                             </form>
 
-                                            <button type="submit" class="btn btn-sm btn-warning buttonHover activityCollapseBtn mt-1"><i class="fas fa-down-left-and-up-right-to-center" style= "color: #FFFFFF;"></i></button>
+                                            <button type="submit" class="btn action-btn btn-warning buttonHover activityCollapseBtn mt-1"><i class="fas fa-down-left-and-up-right-to-center" style= "color: #FFFFFF;"></i></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -264,19 +266,19 @@
                                 @foreach($activity->subActivities->sortBy('order') as $subActivity)
                                     <tr class="subActivityRow" id="subActivity-{{ $subActivity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
                                         <td class="text-left" hidden>{{ $subActivity->id }}</td>
-                                        <td class="text-left ps-3 border border-muted">{{ $subActivity->name }}</td>
-                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
-                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
-                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
-                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
-                                        <td class="text-left border border-muted"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
-                                        <td class="text-left border border-muted"style="white-space: pre-wrap;"></td>
+                                        <td class="text-left ps-3 border border-muted default-text">{{ $subActivity->name }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap;"></td>
                                         @php
                                             $allEmployeeCount = \App\Models\Employee::count();
                                             $assignedCountAccountable = $activity->employees->count();
                                         @endphp
 
-                                        <td class="text-center border border-muted" style="white-space: pre-wrap;">
+                                        <td class="text-center border border-muted default-text" style="white-space: pre-wrap;">
                                         @if ($subActivity->employees->count() === $allEmployeeCount)
                                             All Employees
                                         @else
@@ -287,7 +289,7 @@
                                         <td class="text-center border border-muted">
 
                                             <!-- Edit Sub-Activity -->
-                                            <button class="btn btn-sm editSubActivityBtn buttonHover" title="Edit sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
+                                            <button class="btn action-btn editSubActivityBtn buttonHover" title="Edit sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
                                                 data-sub-activity-id="{{ $subActivity->id }}" 
                                                 data-sub-activity-name="{{ $subActivity->name }}" 
                                                 data-success-indicator="{{ $subActivity->successIndicator }}"
@@ -300,21 +302,21 @@
                                             </button>
 
                                             <!-- Delete Sub-Activity -->
-                                            <button class="btn btn-sm deleteSubActivityBtn buttonHover" title="Delete sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
+                                            <button class="btn action-btn deleteSubActivityBtn buttonHover" title="Delete sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
                                                 data-sub-activity-id="{{ $subActivity->id }}"
                                                 data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
                                             </button>
 
                                             <!-- Move -->
-                                            <div style="display: flex; justify-content: center; gap: 4px;">
+                                            <div style="display: flex; justify-content: center; gap: 3px;">
                                                 <form method="POST" action="{{ route('subActivity.move' , [$subActivity->id , 'up']) }}">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                    <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
                                                 </form>
 
                                                 <form method="POST" action="{{ route('subActivity.move' , [$subActivity->id , 'down']) }}">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                    <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
                                                 </form>
                                             </div>
                                         </td>
@@ -327,17 +329,265 @@
                         @endforeach
                     </tbody>
                 </table>
-                </div>
             </div>
+
+            <!-- GASS Table -->
+            <div class="table-responsive" id="gassTable" style="display:none;">
+                <table id="ppaTable" class="table" style="table-layout: fixed; width: 100%;">
+                    <thead class="text-center default-text">
+                        <tr style="vertical-align:middle;">
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12%;">Programs/Project/ Activities</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Success Indicator</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Quality</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Efficiency</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Timeliness</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 10%;">Remarks/MOV</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 8%;">Allotted Budget</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division or Individuals Responsible</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="programTableBody">
+                        <!-- GASS Name -->
+                        @foreach ($gasses as $gass)
+                            <tr>
+                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase fs-6" style="background-color: #03592c; color:#FFFFFF" colspan="6">{{ $gass->name }}</td>
+                                <td class="text-end border border-muted ps-1 text-uppercase" style="background-color: #03592c; color:#FFFFFF">{{ $gass->budget }}</td>
+                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF"></td>
+                                <td class="text-center border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF">
+                                    <!-- Edit GASS -->
+                                    <button class="btn action-btn editGassBtn buttonHover" title="Edit GASS"
+                                        data-gass-id="{{ $gass->id }}" 
+                                        data-gass-name="{{ $gass->name }}"
+                                        data-gass-budget="{{ $gass->budget }}"
+                                        data-bs-toggle="modal" data-bs-target="#editGassModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Programs -->
+                            @foreach ($gass->programs->sortBy('order') as $program)
+                                @php
+                                    // Get all the division IDs for the current program
+                                    $divisionIds = $program->divisions->pluck('id')->implode(',');
+                                @endphp
+                                <tr class="programRow" id="program-{{ $program->id }}" data-program-id="{{ $program->id }}" style="vertical-align: top;">
+                                    <td class="text-left border border-muted ps-1 fw-bold text-uppercase default-text" style="background-color:rgb(2, 113, 56); color:#FFFFFF">{{ $program->name }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $program->successIndicator }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $program->quality }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $program->efficiency }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $program->timeliness }}</td>
+                                    <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $program->remarks }}</td>
+                                    <td class="text-end border border-muted default-text"style="white-space: pre-wrap; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $program->budget }}</td>
+                                    @php
+                                        $allDivisionCount = \App\Models\Division::count();
+                                        $assignedCount = $program->divisions->count();
+                                    @endphp
+
+                                    <td class="text-left border border-muted default-text" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">
+                                        @if ($assignedCount === $allDivisionCount)
+                                            All Divisions
+                                        @else
+                                            @foreach ($program->divisions as $division)
+                                            {{ $division->name }} <br> <br> 
+                                            @endforeach
+                                        @endif
+                                    </td>
+
+                                    <!-- Buttons -->
+                                    <td class="text-center" style= "color: #FFFFFF; background-color: rgb(2, 113, 56);">
+                                        <!-- Add Activity -->
+                                        <button class="btn action-btn addActivityInProgramBtn buttonHover" title="Add an activity"
+                                            data-program-id="{{ $program->id }}" 
+                                            data-program-name="{{ $program->name }}" 
+                                            data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
+                                        </button>
+
+                                        <!-- Edit Program -->
+                                        <button class="btn action-btn editProgramBtn buttonHover" title="Edit program name"
+                                            data-program-id="{{ $program->id }}" 
+                                            data-program-name="{{ $program->name }}"
+                                            data-program-success="{{ $program->successIndicator }}"
+                                            data-program-quality="{{ $program->quality }}"
+                                            data-program-efficiency="{{ $program->efficiency }}"
+                                            data-program-timeliness="{{ $program->timeliness }}"
+                                            data-program-remarks="{{ $program->remarks }}"
+                                            data-program-budget="{{ $program->budget }}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
+                                        </button>
+
+                                        <!-- Delete Program -->
+                                        <button class="btn action-btn deleteProgramBtn buttonHover" title="Delete program"
+                                            data-program-id="{{ $program->id }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
+                                        </button>
+
+                                        <!-- Move -->
+                                        <div style="display: flex; justify-content: center; gap: 3px;">
+                                            <form method="POST" action="{{ route('program.move' , [$program->id , 'up']) }}">
+                                                @csrf
+                                                <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                            </form>
+
+                                            <form method="POST" action="{{ route('program.move' , [$program->id , 'down']) }}">
+                                                @csrf
+                                                <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                            </form>
+
+                                            <button type="submit" class="btn action-btn btn-warning buttonHover programCollapseBtn mt-1"><i class="fas fa-down-left-and-up-right-to-center" style= "color: #FFFFFF;"></i></button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                                <!-- Activities in Program-->
+                                @foreach ($program->activities->sortBy('order') as $activity)
+                                    <tr class="activityRow" id="activity-{{ $activity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
+                                        <td class="text-left" hidden>{{ $activity->id }}</td>
+                                        <td class="text-left border border-muted default-text" style="background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->successIndicator }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->quality }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->timeliness }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->remarks }}</td>
+                                        <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);"></td>
+                                        @php
+                                            $allEmployeeCount = \App\Models\Employee::count();
+                                            $assignedCountAccountable = $activity->employees->count();
+                                        @endphp
+
+                                        <td class="text-center border border-muted default-text" style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">
+                                        @if ($activity->employees->count() === $allEmployeeCount)
+                                            All Employees
+                                        @else
+                                            @foreach ($activity->employees as $employee)
+                                                {{ $employee->firstName }} {{ strtoupper(substr($employee->middleName, 0, 1)) }}. {{ $employee->lastName }}
+                                            @endforeach
+                                        @endif
+                                        </td>
+                                        <td class="text-center border border-muted" style="background-color:rgb(212, 212, 212);">
+                                            <!-- Add Sub-Activity -->
+                                            <button class="btn action-btn addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
+                                                data-activity-id="{{ $activity->id }}" 
+                                                data-activity-name="{{ $activity->name }}" 
+                                                data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addSubActivityModal"><i class="fas fa-plus" style= "-webkit-text-stroke: 1px white; color: #FFFFFF;"></i>
+                                            </button>
+
+                                            <!-- Edit Activity -->
+                                            <button class="btn action-btn editActivityBtn buttonHover" title="Edit activity" style="color: rgb(144, 144, 144); background-color: rgb(144, 144, 144);"
+                                                data-activity-id="{{ $activity->id }}" 
+                                                data-activity-name="{{ $activity->name }}" 
+                                                data-success-indicator="{{ $activity->successIndicator }}"
+                                                data-quality="{{ $activity->quality }}"
+                                                data-efficiency="{{ $activity->efficiency }}"
+                                                data-timeliness="{{ $activity->timeliness }}"
+                                                data-remarks="{{ $activity->remarks }}"
+                                                data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#editActivityModal"><i class="fas fa-edit" style="color:#FFFFFF;"></i>
+                                            </button>
+
+                                            <!-- Delete Activity -->
+                                            <button class="btn action-btn deleteActivityBtn buttonHover" title="Delete activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
+                                                data-activity-id="{{ $activity->id }}"
+                                                data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash" style="color:#FFFFFF;"></i>
+                                            </button>
+
+                                            <!-- Move -->
+                                            <div style="display: flex; justify-content: center; gap: 3px;">
+                                                <form method="POST" action="{{ route('activity.move' , [$activity->id , 'up']) }}">
+                                                    @csrf
+                                                    <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                </form>
+
+                                                <form method="POST" action="{{ route('activity.move' , [$activity->id , 'down']) }}">
+                                                    @csrf
+                                                    <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                </form>
+
+                                                <button type="submit" class="btn action-btn btn-warning buttonHover activityCollapseBtn mt-1"><i class="fas fa-down-left-and-up-right-to-center" style= "color: #FFFFFF;"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Sub-Activities -->
+                                    @foreach($activity->subActivities->sortBy('order') as $subActivity)
+                                        <tr class="subActivityRow" id="subActivity-{{ $subActivity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
+                                            <td class="text-left" hidden>{{ $subActivity->id }}</td>
+                                            <td class="text-left ps-3 border border-muted default-text">{{ $subActivity->name }}</td>
+                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
+                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
+                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
+                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
+                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
+                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;"></td>
+                                            @php
+                                                $allEmployeeCount = \App\Models\Employee::count();
+                                                $assignedCountAccountable = $activity->employees->count();
+                                            @endphp
+
+                                            <td class="text-center border border-muted default-text" style="white-space: pre-wrap;">
+                                            @if ($subActivity->employees->count() === $allEmployeeCount)
+                                                All Employees
+                                            @else
+                                                @foreach ($subActivity->employees as $employee)
+                                                    {{ $employee->firstName }} {{ strtoupper(substr($employee->middleName, 0, 1)) }}. {{ $employee->lastName }}
+                                                @endforeach
+                                            @endif
+                                            <td class="text-center border border-muted">
+
+                                                <!-- Edit Sub-Activity -->
+                                                <button class="btn action-btn editSubActivityBtn buttonHover" title="Edit sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
+                                                    data-sub-activity-id="{{ $subActivity->id }}" 
+                                                    data-sub-activity-name="{{ $subActivity->name }}" 
+                                                    data-success-indicator="{{ $subActivity->successIndicator }}"
+                                                    data-quality="{{ $subActivity->quality }}"
+                                                    data-efficiency="{{ $subActivity->efficiency }}"
+                                                    data-timeliness="{{ $subActivity->timeliness }}"
+                                                    data-remarks="{{ $subActivity->remarks }}"
+                                                    data-accountable="{{ $subActivity->accountable }}"
+                                                    data-bs-toggle="modal" data-bs-target="#editSubActivityModal"><i class="fas fa-edit"></i>
+                                                </button>
+
+                                                <!-- Delete Sub-Activity -->
+                                                <button class="btn action-btn deleteSubActivityBtn buttonHover" title="Delete sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
+                                                    data-sub-activity-id="{{ $subActivity->id }}"
+                                                    data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
+                                                </button>
+
+                                                <!-- Move -->
+                                                <div style="display: flex; justify-content: center; gap: 3px;">
+                                                    <form method="POST" action="{{ route('subActivity.move' , [$subActivity->id , 'up']) }}">
+                                                        @csrf
+                                                        <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move up"><i class="fas fa-caret-up" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                    </form>
+
+                                                    <form method="POST" action="{{ route('subActivity.move' , [$subActivity->id , 'down']) }}">
+                                                        @csrf
+                                                        <button type="submit" class="btn action-btn btn-primary buttonHover mt-1" title="Move down"><i class="fas fa-caret-down" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tr>
+                                    
+                                @endforeach        
+                            
+                            @endforeach
+
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- GASS Table -->
         </div>
     </div>
 </div>
+
+
 
 <!------------------------------------Modals-------------------------------------->
 <!-- Add Program Modal -->
 <div class="modal fade" id="addProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="addProgramModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -7%;">
+        <div class="modal-content border-0 shadow rounded-3">
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addProgramModalLabel">
@@ -439,7 +689,7 @@
 <!-- Edit Program Modal -->
 <div class="modal fade" id="editProgramModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="editProgramModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -7%;">
+        <div class="modal-content border-0 shadow rounded-3">
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="editProgramModalLabel">
@@ -540,7 +790,7 @@
 <div class="modal fade" id="addActivityInProgramModal" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-hidden="true" tabindex="-1" aria-labelledby="addActivityInProgramModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
+        <div class="modal-content border-0 shadow rounded-3">
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addActivityInProgramModalLabel">
                     <i class="fas fa-plus me-2"></i>Add Activity
@@ -553,7 +803,7 @@
                     <input type="hidden" id="programIdProg" name="programIdProg" required>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-dark mb-1">Program Name:</label>
+                        <label class="form-label fw-bold text-dark mb-1 default-text">Program Name:</label>
                         <textarea class="form-control border-2 py-2"
                             style="border-color: #03592c; background-color:rgb(228, 228, 228); min-height: 50px; resize: vertical;"
                             name="programNameProg" id="programNameProg" disabled></textarea>
@@ -641,7 +891,7 @@
 <!-- Edit Activity Modal -->
 <div class="modal fade" id="editActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="editActivityModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
+        <div class="modal-content border-0 shadow rounded-3">
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="editActivityModalLabel">
@@ -728,7 +978,7 @@
 <!-- Add Sub-Activity Modal -->
 <div class="modal fade" id="addSubActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="addSubActivityModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
+        <div class="modal-content border-0 shadow rounded-3">
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addSubActivityModalLabel">
@@ -828,7 +1078,7 @@
 <!-- Edit Sub-Activity Modal -->
 <div class="modal fade" id="editSubActivityModal" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" tabindex="-1" aria-labelledby="editSubActivityModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
-        <div class="modal-content border-0 shadow rounded-3" style="transform: scale(0.85); transform-origin: center; width: 120%; margin-left: -5%;">
+        <div class="modal-content border-0 shadow rounded-3">
 
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
@@ -915,6 +1165,8 @@
         </div>
     </div>
 </div>
+
+@include('gassModals.programModals')
 @endsection
 
 @if (session('scrolled_id'))
@@ -923,8 +1175,14 @@
         const element = document.getElementById('{{ session('scrolled_id') }}');
         if (element) {
             const rect = element.getBoundingClientRect();
-            const offset = window.pageYOffset + rect.top - (window.innerHeight / 2);
-            window.scrollTo({ top: offset * 0.75, behavior: 'smooth' }); // Adjusted for scale
+            const elementTop = rect.top + window.pageYOffset; // Get the top of the element relative to the document
+            const elementHeight = rect.height; // Height of the element
+            const windowHeight = window.innerHeight; // Height of the viewport
+
+            // Calculate the scroll position to center the element
+            const scrollPosition = elementTop - (windowHeight / 2) + (elementHeight / 2);
+
+            window.scrollTo({ top: scrollPosition, behavior: 'smooth' }); // Scroll to the position
         }
     }
 </script>

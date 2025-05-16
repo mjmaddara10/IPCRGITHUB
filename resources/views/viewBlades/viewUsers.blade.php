@@ -12,14 +12,14 @@
 
 @section('content')
 <!-- <div class="page-background"></div> -->
-<div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
+<div>
     <div class="container-fluid position-relative">
         <div class="row">
             <div class="col-12">
                 <div class="bg-white">
-                    <div class="p-4">
+                    <div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="d-flex align-items-center ms-auto">
+                            <div class="d-flex align-items-center ms-auto pt-3">
                             @if($role === 'Division Chief' || $role === 'Assistant Department Head')
                                 <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
                                     Manage PPA
@@ -32,7 +32,7 @@
                                     <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         Lookup Tables
                                     </button>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu default-text">
                                         <li>
                                             <a class="dropdown-item" href="{{ route('chief.audit') }}">Audit Trail</a>
                                         </li>
@@ -57,7 +57,7 @@
                                     <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         Lookup Tables
                                     </button>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu default-text">
                                         <li>
                                             <a class="dropdown-item" href="{{ route('head.audit') }}">Audit Trail</a>
                                         </li>

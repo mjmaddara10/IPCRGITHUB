@@ -15,6 +15,7 @@ $(document).on('click', '.editActivityBtnTarget', function () {
     // Existing autofill for other fields...
     $('#editActivityId').val(editActivityIdTarget);
     $('#editActivityName').val(activityName);
+    $('#editGassActivityName').val(activityName);
     $('#editSuccessIndicatorActivity').val(activitySuccessIndicator);
     $('#editQualityActivity').val(activityQuality);
     $('#editEfficiencyActivity').val(activityEfficiency);

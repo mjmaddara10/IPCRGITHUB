@@ -2,22 +2,43 @@ document.getElementById('divisionFilter').addEventListener('change', function ()
     const selectedDivisionId = this.value;
     localStorage.setItem('selectedDivisionId', selectedDivisionId);
 
-    document.querySelectorAll('.programRow').forEach(programRow => {
-        const divisionIds = programRow.dataset.divisionIds.split(',');
-        const programId = programRow.dataset.programId;
-        const match = selectedDivisionId === '' || divisionIds.includes(selectedDivisionId);
+    const tableContainer = document.getElementById('tableContainer');
+    const gassTable = document.getElementById('gassTable');
 
-        // Show/hide program row
-        programRow.style.display = match ? '' : 'none';
+    const addProgramBtn = document.getElementById('addProgramBtn');
+    const addGassProgramBtn = document.getElementById('addGassProgramBtn');
 
-        // Show/hide its children
-        document.querySelectorAll(`tr.activityRow[data-program-id="${programId}"], tr.subActivityRow[data-program-id="${programId}"]`).forEach(childRow => {
-            childRow.style.display = match ? '' : 'none';
+    if (selectedDivisionId === 'gass') {
+        // Show GASS table, hide division table
+        gassTable.style.display = '';
+        addGassProgramBtn.style.display = '';
+        tableContainer.style.display = 'none';
+        addProgramBtn.style.display = 'none';
+    } else {
+        // Show division table, hide GASS table
+        gassTable.style.display = 'none';
+        addGassProgramBtn.style.display = 'none';
+        tableContainer.style.display = '';
+        addProgramBtn.style.display = '';
+
+        // Apply filter to division programs
+        document.querySelectorAll('.programRow').forEach(programRow => {
+            const divisionIds = programRow.dataset.divisionIds.split(',');
+            const programId = programRow.dataset.programId;
+            const match = selectedDivisionId === '' || divisionIds.includes(selectedDivisionId);
+
+            // Show/hide program row
+            programRow.style.display = match ? '' : 'none';
+
+            // Show/hide its children
+            document.querySelectorAll(`tr.activityRow[data-program-id="${programId}"], tr.subActivityRow[data-program-id="${programId}"]`).forEach(childRow => {
+                childRow.style.display = match ? '' : 'none';
+            });
         });
-    });
 
-    // 🔁 Re-apply collapse/expand state after filter
-    setTimeout(updateCollapseStates, 50);
+        // 🔁 Re-apply collapse/expand state after filter
+        setTimeout(updateCollapseStates, 50);
+    }
 });
 
 function updateCollapseStates() {

@@ -11,6 +11,7 @@ use App\Http\Controllers\adminModificationController;
 use App\Http\Controllers\adminPagesController;
 use App\Http\Controllers\assignController;
 use App\Http\Controllers\sortingController;
+use App\Http\Controllers\gassController;
 
 Route::get('/', function () {
     return view('/index');
@@ -54,6 +55,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/activities/{id}/move/{direction}', [sortingController::class, 'moveActivity'])->name('activity.move');
     Route::post('/subActivities/{id}/move/{direction}', [sortingController::class, 'moveSubActivity'])->name('subActivity.move');
 
+    // GASS
+    Route::post('/updateGass', [gassController::class, 'updateGass'])->name('updateGass');
+    Route::post('/addGassProgram', [gassController::class, 'addGassProgram'])->name('addGassProgram');
 });
 
 Route::prefix('viewPpa')->group(function () {

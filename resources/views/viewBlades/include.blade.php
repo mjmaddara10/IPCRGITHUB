@@ -11,7 +11,7 @@
         <!-- User Info on the right -->
         <div class="d-flex align-items-center ms-auto">
             <!-- Name + Position -->
-            <div class="d-flex flex-column align-items-end text-end me-3">
+            <div class="d-flex flex-column align-items-end text-end me-3 nav-text">
                 <span class="fw-bold text-success">{{ session('firstName') }} {{ session('middleInitial') }} {{ session('lastName') }}</span>
                 <small class="text-muted">{{ session('position') }}</small>
             </div>

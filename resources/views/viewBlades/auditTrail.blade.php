@@ -12,66 +12,65 @@
 
 @section('content')
 <!-- <div class="page-background"></div> -->
-<div style="transform: scale(0.75); transform-origin: top center; width: 133.33%; margin-left: -16.665%;">
+<div>
     <div class="container-fluid position-relative">
         <div class="row">
             <div class="col-12">
                 <div class="bg-white">
-                    <div class="p-4">
+                    <div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="d-flex align-items-center ms-auto">
-                            @if($role === 'Division Chief' || $role === 'Assistant Department Head')
-                                <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
-                                    Manage PPA
-                                </a>
-                                <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    View Targets
-                                </a>
+                            <div class="d-flex align-items-center ms-auto pt-3">
+                                @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                                    <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
+                                        Manage PPA
+                                    </a>
+                                    <a href="{{ route('chief.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                        View Targets
+                                    </a>
 
-                                <div class="btn-group" style="margin-left: 3px;">
-                                    <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Lookup Tables
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('chief.audit') }}">Audit Trail</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('chief.viewEmployees') }}">View Users</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                
-                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
-                                    Logout
-                                </a>
-                            @elseif($role === 'Department Head')
-                                <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
-                                    Manage PPA
-                                </a>
-                                <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
-                                    View Targets
-                                </a>
+                                    <div class="btn-group" style="margin-left: 3px;">
+                                        <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Lookup Tables
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item default-text" href="{{ route('chief.audit') }}">Audit Trail</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item default-text" href="{{ route('chief.viewEmployees') }}">View Users</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
+                                        Logout
+                                    </a>
+                                @elseif($role === 'Department Head')
+                                    <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
+                                        Manage PPA
+                                    </a>
+                                    <a href="{{ route('head.viewIpcr') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                        View Targets
+                                    </a>
 
-                                <div class="btn-group" style="margin-left: 3px;">
-                                    <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Lookup Tables
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('head.audit') }}">Audit Trail</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('head.viewEmployees') }}">View Users</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <div class="btn-group" style="margin-left: 3px;">
+                                        <button type="button" class="btn btn-hover nv-green dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Lookup Tables
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item default-text" href="{{ route('head.audit') }}">Audit Trail</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item default-text" href="{{ route('head.viewEmployees') }}">View Users</a>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                                <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
-                                    Logout
-                                </a>
-                            @endif
-                                
+                                    <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
+                                        Logout
+                                    </a>
+                                @endif
                             </div>
                         </div>
 
@@ -98,19 +97,27 @@
                                             <th style="color: #03592c; width: 20%;">To</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach ($auditTrails as $audit)
-                                        <tr>
-                                            <td>{{ \Carbon\Carbon::parse($audit->created_at)->format('F j, Y') }}<br>{{ \Carbon\Carbon::parse($audit->created_at)->format('g:i A') }}</td>
-                                            <td>{{ $audit->full_name }}</td>
-                                            <td>{{ $audit->role }}</td>
-                                            <td>{{ $audit->program_name }}</td>
-                                            <td>{{ $audit->action }}</td>
-                                            <td>{{ $audit->action_from }}</td>
-                                            <td>{{ $audit->action_to }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
+                                   <tbody>
+                                @forelse ($auditTrails as $audit)
+                                    <tr>
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($audit->updated_at)->format('F j, Y') }}<br>
+                                            <small class="text-muted">{{ \Carbon\Carbon::parse($audit->updated_at)->format('g:i A') }}</small>
+                                        </td>
+                                        <td>{{ $audit->full_name }}</td>
+                                        <td>{{ ucfirst($audit->role) }}</td>
+                                        <td>{{ $audit->program_name ?? '—' }}</td>
+                                        <td>{{ $audit->action }}</td>
+                                        <td>{{ $audit->action_from ?? '—' }}</td>
+                                        <td>{{ $audit->action_to ?? '—' }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">No recent changes found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+
                                 </table>
                             </div>
                         </div>

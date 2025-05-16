@@ -92,7 +92,7 @@ $('#addsAccountablePersonBtn').off('click').on('click', function () {
         $newSelect.append(`<option value="${value}" ${isDisabled}>${text}</option>`);
     });
 
-    $container.append($newGroup);
+    // $container.append($newGroup);
 
     updateAccountableRemoveButtons();
 });

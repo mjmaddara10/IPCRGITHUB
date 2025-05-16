@@ -83,9 +83,9 @@
                 <tr>
                     <td colspan="6" style="text-align: justify; padding: 6px; vertical-align: middle;">
                         @if($employee->role === 'Division Chief' || $employee->role === 'Staff' || $employee->role === 'Assistant Department Head')
-                            <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, {{ $employee->position }} - {{ $employee->status }} of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE, {{ strtoupper($employee->division->name) ?? '' }}, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period JANUARY to DECEMBER 2025.</p>
+                            <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, {{ $employee->position }} - {{ $employee->status }} of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE, {{ strtoupper($employee->division->name) ?? '' }}, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }} {{ \Carbon\Carbon::now()->year }}.</p>
                         @elseif($employee->role === 'Department Head')
-                            <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, PHRMO, Provincial Government of Nueva Vizcaya, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period JANUARY to DECEMBER 2025.</p>
+                            <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, PHRMO, Provincial Government of Nueva Vizcaya, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }} {{ \Carbon\Carbon::now()->year }}.</p>
                         @endif
                     </td>
                 </tr>

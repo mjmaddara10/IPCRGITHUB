@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('full_name');
             $table->string('role');
             $table->string('action');
-            $table->string('action_from')->nullable();
-            $table->string('action_to')->nullable();
+            $table->string('action_from', 500)->nullable();
+            $table->string('action_to', 500)->nullable();
             $table->string('program_name')->nullable();
             $table->unsignedBigInteger('record_id');
             $table->timestamps();

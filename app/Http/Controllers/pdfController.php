@@ -15,6 +15,7 @@ use App\Models\Division;
 class pdfController extends Controller
 {
     public function generatePdf($id, Request $request) {
+
         $employee = Employee::with([
             'activities.program.divisions',
             'activities.subActivities',
@@ -116,6 +117,7 @@ class pdfController extends Controller
             }
         }
 
+        $dateRange = request()->get('dateRange');
         $chiefInfo = json_decode($request->input('chiefInfo'), true);
 
         $user = auth()->user();
@@ -127,6 +129,7 @@ class pdfController extends Controller
             'chiefInfo' => $chiefInfo,
             'targets' => $targets,
             'user' => $user,
+            'dateRange' => $dateRange,
         ];
 
 

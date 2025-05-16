@@ -20,6 +20,7 @@ class Program extends Model
         'budget',
         'division_id',
         'order',
+        'gass_id'
     ];
 
     public function activities()
@@ -29,5 +30,10 @@ class Program extends Model
 
     public function divisions() {
         return $this->belongsToMany(Division::class);
+    }
+
+    public function gass()
+    {
+        return $this->belongsTo(Gass::class, 'gass_id');
     }
 }

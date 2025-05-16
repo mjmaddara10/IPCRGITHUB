@@ -551,7 +551,7 @@ class ppaController extends Controller
     
 
     // =====================Autofill Accountable (Add Activity)========================= //
-        public function getAccountableByIds(Request $request) {
+    public function getAccountableByIds(Request $request) {
         $divisionIds = $request->input('divisionIds', []);
 
         if (empty($divisionIds)) {
@@ -568,9 +568,9 @@ class ppaController extends Controller
                 'id' => $employee->id,
                 'name' => $employee->firstName . ' ' . $middleInitial . $employee->lastName,
                 'role' => $employee->role,
-                'position' => $employee->position, 
+                'position' => $employee->position,
             ];
-        });
+        })->sortBy('name')->values(); // Sort and reindex
 
         return response()->json($results);
     }
@@ -592,7 +592,7 @@ class ppaController extends Controller
                 'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
                 'position' => $e->position,
             ];
-        });
+        })->sortBy('name')->values(); // Sort alphabetically and reindex
 
         return response()->json($employees);
     }
@@ -615,7 +615,7 @@ class ppaController extends Controller
             }
         }
 
-        return response()->json($employees->unique('id')->values());
+        return response()->json($employees->unique('id')->sortBy('name')->values());
     }
 
     // =====================Autofill Responsible Individual (Edit SubActivity)========================= //
@@ -629,7 +629,7 @@ class ppaController extends Controller
                 'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
                 'position' => $e->position,
             ];
-        });
+        })->sortBy('name')->values(); // Sort by name and reset the index
 
         return response()->json($employees);
     }
@@ -656,6 +656,6 @@ class ppaController extends Controller
             }
         }
 
-        return response()->json($employees->unique('id')->values());
+        return response()->json($employees->unique('id')->sortBy('name')->values());
     }
 }

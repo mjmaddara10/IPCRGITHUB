@@ -12,6 +12,7 @@ use App\Models\SubActivity;
 use App\Models\Employee;
 use App\Models\SubProject;
 use App\Models\Division;
+use App\Models\Gass;
 
 
 class adminPagesController extends Controller
@@ -35,7 +36,23 @@ class adminPagesController extends Controller
             'divisions',
             'activities.subActivities',
             'activities.employees'
-        ])->orderBy('order')->get();
+        ])
+        ->whereNull('gass_id') // ✅ Only programs without a gass_id
+        ->orderBy('order')
+        ->get();
+
+        $gasses = Gass::with([
+            'programs' => function ($query) {
+                $query->orderBy('order');
+            },
+            'programs.divisions', // <-- this is what was missing
+            'programs.activities' => function ($query) {
+                $query->orderBy('order');
+            },
+            'programs.activities.subActivities' => function ($query) {
+                $query->orderBy('order');
+            },
+        ])->get();
     
         $employees = Employee::all();
         $divisions = Division::all();
@@ -43,7 +60,8 @@ class adminPagesController extends Controller
         return view('viewBlades.managePpa', compact(
             'programs',
             'employees',
-            'divisions'
+            'divisions',
+            'gasses',
         ), [
             'role' => auth()->user()->role
         ]);
@@ -115,7 +133,7 @@ class adminPagesController extends Controller
         $employees = Employee::all();
         $divisions = Division::all();
         $subActivities = SubActivity::all();
-        $auditTrails = AuditTrail::orderBy('created_at', 'desc')->get();
+        $auditTrails = AuditTrail::orderBy('updated_at', 'desc')->get();
 
         return view('viewBlades.auditTrail', compact(
             'programs',

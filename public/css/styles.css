@@ -80,13 +80,48 @@
   Global Styles
 ==================================================*/
 body {
-    /* Base font for entire site */
+    font-size: 12px;
     font-family: 'Montserrat';
-    /* Removes default margins */
     margin: 0;
     padding: 0;
-    /* Includes padding in element width calculations */
-    box-sizing: border-box;
+}
+
+button,
+.btn {
+    font-size: 12px;      /* Smaller text */
+}
+
+.btn-login {
+    font-size: 14px;
+}
+
+select,
+.form-select {
+    font-size: 12px !important;    
+    width: auto !important;       
+    max-width: 100% !important;
+}
+
+.default-text {
+    font-size: 12px;
+}
+
+.nav-text {
+    font-size: 14px;
+}
+
+.action-btn {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+}
+
+.btn-sm i {
+    font-size: 12px;
+}
+
+.btn-orange {
+    background-color: rgb(255, 140, 0);
 }
 
 /*==================================================
@@ -157,13 +192,6 @@ body {
     margin-bottom: 1rem;
 }
 
-.card:hover {
-    /* Lift effect on hover */
-    transform: translateY(-5px);
-    /* Stronger shadow when lifted */
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-}
-
 .card-header {
     /* Brand green background */
     background-color: #03592c;
@@ -224,33 +252,6 @@ body {
     .card-body {
         padding: 1rem;
     }
-}
-
-/*==================================================
-  Page Background Styles
-  How to modify:
-  - Adjust position values to control placement
-  - Change gradient colors for different overlay effect
-  - Update image path for different background
-  - Modify blur or opacity as needed
-==================================================*/
-.page-background {
-    /* Fixed positioning relative to viewport */
-    position: fixed;
-    /* Distance from top of viewport (matches navbar height) */
-    top: 65px;
-    /* Stretch to fill viewport edges */
-    left: 0;
-    right: 0;
-    bottom: 0;
-    /* Places background behind content */
-    z-index: -1;
-    /* Creates white semi-transparent overlay and sets background image */
-    background: linear-gradient(rgba(255, 255, 255, 0.5),
-            rgba(255, 255, 255, 0.5)),
-        url('../img/backgroundimage.jpg') no-repeat center center fixed;
-    /* Ensures image covers entire container */
-    background-size: cover;
 }
 
 /* Admin Settings Label Styles */
@@ -487,17 +488,11 @@ i.fas {
 }
 
 .btn-sm {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     padding: 0;
-}
-
-.btn-sm i {
-    font-size: 16px;
-    line-height: 1;
 }
 
 .btn-orange {
     background-color: rgb(255, 140, 0);
 }
-

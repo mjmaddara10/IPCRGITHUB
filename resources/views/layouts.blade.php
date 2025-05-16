@@ -24,11 +24,8 @@
     <!-- Typography -->
     <!-- Primary Font: Montserrat -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Application Specific Styles -->
      
-    <!-- Custom Admin Styles -->
-    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+    
 
     <!-- Additional Font Weights -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
@@ -41,6 +38,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+
+    <!-- Custom Admin Styles -->
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}?v={{ time() }}">
 </head>
 
 <body>
@@ -90,6 +90,10 @@
 
     <!-- Hover on Button -->
     <script src="{{ asset('js/functionalities.js') }}"></script>
+
+    <!-- GASS -->
+    <script src="{{ asset('js/gassManagement/program.js') }}"></script>
+    <script src="{{ asset('js/ppaView/gass.js') }}"></script>
 </body>
 
 </html>
