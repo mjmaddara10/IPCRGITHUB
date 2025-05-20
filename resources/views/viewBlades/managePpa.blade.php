@@ -145,7 +145,7 @@
                                         All Divisions
                                     @else
                                         @foreach ($program->divisions as $division)
-                                        {{ $division->name }} <br> <br> 
+                                        {{ $division->name }} <br> <br>
                                         @endforeach
                                     @endif
                                 </td>
@@ -154,14 +154,14 @@
                                 <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;">
                                     <!-- Add Activity -->
                                     <button class="btn action-btn addActivityInProgramBtn buttonHover" title="Add an activity"
-                                        data-program-id="{{ $program->id }}" 
-                                        data-program-name="{{ $program->name }}" 
+                                        data-program-id="{{ $program->id }}"
+                                        data-program-name="{{ $program->name }}"
                                         data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
                                     </button>
 
                                     <!-- Edit Program -->
                                     <button class="btn action-btn editProgramBtn buttonHover" title="Edit program name"
-                                        data-program-id="{{ $program->id }}" 
+                                        data-program-id="{{ $program->id }}"
                                         data-program-name="{{ $program->name }}"
                                         data-program-success="{{ $program->successIndicator }}"
                                         data-program-quality="{{ $program->quality }}"
@@ -222,15 +222,15 @@
                                     <td class="text-center border border-muted" style="background-color:rgb(212, 212, 212);">
                                         <!-- Add Sub-Activity -->
                                         <button class="btn action-btn addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
-                                            data-activity-id="{{ $activity->id }}" 
-                                            data-activity-name="{{ $activity->name }}" 
+                                            data-activity-id="{{ $activity->id }}"
+                                            data-activity-name="{{ $activity->name }}"
                                             data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addSubActivityModal"><i class="fas fa-plus" style= "-webkit-text-stroke: 1px white; color: #FFFFFF;"></i>
                                         </button>
 
                                         <!-- Edit Activity -->
                                         <button class="btn action-btn editActivityBtn buttonHover" title="Edit activity" style="color: rgb(144, 144, 144); background-color: rgb(144, 144, 144);"
-                                            data-activity-id="{{ $activity->id }}" 
-                                            data-activity-name="{{ $activity->name }}" 
+                                            data-activity-id="{{ $activity->id }}"
+                                            data-activity-name="{{ $activity->name }}"
                                             data-success-indicator="{{ $activity->successIndicator }}"
                                             data-quality="{{ $activity->quality }}"
                                             data-efficiency="{{ $activity->efficiency }}"
@@ -290,8 +290,8 @@
 
                                             <!-- Edit Sub-Activity -->
                                             <button class="btn action-btn editSubActivityBtn buttonHover" title="Edit sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                                data-sub-activity-id="{{ $subActivity->id }}" 
-                                                data-sub-activity-name="{{ $subActivity->name }}" 
+                                                data-sub-activity-id="{{ $subActivity->id }}"
+                                                data-sub-activity-name="{{ $subActivity->name }}"
                                                 data-success-indicator="{{ $subActivity->successIndicator }}"
                                                 data-quality="{{ $subActivity->quality }}"
                                                 data-efficiency="{{ $subActivity->efficiency }}"
@@ -323,9 +323,9 @@
                                     </tr>
                                     @endforeach
                                 </tr>
-                                
-                            @endforeach        
-                        
+
+                            @endforeach
+
                         @endforeach
                     </tbody>
                 </table>
@@ -357,7 +357,7 @@
                                 <td class="text-center border border-muted ps-1 fw-bold text-uppercase" style="background-color: #03592c; color:#FFFFFF">
                                     <!-- Edit GASS -->
                                     <button class="btn action-btn editGassBtn buttonHover" title="Edit GASS"
-                                        data-gass-id="{{ $gass->id }}" 
+                                        data-gass-id="{{ $gass->id }}"
                                         data-gass-name="{{ $gass->name }}"
                                         data-gass-budget="{{ $gass->budget }}"
                                         data-bs-toggle="modal" data-bs-target="#editGassModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
@@ -388,7 +388,7 @@
                                             All Divisions
                                         @else
                                             @foreach ($program->divisions as $division)
-                                            {{ $division->name }} <br> <br> 
+                                            {{ $division->name }} <br> <br>
                                             @endforeach
                                         @endif
                                     </td>
@@ -397,14 +397,14 @@
                                     <td class="text-center" style= "color: #FFFFFF; background-color: rgb(2, 113, 56);">
                                         <!-- Add Activity -->
                                         <button class="btn action-btn addActivityInProgramBtn buttonHover" title="Add an activity"
-                                            data-program-id="{{ $program->id }}" 
-                                            data-program-name="{{ $program->name }}" 
+                                            data-program-id="{{ $program->id }}"
+                                            data-program-name="{{ $program->name }}"
                                             data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
                                         </button>
 
                                         <!-- Edit Program -->
                                         <button class="btn action-btn editProgramBtn buttonHover" title="Edit program name"
-                                            data-program-id="{{ $program->id }}" 
+                                            data-program-id="{{ $program->id }}"
                                             data-program-name="{{ $program->name }}"
                                             data-program-success="{{ $program->successIndicator }}"
                                             data-program-quality="{{ $program->quality }}"
@@ -465,15 +465,15 @@
                                         <td class="text-center border border-muted" style="background-color:rgb(212, 212, 212);">
                                             <!-- Add Sub-Activity -->
                                             <button class="btn action-btn addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
-                                                data-activity-id="{{ $activity->id }}" 
-                                                data-activity-name="{{ $activity->name }}" 
+                                                data-activity-id="{{ $activity->id }}"
+                                                data-activity-name="{{ $activity->name }}"
                                                 data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addSubActivityModal"><i class="fas fa-plus" style= "-webkit-text-stroke: 1px white; color: #FFFFFF;"></i>
                                             </button>
 
                                             <!-- Edit Activity -->
                                             <button class="btn action-btn editActivityBtn buttonHover" title="Edit activity" style="color: rgb(144, 144, 144); background-color: rgb(144, 144, 144);"
-                                                data-activity-id="{{ $activity->id }}" 
-                                                data-activity-name="{{ $activity->name }}" 
+                                                data-activity-id="{{ $activity->id }}"
+                                                data-activity-name="{{ $activity->name }}"
                                                 data-success-indicator="{{ $activity->successIndicator }}"
                                                 data-quality="{{ $activity->quality }}"
                                                 data-efficiency="{{ $activity->efficiency }}"
@@ -533,8 +533,8 @@
 
                                                 <!-- Edit Sub-Activity -->
                                                 <button class="btn action-btn editSubActivityBtn buttonHover" title="Edit sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                                    data-sub-activity-id="{{ $subActivity->id }}" 
-                                                    data-sub-activity-name="{{ $subActivity->name }}" 
+                                                    data-sub-activity-id="{{ $subActivity->id }}"
+                                                    data-sub-activity-name="{{ $subActivity->name }}"
                                                     data-success-indicator="{{ $subActivity->successIndicator }}"
                                                     data-quality="{{ $subActivity->quality }}"
                                                     data-efficiency="{{ $subActivity->efficiency }}"
@@ -566,9 +566,9 @@
                                         </tr>
                                         @endforeach
                                     </tr>
-                                    
-                                @endforeach        
-                            
+
+                                @endforeach
+
                             @endforeach
 
                         @endforeach
@@ -820,7 +820,7 @@
                         <div id="accountableSelectContainer" data-divisions="{{ json_encode($divisions) }}">
                             <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select border border-success accountableSelect" id="addAccountableId" name="addAccountableId[]">
-                                    
+
                                 </select>
                                 <button type="button" class="btn btn-danger btn-sm removeAccountableBtn" disabled>
                                     <i class="fas fa-minus"></i>
@@ -920,7 +920,7 @@
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
-                        
+
                         <div id="editContainer">
                             <!-- Selects will be added here dynamically -->
                         </div>
@@ -1011,7 +1011,7 @@
                         <div id="accountableSelectContainerSubAct" data-divisions="{{ json_encode($divisions) }}">
                             <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select border border-success accountableSelect" id="addAccountableId" name="addAccountableId[]">
-                                    
+
                                 </select>
                                 <button type="button" class="btn btn-danger btn-sm removeAccountableBtn" disabled>
                                     <i class="fas fa-minus"></i>
@@ -1110,7 +1110,7 @@
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
-                        
+
                         <div id="editContainerSub">
                             <!-- Selects will be added here dynamically -->
                         </div>

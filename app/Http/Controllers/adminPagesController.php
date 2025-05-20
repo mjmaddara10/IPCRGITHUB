@@ -30,7 +30,7 @@ class adminPagesController extends Controller
             'role' => auth()->user()->role
         ]);
     }
-    
+
     public function managePpa(){
         $programs = Program::with([
             'divisions',
@@ -53,10 +53,10 @@ class adminPagesController extends Controller
                 $query->orderBy('order');
             },
         ])->get();
-    
+
         $employees = Employee::all();
         $divisions = Division::all();
-    
+
         return view('viewBlades.managePpa', compact(
             'programs',
             'employees',
@@ -75,11 +75,11 @@ class adminPagesController extends Controller
         $subActivities = SubActivity::with('activity')->get();
         $divisions = Division::with(['employees' => function ($query) {
             $query->where('role', 'Division Chief');
-        }])->get(); 
-    
+        }])->get();
+
         $targets = [];
         $user = auth()->user();
-        
+
         // For staff
         foreach (auth()->user()->subActivities as $subActivity) {
             $activity = $subActivity->activity;
@@ -88,7 +88,7 @@ class adminPagesController extends Controller
             if (!$activity) {
                 \Log::error("Missing activity for SubActivity ID: " . $subActivity->id);
             }
-            
+
             $targets[] = [
                 'program_name' => $program->name,
                 'program_order' => $program->order ?? 0,
@@ -107,10 +107,10 @@ class adminPagesController extends Controller
         usort($targets, function ($a, $b) {
             $programCompare = $a['program_order'] <=> $b['program_order'];
             if ($programCompare !== 0) return $programCompare;
-    
+
             $activityCompare = $a['activity_order'] <=> $b['activity_order'];
             if ($activityCompare !== 0) return $activityCompare;
-    
+
             return $a['sub_activity_order'] <=> $b['sub_activity_order'];
         });
 
@@ -133,7 +133,8 @@ class adminPagesController extends Controller
         $employees = Employee::all();
         $divisions = Division::all();
         $subActivities = SubActivity::all();
-        $auditTrails = AuditTrail::orderBy('updated_at', 'desc')->get();
+        // Order by created_at instead of updated_at to show the latest changes first
+        $auditTrails = AuditTrail::orderBy('created_at', 'desc')->get();
 
         return view('viewBlades.auditTrail', compact(
             'programs',
@@ -149,8 +150,8 @@ class adminPagesController extends Controller
         $programs = Program::with('divisions')->get();
         $activities = Activity::with('subActivities')->get();
         $employees = Employee::with('division')->get();
-        $divisions = Division::all();
-    
+        $divisions = Division::all    ();
+
         return view('viewBlades.adminAssign', compact(
             'programs',
             'employees',

@@ -41,7 +41,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    
+
                                     <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                         Logout
                                     </a>
@@ -88,7 +88,7 @@
                                 <table id="auditTable" class="table table-hover" style="table-layout: fixed; width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th style="color: #03592c; width: 8%;">Created_At</th>
+                                            <th style="color: #03592c; width: 8%;">Date/Time</th>
                                             <th style="color: #03592c; width: 13%;">Name</th>
                                             <th style="color: #03592c; width: 8%;">Role</th>
                                             <th style="color: #03592c; width: 12%;">Program Name</th>
@@ -99,10 +99,10 @@
                                     </thead>
                                    <tbody>
                                 @forelse ($auditTrails as $audit)
-                                    <tr>
+                                    <tr>    
                                         <td>
-                                            {{ \Carbon\Carbon::parse($audit->updated_at)->format('F j, Y') }}<br>
-                                            <small class="text-muted">{{ \Carbon\Carbon::parse($audit->updated_at)->format('g:i A') }}</small>
+                                            {{ \Carbon\Carbon::parse($audit->created_at)->format('F j, Y') }}<br>
+                                            <small class="text-muted">{{ \Carbon\Carbon::parse($audit->created_at)->format('g:i A') }}</small>
                                         </td>
                                         <td>{{ $audit->full_name }}</td>
                                         <td>{{ ucfirst($audit->role) }}</td>
@@ -117,7 +117,6 @@
                                     </tr>
                                 @endforelse
                             </tbody>
-
                                 </table>
                             </div>
                         </div>

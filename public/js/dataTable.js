@@ -12,6 +12,6 @@ $(document).ready(function() {
         "searching": true,
         "ordering": true,
         "pageLength": 10,
-        order: [[0, 'desc']]
+        order: [[1, 'asc'], [0, 'desc']]
     });
 });
