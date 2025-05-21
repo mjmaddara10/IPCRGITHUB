@@ -101,8 +101,8 @@
                                 @forelse ($auditTrails as $audit)
                                     <tr>
                                         <td>
-                                            {{ \Carbon\Carbon::parse($audit->updated_at)->format('F j, Y') }}<br>
-                                            <small class="text-muted">{{ \Carbon\Carbon::parse($audit->updated_at)->format('g:i A') }}</small>
+                                            {{ \Carbon\Carbon::parse($audit->created_at)->format('F j, Y') }}<br>
+                                            <small class="text-muted">{{ \Carbon\Carbon::parse($audit->created_at)->format('g:i A') }}</small>
                                         </td>
                                         <td>{{ $audit->full_name }}</td>
                                         <td>{{ ucfirst($audit->role) }}</td>

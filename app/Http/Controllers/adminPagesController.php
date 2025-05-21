@@ -17,6 +17,12 @@ use App\Models\Gass;
 
 class adminPagesController extends Controller
 {
+    public function dashboard(){
+        return view('viewBlades.dashboard', [
+            'role' => auth()->user()->role
+        ]);
+    }
+
     public function settings(){
         return view('viewBlades.settings', [
             'role' => auth()->user()->role
@@ -133,7 +139,7 @@ class adminPagesController extends Controller
         $employees = Employee::all();
         $divisions = Division::all();
         $subActivities = SubActivity::all();
-        $auditTrails = AuditTrail::orderBy('updated_at', 'desc')->get();
+        $auditTrails = AuditTrail::orderBy('created_at', 'desc')->get();
 
         return view('viewBlades.auditTrail', compact(
             'programs',

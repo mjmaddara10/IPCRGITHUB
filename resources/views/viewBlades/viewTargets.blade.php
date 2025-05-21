@@ -2,7 +2,7 @@
     $divisionChiefsArray = [];
 
     foreach ($divisions as $division) {
-        $chief = $division->employees->first();
+        $chief = $division->employees->firstWhere('role', 'Division Chief');
 
         $fullName = '________';
         $position = '________';
@@ -79,12 +79,11 @@
                             <div class="d-flex justify-content-start align-items-center flex-wrap mb-1">
                                 <!-- Effectivity Select -->
                                 <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
-                                    <label for="effectivitySelect" class="me-2 fw-bold mb-0">Set Effectivity Date:</label>
-                                    <select class="form-select form-select-md w-auto" name="effectivitySelect" id="effectivitySelect">
-                                        <option value="1st Semester">1st Semester</option>
-                                        <option value="2nd Semester">2nd Semester</option>
-                                        <option value="Whole Year">Whole Year</option>
-                                    </select>
+                                    <label for="effectivitySelect" class="me-2 fw-bold mb-0">Set Effectivity Date From:</label>
+                                    <input type="date" class="form-control form-control-sm" id="effectivitySelectFrom" name="effectivitySelectFrom" style="width: 200px;">
+                                
+                                    <label for="effectivitySelect" class="me-2 fw-bold mb-0 ms-2">To:</label>
+                                    <input type="date" class="form-control form-control-sm" id="effectivitySelectTo" name="effectivitySelectTo" style="width: 200px;">
                                 </div>
                             </div>
                         @endif
@@ -179,7 +178,7 @@
                                 <a class="btn btn-primary mb-1 me-1" id="exportBtnStaff" data-user-id="{{ $user->id }}" data-user-division="{{ $user->division_id }}">
                                     <i class="fas fa-file-pdf me-2"></i> Print IPCR
                                 </a>
-                                <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
                             @endif
@@ -190,14 +189,13 @@
                 @if($role === 'Division Chief' || $role === 'Assistant Department Head' || $role === 'Department Head')
                     <div class="pt-2">
                         <div class="d-flex justify-content-between align-items-center flex-wrap mb-1">
-                            <!-- Division Select -->
+                            <!-- Effectivity Select -->
                             <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
-                                <label for="effectivitySelect" class="me-2 fw-bold mb-0">Set Effectivity Date:</label>
-                                <select class="form-select form-select-md w-auto" name="effectivitySelect" id="effectivitySelect">
-                                    <option value="1st Semester">1st Semester</option>
-                                    <option value="2nd Semester">2nd Semester</option>
-                                    <option value="Whole Year">Whole Year</option>
-                                </select>
+                                <label for="effectivitySelect" class="me-2 fw-bold mb-0">Set Effectivity Date From:</label>
+                                <input type="date" class="form-control form-control-sm" id="effectivitySelectFrom" name="effectivitySelectFrom" style="width: 200px;">
+                            
+                                <label for="effectivitySelect" class="me-2 fw-bold mb-0 ms-2">To:</label>
+                                <input type="date" class="form-control form-control-sm" id="effectivitySelectTo" name="effectivitySelectTo" style="width: 200px;">
                             </div>
                         </div>
                     </div>

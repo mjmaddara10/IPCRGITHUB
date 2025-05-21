@@ -85,6 +85,7 @@ Route::middleware(['auth', 'role:Division Chief|Assistant Department Head'])->gr
         Route::get('/settings', [adminPagesController::class, 'settings'])->name('chief.settings');
         Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('chief.viewIpcr');
         Route::get('/audit', [adminPagesController::class, 'audit'])->name('chief.audit');
+        Route::get('/dashboard', [adminPagesController::class, 'dashboard'])->name('chief.dashboard');
     });
 });
 

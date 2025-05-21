@@ -558,8 +558,7 @@ class ppaController extends Controller
             return response()->json([]);
         }
 
-        $accountables = Employee::whereIn('division_id', $divisionIds)
-            ->whereIn('role', ['Staff', 'Division Chief']) // Include both roles
+        $accountables = Employee::whereIn('role', ['Staff', 'Division Chief']) // Include both roles
             ->get();
 
         $results = $accountables->map(function ($employee) {
@@ -598,22 +597,16 @@ class ppaController extends Controller
     }
 
     public function fetchEmployee($activityId) {
-        $activity = Activity::with('program.divisions.employees')->findOrFail($activityId);
+        $activity = Activity::findOrFail($activityId);
 
-        $employees = collect();
-
-        if ($activity->program && $activity->program->divisions) {
-            foreach ($activity->program->divisions as $division) {
-                foreach ($division->employees as $e) {
-                    $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
-                    $employees->push([
-                        'id' => $e->id,
-                        'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
-                        'position' => $e->position,
-                    ]);
-                }
-            }
-        }
+        $employees = Employee::all()->map(function ($e) {
+            $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $e->id,
+                'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                'position' => $e->position,
+            ];
+        });
 
         return response()->json($employees->unique('id')->sortBy('name')->values());
     }
@@ -635,26 +628,17 @@ class ppaController extends Controller
     }
 
     public function fetchEmployeeSub($subActivityId) {
-        $subActivity = SubActivity::with('activity.program.divisions.employees')->findOrFail($subActivityId);
+        $subActivity = SubActivity::findOrFail($subActivityId);
 
-        $employees = collect();
-
-        if (
-            $subActivity->activity &&
-            $subActivity->activity->program &&
-            $subActivity->activity->program->divisions
-        ) {
-            foreach ($subActivity->activity->program->divisions as $division) {
-                foreach ($division->employees as $e) {
-                    $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
-                    $employees->push([
-                        'id' => $e->id,
-                        'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
-                        'position' => $e->position,
-                    ]);
-                }
-            }
-        }
+        // Get all employees instead of filtering by divisions
+        $employees = Employee::all()->map(function ($e) {
+            $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
+            return [
+                'id' => $e->id,
+                'name' => $e->firstName . ' ' . $middleInitial . $e->lastName,
+                'position' => $e->position,
+            ];
+        });
 
         return response()->json($employees->unique('id')->sortBy('name')->values());
     }
