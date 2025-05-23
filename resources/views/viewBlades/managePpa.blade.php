@@ -119,7 +119,7 @@
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Timeliness</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 10%;">Remarks/MOV</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 8%;">Allotted Budget</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division or Individuals Responsible</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division/s or Individual/s Responsible</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%;">Actions</th>
                         </tr>
                     </thead>
@@ -346,7 +346,7 @@
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Timeliness</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 10%;">Remarks/MOV</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 8%;">Allotted Budget</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division or Individuals Responsible</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division/s or Individual/s Responsible</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%;">Actions</th>
                         </tr>
                     </thead>
