@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('tbl_employee', function (Blueprint $table) {
             $table->id();
-            $table->string('firstName');
-            $table->string('middleName')->nullable();
-            $table->string('lastName');
-            $table->string('position');
-            $table->string('status');
+            $table->string('firstName', 50);
+            $table->string('middleName', 50)->nullable();
+            $table->string('lastName', 50);
+            $table->string('position', 50);
+            $table->string('status', 50);
 
             $table->unsignedBigInteger('division_id')->nullable();
             $table->foreign('division_id')->references('id')->on('divisions')->onDelete('cascade');
 
-            $table->string('username');
-            $table->string('password');
-            $table->string('role');
+            $table->string('username', 30);
+            $table->string('password', 50);
+            $table->string('role', 30);
             $table->timestamps();
         });
     }

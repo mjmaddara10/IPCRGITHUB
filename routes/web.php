@@ -12,6 +12,7 @@ use App\Http\Controllers\adminPagesController;
 use App\Http\Controllers\assignController;
 use App\Http\Controllers\sortingController;
 use App\Http\Controllers\gassController;
+use App\Http\Controllers\requestPpaController;
 
 Route::get('/', function () {
     return view('/index');
@@ -58,6 +59,15 @@ Route::prefix('admin')->group(function () {
     // GASS
     Route::post('/updateGass', [gassController::class, 'updateGass'])->name('updateGass');
     Route::post('/addGassProgram', [gassController::class, 'addGassProgram'])->name('addGassProgram');
+
+    // ========================= Requesting ==========================//
+    Route::post('/addProgramRequest', [requestPpaController::class, 'addProgramRequest'])->name('addProgramRequest');
+
+    // ========================= Reject Requests ==========================//
+    Route::post('/rejectProgramRequest', [requestPpaController::class, 'rejectProgramRequest'])->name('rejectProgramRequest');
+
+    // ========================= View Details of Requests (Divisions) ==========================//
+    Route::get('/programRequests/{id}/divisions', [requestPpaController::class, 'getDivisions']);
 });
 
 Route::prefix('viewPpa')->group(function () {
@@ -85,16 +95,17 @@ Route::middleware(['auth', 'role:Division Chief|Assistant Department Head'])->gr
         Route::get('/settings', [adminPagesController::class, 'settings'])->name('chief.settings');
         Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('chief.viewIpcr');
         Route::get('/audit', [adminPagesController::class, 'audit'])->name('chief.audit');
-        Route::get('/dashboard', [adminPagesController::class, 'dashboard'])->name('chief.dashboard');
+        
     });
 });
 
-Route::middleware(['auth', 'role:Department Head'])->group(function () {
+Route::middleware(['auth', 'role:Department Head|Assistant Department Head'])->group(function () {
     Route::prefix('head')->group(function () {
         Route::get('/managePpa', [adminPagesController::class, 'managePpa'])->name('head.managePpa');
         Route::get('/viewEmployees', [adminPagesController::class, 'viewEmployees'])->name('head.viewEmployees');
         Route::get('/settings', [adminPagesController::class, 'settings'])->name('head.settings');
         Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('head.viewIpcr');
         Route::get('/audit', [adminPagesController::class, 'audit'])->name('head.audit');
+        Route::get('/approve', [adminPagesController::class, 'approve'])->name('head.approve');
     });
 });

@@ -86,11 +86,11 @@
                             <td colspan="6" style="text-align: justify; padding: 6px; vertical-align: middle;" >
                                 <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, {{ $employee->position }} - {{ $employee->status }} of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE, {{ strtoupper($employee->division->name) ?? '' }}, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }}.</p>
                             </td>
-                        @elseif($employee->role === 'Division Chief' || $employee->role === 'Assistant Department Head')
+                        @elseif($employee->role === 'Division Chief')
                             <td colspan="8" style="text-align: justify; padding: 6px; vertical-align: middle;" >
                                 <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, {{ $employee->position }} - {{ $employee->status }} of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE, {{ strtoupper($employee->division->name) ?? '' }}, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }}.</p>
                             </td>
-                        @elseif($employee->role === 'Department Head')
+                        @elseif($employee->role === 'Department Head' || $employee->role === 'Assistant Department Head')
                             <td colspan="8" style="text-align: justify; padding: 6px; vertical-align: middle;" >
                                 <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, PHRMO, Provincial Government of Nueva Vizcaya, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }}.</p>
                             </td>
@@ -165,25 +165,25 @@
                     @if($employee->role === 'Staff')
                         <tr class="small">
                             <td class="border">Reviewed by</td>
-                            <td class="border">Date</td>
                             <td class="border"></td>
-                            <td class="border">Date</td>
+                            <td class="border"></td>
+                            <td class="border"></td>
                             <td class="border">Approved by</td>
-                            <td class="border">Date</td>
+                            <td class="border"></td>
                         </tr>
                     @elseif($employee->role === 'Division Chief' || $employee->role === 'Assistant Department Head')
                         <tr class="small">
                             <td class="border">Reviewed by</td>
-                            <td class="border">Date</td>
+                            <td class="border"></td>
                             <td class="border" colspan="2"></td>
-                            <td class="border">Date</td>
+                            <td class="border"></td>
                             <td class="border" colspan="2">Approved by</td>
-                            <td class="border">Date</td>
+                            <td class="border"></td>
                         </tr>
                     @elseif($employee->role === 'Department Head')
                         <tr class="small">
                             <td class="border">Approved by</td>
-                            <td class="border">Date</td>
+                            <td class="border"></td>
                             <td class="border" colspan="6"></td>
                         </tr>
                     @endif
@@ -219,12 +219,12 @@
                     <!-- Position -->
                     @if($employee->role === 'Staff')
                         <tr class="smaller" style="text-align: center;">
-                            <td class="border">Supervisor</td>
-                            <td class="border"></td>
+                            <td class="border">{{($chiefInfo['position']) }}</td>
+                            <td class="border">Date</td>
                             <td class="border">Assistant PHRMO</td>
-                            <td class="border"></td>
+                            <td class="border">Date</td>
                             <td class="border">PHRMO</td>
-                            <td class="border"></td>
+                            <td class="border">Date</td>
                         </tr>
                         <tr class="small" style="text-align: center;">
                             <td colspan="6" style="min-height: 30px; height:30px;"></td>
@@ -232,11 +232,11 @@
                     @elseif($employee->role === 'Division Chief' || $employee->role === 'Assistant Department Head')
                         <tr class="smaller" style="text-align: center;">
                             <td class="border">Assistant PHRMO</td>
-                            <td class="border"></td>
+                            <td class="border">Date</td>
                             <td class="border" colspan="2"></td>
                             <td class="border"></td>
                             <td class="border" colspan="2">PHRMO</td>
-                            <td class="border"></td>
+                            <td class="border">Date</td>
                         </tr>
                         <tr class="small" style="text-align: center;">
                             <td colspan="8" style="min-height: 30px; height:30px;"></td>
@@ -244,7 +244,7 @@
                     @elseif($employee->role === 'Department Head')
                         <tr class="smaller" style="text-align: center;">
                             <td class="border">Governor</td>
-                            <td class="border"></td>
+                            <td class="border">Date</td>
                             <td class="border" colspan="6"></td>
                         </tr>
                         <tr class="small" style="text-align: center;">
@@ -258,9 +258,9 @@
                     @if($employee->role === 'Staff')
                     <tr class="smaller" style="text-align: center; background-color:rgb(225, 225, 225);">
                         <td rowspan="2" class="bold border" style="width: 20%;">PROGRAMS/PROJECTS/ACTIVITIES</td>
-                        <td rowspan="2" class="bold border" style="width: 20%;">SUCCESS INDICATOR</td>
+                        <td rowspan="2" class="bold border" style="width: 15%;">SUCCESS INDICATOR</td>
                         <td colspan="3" class="bold small border">RATINGS</td>
-                        <td rowspan="2" class="bold border">REMARKS</td>
+                        <td rowspan="2" class="bold border" style="width: 15%;">REMARKS</td>
                     </tr>
                     <tr class="smaller" style="text-align: center; background-color:rgb(225, 225, 225);">
                         <td class="bold border">QUALITY</td>

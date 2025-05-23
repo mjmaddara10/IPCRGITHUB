@@ -26,7 +26,7 @@ class pdfController extends Controller
         $targets = [];
     
         // 🔹 FOR DEPARTMENT HEAD — get ALL programs, activities, sub-activities
-        if ($role === 'Department Head' || $role === 'Assistant Department Head') {
+        if ($role === 'Department Head') {
             $allPrograms = Program::with([
                 'divisions',
                 'activities.subActivities',

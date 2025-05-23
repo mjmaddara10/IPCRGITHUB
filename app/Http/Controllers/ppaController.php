@@ -12,6 +12,7 @@ use App\Models\Program;
 use App\Models\Employee;
 use App\Models\Division;
 use App\Models\AuditTrail;
+use App\Models\ProgramRequest;
 
 class ppaController extends Controller
 {
@@ -376,7 +377,7 @@ class ppaController extends Controller
         try {
             
             $maxOrder = Program::max('order') ?? 0 ;
-
+            
             // Create the program
             $program = Program::create([
                 'name' => $request->addProgramName,
@@ -387,15 +388,22 @@ class ppaController extends Controller
                 'remarks' => $request->addRemarks,
                 'budget' => $request->addBudget,
                 'order' => $maxOrder + 1,
-            ]);
+            ]); 
 
-            // Check if 'all' is selected
+            if ($request->filled('addProgramId')) {
+                $addRequestProgram = ProgramRequest::findOrFail($request->addProgramId);
+                $addRequestProgram->update([
+                    'status' => 'approved',
+                ]);
+            }
+            
             if (in_array('all', $request->divisions)) {
-                $allDivisionIds = \App\Models\Division::pluck('id')->toArray();
+                $allDivisionIds = \App\Models\Division::whereIn('name', $request->divisions)->pluck('id')->toArray();
                 $program->divisions()->attach($allDivisionIds);
             } else {
                 $program->divisions()->attach($request->divisions);
             }
+            
 
             // Audit Trail for adding program
             $user = auth()->user();

@@ -93,7 +93,7 @@
 
                                 <!-- Division Select -->
                                 <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
-                                <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
+                                <select class="form-select form-select-sm" name="divisionSelect" id="divisionSelect" style="width: 250px !important;">
                                     <option value="">All Divisions</option>
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}"
@@ -105,7 +105,7 @@
                             
                                 <!-- User Select -->
                                 <label for="employeeSelect" class="mx-2 fw-bold mb-0">Select User:</label>
-                                <select class="form-select form-select-md w-auto" name="employeeSelect" id="employeeSelect">
+                                <select class="form-select form-select-sm" name="employeeSelect" id="employeeSelect" style="width: 200px !important;">
                                     <option>Select a User</option>
                                     @foreach ($employees->sortBy(function($employee) {
                                         return $employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '') . ' ' . $employee->lastName;
@@ -126,7 +126,7 @@
 
                         <!-- Navigation Buttons -->
                         <div class="d-flex align-items-center flex-wrap">
-                            @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                            @if($role === 'Division Chief')
                                 <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;" onclick="localStorage.clear();">Manage PPA</a>
                                 <a href="{{ route('chief.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">View Targets</a>
 
@@ -150,9 +150,16 @@
                                 <a id="adminLogoutBtn" class="btn btn-hover nv-red" style="margin-left: 3px;" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
-                            @elseif($role === 'Department Head')
-                                <a href="{{ route('head.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;" onclick="localStorage.clear();">Manage PPA</a>
-                                <a href="{{ route('head.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">View Targets</a>
+                            @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                                <a href="{{ route('head.approve') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                    Review Requests
+                                </a>
+                                <a href="{{ route('head.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;" onclick="localStorage.clear();">
+                                    Manage PPA
+                                </a>
+                                <a href="{{ route('head.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">
+                                    View Targets
+                                </a>
 
                                 <a class="btn nv-green" id="exportBtn" data-user-id="{{ $user->id }}" data-user-division="{{ $user->division_id }}" style="margin-left: 3px;">Print O/D/IPCR</a>
 
@@ -707,4 +714,15 @@
         </div>
     </div>
 </div>
+
+<!-- <script>
+    flatpickr("#effectivitySelectFrom", {
+        dateFormat: "m/d/Y"
+    });
+</script>
+<script>
+    flatpickr("#effectivitySelectTo", {
+        dateFormat: "m/d/Y"
+    });
+</script> -->
 @endsection

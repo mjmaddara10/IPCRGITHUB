@@ -13,13 +13,20 @@ use App\Models\Employee;
 use App\Models\SubProject;
 use App\Models\Division;
 use App\Models\Gass;
+use App\Models\ProgramRequest;
 
 
 class adminPagesController extends Controller
 {
-    public function dashboard(){
-        return view('viewBlades.dashboard', [
-            'role' => auth()->user()->role
+    public function approve(){
+        $programRequest = ProgramRequest::with(['requester','divisions'])
+        ->where('status', 'pending')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return view('viewBlades.approveChanges', [
+            'role' => auth()->user()->role,
+            'programRequest' => $programRequest,
         ]);
     }
 
