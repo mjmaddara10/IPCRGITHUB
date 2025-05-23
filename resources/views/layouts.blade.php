@@ -20,6 +20,7 @@
 
     <!-- Font Awesome - For icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <!-- Typography -->
     <!-- Primary Font: Montserrat -->
@@ -58,6 +59,7 @@
     <!-- JavaScript Dependencies -->
     <!-- Bootstrap Bundle with Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -94,6 +96,15 @@
     <!-- GASS -->
     <script src="{{ asset('js/gassManagement/program.js') }}"></script>
     <script src="{{ asset('js/ppaView/gass.js') }}"></script>
+
+    <!-- PPA Requests -->
+    <script src="{{ asset('js/ppaRequests/program.js') }}"></script>
+
+    <!-- PPA Approve -->
+    <script src="{{ asset('js/ppaApprove/program.js') }}"></script>
+
+    <!-- View Request Details -->
+    <script src="{{ asset('js/requestDetails/program.js') }}"></script>
 </body>
 
 </html>

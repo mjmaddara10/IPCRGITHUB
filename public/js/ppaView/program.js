@@ -1,5 +1,5 @@
 // Add Program
-$('#addProgramForm').on('submit', function(e) {
+$('#addProgramFormzzz').on('submit', function(e) {
     e.preventDefault(); // Prevent the default form submission
 
     Swal.fire({

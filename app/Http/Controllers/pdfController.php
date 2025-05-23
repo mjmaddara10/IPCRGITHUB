@@ -26,10 +26,12 @@ class pdfController extends Controller
         $targets = [];
     
         // 🔹 FOR DEPARTMENT HEAD — get ALL programs, activities, sub-activities
-        if ($role === 'Department Head' || $role === 'Assistant Department Head') {
+        if ($role === 'Department Head') {
             $allPrograms = Program::with([
                 'divisions',
-                'activities.subActivities'
+                'activities.subActivities',
+                'activities.employees',            // Load employees under activities
+                'activities.subActivities.employees' // (Optional) Load employees under sub-activities too
             ])->get();
     
             foreach ($allPrograms as $program) {
@@ -99,14 +101,28 @@ class pdfController extends Controller
 
                 if (!$activity) {
                     \Log::error("Missing activity for SubActivity ID: " . $subActivity->id);
+                    continue;  // skip this iteration if no activity found
                 }
+
                 $program = $activity->program;
-    
+
+                // Get employees assigned to the activity
+                $activityEmployees = $activity->employees->map(function ($emp) {
+                    return $emp->username;
+                })->toArray();
+
+                $subActivityEmployees = $subActivity->employees->map(function ($emp) {
+                    return $emp->username;
+                })->toArray();
+
                 $targets[] = [
                     'program_id' => $program->id,
                     'program_name' => $program->name,
+                    'program_budget' => $program->budget,
                     'activity_id' => $activity->id,
                     'activity_name' => $activity->name,
+                    'activity_employees' => $activityEmployees,
+                    'sub_activity_employees' => $subActivityEmployees,  // <-- Added employees here
                     'sub_activity_name' => $subActivity->name,
                     'sub_activity_success_indicator' => $subActivity->successIndicator,
                     'sub_activity_quality' => $subActivity->quality,

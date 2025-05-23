@@ -2,7 +2,7 @@
     $divisionChiefsArray = [];
 
     foreach ($divisions as $division) {
-        $chief = $division->employees->first();
+        $chief = $division->employees->firstWhere('role', 'Division Chief');
 
         $fullName = '________';
         $position = '________';
@@ -79,12 +79,11 @@
                             <div class="d-flex justify-content-start align-items-center flex-wrap mb-1">
                                 <!-- Effectivity Select -->
                                 <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
-                                    <label for="effectivitySelect" class="me-2 fw-bold mb-0">Set Effectivity Date:</label>
-                                    <select class="form-select form-select-md w-auto" name="effectivitySelect" id="effectivitySelect">
-                                        <option value="1st Semester">1st Semester</option>
-                                        <option value="2nd Semester">2nd Semester</option>
-                                        <option value="Whole Year">Whole Year</option>
-                                    </select>
+                                    <label for="effectivitySelect" class="me-2 fw-bold mb-0">Set Effectivity Date From:</label>
+                                    <input type="date" class="form-control form-control-sm" id="effectivitySelectFrom" name="effectivitySelectFrom" style="width: 200px;">
+                                
+                                    <label for="effectivitySelect" class="me-2 fw-bold mb-0 ms-2">To:</label>
+                                    <input type="date" class="form-control form-control-sm" id="effectivitySelectTo" name="effectivitySelectTo" style="width: 200px;">
                                 </div>
                             </div>
                         @endif
@@ -94,7 +93,7 @@
 
                                 <!-- Division Select -->
                                 <label for="divisionSelect" class="me-2 fw-bold mb-0">Select Division:</label>
-                                <select class="form-select form-select-md w-auto" name="divisionSelect" id="divisionSelect">
+                                <select class="form-select form-select-sm" name="divisionSelect" id="divisionSelect" style="width: 250px !important;">
                                     <option value="">All Divisions</option>
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}"
@@ -106,7 +105,7 @@
                             
                                 <!-- User Select -->
                                 <label for="employeeSelect" class="mx-2 fw-bold mb-0">Select User:</label>
-                                <select class="form-select form-select-md w-auto" name="employeeSelect" id="employeeSelect">
+                                <select class="form-select form-select-sm" name="employeeSelect" id="employeeSelect" style="width: 200px !important;">
                                     <option>Select a User</option>
                                     @foreach ($employees->sortBy(function($employee) {
                                         return $employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '.' : '') . ' ' . $employee->lastName;
@@ -127,7 +126,7 @@
 
                         <!-- Navigation Buttons -->
                         <div class="d-flex align-items-center flex-wrap">
-                            @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                            @if($role === 'Division Chief')
                                 <a href="{{ route('chief.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;" onclick="localStorage.clear();">Manage PPA</a>
                                 <a href="{{ route('chief.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">View Targets</a>
 
@@ -151,9 +150,16 @@
                                 <a id="adminLogoutBtn" class="btn btn-hover nv-red" style="margin-left: 3px;" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
-                            @elseif($role === 'Department Head')
-                                <a href="{{ route('head.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;" onclick="localStorage.clear();">Manage PPA</a>
-                                <a href="{{ route('head.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">View Targets</a>
+                            @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                                <a href="{{ route('head.approve') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                    Review Requests
+                                </a>
+                                <a href="{{ route('head.managePpa') }}" class="btn btn-hover nv-green"  style="margin-left: 3px;" onclick="localStorage.clear();">
+                                    Manage PPA
+                                </a>
+                                <a href="{{ route('head.viewIpcr') }}" class="btn btn-hover text-success fw-bold" style="margin-left: 3px; background-color: rgb(230, 230, 230);">
+                                    View Targets
+                                </a>
 
                                 <a class="btn nv-green" id="exportBtn" data-user-id="{{ $user->id }}" data-user-division="{{ $user->division_id }}" style="margin-left: 3px;">Print O/D/IPCR</a>
 
@@ -179,7 +185,7 @@
                                 <a class="btn btn-primary mb-1 me-1" id="exportBtnStaff" data-user-id="{{ $user->id }}" data-user-division="{{ $user->division_id }}">
                                     <i class="fas fa-file-pdf me-2"></i> Print IPCR
                                 </a>
-                                <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); document.getElementById('logoutForm').submit();">
+                                <a id="adminLogoutBtn" class="btn btn-hover nv-red mb-1" style="margin-left: 0;" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
                             @endif
@@ -190,14 +196,13 @@
                 @if($role === 'Division Chief' || $role === 'Assistant Department Head' || $role === 'Department Head')
                     <div class="pt-2">
                         <div class="d-flex justify-content-between align-items-center flex-wrap mb-1">
-                            <!-- Division Select -->
+                            <!-- Effectivity Select -->
                             <div class="d-flex align-items-center text-success me-3" style="min-width: 300px;">
-                                <label for="effectivitySelect" class="me-2 fw-bold mb-0">Set Effectivity Date:</label>
-                                <select class="form-select form-select-md w-auto" name="effectivitySelect" id="effectivitySelect">
-                                    <option value="1st Semester">1st Semester</option>
-                                    <option value="2nd Semester">2nd Semester</option>
-                                    <option value="Whole Year">Whole Year</option>
-                                </select>
+                                <label for="effectivitySelect" class="me-2 fw-bold mb-0">Set Effectivity Date From:</label>
+                                <input type="date" class="form-control form-control-sm" id="effectivitySelectFrom" name="effectivitySelectFrom" style="width: 200px;">
+                            
+                                <label for="effectivitySelect" class="me-2 fw-bold mb-0 ms-2">To:</label>
+                                <input type="date" class="form-control form-control-sm" id="effectivitySelectTo" name="effectivitySelectTo" style="width: 200px;">
                             </div>
                         </div>
                     </div>
@@ -709,4 +714,15 @@
         </div>
     </div>
 </div>
+
+<!-- <script>
+    flatpickr("#effectivitySelectFrom", {
+        dateFormat: "m/d/Y"
+    });
+</script>
+<script>
+    flatpickr("#effectivitySelectTo", {
+        dateFormat: "m/d/Y"
+    });
+</script> -->
 @endsection

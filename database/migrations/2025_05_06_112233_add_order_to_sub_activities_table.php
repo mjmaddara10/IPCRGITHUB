@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sub_activities', function (Blueprint $table) {
-            $table->integer('order')->default(0);
+            $table->integer('order', 11)->default(0);
         });
     }
 

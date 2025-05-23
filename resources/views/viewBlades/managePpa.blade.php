@@ -44,12 +44,12 @@
                         <!-- Add Program -->
                         <a class="btn nv-green" id="addProgramBtn" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
 
-                        <a class="btn nv-green" id="addGassProgramBtn" data-bs-toggle="modal" data-bs-target="#addGassProgramModal" style= "color: #FFFFFF; background-color: #03592c; display:none;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
+                        <a class="btn nv-green" id="addGassProgramBtn" data-bs-toggle="modal" data-bs-target="#addGassProgramModal" style= "color: #FFFFFF; background-color: #03592c; display:none;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add GASS Program/Project</a>
                     </div>
 
                     <!-- Buttons -->
                     <div class="d-flex align-items-center ms-auto">
-                        @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                        @if($role === 'Division Chief')
                         <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" class="btn btn-hover text-success fw-bold" onclick="localStorage.clear();">
                                 Manage PPA
                             </a>
@@ -74,7 +74,10 @@
                             <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                 Logout
                             </a>
-                        @elseif($role === 'Department Head')
+                        @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                            <a href="{{ route('head.approve') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                Review Requests
+                            </a>
                             <a href="{{ route('head.managePpa') }}" style="margin-left: 3px; background-color:rgb(230, 230, 230);" class="btn btn-hover text-success fw-bold" onclick="localStorage.clear();">
                                 Manage PPA
                             </a>
@@ -116,7 +119,7 @@
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Timeliness</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 10%;">Remarks/MOV</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 8%;">Allotted Budget</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division or Individuals Responsible</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division/s or Individual/s Responsible</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%;">Actions</th>
                         </tr>
                     </thead>
@@ -343,7 +346,7 @@
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 12.3%;">Timeliness</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 10%;">Remarks/MOV</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 8%;">Allotted Budget</th>
-                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division or Individuals Responsible</th>
+                            <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%">Division/s or Individual/s Responsible</th>
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%;">Actions</th>
                         </tr>
                     </thead>
@@ -597,9 +600,12 @@
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="addProgramForm" class="p-2">
+                @if($role === 'Division Chief')
+                    <form id="addProgramRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="addProgramForm" class="p-2">
+                @endif
                     @csrf
-
                     <!-- Division Responsible -->
                     <div class="mb-3">
                         <div class="d-flex align-items-center gap-2 mb-2">
@@ -627,7 +633,7 @@
                         <table class="table table-bordered align-middle text-center border-success">
                             <thead class="table-light fw-bold text-dark">
                                 <tr>
-                                    <th style="min-width: 200px;">Programs/Project/Activities</th>
+                                    <th style="min-width: 200px;">Program/Project</th>
                                     <th style="min-width: 200px;">Success Indicator</th>
                                     <th style="min-width: 200px;">Quality</th>
                                     <th style="min-width: 200px;">Efficiency</th>
@@ -672,14 +678,26 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeAddModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Program
-                        </button>
-                    </div>
+                    @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeAddModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeAddModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Program
+                            </button>
+                        </div>
+                    @endif
+                    
                 </form>
             </div>
         </div>

@@ -18,6 +18,10 @@ class Division extends Model
         return $this->belongsToMany(Program::class);
     }
 
+    public function programRequests() {
+        return $this->belongsToMany(ProgramRequest::class, 'division_program_requests', 'division_id', 'program_requests_id');
+    }
+
     public function employees()
     {
         return $this->hasMany(Employee::class);

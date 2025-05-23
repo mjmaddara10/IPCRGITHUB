@@ -13,10 +13,23 @@ use App\Models\Employee;
 use App\Models\SubProject;
 use App\Models\Division;
 use App\Models\Gass;
+use App\Models\ProgramRequest;
 
 
 class adminPagesController extends Controller
 {
+    public function approve(){
+        $programRequest = ProgramRequest::with(['requester','divisions'])
+        ->where('status', 'pending')
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return view('viewBlades.approveChanges', [
+            'role' => auth()->user()->role,
+            'programRequest' => $programRequest,
+        ]);
+    }
+
     public function settings(){
         return view('viewBlades.settings', [
             'role' => auth()->user()->role
@@ -133,7 +146,6 @@ class adminPagesController extends Controller
         $employees = Employee::all();
         $divisions = Division::all();
         $subActivities = SubActivity::all();
-        // Order by created_at instead of updated_at to show the latest changes first
         $auditTrails = AuditTrail::orderBy('created_at', 'desc')->get();
 
         return view('viewBlades.auditTrail', compact(

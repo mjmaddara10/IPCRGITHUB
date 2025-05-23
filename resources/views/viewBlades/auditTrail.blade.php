@@ -20,7 +20,7 @@
                     <div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center ms-auto pt-3">
-                                @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                                @if($role === 'Division Chief')
                                     <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
                                         Manage PPA
                                     </a>
@@ -45,7 +45,10 @@
                                     <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                         Logout
                                     </a>
-                                @elseif($role === 'Department Head')
+                                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                                    <a href="{{ route('head.approve') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                        Review Requests
+                                    </a>
                                     <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
                                         Manage PPA
                                     </a>
@@ -85,7 +88,7 @@
                         </div>
                         <div class="p-4">
                             <div class="table-responsive">
-                                <table id="auditTable" class="table table-hover" style="table-layout: fixed; width: 100%;">
+                                <table id="auditTrailTable" class="table table-hover" style="table-layout: fixed; width: 100%;">
                                     <thead>
                                         <tr>
                                             <th style="color: #03592c; width: 8%;">Date/Time</th>
@@ -98,25 +101,21 @@
                                         </tr>
                                     </thead>
                                    <tbody>
-                                @forelse ($auditTrails as $audit)
-                                    <tr>    
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($audit->created_at)->format('F j, Y') }}<br>
-                                            <small class="text-muted">{{ \Carbon\Carbon::parse($audit->created_at)->format('g:i A') }}</small>
-                                        </td>
-                                        <td>{{ $audit->full_name }}</td>
-                                        <td>{{ ucfirst($audit->role) }}</td>
-                                        <td>{{ $audit->program_name ?? '—' }}</td>
-                                        <td>{{ $audit->action }}</td>
-                                        <td>{{ $audit->action_from ?? '—' }}</td>
-                                        <td>{{ $audit->action_to ?? '—' }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center">No recent changes found.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
+                                        @foreach ($auditTrails as $audit)
+                                            <tr>
+                                                <td data-order="{{ $audit->created_at }}">
+                                                    {{ \Carbon\Carbon::parse($audit->created_at)->format('F j, Y') }}<br>
+                                                    <small class="text-muted">{{ \Carbon\Carbon::parse($audit->created_at)->format('g:i A') }}</small>
+                                                </td>
+                                                <td>{{ $audit->full_name }}</td>
+                                                <td>{{ ucfirst($audit->role) }}</td>
+                                                <td>{{ $audit->program_name ?? '—' }}</td>
+                                                <td>{{ $audit->action }}</td>
+                                                <td>{{ $audit->action_from ?? '—' }}</td>
+                                                <td>{{ $audit->action_to ?? '—' }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

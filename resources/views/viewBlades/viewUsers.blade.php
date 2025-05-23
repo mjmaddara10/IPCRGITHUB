@@ -20,7 +20,7 @@
                     <div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex align-items-center ms-auto pt-3">
-                            @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                            @if($role === 'Division Chief')
                                 <a href="{{ route('chief.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
                                     Manage PPA
                                 </a>
@@ -45,7 +45,10 @@
                                 <a style="margin-left: 3px;" id="adminLogoutBtn" class="btn btn-hover nv-red" onclick="event.preventDefault(); localStorage.clear(); document.getElementById('logoutForm').submit();">
                                     Logout
                                 </a>
-                            @elseif($role === 'Department Head')
+                            @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                                <a href="{{ route('head.approve') }}" style="margin-left: 3px;" class="btn btn-hover nv-green">
+                                    Review Requests
+                                </a>
                                 <a href="{{ route('head.managePpa') }}" style="margin-left: 3px;" class="btn btn-hover nv-green" onclick="localStorage.clear();">
                                     Manage PPA
                                 </a>

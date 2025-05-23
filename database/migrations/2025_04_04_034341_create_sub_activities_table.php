@@ -13,12 +13,12 @@ class CreateSubActivitiesTable extends Migration
     {
         Schema::create('sub_activities', function (Blueprint $table) {
             $table->id(); 
-            $table->string('name')->nullable(); 
-            $table->string('successIndicator')->nullable(); 
-            $table->string('quality')->nullable(); 
-            $table->string('efficiency')->nullable(); 
-            $table->string('timeliness')->nullable(); 
-            $table->string('remarks')->nullable();
+            $table->string('name', 255)->nullable(); 
+            $table->string('successIndicator', 500)->nullable(); 
+            $table->string('quality', 500)->nullable(); 
+            $table->string('efficiency', 500)->nullable(); 
+            $table->string('timeliness', 500)->nullable(); 
+            $table->string('remarks', 500)->nullable();
             
             $table->unsignedBigInteger('activity_id')->nullable();
             $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade');
