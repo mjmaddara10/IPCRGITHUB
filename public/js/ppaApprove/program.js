@@ -1,18 +1,6 @@
 $(document).on('submit', '.addProgramApproveForm', function(e) {
     e.preventDefault();
 
-    const form = $(this);
-    const programId = form.data('program-id');
-    const programName = form.data('program-name');
-    const programSuccessIndicator = form.data('program-success-indicator');
-    const quality = form.data('program-quality');
-    const efficiency = form.data('program-efficiency');
-    const timeliness = form.data('program-timeliness');
-    const remarks = form.data('program-remarks');
-    const budget = form.data('program-budget');
-    const divisions = JSON.parse(form.attr('data-program-divisions'));
-    const token = $('input[name="_token"]').val();
-
     Swal.fire({
         title: "Are you sure?",
         text: "Do you want to add this program?",
@@ -27,16 +15,16 @@ $(document).on('submit', '.addProgramApproveForm', function(e) {
                 url: '/admin/addProgram',
                 method: 'POST',
                 data: {
-                    _token: token,
-                    addProgramId: programId,
-                    addProgramName: programName,
-                    addSuccessIndicator: programSuccessIndicator,
-                    addQuality: quality,
-                    addEfficiency: efficiency,
-                    addTimeliness: timeliness,
-                    addRemarks: remarks,
-                    addBudget: budget,
-                    divisions: divisions
+                    _token: $('input[name="_token"]').val(),
+                    addProgramId: $('#addProgramIdRequest').val(),
+                    addProgramName: $('#addProgramNameRequest').val(),
+                    addSuccessIndicator: $('#addProgramSuccessIndicatorRequest').val(),
+                    addQuality: $('#addProgramQualityRequest').val(),
+                    addEfficiency: $('#addProgramEfficiencyRequest').val(),
+                    addTimeliness: $('#addProgramTimelinessRequest').val(),
+                    addRemarks: $('#addProgramRemarksRequest').val(),
+                    addBudget: $('#addProgramBudgetRequest').val(),
+                    divisions: JSON.parse($('#divisionIdView').val()),
                 },
                 success: function(response) {
                     Swal.fire({
@@ -61,8 +49,8 @@ $(document).on('submit', '.addProgramApproveForm', function(e) {
     });
 });
 
-$(document).off('click', '.rejectProgramAddRequest').on('click', '.rejectProgramAddRequest', function () {
-    var programId = $(this).data('program-id');
+$(document).on('submit', '.addProgramDisapproveForm', function(e) {
+    e.preventDefault();
     
     Swal.fire({
         title: "Are you sure?",
@@ -78,8 +66,8 @@ $(document).off('click', '.rejectProgramAddRequest').on('click', '.rejectProgram
                 url: '/admin/rejectProgramRequest',
                 method: 'POST',
                 data: {
-                    programId: programId,
                     _token: $('meta[name="csrf-token"]').attr('content'),
+                    programId: $('#deleteProgramIdRequest').val(),
                 },
                 success: function(response) {
                     Swal.fire({

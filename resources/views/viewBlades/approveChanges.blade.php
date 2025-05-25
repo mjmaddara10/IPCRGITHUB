@@ -122,24 +122,10 @@
                                                                 data-program-timeliness="{{ $programRequest->timeliness }}"
                                                                 data-program-remarks="{{ $programRequest->remarks }}"
                                                                 data-program-budget="{{ $programRequest->budget }}"
-                                                                data-program-divisions='@json($programRequest->divisions->pluck("name"))' class="btn action-btn buttonHover bg-primary viewAddProgramRequest" title="View details" style="color: #FFFFFF;" data-bs-toggle="modal" data-bs-target="#viewAddProgramRequestModal"><i class="fas fa-eye"></i>
+                                                                data-program-divisions='@json($programRequest->divisions->pluck("name"))'
+                                                                data-program-division-id='@json($programRequest->divisions->pluck("id"))' class="btn action-btn buttonHover bg-primary viewAddProgramRequest" title="View details" style="color: #FFFFFF;" data-bs-toggle="modal" data-bs-target="#viewAddProgramRequestModal"><i class="fas fa-eye"></i>
                                                             </button>
 
-                                                            <form class="addProgramApproveForm" 
-                                                                data-program-id="{{ $programRequest->id }}"
-                                                                data-program-name="{{ $programRequest->name }}"
-                                                                data-program-success-indicator="{{ $programRequest->successIndicator }}"
-                                                                data-program-quality="{{ $programRequest->quality }}"
-                                                                data-program-efficiency="{{ $programRequest->efficiency }}"
-                                                                data-program-timeliness="{{ $programRequest->timeliness }}"
-                                                                data-program-remarks="{{ $programRequest->remarks }}"
-                                                                data-program-budget="{{ $programRequest->budget }}"
-                                                                data-program-divisions='@json($programRequest->divisions->pluck("name"))'>
-                                                                @csrf
-                                                                <button class="btn action-btn buttonHover bg-success" type="submit" title="Approve" style="color: #FFFFFF;"><i class="fas fa-check"></i></button>
-                                                            </form>
-
-                                                            <button data-program-id="{{ $programRequest->id }}" class="btn action-btn buttonHover bg-danger rejectProgramAddRequest" title="Disapprove" style="color: #FFFFFF;"><i class="fas fa-close"></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -164,23 +150,11 @@
                                                                 data-program-efficiency="{{ $programRequest->efficiency }}"
                                                                 data-program-timeliness="{{ $programRequest->timeliness }}"
                                                                 data-program-remarks="{{ $programRequest->remarks }}"
-                                                                data-program-budget="{{ $programRequest->budget }}" class="btn action-btn buttonHover bg-primary viewAddProgramRequest" title="View details" style="color: #FFFFFF;" data-bs-toggle="modal" data-bs-target="#viewAddProgramRequestModal"><i class="fas fa-eye"></i>
+                                                                data-program-budget="{{ $programRequest->budget }}"
+                                                                data-program-divisions='@json($programRequest->divisions->pluck("name"))'
+                                                                data-program-division-id='@json($programRequest->divisions->pluck("id"))' class="btn action-btn buttonHover bg-primary viewAddProgramRequest" title="View details" style="color: #FFFFFF;" data-bs-toggle="modal" data-bs-target="#viewAddProgramRequestModal"><i class="fas fa-eye"></i>
                                                             </button>
 
-                                                            <form class="addProgramApproveForm" 
-                                                                data-program-id="{{ $programRequest->id }}"
-                                                                data-program-name="{{ $programRequest->name }}"
-                                                                data-program-success-indicator="{{ $programRequest->successIndicator }}"
-                                                                data-program-quality="{{ $programRequest->quality }}"
-                                                                data-program-efficiency="{{ $programRequest->efficiency }}"
-                                                                data-program-timeliness="{{ $programRequest->timeliness }}"
-                                                                data-program-remarks="{{ $programRequest->remarks }}"
-                                                                data-program-budget="{{ $programRequest->budget }}">
-                                                                @csrf
-                                                                <button class="btn action-btn buttonHover bg-success" type="submit" title="Approve" style="color: #FFFFFF;"><i class="fas fa-check"></i></button>
-                                                            </form>
-
-                                                            <button data-program-id="{{ $programRequest->id }}" class="btn action-btn buttonHover bg-danger rejectProgramAddRequest" title="Disapprove" style="color: #FFFFFF;"><i class="fas fa-close"></i></button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -199,7 +173,7 @@
 
 <!------------------------------------------- Request Modals ----------------------------------------------->
 
-<!-- Add Program Request Modal -->
+<!-- Program Add Request Details Modal -->
 <div class="modal fade" id="viewAddProgramRequestModal" data-bs-backdrop="static" aria-hidden="true" tabindex="-1" aria-labelledby="viewAddProgramRequestModalLabel">
     <div class="modal-dialog modal-dialog-centered modal-xl" style="display: flex; align-items: center; margin: 1.75rem auto;">
         <div class="modal-content border-0 shadow rounded-3">
@@ -212,79 +186,92 @@
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                @if($role === 'Division Chief' || $role === 'Assistant Department Head')
-                    <form id="addProgramRequestForm" class="p-2">
-                @elseif($role === 'Department Head')
-                    <form id="addProgramForm" class="p-2">
-                @endif
-                    @csrf
-                    <!-- Division Responsible -->
-                    <div class="mb-3">
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
-                        </div>
-                        <div id="divisionInputsContainer" class="mb-2 d-flex flex-column gap-2">
-                            <!-- JS will insert text inputs here -->
-                        </div>
+                <!-- Division Responsible -->
+                <div class="mb-3">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered align-middle text-center border-success">
-                            <thead class="table-light fw-bold text-dark">
-                                <tr>
-                                    <th style="min-width: 200px;">Program Name</th>
-                                    <th style="min-width: 200px;">Success Indicator</th>
-                                    <th style="min-width: 200px;">Quality</th>
-                                    <th style="min-width: 200px;">Efficiency</th>
-                                    <th style="min-width: 200px;">Timeliness</th>
-                                    <th style="min-width: 200px;">Remarks</th>
-                                    <th style="min-width: 200px;">Allotted Budget</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramNameRequest" id="addProgramNameRequest" autofocus></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramSuccessIndicatorRequest" id="addProgramSuccessIndicatorRequest"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramQualityRequest" id="addProgramQualityRequest"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramEfficiencyRequest" id="addProgramEfficiencyRequest"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramTimelinessRequest" id="addProgramTimelinessRequest"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramRemarksRequest" id="addProgramRemarksRequest"></textarea>
-                                    </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramBudgetRequest" id="addProgramBudgetRequest"></textarea>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div id="divisionInputsContainer" class="mb-2 d-flex flex-column gap-2">
+                        <!-- JS will insert text inputs here -->
                     </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle text-center border-success">
+                        <thead class="table-light fw-bold text-dark">
+                            <tr>
+                                <th style="min-width: 200px;">Program Name</th>
+                                <th style="min-width: 200px;">Success Indicator</th>
+                                <th style="min-width: 200px;">Quality</th>
+                                <th style="min-width: 200px;">Efficiency</th>
+                                <th style="min-width: 200px;">Timeliness</th>
+                                <th style="min-width: 200px;">Remarks</th>
+                                <th style="min-width: 200px;">Allotted Budget</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border: 1px solid #ccc; vertical-align: top;">
+                                    <textarea class="form-control border-0 shadow-none auto-resize"
+                                        style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramNameRequest" id="addProgramNameRequest" autofocus readonly></textarea>
+                                </td>
+                                <td style="border: 1px solid #ccc; vertical-align: top;">
+                                    <textarea class="form-control border-0 shadow-none auto-resize"
+                                        style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramSuccessIndicatorRequest" id="addProgramSuccessIndicatorRequest" readonly></textarea>
+                                </td>
+                                <td style="border: 1px solid #ccc; vertical-align: top;">
+                                    <textarea class="form-control border-0 shadow-none auto-resize"
+                                        style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramQualityRequest" id="addProgramQualityRequest" readonly></textarea>
+                                </td>
+                                <td style="border: 1px solid #ccc; vertical-align: top;">
+                                    <textarea class="form-control border-0 shadow-none auto-resize"
+                                        style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramEfficiencyRequest" id="addProgramEfficiencyRequest" readonly></textarea>
+                                </td>
+                                <td style="border: 1px solid #ccc; vertical-align: top;">
+                                    <textarea class="form-control border-0 shadow-none auto-resize"
+                                        style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramTimelinessRequest" id="addProgramTimelinessRequest" readonly></textarea>
+                                </td>
+                                <td style="border: 1px solid #ccc; vertical-align: top;">
+                                    <textarea class="form-control border-0 shadow-none auto-resize"
+                                        style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramRemarksRequest" id="addProgramRemarksRequest" readonly></textarea>
+                                </td>
+                                <td style="border: 1px solid #ccc; vertical-align: top;">
+                                    <textarea class="form-control border-0 shadow-none auto-resize"
+                                        style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addProgramBudgetRequest" id="addProgramBudgetRequest" readonly></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                    <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-2"></i>Close
+                <!-- Footer -->
+                <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                    <form class="addProgramApproveForm" method="POST">
+                        @csrf
+                        <input type="hidden" name="program_id" id="addProgramIdRequest">
+                        <input type="hidden" name="program_division" id="divisionView">
+                        <input type="hidden" name="program_division_id" id="divisionIdView">
+
+                        <button type="submit" class="btn btn-success px-3">
+                            <i class="fas fa-check me-2"></i>Approve
                         </button>
-                    </div>
+                    </form>
+
+                    <form class="addProgramDisapproveForm" method="POST">
+                        @csrf
+                        <input type="hidden" name="program_id" id="deleteProgramIdRequest">
+
+                        <button type="submit" class="btn btn-danger px-3">
+                            <i class="fas fa-times me-2"></i>Disapprove
+                        </button>
+                    </form>
+
+                    <button type="button" class="btn btn-primary text-white px-3" data-bs-dismiss="modal">Close</button>
                     
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Program Edit Request Details Modal -->
 @endsection

@@ -107,5 +107,6 @@ Route::middleware(['auth', 'role:Department Head|Assistant Department Head'])->g
         Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('head.viewIpcr');
         Route::get('/audit', [adminPagesController::class, 'audit'])->name('head.audit');
         Route::get('/approve', [adminPagesController::class, 'approve'])->name('head.approve');
+        Route::post('/approve', [adminPagesController::class, 'approve'])->name('head.approve');
     });
 });

@@ -8,8 +8,11 @@ $(document).off('click', '.viewAddProgramRequest').on('click', '.viewAddProgramR
     var programTimeliness = $(this).data('program-timeliness');
     var programRemarks = $(this).data('program-remarks');
     var programBudget = $(this).data('program-budget');
+    var divisionId = $(this).data('program-division-id');
+    var divisions = JSON.parse($(this).attr('data-program-divisions'));
 
     $('#addProgramIdRequest').val(programId);
+    $('#deleteProgramIdRequest').val(programId);
     $('#addProgramNameRequest').val(programName);
     $('#addProgramSuccessIndicatorRequest').val(programSuccessIndicator);
     $('#addProgramQualityRequest').val(programQuality);
@@ -17,6 +20,8 @@ $(document).off('click', '.viewAddProgramRequest').on('click', '.viewAddProgramR
     $('#addProgramTimelinessRequest').val(programTimeliness);
     $('#addProgramRemarksRequest').val(programRemarks);
     $('#addProgramBudgetRequest').val(programBudget);
+    $('#divisionView').val(divisions);
+    $('#divisionIdView').val(JSON.stringify(divisionId));
 
     // Clear old divisions
     $('#divisionInputsContainer').empty();

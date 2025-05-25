@@ -397,6 +397,9 @@ class ppaController extends Controller
                 ]);
             }
             
+            $type = gettype($request->divisions);
+            \Log::info('Divisions data type: ' . $type);
+
             if (in_array('all', $request->divisions)) {
                 $allDivisionIds = \App\Models\Division::whereIn('name', $request->divisions)->pluck('id')->toArray();
                 $program->divisions()->attach($allDivisionIds);
