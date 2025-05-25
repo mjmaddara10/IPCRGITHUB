@@ -107,8 +107,25 @@
                 </div>
             </div>
 
-            <!-- PPA Table -->
-            <div class="table-responsive" id="tableContainer">
+            <!-- Add CSS for fixed header -->
+            <style>
+                .table-fixed-header {
+                    position: relative;
+                    max-height: 70vh;
+                    overflow-y: auto;
+                }
+                .table-fixed-header thead {
+                    position: sticky;
+                    top: 0;
+                    z-index: 1;
+                }
+                .table-fixed-header th {
+                    background-color: #dd9f03;
+                }
+            </style>
+
+            <!-- PPA Table with fixed header -->
+            <div class="table-responsive table-fixed-header" id="tableContainer">
                 <table id="ppaTable" class="table" style="table-layout: fixed; width: 100%;">
                     <thead class="text-center default-text">
                         <tr style="vertical-align:middle;">
@@ -335,7 +352,7 @@
             </div>
 
             <!-- GASS Table -->
-            <div class="table-responsive" id="gassTable" style="display:none;">
+            <div class="table-responsive table-fixed-header" id="gassTable" style="display:none;">
                 <table id="ppaTable" class="table" style="table-layout: fixed; width: 100%;">
                     <thead class="text-center default-text">
                         <tr style="vertical-align:middle;">

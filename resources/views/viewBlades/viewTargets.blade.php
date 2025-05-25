@@ -211,61 +211,63 @@
                 <!-- Table Section -->
                 <div class="table-responsive">
                     @if($role === 'Staff')
-                        <table class="table table-hover" style="fixed; width: 100%;">
-                            <thead class="text-center default-text">
-                                <tr>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Programs/Project/Activities</th>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Success Indicator</th>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Quality</th>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Efficiency</th>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Timeliness</th>
-                                    <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Remarks/MOV</th>
-                                </tr>
-                            </thead>
+                        <div class="table-scroll">
+                            <table class="table">
+                                <thead class="text-center default-text">
+                                    <tr>
+                                        <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Programs/Project/Activities</th>
+                                        <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Success Indicator</th>
+                                        <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Quality</th>
+                                        <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Efficiency</th>
+                                        <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Timeliness</th>
+                                        <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Remarks/MOV</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                @php
-                                    $printedPrograms = [];
-                                    $printedActivities = [];
-                                @endphp
-
-                                @foreach($targets as $target)
+                                <tbody>
                                     @php
-                                        $programName = $target['program_name'] ?? 'N/A';
-                                        $activityName = $target['activity_name'] ?? '';
+                                        $printedPrograms = [];
+                                        $printedActivities = [];
                                     @endphp
 
-                                    {{-- Program --}}
-                                    @if(!in_array($programName, $printedPrograms))
-                                        <tr class="small">
-                                            <td class="text-left border border-light default-text" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">{{ $programName }}</td>
-                                        </tr>
-                                        @php $printedPrograms[] = $programName; @endphp
-                                    @endif
+                                    @foreach($targets as $target)
+                                        @php
+                                            $programName = $target['program_name'] ?? 'N/A';
+                                            $activityName = $target['activity_name'] ?? '';
+                                        @endphp
 
-                                    {{-- Activity --}}
-                                    @if(!in_array($activityName, $printedActivities))
-                                        <tr class="small">
-                                            <td colspan="6" class="text-left border border-muted default-text" style="background-color:rgb(212, 212, 212);">{{ $activityName }}</td>
-                                        </tr>
-                                        @php $printedActivities[] = $activityName; @endphp
-                                    @endif
+                                        {{-- Program --}}
+                                        @if(!in_array($programName, $printedPrograms))
+                                            <tr class="small">
+                                                <td class="text-left border border-light default-text" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">{{ $programName }}</td>
+                                            </tr>
+                                            @php $printedPrograms[] = $programName; @endphp
+                                        @endif
 
-                                    {{-- Sub-Activity (always print) --}}
-                                    <tr class="small" style="vertical-align: top;">
-                                        <td style="text-indent: 10px;" class="border default-text">{{ $target['sub_activity_name'] ?? '' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_success_indicator'] ?? '' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_quality'] ?? '' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_efficiency'] ?? '' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_timeliness'] ?? '' }}</td>
-                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_remarks'] ?? '' }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        {{-- Activity --}}
+                                        @if(!in_array($activityName, $printedActivities))
+                                            <tr class="small">
+                                                <td colspan="6" class="text-left border border-muted default-text" style="background-color:rgb(212, 212, 212);">{{ $activityName }}</td>
+                                            </tr>
+                                            @php $printedActivities[] = $activityName; @endphp
+                                        @endif
+
+                                        {{-- Sub-Activity (always print) --}}
+                                        <tr class="small" style="vertical-align: top;">
+                                            <td style="text-indent: 10px;" class="border default-text">{{ $target['sub_activity_name'] ?? '' }}</td>
+                                            <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_success_indicator'] ?? '' }}</td>
+                                            <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_quality'] ?? '' }}</td>
+                                            <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_efficiency'] ?? '' }}</td>
+                                            <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_timeliness'] ?? '' }}</td>
+                                            <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_remarks'] ?? '' }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @endif
 
-                    <div class="table-responsive">
+                    <div class="table-scroll">
                         <table id="usersTable" class="table table-hover" style="table-layout: fixed; fixed; width: 100%;">
                             <thead class="text-center d-none default-text" id="thead-default">
                                 <tr>
@@ -726,3 +728,16 @@
     });
 </script> -->
 @endsection
+
+<style>
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: inherit;
+    }
+    .table-scroll {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+</style>
