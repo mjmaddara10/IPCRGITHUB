@@ -99,12 +99,19 @@
 
     <!-- PPA Requests -->
     <script src="{{ asset('js/ppaRequests/program.js') }}"></script>
+    <script src="{{ asset('js/ppaRequests/activity.js') }}"></script>
+    <script src="{{ asset('js/ppaRequests/subActivity.js') }}"></script>
+    <script src="{{ asset('js/ppaRequests/gass.js') }}"></script>
 
     <!-- PPA Approve -->
     <script src="{{ asset('js/ppaApprove/program.js') }}"></script>
+    <script src="{{ asset('js/ppaApprove/activity.js') }}"></script>
+    <script src="{{ asset('js/ppaApprove/subActivity.js') }}"></script>
 
     <!-- View Request Details -->
     <script src="{{ asset('js/requestDetails/program.js') }}"></script>
+    <script src="{{ asset('js/requestDetails/activity.js') }}"></script>
+    <script src="{{ asset('js/requestDetails/subActivity.js') }}"></script>
 </body>
 
 </html>

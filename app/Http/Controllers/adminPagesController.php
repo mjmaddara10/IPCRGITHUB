@@ -14,19 +14,25 @@ use App\Models\SubProject;
 use App\Models\Division;
 use App\Models\Gass;
 use App\Models\ProgramRequest;
+use App\Models\ActivityRequest;
+use App\Models\SubActivityRequest;
+use App\Models\GassRequest;
 
 
 class adminPagesController extends Controller
 {
     public function approve(){
-        $programRequest = ProgramRequest::with(['requester','divisions'])
-        ->where('status', 'pending')
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $programRequest = ProgramRequest::with(['requester','divisions'])->where('status', 'pending')->orderBy('created_at', 'desc')->get();
+        $activityRequest = ActivityRequest::with(['requester','employees'])->where('status', 'pending')->orderBy('created_at', 'desc')->get();
+        $subActivityRequest = SubActivityRequest::with(['requester','employees'])->where('status', 'pending')->orderBy('created_at', 'desc')->get();
+        $gassRequest = GassRequest::with(['requester'])->where('status', 'pending')->orderBy('created_at', 'desc')->get();
 
         return view('viewBlades.approveChanges', [
             'role' => auth()->user()->role,
             'programRequest' => $programRequest,
+            'activityRequest' => $activityRequest,
+            'subActivityRequest' => $subActivityRequest,
+            'gassRequest' => $gassRequest,
         ]);
     }
 

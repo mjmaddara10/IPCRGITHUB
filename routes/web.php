@@ -60,14 +60,35 @@ Route::prefix('admin')->group(function () {
     Route::post('/updateGass', [gassController::class, 'updateGass'])->name('updateGass');
     Route::post('/addGassProgram', [gassController::class, 'addGassProgram'])->name('addGassProgram');
 
-    // ========================= Requesting ==========================//
+    // ========================= Requesting for PPA Change ==========================//
     Route::post('/addProgramRequest', [requestPpaController::class, 'addProgramRequest'])->name('addProgramRequest');
+    Route::post('/editProgramRequest', [requestPpaController::class, 'editProgramRequest'])->name('editProgramRequest');
+    Route::post('/deleteProgramRequest', [requestPpaController::class, 'deleteProgramRequest'])->name('deleteProgramRequest');
+    Route::post('/addActivityRequest', [requestPpaController::class, 'addActivityRequest'])->name('addActivityRequest');
+    Route::post('/editActivityRequest', [requestPpaController::class, 'editActivityRequest'])->name('editActivityRequest');
+    Route::post('/deleteActivityRequest', [requestPpaController::class, 'deleteActivityRequest'])->name('deleteActivityRequest');
+    Route::post('/addSubActivityRequest', [requestPpaController::class, 'addSubActivityRequest'])->name('addSubActivityRequest');
+    Route::post('/editSubActivityRequest', [requestPpaController::class, 'editSubActivityRequest'])->name('editSubActivityRequest');
+    Route::post('/deleteSubActivityRequest', [requestPpaController::class, 'deleteSubActivityRequest'])->name('deleteSubActivityRequest');
+    Route::post('/editGassRequest', [requestPpaController::class, 'editGassRequest'])->name('editGassRequest');
 
     // ========================= Reject Requests ==========================//
     Route::post('/rejectProgramRequest', [requestPpaController::class, 'rejectProgramRequest'])->name('rejectProgramRequest');
+    Route::post('/rejectActivityRequest', [requestPpaController::class, 'rejectActivityRequest'])->name('rejectActivityRequest');
+    Route::post('/rejectSubActivityRequest', [requestPpaController::class, 'rejectSubActivityRequest'])->name('rejectSubActivityRequest');
 
-    // ========================= View Details of Requests (Divisions) ==========================//
+    // ========================= View Details of Requests ==========================//
     Route::get('/programRequests/{id}/divisions', [requestPpaController::class, 'getDivisions']);
+    Route::get('/program/{id}/divisions', [requestPpaController::class, 'getReferenceDivisions']);
+    Route::get('/fetchReferenceProgramDetails/{id}', [requestPpaController::class, 'fetchReferenceProgramDetails']);
+
+    Route::get('/activityRequests/{id}/employees', [requestPpaController::class, 'getEmployees']);
+    Route::get('/activity/{id}/employees', [requestPpaController::class, 'getReferenceEmployees']);
+    Route::get('/fetchReferenceActivityDetails/{id}', [requestPpaController::class, 'fetchReferenceActivityDetails']);
+
+    Route::get('/subActivityRequests/{id}/employees', [requestPpaController::class, 'getEmployeesSub']);
+    Route::get('/subActivity/{id}/employees', [requestPpaController::class, 'getReferenceEmployeesSub']);
+    Route::get('/fetchReferenceSubActivityDetails/{id}', [requestPpaController::class, 'fetchReferenceSubActivityDetails']);
 });
 
 Route::prefix('viewPpa')->group(function () {

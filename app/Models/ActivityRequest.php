@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProgramRequest extends Model
+class ActivityRequest extends Model
 {
-    protected $table = 'program_requests';
+    protected $table = 'activity_requests';
 
     protected $fillable = [
+        'activity_id',
         'program_id',
         'requestor',
         'name',
@@ -23,9 +24,14 @@ class ProgramRequest extends Model
         'action'
     ];
 
-    public function program()
+    public function program() //Parent once approved in adding
     {
         return $this->belongsTo(Program::class);
+    }
+
+    public function activity() //Reference for editing
+    {
+        return $this->belongsTo(Activity::class);
     }
 
     public function requester()
@@ -33,7 +39,7 @@ class ProgramRequest extends Model
         return $this->belongsTo(Employee::class, 'requestor');
     }
 
-    public function divisions() {
-        return $this->belongsToMany(Division::class, 'division_program_requests', 'program_requests_id', 'division_id');
+    public function employees() {
+        return $this->belongsToMany(Employee::class, 'activity_requests_employee', 'activity_requests_id', 'employee_id');
     }
 }

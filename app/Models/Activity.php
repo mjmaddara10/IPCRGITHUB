@@ -27,6 +27,11 @@ class Activity extends Model
         return $this->belongsTo(Program::class);
     }
 
+    public function subActivityRequests()
+    {
+        return $this->hasMany(SubActivityRequest::class);
+    }
+
     public function subActivities()
     {
         return $this->hasMany(SubActivity::class);

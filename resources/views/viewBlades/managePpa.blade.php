@@ -11,7 +11,7 @@
 
 @section('content')
 <!-- <div class="page-background"></div> -->
-<div data-scrolled-id="{{ session('scrolled_id') }}">
+<div >
     <div class="container-fluid mt-2">
         <div class="bg-white">
             <!-- Header -->
@@ -22,6 +22,7 @@
                         <h4 class="mb-0 text-white" style="font-family: 'Montserrat', sans-serif; font-weight: 600;">
                             Manage PPA</h4>
                         <small class="text-white-50">View, add, edit, and delete PPAs</small>
+                        <!-- <p>The value of scrolled_id is: {{ session('scrolled_id') }}</p> -->
                     </div>
                 </div>
 
@@ -44,7 +45,7 @@
                         <!-- Add Program -->
                         <a class="btn nv-green" id="addProgramBtn" data-bs-toggle="modal" data-bs-target="#addProgramModal" style= "color: #FFFFFF; background-color: #03592c;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Program/Project</a>
 
-                        <a class="btn nv-green" id="addGassProgramBtn" data-bs-toggle="modal" data-bs-target="#addGassProgramModal" style= "color: #FFFFFF; background-color: #03592c; display:none;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add GASS Program/Project</a>
+                        <a class="btn nv-green" id="addGassProgramBtn" data-bs-toggle="modal" data-bs-target="#addGassProgramModal" style= "color: #FFFFFF; background-color: #03592c; display:none;"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i></i> Add Critical Activity</a>
                     </div>
 
                     <!-- Buttons -->
@@ -107,8 +108,31 @@
                 </div>
             </div>
 
+            <style>
+               .table-fixed-header {
+    position: relative;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.table-fixed-header thead {
+    position: sticky;
+    top: 0;
+    z-index: 2; /* Ensure the headers stay above the rows */
+    background-color: white; /* Optional: adds a white background for better visibility */
+}
+
+.table-fixed-header th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: white; /* Optional: adds a white background for better visibility */
+}
+
+            </style>
+
             <!-- PPA Table -->
-            <div class="table-responsive" id="tableContainer">
+            <div class="table-responsive table-fixed-header" id="tableContainer" >
                 <table id="ppaTable" class="table" style="table-layout: fixed; width: 100%;">
                     <thead class="text-center default-text">
                         <tr style="vertical-align:middle;">
@@ -123,7 +147,7 @@
                             <th class="border border-light" style="color: #FFFFFF; background-color: #dd9f03; width: 9%;">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="programTableBody">
+                    <tbody id="programTableBody" data-scrolled-id="{{ session('scrolled_id') }}">
                         <!-- Program  -->
                         @foreach($programs as $program)
                             @php
@@ -138,7 +162,7 @@
                                 <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->timeliness }}</td>
                                 <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->remarks }}</td>
                                 <td class="text-end border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->budget }}</td>
-                                @php
+                                @php         
                                     $allDivisionCount = \App\Models\Division::count();
                                     $assignedCount = $program->divisions->count();
                                 @endphp
@@ -175,9 +199,24 @@
                                     </button>
 
                                     <!-- Delete Program -->
-                                    <button class="btn action-btn deleteProgramBtn buttonHover" title="Delete program"
-                                        data-program-id="{{ $program->id }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
-                                    </button>
+                                    @if($role === 'Division Chief')
+                                        <button class="btn action-btn deleteProgramRequestBtn buttonHover" title="Delete Program"
+                                            data-program-id="{{ $program->id }}" 
+                                            data-program-name="{{ $program->name }}"
+                                            data-program-success="{{ $program->successIndicator }}"
+                                            data-program-quality="{{ $program->quality }}"
+                                            data-program-efficiency="{{ $program->efficiency }}"
+                                            data-program-timeliness="{{ $program->timeliness }}"
+                                            data-program-remarks="{{ $program->remarks }}"
+                                            data-program-budget="{{ $program->budget }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
+                                        </button>
+                                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                                        <button class="btn action-btn deleteProgramBtn buttonHover" title="Delete program"
+                                            data-program-id="{{ $program->id }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
+                                        </button>
+                                    @endif
+                                    
+                                    
 
                                     <!-- Move -->
                                     <div style="display: flex; justify-content: center; gap: 3px;">
@@ -213,15 +252,16 @@
                                         $assignedCountAccountable = $activity->employees->count();
                                     @endphp
 
-                                    <td class="text-center border border-muted default-text" style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">
+                                    <td class="text-left border border-muted default-text" style="background-color:rgb(212, 212, 212);">
                                     @if ($activity->employees->count() === $allEmployeeCount)
                                         All Employees
                                     @else
                                         @foreach ($activity->employees as $employee)
-                                            {{ $employee->firstName }} {{ strtoupper(substr($employee->middleName, 0, 1)) }}. {{ $employee->lastName }}
+                                            {{ $employee->username }}
                                         @endforeach
                                     @endif
                                     </td>
+
                                     <td class="text-center border border-muted" style="background-color:rgb(212, 212, 212);">
                                         <!-- Add Sub-Activity -->
                                         <button class="btn action-btn addSubActivityBtn buttonHover" title="Add a sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
@@ -243,10 +283,23 @@
                                         </button>
 
                                         <!-- Delete Activity -->
-                                        <button class="btn action-btn deleteActivityBtn buttonHover" title="Delete activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
-                                            data-activity-id="{{ $activity->id }}"
-                                            data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash" style="color:#FFFFFF;"></i>
-                                        </button>
+                                        @if($role === 'Division Chief')
+                                            <button class="btn action-btn deleteActivityRequestBtn buttonHover" title="Delete Activity"
+                                                data-activity-id="{{ $activity->id }}" 
+                                                data-activity-name="{{ $activity->name }}"
+                                                data-activity-success="{{ $activity->successIndicator }}"
+                                                data-activity-quality="{{ $activity->quality }}"
+                                                data-activity-efficiency="{{ $activity->efficiency }}"
+                                                data-activity-timeliness="{{ $activity->timeliness }}"
+                                                data-activity-remarks="{{ $activity->remarks }}" style= "color:#FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
+                                            </button>
+                                        @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                                            <button class="btn action-btn deleteActivityBtn buttonHover" title="Delete activity" style="color: rgb(144, 144, 144);background-color: rgb(144, 144, 144);"
+                                                data-activity-id="{{ $activity->id }}"
+                                                data-url="{{ route('deleteActivity') }}"><i class="fas fa-trash" style="color:#FFFFFF;"></i>
+                                            </button>
+                                        @endif
+                                        
 
                                         <!-- Move -->
                                         <div style="display: flex; justify-content: center; gap: 3px;">
@@ -281,14 +334,16 @@
                                             $assignedCountAccountable = $activity->employees->count();
                                         @endphp
 
-                                        <td class="text-center border border-muted default-text" style="white-space: pre-wrap;">
+                                        <td class="text-left border border-muted default-text">
                                         @if ($subActivity->employees->count() === $allEmployeeCount)
                                             All Employees
                                         @else
                                             @foreach ($subActivity->employees as $employee)
-                                                {{ $employee->firstName }} {{ strtoupper(substr($employee->middleName, 0, 1)) }}. {{ $employee->lastName }}
+                                                {{ $employee->username }}
                                             @endforeach
                                         @endif
+                                        </td>
+
                                         <td class="text-center border border-muted">
 
                                             <!-- Edit Sub-Activity -->
@@ -300,16 +355,27 @@
                                                 data-efficiency="{{ $subActivity->efficiency }}"
                                                 data-timeliness="{{ $subActivity->timeliness }}"
                                                 data-remarks="{{ $subActivity->remarks }}"
-                                                data-accountable="{{ $subActivity->accountable }}"
                                                 data-bs-toggle="modal" data-bs-target="#editSubActivityModal"><i class="fas fa-edit"></i>
                                             </button>
 
                                             <!-- Delete Sub-Activity -->
-                                            <button class="btn action-btn deleteSubActivityBtn buttonHover" title="Delete sub-activity" style="color: rgb(144, 144, 144);background-color: rgb(212, 212, 212);"
-                                                data-sub-activity-id="{{ $subActivity->id }}"
-                                                data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
-                                            </button>
-
+                                            @if($role === 'Division Chief')
+                                                <button class="btn action-btn deleteSubActivityRequestBtn buttonHover" title="Delete Sub-Activity"
+                                                    data-sub-activity-id="{{ $subActivity->id }}" 
+                                                    data-sub-activity-name="{{ $subActivity->name }}"
+                                                    data-sub-activity-success="{{ $subActivity->successIndicator }}"
+                                                    data-sub-activity-quality="{{ $subActivity->quality }}"
+                                                    data-sub-activity-efficiency="{{ $subActivity->efficiency }}"
+                                                    data-sub-activity-timeliness="{{ $subActivity->timeliness }}"
+                                                    data-sub-activity-remarks="{{ $subActivity->remarks }}" style= "color: rgb(144, 144, 144); background-color: rgb(212, 212, 212);"><i class="fas fa-trash"></i>
+                                                </button>
+                                            @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                                                <button class="btn action-btn deleteSubActivityBtn buttonHover" title="Delete sub-activity" style="color: rgb(144, 144, 144); background-color: rgb(212, 212, 212);"
+                                                    data-sub-activity-id="{{ $subActivity->id }}"
+                                                    data-url="{{ route('deleteSubActivity') }}"><i class="fas fa-trash"></i>
+                                                </button>
+                                            @endif
+                                            
                                             <!-- Move -->
                                             <div style="display: flex; justify-content: center; gap: 3px;">
                                                 <form method="POST" action="{{ route('subActivity.move' , [$subActivity->id , 'up']) }}">
@@ -335,7 +401,7 @@
             </div>
 
             <!-- GASS Table -->
-            <div class="table-responsive" id="gassTable" style="display:none;">
+            <div class="table-responsive table-fixed-header" id="gassTable" style="display:none;">
                 <table id="ppaTable" class="table" style="table-layout: fixed; width: 100%;">
                     <thead class="text-center default-text">
                         <tr style="vertical-align:middle;">
@@ -578,8 +644,6 @@
                     </tbody>
                 </table>
             </div>
-
-            <!-- GASS Table -->
         </div>
     </div>
 </div>
@@ -678,7 +742,7 @@
                     </div>
 
                     <!-- Footer -->
-                    @if($role === 'Division Chief' || $role === 'Assistant Department Head')
+                    @if($role === 'Division Chief')
                         <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
                             <button type="button" class="btn btn-danger px-3 closeAddModal">
                                 <i class="fas fa-times me-2"></i>Cancel
@@ -687,7 +751,7 @@
                                 <i class="fas fa-save me-2"></i>Submit
                             </button>
                         </div>
-                    @elseif($role === 'Department Head')
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
                         <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
                             <button type="button" class="btn btn-danger px-3 closeAddModal">
                                 <i class="fas fa-times me-2"></i>Cancel
@@ -717,7 +781,11 @@
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="editProgramForm" class="p-2">
+                @if($role === 'Division Chief')
+                    <form id="editProgramRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="editProgramForm" class="p-2">
+                @endif
                     @csrf
                     <input type="hidden" id="editProgramId" name="editProgramId" required>
 
@@ -790,14 +858,25 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeEditModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                    </div>
+                    @if($role === 'Division Chief')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Program
+                            </button>
+                        </div>
+                    @endif
                 </form>
             </div>
         </div>
@@ -816,7 +895,11 @@
             </div>
 
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="addActivityInProgramForm" class="p-2">
+                @if($role === 'Division Chief')
+                    <form id="addActivityRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="addActivityInProgramForm" class="p-2">
+                @endif
                     @csrf
                     <input type="hidden" id="programIdProg" name="programIdProg" required>
 
@@ -892,14 +975,27 @@
                         </table>
                     </div>
 
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeAddModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                    </div>
+
+                    @if($role === 'Division Chief')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeAddModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeAddModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    @endif
+                    
                 </form>
             </div>
         </div>
@@ -919,7 +1015,12 @@
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="editActivityForm" class="p-2">
+                @if($role === 'Division Chief')
+                    <form id="editActivityRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="editActivityForm" class="p-2">
+                @endif
+                
                     @csrf
                     <input type="hidden" id="editActivityId" name="editActivityId" required>
 
@@ -979,14 +1080,26 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeEditModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                    </div>
+                    @if($role === 'Division Chief')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    @endif
+                    
                 </form>
             </div>
         </div>
@@ -1006,7 +1119,11 @@
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="addSubActivityForm" class="p-2">
+                 @if($role === 'Division Chief')
+                    <form id="addSubActivityRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="addSubActivityForm" class="p-2">
+                @endif
                     @csrf
                     <input type="hidden" id="activityIdSub" name="activityIdSub" required>
                     <div class="col-12 mb-3">
@@ -1079,14 +1196,26 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeAddModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                    </div>
+                     @if($role === 'Division Chief')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeAddModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeAddModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    @endif
+                    
                 </form>
             </div>
         </div>
@@ -1108,7 +1237,11 @@
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="editSubActivityForm" class="p-2">
+                 @if($role === 'Division Chief')
+                    <form id="editSubActivityRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="editSubActivityForm" class="p-2">
+                @endif
                     @csrf
                     <input type="hidden" id="editActivityIdSub" name="editActivityIdSub" required>
 
@@ -1169,14 +1302,26 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeEditModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                    </div>
+                    @if($role === 'Division Chief')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    @endif
+                    
                 </form>
             </div>
 
@@ -1189,19 +1334,27 @@
 
 @if (session('scrolled_id'))
 <script>
-    window.onload = function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const element = document.getElementById('{{ session('scrolled_id') }}');
         if (element) {
+            const container = document.querySelector('.table-fixed-header'); // Get the scrollable table container
+            
             const rect = element.getBoundingClientRect();
             const elementTop = rect.top + window.pageYOffset; // Get the top of the element relative to the document
             const elementHeight = rect.height; // Height of the element
-            const windowHeight = window.innerHeight; // Height of the viewport
+            const containerTop = container.getBoundingClientRect().top; // Get the top of the container relative to the document
+            const containerHeight = container.clientHeight; // Height of the container
 
-            // Calculate the scroll position to center the element
-            const scrollPosition = elementTop - (windowHeight / 2) + (elementHeight / 2);
+            // Calculate the scroll position to center the element inside the container
+            const scrollPosition = elementTop - containerTop - (containerHeight / 2) + (elementHeight / 2);
 
-            window.scrollTo({ top: scrollPosition, behavior: 'smooth' }); // Scroll to the position
+            // Scroll the container to the calculated position
+            container.scrollTo({
+                top: scrollPosition,
+                behavior: 'smooth'
+            });
         }
-    }
+    });
 </script>
+
 @endif

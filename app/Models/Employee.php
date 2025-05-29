@@ -36,6 +36,14 @@ class Employee extends Authenticatable
         return $this->belongsToMany(SubActivity::class, 'sub_activity_employee', 'employee_id', 'sub_activity_id');
     }
 
+    public function activityRequests() {
+        return $this->belongsToMany(ActivityRequest::class, 'activity_requests_employee', 'employee_id', 'activity_requests_id');
+    }
+
+    public function subActivityRequests() {
+        return $this->belongsToMany(SubActivityRequest::class, 'sub_activity_requests_employee', 'employee_id', 'sub_activity_requests_id');
+    }
+
     protected $hidden = [
         'password',
     ];

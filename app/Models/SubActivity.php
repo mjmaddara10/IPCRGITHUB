@@ -17,7 +17,6 @@ class SubActivity extends Model
         'efficiency',
         'timeliness',
         'remarks',
-        'accountable_id',
         'activity_id',
         'order',
     ];

@@ -296,7 +296,7 @@ $('#editSubActivityForm').on('submit', function(e) {
 $(document).on('click', '.deleteSubActivityBtn', function(e) {
     e.preventDefault();
 
-    var subActivityId = $(this).data('subActivity-id');
+    var subActivityId = $(this).data('sub-activity-id');
     var deleteUrl  = $(this).data('url');
     console.log(subActivityId);
 

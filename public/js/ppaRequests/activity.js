@@ -1,30 +1,30 @@
-// Add Program
-$('#addProgramRequestForm').on('submit', function(e) {
+// Add Activity
+$('#addActivityRequestForm').on('submit', function(e) {
     e.preventDefault(); // Prevent the default form submission
 
     Swal.fire({
         title: "Are you sure?",
-        text: "Do you want to add this program?",
+        text: "Do you want to add this activity?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#03592c",
         cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, add program"
+        confirmButtonText: "Yes, add activity"
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/addProgramRequest',
+                url: '/admin/addActivityRequest',
                 method: 'POST',
                 data: $(this).serialize(), // Serialize form data
                 success: function(response) {
                     // Handle success response (close the modal and give feedback)
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Request to add program is now pending. Please wait for the Department Head\'s approval',
+                        text: 'Request to add activity is now pending. Please wait for the Department Head\'s approval',
                         icon: 'success',
                         confirmButtonColor: '#03592c'
                     }).then(() => {
-                        $('#addProgramModal').modal('hide'); // Close the modal
+                        $('#addActivityInProgramModal').modal('hide'); // Close the modal
                         location.reload(); // Optionally reload the page to see the new activity
                     });
                 },
@@ -32,7 +32,7 @@ $('#addProgramRequestForm').on('submit', function(e) {
                     // Handle error response
                     Swal.fire({
                         title: 'Error!',
-                        text: xhr.responseJSON.message || 'An error occurred while adding the program.',
+                        text: xhr.responseJSON.message || 'An error occurred while adding the activity.',
                         icon: 'error',
                         confirmButtonColor: '#bc0c0c'
                     });
@@ -43,33 +43,33 @@ $('#addProgramRequestForm').on('submit', function(e) {
     });    
 });
 
-// Edit Program
-$('#editProgramRequestForm').on('submit', function(e) {
+// Edit Activity
+$('#editActivityRequestForm').on('submit', function(e) {
     e.preventDefault(); // Prevent the default form submission
 
     Swal.fire({
         title: "Are you sure?",
-        text: "Do you want to edit this program?",
+        text: "Do you want to edit this activity?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#03592c",
         cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, edit program"
+        confirmButtonText: "Yes, edit activity"
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/editProgramRequest',
+                url: '/admin/editActivityRequest',
                 method: 'POST',
                 data: $(this).serialize(), // Serialize form data
                 success: function(response) {
                     // Handle success response (close the modal and give feedback)
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Request to edit program is now pending. Please wait for the Department Head\'s approval',
+                        text: 'Request to edit activity is now pending. Please wait for the Department Head\'s approval',
                         icon: 'success',
                         confirmButtonColor: '#03592c'
                     }).then(() => {
-                        $('#editProgramModal').modal('hide'); // Close the modal
+                        $('#editActivityModal').modal('hide'); // Close the modal
                         location.reload(); // Optionally reload the page to see the new activity
                     });
                 },
@@ -88,22 +88,22 @@ $('#editProgramRequestForm').on('submit', function(e) {
     });    
 });
 
-// Delete Program
-$(document).on('click', '.deleteProgramRequestBtn', function(e) {
+// Delete Activity
+$(document).on('click', '.deleteActivityRequestBtn', function(e) {
     e.preventDefault();
 
-    var programId = $(this).data('program-id');
-    var programName = $(this).data('program-name');
-    var programSuccessIndicator = $(this).data('program-success');
-    var programQuality = $(this).data('program-quality');
-    var programEfficiency = $(this).data('program-efficiency');
-    var programTimeliness = $(this).data('program-timeliness');
-    var programRemarks = $(this).data('program-remarks');
-    var programBudget = $(this).data('program-budget');
+    var activityId = $(this).data('activity-id');
+    var activityName = $(this).data('activity-name');
+    var activitySuccessIndicator = $(this).data('activity-success');
+    var activityQuality = $(this).data('activity-quality');
+    var activityEfficiency = $(this).data('activity-efficiency');
+    var activityTimeliness = $(this).data('activity-timeliness');
+    var activityRemarks = $(this).data('activity-remarks');
+    var activityBudget = $(this).data('activity-budget');
 
     Swal.fire({
         title: "Are you sure?",
-        html: "Do you want to delete this?<br><strong>All activities under it will also be deleted.</strong>",
+        html: "Do you want to delete this?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#03592c",
@@ -112,17 +112,17 @@ $(document).on('click', '.deleteProgramRequestBtn', function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/deleteProgramRequest',
+                url: '/admin/deleteActivityRequest',
                 method: 'POST',
                 data: {
-                    deleteProgramId: programId,
-                    deleteProgramName: programName,
-                    deleteProgramSuccessIndicator: programSuccessIndicator,
-                    deleteProgramQuality: programQuality,
-                    deleteProgramEfficiency: programEfficiency,
-                    deleteProgramTimeliness: programTimeliness,
-                    deleteProgramRemarks: programRemarks,
-                    deleteProgramBudget: programBudget,
+                    deleteActivityId: activityId,
+                    deleteActivityName: activityName,
+                    deleteActivitySuccessIndicator: activitySuccessIndicator,
+                    deleteActivityQuality: activityQuality,
+                    deleteActivityEfficiency: activityEfficiency,
+                    deleteActivityTimeliness: activityTimeliness,
+                    deleteActivityRemarks: activityRemarks,
+                    deleteActivityBudget: activityBudget,
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -130,11 +130,11 @@ $(document).on('click', '.deleteProgramRequestBtn', function(e) {
                 success: function(response) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Request to edit program is now pending. Please wait for the Department Head\'s approval',
+                        text: 'Request to delete activity is now pending. Please wait for the Department Head\'s approval',
                         icon: 'success',
                         confirmButtonColor: '#03592c'
                     }).then(() => {
-                        $('#editProgramModal').modal('hide');
+                        $('#deleteActivityModal').modal('hide');
                         location.reload();
                     });
                 },

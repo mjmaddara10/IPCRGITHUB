@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('program_requests', function (Blueprint $table) {
+        Schema::create('activity_requests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('program_id')->nullable();
+            $table->unsignedBigInteger('activity_id')->nullable(); //For editing purposes (reference)
+            $table->unsignedBigInteger('program_id')->nullable(); //Parent table reference
             $table->unsignedBigInteger('requestor');
             
             // Data to add
@@ -23,13 +24,13 @@ return new class extends Migration
             $table->string('efficiency')->nullable(); 
             $table->string('timeliness')->nullable(); 
             $table->string('remarks')->nullable();
-            $table->string('budget')->nullable(); 
             
             $table->string('status')->default('pending');
             $table->string('action')->nullable(); 
             $table->timestamps();
 
-            $table->foreign('program_id')->references('id')->on('programs')->onDelete('cascade');
+            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade'); //For editing purposes (reference)
+            $table->foreign('program_id')->references('id')->on('programs')->onDelete('cascade'); //Parent table reference
             $table->foreign('requestor')->references('id')->on('tbl_employee')->onDelete('cascade');
         });
     }
@@ -39,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('program_add_requests');
+        Schema::dropIfExists('activity_requests');
     }
 };

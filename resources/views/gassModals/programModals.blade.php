@@ -11,7 +11,12 @@
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="editGassForm" class="p-2">
+                @if($role === 'Division Chief')
+                    <form id="editGassRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="editGassForm" class="p-2">
+                @endif
+                
                     @csrf
                     <input type="hidden" id="editGassId" name="editGassId" required>
 
@@ -29,14 +34,26 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeEditModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                    </div>
+                    @if($role === 'Division Chief')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    @endif
+                    
                 </form>
             </div>
         </div>

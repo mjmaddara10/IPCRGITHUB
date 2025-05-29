@@ -28,6 +28,11 @@ class Program extends Model
         return $this->hasMany(Activity::class);
     }
 
+    public function activityRequests()
+    {
+        return $this->hasMany(ActivityRequest::class);
+    }
+
     public function divisions() {
         return $this->belongsToMany(Division::class);
     }
@@ -36,4 +41,6 @@ class Program extends Model
     {
         return $this->belongsTo(Gass::class, 'gass_id');
     }
+
+    
 }
