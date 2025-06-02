@@ -39,6 +39,7 @@ class Activity extends Model
 
     public function employees()
     {
-        return $this->belongsToMany(Employee::class, 'activity_employee', 'activity_id', 'employee_id');
+        return $this->belongsToMany(Employee::class, 'activity_employee', 'activity_id', 'employee_id')
+            ->withPivot('signatory_id');
     }
 }

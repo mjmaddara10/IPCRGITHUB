@@ -275,7 +275,6 @@
                                     <th class="border border-light default-text" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Efficiency</th>
                                     <th class="border border-light default-text" style="color: #FFFFFF; background-color: #dd9f03; width:15%;">Timeliness</th>
                                     <th class="border border-light default-text" style="color: #FFFFFF; background-color: #dd9f03; width:20%;">Remarks/MOV</th>
-                                    <th class="border border-light default-text" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Actions</th>
                                 </tr>
                             </thead>
                             <thead class="text-center d-none default-text" id="thead-dept-head">
@@ -288,7 +287,6 @@
                                     <th class="border border-light default-text" style="color: #FFFFFF; background-color: #dd9f03; width:10%;">Remarks/MOV</th>
                                     <th class="border border-light default-text" style="color: #FFFFFF; background-color: #dd9f03; width:8%;">Allotted Budget</th>
                                     <th class="border border-light default-text" style="color: #FFFFFF; background-color: #dd9f03; width:8%;">Division/s Responsible</th>
-                                    <th class="border border-light default-text" style="color: #FFFFFF; background-color: #dd9f03; width:5%;">Actions</th>
                                 </tr>
                             </thead>
 

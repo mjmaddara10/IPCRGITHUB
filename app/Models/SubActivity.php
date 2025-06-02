@@ -28,6 +28,7 @@ class SubActivity extends Model
 
     public function employees()
     {
-        return $this->belongsToMany(Employee::class, 'sub_activity_employee', 'sub_activity_id', 'employee_id');
+        return $this->belongsToMany(Employee::class, 'sub_activity_employee', 'sub_activity_id', 'employee_id')
+            ->withPivot('signatory_id');
     }
 }

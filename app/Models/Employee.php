@@ -28,12 +28,14 @@ class Employee extends Authenticatable
     
     public function activities()
     {
-        return $this->belongsToMany(Activity::class, 'activity_employee', 'employee_id', 'activity_id');
+        return $this->belongsToMany(Activity::class, 'activity_employee', 'employee_id', 'activity_id')
+            ->withPivot('signatory_id');
     }
 
     public function subActivities()
     {
-        return $this->belongsToMany(SubActivity::class, 'sub_activity_employee', 'employee_id', 'sub_activity_id');
+        return $this->belongsToMany(SubActivity::class, 'sub_activity_employee', 'employee_id', 'sub_activity_id')
+            ->withPivot('signatory_id');
     }
 
     public function activityRequests() {

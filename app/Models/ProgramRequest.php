@@ -11,6 +11,7 @@ class ProgramRequest extends Model
 
     protected $fillable = [
         'program_id',
+        'gass_id',
         'requestor',
         'name',
         'successIndicator',
@@ -26,6 +27,11 @@ class ProgramRequest extends Model
     public function program()
     {
         return $this->belongsTo(Program::class);
+    }
+
+    public function gass()
+    {
+        return $this->belongsTo(Gass::class);
     }
 
     public function requester()

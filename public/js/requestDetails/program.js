@@ -131,6 +131,8 @@ $(document).off('click', '.viewEditProgramRequest').on('click', '.viewEditProgra
         }
     });
 
+    
+
     // Fetch reference program details using the reference ID
     $.ajax({
         url: '/admin/fetchReferenceProgramDetails/' + reference,

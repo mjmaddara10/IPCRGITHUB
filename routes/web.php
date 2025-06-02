@@ -59,6 +59,7 @@ Route::prefix('admin')->group(function () {
     // GASS
     Route::post('/updateGass', [gassController::class, 'updateGass'])->name('updateGass');
     Route::post('/addGassProgram', [gassController::class, 'addGassProgram'])->name('addGassProgram');
+    Route::post('/updateGassProgram', [gassController::class, 'updateGassProgram'])->name('updateGassProgram');
 
     // ========================= Requesting for PPA Change ==========================//
     Route::post('/addProgramRequest', [requestPpaController::class, 'addProgramRequest'])->name('addProgramRequest');
@@ -71,11 +72,14 @@ Route::prefix('admin')->group(function () {
     Route::post('/editSubActivityRequest', [requestPpaController::class, 'editSubActivityRequest'])->name('editSubActivityRequest');
     Route::post('/deleteSubActivityRequest', [requestPpaController::class, 'deleteSubActivityRequest'])->name('deleteSubActivityRequest');
     Route::post('/editGassRequest', [requestPpaController::class, 'editGassRequest'])->name('editGassRequest');
+    Route::post('/addGassCritRequest', [requestPpaController::class, 'addGassCritRequest'])->name('addGassCritRequest');
+    Route::post('/editGassCritRequest', [requestPpaController::class, 'editGassCritRequest'])->name('editGassCritRequest');
 
     // ========================= Reject Requests ==========================//
     Route::post('/rejectProgramRequest', [requestPpaController::class, 'rejectProgramRequest'])->name('rejectProgramRequest');
     Route::post('/rejectActivityRequest', [requestPpaController::class, 'rejectActivityRequest'])->name('rejectActivityRequest');
     Route::post('/rejectSubActivityRequest', [requestPpaController::class, 'rejectSubActivityRequest'])->name('rejectSubActivityRequest');
+    Route::post('/rejectGassRequest', [requestPpaController::class, 'rejectGassRequest'])->name('rejectGassRequest');
 
     // ========================= View Details of Requests ==========================//
     Route::get('/programRequests/{id}/divisions', [requestPpaController::class, 'getDivisions']);

@@ -19,12 +19,15 @@ class pdfController extends Controller
         $employee = Employee::with([
             'activities.program.divisions',
             'activities.subActivities',
-            'subActivities.activity.program.divisions'
+            'subActivities.activity.program.divisions',
+            'subActivities.activity'
         ])->find($id);
 
         $role = $employee->role;
         $targets = [];
         $gassPrograms = [];
+        $groupedGassProgramsBySignatory = [];
+        $groupedTargetsBySignatory = [];
     
         // 🔹 FOR DEPARTMENT HEAD — get ALL programs, activities, sub-activities
         if ($role === 'Department Head') {
@@ -84,10 +87,36 @@ class pdfController extends Controller
 
                 if (!$activity) {
                     \Log::error("Missing activity for SubActivity ID: " . $subActivity->id);
-                    continue;  // skip this iteration if no activity found
+                    continue;
                 }
 
                 $program = $activity->program;
+
+                $pivotData = $subActivity->employees->where('id', $employee->id)->first()?->pivot;
+
+                if (!$pivotData || !$pivotData->signatory_id) {
+                    \Log::warning("No signatory assigned for employee ID {$employee->id} in sub-activity ID {$subActivity->id}");
+                    continue;
+                }
+
+                $signatory = Employee::find($pivotData->signatory_id);
+                if (!$signatory) {
+                    \Log::warning("Signatory not found for ID {$pivotData->signatory_id}");
+                    continue;
+                }
+
+                $signatoryName = strtoupper(
+                    $signatory->firstName . ' ' .
+                    ($signatory->middleName ? substr($signatory->middleName, 0, 1) . '. ' : '') .
+                    $signatory->lastName
+                );
+
+                if (!isset($groupedTargetsBySignatory[$signatoryName])) {
+                    $groupedTargetsBySignatory[$signatoryName] = [
+                        'signatoryPosition' => $signatory->position,
+                        'targets' => [],
+                    ];
+                }
 
                 // Get employees assigned to the activity
                 $activityEmployees = $activity->employees->map(function ($emp) {
@@ -98,8 +127,9 @@ class pdfController extends Controller
                     return $emp->username;
                 })->toArray();
 
-                 if (!is_null($program->gass_id)) {
-                    $gassPrograms[] = [
+                if (!is_null($program->gass_id)) {
+                    $groupedGassProgramsBySignatory[$signatoryName]['targets'][] = [
+                        'signatoryPosition' => $signatory->position,
                         'program_id' => $program->id,
                         'program_name' => $program->name,
                         'program_order' => $program->order ?? 0,
@@ -134,7 +164,8 @@ class pdfController extends Controller
                     ];
                 } else {
                     // Otherwise, push to targets
-                    $targets[] = [
+                    $groupedTargetsBySignatory[$signatoryName]['targets'][] = [
+                        'signatoryPosition' => $signatory->position,
                         'program_id' => $program->id,
                         'program_name' => $program->name,
                         'program_order' => $program->order ?? 0,
@@ -157,6 +188,7 @@ class pdfController extends Controller
             }
         }
 
+        // dd($groupedGassProgramsBySignatory);
         $dateRange = request()->get('dateRange');
         $chiefInfo = json_decode($request->input('chiefInfo'), true);
 
@@ -171,13 +203,27 @@ class pdfController extends Controller
             'gasses' => $gassPrograms,
             'user' => $user,
             'dateRange' => $dateRange,
+            'groupedGassProgramsBySignatory' => $groupedGassProgramsBySignatory,
+            'groupedTargetsBySignatory' => $groupedTargetsBySignatory,
         ];
 
-
-        $pdf = PDF::loadView('pdf', $data)->setPaper('legal', 'landscape');
-        $pdf->set_option("isPhpEnabled", true);
-        $pdf->set_option("isHtml5ParserEnabled", true);
-        $pdf->set_option("isRemoteEnabled", true);
+        if ($employee->role === 'Department Head') {
+            $pdf = PDF::loadView('pdf.opcr', $data)->setPaper([0, 0, 936.0, 612.0]);
+            $pdf->set_option("isPhpEnabled", true);
+            $pdf->set_option("isHtml5ParserEnabled", true);
+            $pdf->set_option("isRemoteEnabled", true);
+        } elseif ($employee->role === 'Division Chief' || $employee->role === 'Assistant Department Head') {
+            $pdf = PDF::loadView('pdf.dpcr', $data)->setPaper([0, 0, 936.0, 612.0]);
+            $pdf->set_option("isPhpEnabled", true);
+            $pdf->set_option("isHtml5ParserEnabled", true);
+            $pdf->set_option("isRemoteEnabled", true);
+        } else {
+            $pdf = PDF::loadView('pdf.ipcr', $data)->setPaper([0, 0, 936.0, 612.0]);
+            $pdf->set_option("isPhpEnabled", true);
+            $pdf->set_option("isHtml5ParserEnabled", true);
+            $pdf->set_option("isRemoteEnabled", true);
+        }
+        
 
         
         

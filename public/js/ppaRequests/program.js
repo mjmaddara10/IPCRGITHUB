@@ -130,7 +130,7 @@ $(document).on('click', '.deleteProgramRequestBtn', function(e) {
                 success: function(response) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Request to edit program is now pending. Please wait for the Department Head\'s approval',
+                        text: 'Request to delete program is now pending. Please wait for the Department Head\'s approval',
                         icon: 'success',
                         confirmButtonColor: '#03592c'
                     }).then(() => {

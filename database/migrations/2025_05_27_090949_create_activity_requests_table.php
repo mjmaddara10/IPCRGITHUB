@@ -18,20 +18,20 @@ return new class extends Migration
             $table->unsignedBigInteger('requestor');
             
             // Data to add
-            $table->string('name')->nullable(); 
-            $table->string('successIndicator')->nullable(); 
-            $table->string('quality')->nullable(); 
-            $table->string('efficiency')->nullable(); 
-            $table->string('timeliness')->nullable(); 
-            $table->string('remarks')->nullable();
+            $table->string('name', 250)->nullable(); 
+            $table->string('successIndicator', 500)->nullable(); 
+            $table->string('quality', 500)->nullable(); 
+            $table->string('efficiency', 500)->nullable(); 
+            $table->string('timeliness', 500)->nullable(); 
+            $table->string('remarks', 500)->nullable();
             
             $table->string('status')->default('pending');
             $table->string('action')->nullable(); 
             $table->timestamps();
 
             $table->foreign('activity_id')->references('id')->on('activities')->onDelete('cascade'); //For editing purposes (reference)
-            $table->foreign('program_id')->references('id')->on('programs')->onDelete('cascade'); //Parent table reference
-            $table->foreign('requestor')->references('id')->on('tbl_employee')->onDelete('cascade');
+            $table->foreign('program_id')->references('id')->on('programs')->onDelete('no action'); //Parent table reference
+            $table->foreign('requestor')->references('id')->on('tbl_employee')->onDelete('no action');
         });
     }
 

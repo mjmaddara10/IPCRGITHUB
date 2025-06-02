@@ -471,8 +471,8 @@
                                             data-division-ids="{{ json_encode($program->divisions->pluck('id')) }}" data-bs-toggle="modal" data-bs-target="#addActivityInProgramModal" style= "background-color: rgb(1, 165, 80);"><i class="fas fa-plus" style= "color: #FFFFFF; -webkit-text-stroke: 1px white;"></i>
                                         </button>
 
-                                        <!-- Edit Program -->
-                                        <button class="btn action-btn editProgramBtn buttonHover" title="Edit program name"
+                                        <!-- Edit Critical Activity -->
+                                        <button class="btn action-btn editGassProgramBtn buttonHover" title="Edit critical activity"
                                             data-program-id="{{ $program->id }}" 
                                             data-program-name="{{ $program->name }}"
                                             data-program-success="{{ $program->successIndicator }}"
@@ -480,11 +480,11 @@
                                             data-program-efficiency="{{ $program->efficiency }}"
                                             data-program-timeliness="{{ $program->timeliness }}"
                                             data-program-remarks="{{ $program->remarks }}"
-                                            data-program-budget="{{ $program->budget }}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
+                                            data-program-budget="{{ $program->budget }}" data-bs-toggle="modal" data-bs-target="#editGassProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
                                         </button>
 
-                                        <!-- Delete Program -->
-                                        <button class="btn action-btn deleteProgramBtn buttonHover" title="Delete program"
+                                        <!-- Delete Critical Activity -->
+                                        <button class="btn action-btn deleteProgramBtn buttonHover" title="Delete critical activity"
                                             data-program-id="{{ $program->id }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
                                         </button>
 
@@ -522,12 +522,12 @@
                                             $assignedCountAccountable = $activity->employees->count();
                                         @endphp
 
-                                        <td class="text-center border border-muted default-text" style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">
+                                        <td class="text-left border border-muted default-text" style="background-color:rgb(212, 212, 212);">
                                         @if ($activity->employees->count() === $allEmployeeCount)
                                             All Employees
                                         @else
                                             @foreach ($activity->employees as $employee)
-                                                {{ $employee->firstName }} {{ strtoupper(substr($employee->middleName, 0, 1)) }}. {{ $employee->lastName }}
+                                                {{ $employee->username }}
                                             @endforeach
                                         @endif
                                         </td>
@@ -590,12 +590,12 @@
                                                 $assignedCountAccountable = $activity->employees->count();
                                             @endphp
 
-                                            <td class="text-center border border-muted default-text" style="white-space: pre-wrap;">
+                                            <td class="text-left border border-muted default-text">
                                             @if ($subActivity->employees->count() === $allEmployeeCount)
                                                 All Employees
                                             @else
                                                 @foreach ($subActivity->employees as $employee)
-                                                    {{ $employee->firstName }} {{ strtoupper(substr($employee->middleName, 0, 1)) }}. {{ $employee->lastName }}
+                                                    {{ $employee->username }}
                                                 @endforeach
                                             @endif
                                             <td class="text-center border border-muted">
@@ -1356,5 +1356,4 @@
         }
     });
 </script>
-
 @endif

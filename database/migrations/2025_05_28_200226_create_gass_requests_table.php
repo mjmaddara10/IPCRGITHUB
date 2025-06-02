@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('gass_id')->nullable(); //For editing purposes (reference)
             $table->foreign('gass_id')->references('id')->on('gass')->onDelete('cascade'); //For editing purposes (reference)
             $table->unsignedBigInteger('requestor')->nullable(); 
-            $table->foreign('requestor')->references('id')->on('tbl_employee')->onDelete('cascade'); 
+            $table->foreign('requestor')->references('id')->on('tbl_employee')->onDelete('no action'); 
             $table->timestamps();
         });
     }

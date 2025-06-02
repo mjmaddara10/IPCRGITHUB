@@ -107,11 +107,13 @@
     <script src="{{ asset('js/ppaApprove/program.js') }}"></script>
     <script src="{{ asset('js/ppaApprove/activity.js') }}"></script>
     <script src="{{ asset('js/ppaApprove/subActivity.js') }}"></script>
+    <script src="{{ asset('js/ppaApprove/gass.js') }}"></script>
 
     <!-- View Request Details -->
     <script src="{{ asset('js/requestDetails/program.js') }}"></script>
     <script src="{{ asset('js/requestDetails/activity.js') }}"></script>
     <script src="{{ asset('js/requestDetails/subActivity.js') }}"></script>
+    <script src="{{ asset('js/requestDetails/gass.js') }}"></script>
 </body>
 
 </html>

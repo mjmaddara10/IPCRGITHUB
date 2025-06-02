@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Models\SubActivity;
@@ -13,11 +14,13 @@ use App\Models\Employee;
 use App\Models\Division;
 use App\Models\AuditTrail;
 use App\Models\Gass;
+use App\Models\GassRequest;
 
 class gassController extends Controller
 {
     // =====================Edit GASS========================= //
     public function updateGass(Request $request) {
+        Log::info('Edit GASS Budget:', [$request->editGassBudget]);
         $gass = Gass::findOrFail($request->editGassId);
 
         $oldBudget = $gass->budget;
@@ -26,8 +29,22 @@ class gassController extends Controller
             'budget' => $request->editGassBudget,
         ]);
 
+        if ($request->filled('editGassId')) {
+            $editRequestGass = GassRequest::findOrFail($request->editGassId);
+            $editRequestGass->update([
+                'status' => 'approved',
+            ]);
+        }
+
         // Get authenticated user details
-        $user = auth()->user();
+        $requestorId = $request->requestorId;
+
+        if (!$requestorId) {
+            $user = auth()->user();
+        } else {
+            $user = \App\Models\Employee::find($requestorId);
+        }
+        
         $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
         $fullName = $user->firstName . ' ' . $middleInitial . ' ' . $user->lastName;
 
@@ -46,7 +63,7 @@ class gassController extends Controller
         return response()->json(['message' => 'Sub-Activity updated successfully!']);
     }
 
-    // =====================Program========================= //
+    // =====================Main Activity========================= //
     public function addGassProgram(Request $request) {
         try {
             $gass = Gass::first();
@@ -74,7 +91,13 @@ class gassController extends Controller
             }
 
             // Audit Trail for adding program
-            $user = auth()->user();
+            $requestorId = $request->requestorId;
+
+            if (!$requestorId) {
+                $user = auth()->user();
+            } else {
+                $user = \App\Models\Employee::find($requestorId);
+            }
             $middleInitial = $user->middleName ? strtoupper(substr($user->middleName, 0, 1)) . '.' : '';
             $fullName = trim($user->firstName . ' ' . $middleInitial . ' ' . $user->lastName);
 

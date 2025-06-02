@@ -40,10 +40,6 @@ class authorizationController extends Controller
         ]);
 
         Auth::guard('web')->login($user);
-
-        // dd (auth()->user());
-        // dd(auth()->check());
-        
         
         // Redirect based on role
         switch ($user->role) {
@@ -55,7 +51,7 @@ class authorizationController extends Controller
                 return redirect()->route('chief.managePpa');
         
             case 'Department Head':
-                return redirect()->route('head.managePpa');
+                return redirect()->route('head.approve');
         }
     }
 

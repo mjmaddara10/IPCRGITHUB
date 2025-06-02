@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('action_from', 1000)->nullable();
             $table->string('action_to', 1000)->nullable();
             $table->string('program_name', 250)->nullable();
-            $table->unsignedBigInteger('record_id');
+            $table->unsignedBigInteger('record_id')->nullable();
             $table->timestamps();
         });
     }
