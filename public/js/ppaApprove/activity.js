@@ -111,7 +111,7 @@ $(document).on('submit', '.editActivityApproveForm', function(e) {
                 method: 'POST',
                 data: {
                     _token: $('input[name="_token"]').val(),
-                    editActivityId: $('#editActivityIdRequest').val(),
+                    editActivityIdRequest: $('#editActivityIdRequest').val(),
                     editActivityName: $('#editActivityNameRequest').val(),
                     editSuccessIndicatorActivity: $('#editActivitySuccessIndicatorRequest').val(),
                     editQualityActivity: $('#editActivityQualityRequest').val(),

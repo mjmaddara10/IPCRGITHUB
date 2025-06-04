@@ -85,7 +85,7 @@
                     <div class="mb-3">
                         <div class="d-flex align-items-center gap-2 mb-2">
                             <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
-                            <button class="btn btn-sm text-white buttonHover" id="addGassDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
+                            <button type="button" class="btn btn-sm text-white buttonHover" id="addGassDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -108,7 +108,7 @@
                         <table class="table table-bordered align-middle text-center border-success">
                             <thead class="table-light fw-bold text-dark">
                                 <tr>
-                                    <th style="min-width: 200px;">Programs/Project/Activities</th>
+                                    <th style="min-width: 200px;">Critical Activity Name</th>
                                     <th style="min-width: 200px;">Success Indicator</th>
                                     <th style="min-width: 200px;">Quality</th>
                                     <th style="min-width: 200px;">Efficiency</th>
@@ -213,7 +213,7 @@
                         </div>
 
                         <div id="editGassDivisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
-                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                            <div class="division-select-group-edit-gass mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select border border-success" name="divisions[]">
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}">{{ $division->name }}</option>

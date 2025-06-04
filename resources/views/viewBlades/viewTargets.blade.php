@@ -261,6 +261,55 @@
                                         <td style="white-space: pre-wrap;" class="border default-text">{{ $target['sub_activity_remarks'] ?? '' }}</td>
                                     </tr>
                                 @endforeach
+
+                                <!-- GASS -->
+                                @php
+                                    $printedGassNames = [];
+                                    $printedGassPrograms = [];
+                                    $printedGassActivities = [];
+                                @endphp
+
+                                @foreach($gasses as $gass)
+                                    @php
+                                        $gassName = $gass['gass_name'] ?? '';
+                                        $gassProgramName = $gass['program_name'] ?? '';
+                                        $gassActivityName = $gass['activity_name'] ?? '';
+                                    @endphp
+
+                                    {{-- GASS --}}
+                                    @if(!in_array($gassName, $printedGassNames))
+                                        <tr class="small">
+                                            <td class="text-left border border-light default-text" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">{{ $gassName }}</td>
+                                        </tr>
+                                        @php $printedGassNames[] = $gassName; @endphp
+                                    @endif
+
+                                    {{-- Program --}}
+                                    @if(!in_array($gassProgramName, $printedGassPrograms))
+                                        <tr class="small">
+                                            <td class="text-left border border-light default-text" colspan="6" style="font-weight: bold; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $gassProgramName }}</td>
+                                        </tr>
+                                        @php $printedGassPrograms[] = $gassProgramName; @endphp
+                                    @endif
+
+                                    {{-- Activity --}}
+                                    @if(!in_array($gassActivityName, $printedGassActivities))
+                                        <tr class="small">
+                                            <td colspan="6" class="text-left border border-muted default-text" style="background-color:rgb(212, 212, 212);">{{ $gassActivityName }}</td>
+                                        </tr>
+                                        @php $printedGassActivities[] = $gassActivityName; @endphp
+                                    @endif
+
+                                    {{-- Sub-Activity (always print) --}}
+                                    <tr class="small" style="vertical-align: top;">
+                                        <td style="text-indent: 10px;" class="border default-text">{{ $gass['sub_activity_name'] ?? '' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $gass['sub_activity_success_indicator'] ?? '' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $gass['sub_activity_quality'] ?? '' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $gass['sub_activity_efficiency'] ?? '' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $gass['sub_activity_timeliness'] ?? '' }}</td>
+                                        <td style="white-space: pre-wrap;" class="border default-text">{{ $gass['sub_activity_remarks'] ?? '' }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     @endif

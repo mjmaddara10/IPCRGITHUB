@@ -29,8 +29,8 @@ class gassController extends Controller
             'budget' => $request->editGassBudget,
         ]);
 
-        if ($request->filled('editGassId')) {
-            $editRequestGass = GassRequest::findOrFail($request->editGassId);
+        if ($request->filled('editGassRequestId')) {
+            $editRequestGass = GassRequest::findOrFail($request->editGassRequestId);
             $editRequestGass->update([
                 'status' => 'approved',
             ]);

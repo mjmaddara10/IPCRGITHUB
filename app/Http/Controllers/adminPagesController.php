@@ -102,17 +102,27 @@ class adminPagesController extends Controller
         // For staff
         foreach (auth()->user()->subActivities as $subActivity) {
             $activity = $subActivity->activity;
-            $program = $activity->program;
-
+            
             if (!$activity) {
                 \Log::error("Missing activity for SubActivity ID: " . $subActivity->id);
+                continue; // Skip this loop if activity is missing
             }
-            
-            $targets[] = [
+
+            $program = $activity->program;
+
+            if (!$program) {
+                \Log::error("Missing program for Activity ID: " . $activity->id);
+                continue; // Also skip if program is missing
+            }
+
+            $data = [
+                'program_id' => $program->id,
                 'program_name' => $program->name,
                 'program_order' => $program->order ?? 0,
+                'activity_id' => $activity->id,
                 'activity_name' => $activity->name,
                 'activity_order' => $activity->order ?? 0,
+                'sub_activity_id' => $subActivity->id,
                 'sub_activity_name' => $subActivity->name,
                 'sub_activity_success_indicator' => $subActivity->successIndicator,
                 'sub_activity_quality' => $subActivity->quality,
@@ -121,17 +131,48 @@ class adminPagesController extends Controller
                 'sub_activity_remarks' => $subActivity->remarks,
                 'sub_activity_order' => $subActivity->order ?? 0,
             ];
+
+            if (!is_null($program->gass_id)) {
+                $gassPrograms[] = array_merge($data, [
+                    'program_division' => $program->divisions->pluck('name')->toArray(),
+                    'program_budget' => $program->budget,
+                    'program_success_indicator' => $program->successIndicator,
+                    'program_quality' => $program->quality,
+                    'program_efficiency' => $program->efficiency,
+                    'program_timeliness' => $program->timeliness,
+                    'program_remarks' => $program->remarks,
+                    'activity_success_indicator' => $activity->successIndicator,
+                    'activity_quality' => $activity->quality,
+                    'activity_efficiency' => $activity->efficiency,
+                    'activity_timeliness' => $activity->timeliness,
+                    'activity_remarks' => $activity->remarks,
+                    'gass_id' => $program->gass_id,
+                    'gass_name' => optional($program->gass)->name,
+                ]);
+            } else {
+                $targets[] = $data;
+            }
         }
 
-        usort($targets, function ($a, $b) {
-            $programCompare = $a['program_order'] <=> $b['program_order'];
-            if ($programCompare !== 0) return $programCompare;
+        // usort($targets, function ($a, $b) {
+        //     $programCompare = $a['program_order'] <=> $b['program_order'];
+        //     if ($programCompare !== 0) return $programCompare;
     
-            $activityCompare = $a['activity_order'] <=> $b['activity_order'];
-            if ($activityCompare !== 0) return $activityCompare;
+        //     $activityCompare = $a['activity_order'] <=> $b['activity_order'];
+        //     if ($activityCompare !== 0) return $activityCompare;
     
-            return $a['sub_activity_order'] <=> $b['sub_activity_order'];
-        });
+        //     return $a['sub_activity_order'] <=> $b['sub_activity_order'];
+        // });
+
+        // usort($gassPrograms, function ($a, $b) {
+        //     $programCompare = $a['program_order'] <=> $b['program_order'];
+        //     if ($programCompare !== 0) return $programCompare;
+    
+        //     $activityCompare = $a['activity_order'] <=> $b['activity_order'];
+        //     if ($activityCompare !== 0) return $activityCompare;
+    
+        //     return $a['sub_activity_order'] <=> $b['sub_activity_order'];
+        // });
 
         return view('viewBlades.viewTargets', compact(
             'programs',
@@ -141,6 +182,7 @@ class adminPagesController extends Controller
         ),[
             'role' => auth()->user()->role,
             'targets' => $targets,
+            'gasses' => $gassPrograms,
             'user' => $user,
         ]);
     }

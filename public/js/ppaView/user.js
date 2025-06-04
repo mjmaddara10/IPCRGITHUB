@@ -70,7 +70,8 @@ $(document).ready(function () {
                 let printedPrograms = new Set();
                 let printedActivities = new Set();
                 
-                let printedProgramsGass = new Set();
+                let printedGassName = new Set();
+                let printedProgramGass = new Set();
                 let printedActivitiesGass = new Set();// <-- NEW set for activities
 
                 // PPA
@@ -163,8 +164,8 @@ $(document).ready(function () {
                 gasses.forEach(function (gass) {
                     let row = '';
 
-                    if (!printedProgramsGass.has(gass.gass_name)) {
-                        printedProgramsGass.add(gass.gass_name);
+                    if (!printedGassName.has(gass.gass_name)) {
+                        printedGassName.add(gass.gass_name);
 
                         if (isDeptHead) {
                             row += `
@@ -173,38 +174,21 @@ $(document).ready(function () {
                                     <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;">${gass.gass_budget}</td>
                                     <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;"></td>
                                 </tr>
-                                
-                                <tr style="background-color: #03592c; color: white;">
-                                    <td class="text-left border border-light" style="font-weight: bold; background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-end border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">${safeValue(gass.program_budget).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">
-                                        ${Array.isArray(gass.program_division) ? gass.program_division.join('<br><br>') : safeValue(gass.program_division)}
-                                </tr>
                             `;
                         } else {
                             row += `
                                 <tr style="background-color: #03592c; color: white;">
                                     <td class="text-left border border-light text-uppercase" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${gass.gass_name}</td>
                                 </tr>
-
-                                <tr style="background-color: #03592c; color: white;">
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks)}</td>
-                                </tr>
                             `;
                         }
-                    } else {
+                    }
+
+                    if (!printedProgramGass.has(gass.program_name)) {
+                        printedProgramGass.add(gass.program_name);
+
                         if (isDeptHead) {
-                            row += `                            
+                            row += `                                
                                 <tr style="background-color: #03592c; color: white;">
                                     <td class="text-left border border-light" style="font-weight: bold; background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name)}</td>
                                     <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
@@ -235,7 +219,28 @@ $(document).ready(function () {
                     if (isDeptHead) {
                         // Always print Activity row if Dept Head
                         row += `
-                            
+                            <tr>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_name).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_success_indicator).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_quality).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_efficiency).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_timeliness).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_remarks).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
+                            </tr>
                         `;
                     } else {
                         // Print activity row ONLY ONCE
@@ -277,7 +282,6 @@ $(document).ready(function () {
                             </tr>
                         `;
                     }
-
                     tbody.append(row);
                 });
 
@@ -466,8 +470,6 @@ $('#employeeSelect').on('change', function () {
         
                 let printedPrograms = new Set();
                 let printedActivities = new Set();
-                
-               // <-- NEW set for activities
 
                 // PPA
                 assignments.forEach(function (assignment) {
@@ -555,14 +557,15 @@ $('#employeeSelect').on('change', function () {
                     tbody.append(row);
                 });
 
-                let printedProgramsGass = new Set();
+                let printedGassName = new Set();
+                let printedProgramGass = new Set();
                 let printedActivitiesGass = new Set();
                 // GASS
                 gasses.forEach(function (gass) {
                     let row = '';
 
-                    if (!printedProgramsGass.has(gass.gass_name)) {
-                        printedProgramsGass.add(gass.gass_name);
+                    if (!printedGassName.has(gass.gass_name)) {
+                        printedGassName.add(gass.gass_name);
 
                         if (isDeptHead) {
                             row += `
@@ -571,39 +574,21 @@ $('#employeeSelect').on('change', function () {
                                     <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;">${gass.gass_budget}</td>
                                     <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;"></td>
                                 </tr>
-                                
-                                <tr style="background-color: #03592c; color: white;">
-                                    <td class="text-left border border-light" style="font-weight: bold; background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-end border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">${safeValue(gass.program_budget).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">
-                                        ${Array.isArray(gass.program_division) ? gass.program_division.join('<br><br>') : safeValue(gass.program_division)}
-                                    </td>
-                                </tr>
                             `;
                         } else {
                             row += `
                                 <tr style="background-color: #03592c; color: white;">
                                     <td class="text-left border border-light text-uppercase" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${gass.gass_name}</td>
                                 </tr>
-
-                                <tr style="background-color: #03592c; color: white;">
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness).replace(/\n/g, '<br><br>')}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks).replace(/\n/g, '<br><br>')}</td>
-                                </tr>
                             `;
                         }
-                    } else {
+                    }
+
+                    if (!printedProgramGass.has(gass.program_name)) {
+                        printedProgramGass.add(gass.program_name);
+
                         if (isDeptHead) {
-                            row += `                            
+                            row += `                                
                                 <tr style="background-color: #03592c; color: white;">
                                     <td class="text-left border border-light" style="font-weight: bold; background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name)}</td>
                                     <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
@@ -634,7 +619,28 @@ $('#employeeSelect').on('change', function () {
                     if (isDeptHead) {
                         // Always print Activity row if Dept Head
                         row += `
-                            
+                            <tr>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_name).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_success_indicator).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_quality).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_efficiency).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_timeliness).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_remarks).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
+                            </tr>
                         `;
                     } else {
                         // Print activity row ONLY ONCE
@@ -676,9 +682,8 @@ $('#employeeSelect').on('change', function () {
                             </tr>
                         `;
                     }
-                    
-                tbody.append(row);
-            });
+                    tbody.append(row);
+                });
                 
             },
             error: function (xhr, status, error) {

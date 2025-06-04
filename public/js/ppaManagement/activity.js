@@ -57,6 +57,8 @@ function populateAccountableOptions(accountables) {
         accountables.forEach(accountable => {
             $select.append(`<option value="${accountable.id}">${accountable.name} | ${accountable.position}</option>`);
         });
+
+        $select.append('<option value="od">All Employees from Organizational Development</option>');
     });
 }
 

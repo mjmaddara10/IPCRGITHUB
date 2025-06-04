@@ -18,6 +18,7 @@ $(document).on('submit', '.editGassApproveForm', function(e) {
                 data: {
                     _token: $('input[name="_token"]').val(),
                     editGassId: $('#editGassRequestId').val(),
+                    editGassRequestId: $('#editGassRequestId').val(),
                     editGassBudget: $('#editGassBudget').val(),
                     requestorId: $('#editGassRequestor').val(),
                 },

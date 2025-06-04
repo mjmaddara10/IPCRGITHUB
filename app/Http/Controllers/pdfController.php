@@ -207,11 +207,15 @@ class pdfController extends Controller
             'groupedTargetsBySignatory' => $groupedTargetsBySignatory,
         ];
 
+        
+
         if ($employee->role === 'Department Head') {
             $pdf = PDF::loadView('pdf.opcr', $data)->setPaper([0, 0, 936.0, 612.0]);
-            $pdf->set_option("isPhpEnabled", true);
-            $pdf->set_option("isHtml5ParserEnabled", true);
-            $pdf->set_option("isRemoteEnabled", true);
+            $pdf->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isPhpEnabled' => true,
+                'isRemoteEnabled' => true,
+            ]);
         } elseif ($employee->role === 'Division Chief' || $employee->role === 'Assistant Department Head') {
             $pdf = PDF::loadView('pdf.dpcr', $data)->setPaper([0, 0, 936.0, 612.0]);
             $pdf->set_option("isPhpEnabled", true);

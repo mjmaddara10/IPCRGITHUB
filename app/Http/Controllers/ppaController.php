@@ -396,8 +396,8 @@ class ppaController extends Controller
             'activity_name' => $activity->name
         ]);
 
-        if ($request->filled('editActivityId')) {
-            $editRequestActivity = ActivityRequest::findOrFail($request->editActivityId);
+        if ($request->filled('editActivityIdRequest')) {
+            $editRequestActivity = ActivityRequest::findOrFail($request->editActivityIdRequest);
             $editRequestActivity->update([
                 'status' => 'approved',
             ]);
@@ -736,7 +736,7 @@ class ppaController extends Controller
     public function fetchEmployee($activityId) {
         $activity = Activity::findOrFail($activityId);
 
-        $employees = Employee::all()->map(function ($e) {
+        $employees = Employee::where('role', '!=', 'Department Head')->get()->map(function ($e) {
             $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
             return [
                 'id' => $e->id,
@@ -768,7 +768,7 @@ class ppaController extends Controller
         $subActivity = SubActivity::findOrFail($subActivityId);
 
         // Get all employees instead of filtering by divisions
-        $employees = Employee::all()->map(function ($e) {
+        $employees = Employee::where('role', '!=', 'Department Head')->get()->map(function ($e) {
             $middleInitial = $e->middleName ? strtoupper(substr($e->middleName, 0, 1)) . '. ' : '';
             return [
                 'id' => $e->id,

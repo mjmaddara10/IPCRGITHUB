@@ -6,6 +6,7 @@
         <style>
             @page {
                 margin-bottom: 70px;
+                footer: html_footer;
             }
 
             .calibri {
@@ -88,27 +89,27 @@
                     </tr>
 
                     <!-- Spacer -->
-                    <tr class="small" style="text-align: center;">
+                    <tr class="smaller" style="text-align: center;">
                         <td colspan="8" style="min-height: 30px; height:30px;"></td>
                     </tr>
 
                     <!-- Employee Information -->
-                    <tr class="small" >
+                    <tr class="smaller" >
                         <td colspan="6" ><p>4.8 to 5 – Outstanding  3.9 to 4.79 – Very Satisfactory  3 to 3.89 – Satisfactory  2 – Unsatisfactory  1 – Poor</p></td>
                         <td colspan="2" style="text-align: center;" class="bold">{{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}</td>
                     </tr>
-                    <tr class="small">
+                    <tr class="smaller">
                         <td colspan="6"></td>
                         <td colspan="2" style="text-align: center;" class="smaller">{{ $employee->position }}</td>
                     </tr>
 
                     <!-- Spacer -->
-                    <tr class="small" style="text-align: center;">
+                    <tr class="smaller" style="text-align: center;">
                         <td colspan="8" style="min-height: 30px; height:30px;"></td>
                     </tr>
 
                     <!-- Sign -->
-                    <tr class="small">
+                    <tr class="smaller">
                         <td class="border">Approved by</td>
                         <td class="border"></td>
                         <td class="border" colspan="6"></td>
@@ -122,14 +123,11 @@
 
                     <!-- Position -->
                     <tr class="smaller" style="text-align: center;">
-                        <td class="border">Assistant PHRMO</td>
+                        <td class="border">Governor</td>
                         <td class="border">Date</td>
-                        <td class="border" colspan="2"></td>
-                        <td class="border"></td>
-                        <td class="border" colspan="2">PHRMO</td>
-                        <td class="border">Date</td>
+                        <td class="border" colspan="6"></td>
                     </tr>
-                    <tr class="small" style="text-align: center;">
+                    <tr class="smaller" style="text-align: center;">
                         <td colspan="8" style="min-height: 30px; height:30px;"></td>
                     </tr>
 
@@ -163,7 +161,7 @@
 
                         {{-- Program --}}
                         @if(!in_array($programId, $printedPrograms))
-                            <tr class="small" style="vertical-align: top;">
+                            <tr class="smaller" style="vertical-align: top;">
                                 <td class="bold uppercase border">{{ $target['program_name'] ?? '' }}</td>
                                 <td class="border">{{ $target['program_success_indicator'] ?? '' }}</td>
                                 <td class="border" style="text-align: right; padding: 0px 5px;">{{ $target['program_budget'] ?? '' }}</td>
@@ -178,7 +176,7 @@
 
                         {{-- Activity --}}
                         @if(!in_array($activityId, $printedActivities))
-                            <tr class="small" style="vertical-align: top;">
+                            <tr class="smaller" style="vertical-align: top;">
                                 <td class="uppercase border" style="padding-left:5px;">{{ $target['activity_name'] ?? '' }}</td>
                                 <td class="border">{{ $target['activity_success_indicator'] ?? '' }}</td>
                                 <td class="border"></td>
@@ -210,32 +208,32 @@
                         <!-- Paragraph -->
                         <tr>
                             <td colspan="8" style="text-align: justify; padding: 6px; vertical-align: middle;" >
-                                <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, PHRMO, Provincial Government of Nueva Vizcaya, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }}.</p>
+                                <p class="smaller bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, PHRMO, Provincial Government of Nueva Vizcaya, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }}.</p>
                             </td>
                         </tr>
 
                         <!-- Spacer -->
-                        <tr class="small" style="text-align: center;">
+                        <tr class="smaller" style="text-align: center;">
                             <td colspan="8" style="min-height: 30px; height:30px;"></td>
                         </tr>
 
                         <!-- Employee Information -->
-                        <tr class="small" >
+                        <tr class="smaller" >
                             <td colspan="6" ><p>4.8 to 5 – Outstanding  3.9 to 4.79 – Very Satisfactory  3 to 3.89 – Satisfactory  2 – Unsatisfactory  1 – Poor</p></td>
                             <td colspan="2" style="text-align: center;" class="bold">{{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}</td>
                         </tr>
-                        <tr class="small">
+                        <tr class="smaller">
                             <td colspan="6"></td>
                             <td colspan="2" style="text-align: center;" class="smaller">{{ $employee->position }}</td>
                         </tr>
 
                         <!-- Spacer -->
-                        <tr class="small" style="text-align: center;">
+                        <tr class="smaller" style="text-align: center;">
                             <td colspan="8" style="min-height: 30px; height:30px;"></td>
                         </tr>
 
                         <!-- Sign -->
-                        <tr class="small">
+                        <tr class="smaller">
                             <td class="border">Approved by</td>
                             <td class="border"></td>
                             <td class="border" colspan="6"></td>
@@ -256,7 +254,7 @@
                             <td class="border" colspan="2">PHRMO</td>
                             <td class="border">Date</td>
                         </tr>
-                        <tr class="small" style="text-align: center;">
+                        <tr class="smaller" style="text-align: center;">
                             <td colspan="8" style="min-height: 30px; height:30px;"></td>
                         </tr>
 
@@ -277,30 +275,35 @@
                     </thead>
 
                     @php
+                        $printedGassName = [];
                         $printedGassPrograms = [];
                         $printedGassActivities = [];
                     @endphp
 
                     @foreach($gasses as $gass)
                         @php
+                            $gassId = $gass['gass_id'] ?? '';
                             $gassProgramId = $gass['program_id'] ?? '';
                             $gassActivityId = $gass['activity_id'] ?? '';
                         @endphp
 
                         {{-- GASS Name --}}
-                        <tr class="small" style="vertical-align: top;">
-                            <td class="bold uppercase border" colspan="2">{{ strtoupper($gass['gass_name'] ?? '') }}</td>
-                            <td class="border" style="text-align: right; padding: 0px 5px;">{{ $gass['gass_budget'] ?? '' }}</td>
-                            <td class="bold border"></td>
-                            <td class="bold border"></td>
-                            <td class="bold border"></td>
-                            <td class="bold border"></td>
-                            <td class="bold border"></td>
-                        </tr>
+                        @if(!in_array($gassId, $printedGassName))
+                            <tr class="smaller" style="vertical-align: top;">
+                                <td class="bold uppercase border" colspan="2">{{ strtoupper($gass['gass_name'] ?? '') }}</td>
+                                <td class="border" style="text-align: right; padding: 0px 5px;">{{ $gass['gass_budget'] ?? '' }}</td>
+                                <td class="bold border"></td>
+                                <td class="bold border"></td>
+                                <td class="bold border"></td>
+                                <td class="bold border"></td>
+                                <td class="bold border"></td>
+                            </tr>
+                            @php $printedGassName[] = $gassId; @endphp
+                        @endif
 
                         {{-- Program --}}
-                        @if(!in_array($gassProgramId, $printedPrograms))
-                            <tr class="small" style="vertical-align: top;">
+                        @if(!in_array($gassProgramId, $printedGassPrograms))
+                            <tr class="smaller" style="vertical-align: top;">
                                 <td class="bold uppercase border">{{ $gass['program_name'] ?? '' }}</td>
                                 <td class="border">{{ $gass['program_success_indicator'] ?? '' }}</td>
                                 <td class="border" style="text-align: right; padding: 0px 5px;">{{ $gass['program_budget'] ?? '' }}</td>
@@ -310,12 +313,12 @@
                                 <td class="border">{{ $gass['program_timeliness'] ?? '' }}</td>
                                 <td class="border">{{ $gass['program_remarks'] ?? '' }}</td>
                             </tr>
-                            @php $printedPrograms[] = $gassProgramId; @endphp
+                            @php $printedGassPrograms[] = $gassProgramId; @endphp
                         @endif
 
                         {{-- Activity --}}
-                        @if(!in_array($gassActivityId, $printedActivities))
-                            <tr class="small" style="vertical-align: top;">
+                        @if(!in_array($gassActivityId, $printedGassActivities))
+                            <tr class="smaller" style="vertical-align: top;">
                                 <td class="uppercase border" style="padding-left:5px;">{{ $gass['activity_name'] ?? '' }}</td>
                                 <td class="border">{{ $gass['activity_success_indicator'] ?? '' }}</td>
                                 <td class="border"></td>
@@ -325,7 +328,7 @@
                                 <td class="border" style="white-space: pre-wrap;">{{ $gass['activity_timeliness'] ?? '' }}</td>
                                 <td class="border" style="white-space: pre-wrap;">{{ $gass['activity_remarks'] ?? '' }}</td>
                             </tr>
-                            @php $printedActivities[] = $gassActivityId; @endphp
+                            @php $printedGassActivities[] = $gassActivityId; @endphp
                         @endif
                     @endforeach
                 </table>

@@ -1,5 +1,31 @@
 // ============================Functionalities=========================//
 // Utility: Add a division select with optional selected value
+function handleAllDivisionsLogic() {
+    const $container = $('#editGassDivisionSelectContainer');
+    const $selects = $container.find('select');
+
+    let hasAll = false;
+    let $allSelectGroup = null;
+
+    $selects.each(function () {
+        if ($(this).val()?.toString() === 'all') {
+            hasAll = true;
+            $allSelectGroup = $(this).closest('.division-select-group');
+            return false;
+        }
+    });
+
+    if (hasAll) {
+        $container.find('.division-select-group').each(function () {
+            if (this !== $allSelectGroup.get(0)) {
+                $(this).hide();
+            }
+        });
+    } else {
+        $container.find('.division-select-group').show();
+    }
+}
+
 function addGassDivisionSelect(selectedId = null) {
     let allDivisions = $('#editGassDivisionSelectContainer').data('divisions');
     let selectHtml = `
@@ -25,7 +51,7 @@ function addGassDivisionSelect(selectedId = null) {
 
 // Utility: Disable first remove button
 function updateRemoveButtonsForGassDivisions() {
-    const removeBtns = $('#editGassDivisionSelectContainer.removeDivisionBtn');
+    const removeBtns = $('#editGassDivisionSelectContainer .removeDivisionBtn');
     removeBtns.prop('disabled', false);
     removeBtns.first().prop('disabled', true);
 }
@@ -42,13 +68,13 @@ function updateDivisionOptionsForGassDivisions() {
         const selectedValues = $selects
             .not($currentSelect)
             .map(function () {
-                return $(this).val();
+                return $(this).val()?.toString();
             })
             .get();
 
         $currentSelect.find('option').each(function () {
             const $option = $(this);
-            const optionVal = $option.val();
+            const optionVal = $option.val()?.toString();
 
             if (optionVal === 'all') {
                 $option.prop('disabled', false);
@@ -65,7 +91,7 @@ $(document).off('click', '#editGassAddDivisionBtn').on('click', '#editGassAddDiv
     addGassDivisionSelect();
     updateRemoveButtonsForGassDivisions();
     updateDivisionOptionsForGassDivisions();
-    // handleAllDivisionsLogic();
+    handleAllDivisionsLogic();
 });
 
 // Remove division row
@@ -73,13 +99,13 @@ $(document).on('click', '.removeDivisionBtn', function () {
     $(this).closest('.division-select-group').remove();
     updateRemoveButtonsForGassDivisions();
     updateDivisionOptionsForGassDivisions();
-    // handleAllDivisionsLogic();
+    handleAllDivisionsLogic();
 });
 
 // Change division selection
 $(document).on('change', '#editGassDivisionSelectContainer select', function () {
     updateDivisionOptionsForGassDivisions();
-    // handleAllDivisionsLogic();
+    handleAllDivisionsLogic();
 });
 // ============================Functionalities=========================//
 
