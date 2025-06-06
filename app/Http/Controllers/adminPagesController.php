@@ -96,6 +96,8 @@ class adminPagesController extends Controller
             $query->where('role', 'Division Chief');
         }])->get(); 
     
+        $data = [];
+        $gassPrograms = [];
         $targets = [];
         $user = auth()->user();
         
@@ -153,26 +155,6 @@ class adminPagesController extends Controller
                 $targets[] = $data;
             }
         }
-
-        // usort($targets, function ($a, $b) {
-        //     $programCompare = $a['program_order'] <=> $b['program_order'];
-        //     if ($programCompare !== 0) return $programCompare;
-    
-        //     $activityCompare = $a['activity_order'] <=> $b['activity_order'];
-        //     if ($activityCompare !== 0) return $activityCompare;
-    
-        //     return $a['sub_activity_order'] <=> $b['sub_activity_order'];
-        // });
-
-        // usort($gassPrograms, function ($a, $b) {
-        //     $programCompare = $a['program_order'] <=> $b['program_order'];
-        //     if ($programCompare !== 0) return $programCompare;
-    
-        //     $activityCompare = $a['activity_order'] <=> $b['activity_order'];
-        //     if ($activityCompare !== 0) return $activityCompare;
-    
-        //     return $a['sub_activity_order'] <=> $b['sub_activity_order'];
-        // });
 
         return view('viewBlades.viewTargets', compact(
             'programs',
