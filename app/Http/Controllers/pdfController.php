@@ -227,9 +227,25 @@ class pdfController extends Controller
             $pdf->set_option("isHtml5ParserEnabled", true);
             $pdf->set_option("isRemoteEnabled", true);
         }
-        
 
-        
+        // Get Dompdf instance BEFORE rendering
+        $domPdf = $pdf->getDomPDF();
+
+        // Get font metrics and canvas before render
+        $fontMetrics = $domPdf->getFontMetrics();
+        $canvas = $domPdf->getCanvas();
+        $font = $fontMetrics->getFont('Helvetica', 'normal');
+
+        // Attach the page script BEFORE calling render or stream
+        $canvas->page_script(function ($pageNumber, $pageCount, $canvas) use ($font, $fontMetrics) {
+            $canvas->text(50, 50, "Page $pageNumber of $pageCount", $font, 20);
+        });
+
+        // Now render the PDF (this processes the page script)
+        $domPdf->render();
+
+        // Optional: get total page count after render if you want it separately
+        $pageCount = $domPdf->getCanvas()->get_page_count();
         
         if ($role === 'Department Head') {
             return $pdf->stream($employee->lastName. ', ' .$employee->firstName. ' (OPCR).pdf');

@@ -247,12 +247,9 @@
 
                         <!-- Position -->
                         <tr class="smaller" style="text-align: center;">
-                            <td class="border">Assistant PHRMO</td>
+                            <td class="border">Governor</td>
                             <td class="border">Date</td>
-                            <td class="border" colspan="2"></td>
-                            <td class="border"></td>
-                            <td class="border" colspan="2">PHRMO</td>
-                            <td class="border">Date</td>
+                            <td class="border" colspan="6"></td>
                         </tr>
                         <tr class="smaller" style="text-align: center;">
                             <td colspan="8" style="min-height: 30px; height:30px;"></td>
@@ -338,5 +335,6 @@
         <footer>
             <div>Page <span class="pageNumber"></span></div>
         </footer>
+        
     </body>
 </html>

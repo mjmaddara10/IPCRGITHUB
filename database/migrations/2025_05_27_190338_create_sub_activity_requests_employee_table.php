@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('employee_id')->nullable();
             $table->unsignedBigInteger('sub_activity_requests_id');
             $table->foreign('employee_id')->references('id')->on('tbl_employee')->onDelete('cascade');
-            $table->foreign('sub_activity_requests_id')->references('id')->on('sub_activity_requests')->onDelete('no action');
+            $table->foreign('sub_activity_requests_id')->references('id')->on('sub_activity_requests')->onDelete('cascade');
             $table->timestamps();
         });
     }
