@@ -416,8 +416,10 @@ class ppaController extends Controller
                 $activity = Activity::findOrFail($request->activityId);
             } else {
                 $activity = Activity::findOrFail($referenceId);
+                
             }
 
+            SubActivityRequest::where('activity_id', $activity->id)->delete();
             Log::info('referenceId:', [$referenceId]);
 
             // Get authenticated user details before deletion
@@ -456,7 +458,10 @@ class ppaController extends Controller
             // If activity or program is not found
             return response()->json(['error' => 'Activity or Program not found!'], 404);
         } catch (\Exception $e) {
-            // Handle any other errors
+            Log::error('Error while deleting activity: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+
             return response()->json(['error' => 'An error occurred while trying to delete the activity.'], 500);
         }
     }
