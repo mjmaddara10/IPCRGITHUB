@@ -4,7 +4,7 @@ $('#addProgramForm').on('submit', function(e) {
 
     Swal.fire({
         title: "Are you sure?",
-        text: "Do you want to add this program???",
+        text: "Do you want to add this program?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#03592c",

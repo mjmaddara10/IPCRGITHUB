@@ -27,6 +27,11 @@ class Activity extends Model
         return $this->belongsTo(Program::class);
     }
 
+    public function subActivityRequests()
+    {
+        return $this->hasMany(SubActivityRequest::class);
+    }
+
     public function subActivities()
     {
         return $this->hasMany(SubActivity::class);
@@ -34,6 +39,7 @@ class Activity extends Model
 
     public function employees()
     {
-        return $this->belongsToMany(Employee::class, 'activity_employee', 'activity_id', 'employee_id');
+        return $this->belongsToMany(Employee::class, 'activity_employee', 'activity_id', 'employee_id')
+            ->withPivot('signatory_id');
     }
 }

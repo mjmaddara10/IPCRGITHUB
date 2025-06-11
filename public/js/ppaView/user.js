@@ -70,7 +70,8 @@ $(document).ready(function () {
                 let printedPrograms = new Set();
                 let printedActivities = new Set();
                 
-                let printedProgramsGass = new Set();
+                let printedGassName = new Set();
+                let printedProgramGass = new Set();
                 let printedActivitiesGass = new Set();// <-- NEW set for activities
 
                 // PPA
@@ -93,32 +94,12 @@ $(document).ready(function () {
                                     <td class="text-left border border-light" style="background-color: #03592c; color:#FFFFFF; vertical-align: top;">
                                         ${Array.isArray(assignment.program_division) ? assignment.program_division.join('<br><br>') : safeValue(assignment.program_division)}
                                     </td>
-
-                                    // Actions
-                                    <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;">
-                                        <!-- Edit Program -->
-                                        <button class="btn btn-sm editProgramBtnTarget buttonHover" title="Edit program name"
-                                            data-program-id="${assignment.program_id}" 
-                                            data-program-name="${assignment.program_name}"
-                                            data-program-success="${assignment.program_success_indicator}"
-                                            data-program-quality="${assignment.program_quality}"
-                                            data-program-efficiency="${assignment.program_efficiency}"
-                                            data-program-timeliness="${assignment.program_timeliness}"
-                                            data-program-remarks="${assignment.program_remarks}"
-                                            data-program-budget="${assignment.program_budget}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
-                                        </button>
-
-                                        <!-- Delete Program -->
-                                        <button class="btn btn-sm deleteProgramBtnTarget buttonHover" title="Delete program"
-                                            data-program-id="${assignment.program_id}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
                                 </tr>
                             `;
                         } else {
                             row += `
                                 <tr style="background-color: #03592c; color: white;">
-                                    <td class="text-left border border-light" colspan="7" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${assignment.program_name}</td>
+                                    <td class="text-left border border-light" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${assignment.program_name}</td>
                                 </tr>
                             `;
                         }
@@ -148,25 +129,6 @@ $(document).ready(function () {
                                 </td>
                                 <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
                                 <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
-
-                                // Actions
-                                <td class="text-center" style="background-color:rgb(212, 212, 212);">
-                                    <!-- Edit Activity -->
-                                    <button class="btn btn-sm editActivityBtnTarget buttonHover" title="Edit activity name"
-                                        data-activity-id="${assignment.activity_id}" 
-                                        data-activity-name="${assignment.activity_name}"
-                                        data-activity-success="${assignment.activity_success_indicator}"
-                                        data-activity-quality="${assignment.activity_quality}"
-                                        data-activity-efficiency="${assignment.activity_efficiency}"
-                                        data-activity-timeliness="${assignment.activity_timeliness}"
-                                        data-activity-remarks="${assignment.activity_remarks}" data-bs-toggle="modal" data-bs-target="#editActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Activity -->
-                                    <button class="btn btn-sm deleteActivityBtnTarget buttonHover" title="Delete activity"
-                                        data-activity-id="${assignment.activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
                             </tr>
                         `;
                     } else {
@@ -177,25 +139,6 @@ $(document).ready(function () {
                                 <tr>
                                     <td colspan="6" class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
                                         ${safeValue(assignment.activity_name).replace(/\n/g, '<br><br>')}
-                                    </td>
-
-                                    // Actions
-                                    <td class="text-center" style="background-color:rgb(212, 212, 212);">
-                                        <!-- Edit Activity -->
-                                        <button class="btn btn-sm editActivityBtnTarget buttonHover" title="Edit activity name"
-                                            data-activity-id="${assignment.activity_id}" 
-                                            data-activity-name="${assignment.activity_name}"
-                                            data-activity-success="${assignment.activity_success_indicator}"
-                                            data-activity-quality="${assignment.activity_quality}"
-                                            data-activity-efficiency="${assignment.activity_efficiency}"
-                                            data-activity-timeliness="${assignment.activity_timeliness}"
-                                            data-activity-remarks="${assignment.activity_remarks}" data-bs-toggle="modal" data-bs-target="#editActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                        </button>
-
-                                        <!-- Delete Activity -->
-                                        <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete activity"
-                                            data-activity-id="${assignment.activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                        </button>
                                     </td>
                                 </tr>
                             `;
@@ -210,25 +153,6 @@ $(document).ready(function () {
                                 <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_efficiency).replace(/\n/g, '<br><br>')}</td>
                                 <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_timeliness).replace(/\n/g, '<br><br>')}</td>
                                 <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>
-                                
-                                // Actions
-                                <td class="text-center" style="background-color: #f8f8f8;">
-                                    <!-- Edit Sub-Activity -->
-                                    <button class="btn btn-sm editSubActivityBtnTarget buttonHover" title="Edit sub-activity name"
-                                        data-sub-activity-id="${assignment.sub_activity_id}" 
-                                        data-sub-activity-name="${assignment.sub_activity_name}"
-                                        data-sub-activity-success="${assignment.sub_activity_success_indicator}"
-                                        data-sub-activity-quality="${assignment.sub_activity_quality}"
-                                        data-sub-activity-efficiency="${assignment.sub_activity_efficiency}"
-                                        data-sub-activity-timeliness="${assignment.sub_activity_timeliness}"
-                                        data-sub-activity-remarks="${assignment.sub_activity_remarks}" data-bs-toggle="modal" data-bs-target="#editSubActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Sub-Activity -->
-                                    <button class="btn btn-sm deleteSubActivityBtnTarget buttonHover" title="Delete activity"
-                                        data-sub-activity-id="${assignment.sub_activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
                             </tr>
                         `;
                     }
@@ -240,8 +164,8 @@ $(document).ready(function () {
                 gasses.forEach(function (gass) {
                     let row = '';
 
-                    if (!printedProgramsGass.has(gass.program_name)) {
-                        printedProgramsGass.add(gass.program_name);
+                    if (!printedGassName.has(gass.gass_name)) {
+                        printedGassName.add(gass.gass_name);
 
                         if (isDeptHead) {
                             row += `
@@ -249,20 +173,22 @@ $(document).ready(function () {
                                     <td class="text-left border border-light text-uppercase" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${gass.gass_name}</td>
                                     <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;">${gass.gass_budget}</td>
                                     <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;"></td>
-
-                                    // Actions
-                                    <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;">
-                                        <!-- Edit Program -->
-                                        <button class="btn btn-sm editGassBtnTarget buttonHover" title="Edit GASS"
-                                            data-gass-id="${gass.gass_id}" 
-                                            data-gass-name="${gass.gass_name}"
-                                            data-gass-budget="${gass.gass_budget}" data-bs-toggle="modal" data-bs-target="#editGassModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
-                                        </button>
-
-                                        
-                                    </td>
                                 </tr>
-                                
+                            `;
+                        } else {
+                            row += `
+                                <tr style="background-color: #03592c; color: white;">
+                                    <td class="text-left border border-light text-uppercase" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${gass.gass_name}</td>
+                                </tr>
+                            `;
+                        }
+                    }
+
+                    if (!printedProgramGass.has(gass.program_name)) {
+                        printedProgramGass.add(gass.program_name);
+
+                        if (isDeptHead) {
+                            row += `                                
                                 <tr style="background-color: #03592c; color: white;">
                                     <td class="text-left border border-light" style="font-weight: bold; background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name)}</td>
                                     <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
@@ -274,61 +200,17 @@ $(document).ready(function () {
                                     <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">
                                         ${Array.isArray(gass.program_division) ? gass.program_division.join('<br><br>') : safeValue(gass.program_division)}
                                     </td>
-
-                                    // Actions
-                                    <td class="text-center" style= "color: #FFFFFF; background-color: rgb(2, 113, 56);">
-                                        <!-- Edit Program -->
-                                        <button class="btn btn-sm editProgramBtnTarget buttonHover" title="Edit program name"
-                                            data-program-id="${gass.program_id}" 
-                                            data-program-name="${gass.program_name}"
-                                            data-program-success="${gass.program_success_indicator}"
-                                            data-program-quality="${gass.program_quality}"
-                                            data-program-efficiency="${gass.program_efficiency}"
-                                            data-program-timeliness="${gass.program_timeliness}"
-                                            data-program-remarks="${gass.program_remarks}"
-                                            data-program-budget="${gass.program_budget}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
-                                        </button>
-
-                                        <!-- Delete Program -->
-                                        <button class="btn btn-sm deleteProgramBtnTarget buttonHover" title="Delete program"
-                                            data-program-id="${gass.program_id}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
                                 </tr>
                             `;
                         } else {
                             row += `
                                 <tr style="background-color: #03592c; color: white;">
-                                    <td class="text-left border border-light text-uppercase" colspan="7" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${gass.gass_name}</td>
-                                </tr>
-
-                                <tr style="background-color: #03592c; color: white;">
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness)}</td>
-                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks)}</td>
-
-                                    // Actions
-                                    <td class="text-center" style= "color: #FFFFFF; background-color: rgb(2, 113, 56);">
-                                        <!-- Edit Program -->
-                                        <button class="btn btn-sm editProgramBtnTarget buttonHover" title="Edit program name"
-                                            data-program-id="${gass.program_id}" 
-                                            data-program-name="${gass.program_name}"
-                                            data-program-success="${gass.program_success_indicator}"
-                                            data-program-quality="${gass.program_quality}"
-                                            data-program-efficiency="${gass.program_efficiency}"
-                                            data-program-timeliness="${gass.program_timeliness}"
-                                            data-program-remarks="${gass.program_remarks}"
-                                            data-program-budget="${gass.program_budget}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
-                                        </button>
-
-                                        <!-- Delete Program -->
-                                        <button class="btn btn-sm deleteProgramBtnTarget buttonHover" title="Delete program"
-                                            data-program-id="${gass.program_id}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks).replace(/\n/g, '<br><br>')}</td>
                                 </tr>
                             `;
                         }
@@ -337,7 +219,28 @@ $(document).ready(function () {
                     if (isDeptHead) {
                         // Always print Activity row if Dept Head
                         row += `
-                            
+                            <tr>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_name).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_success_indicator).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_quality).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_efficiency).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_timeliness).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                    ${safeValue(gass.activity_remarks).replace(/\n/g, '<br><br>')}
+                                </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
+                            </tr>
                         `;
                     } else {
                         // Print activity row ONLY ONCE
@@ -363,25 +266,6 @@ $(document).ready(function () {
                                     <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
                                         ${safeValue(gass.activity_remarks).replace(/\n/g, '<br><br>')}
                                     </td>
-
-                                    // Actions
-                                    <td class="text-center" style="background-color:rgb(212, 212, 212);">
-                                        <!-- Edit Activity -->
-                                        <button class="btn btn-sm editActivityBtnTarget buttonHover" title="Edit activity name"
-                                            data-activity-id="${gass.activity_id}" 
-                                            data-activity-name="${gass.activity_name}"
-                                            data-activity-success="${gass.activity_success_indicator}"
-                                            data-activity-quality="${gass.activity_quality}"
-                                            data-activity-efficiency="${gass.activity_efficiency}"
-                                            data-activity-timeliness="${gass.activity_timeliness}"
-                                            data-activity-remarks="${gass.activity_remarks}" data-bs-toggle="modal" data-bs-target="#editGassActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                        </button>
-
-                                        <!-- Delete Activity -->
-                                        <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete activity"
-                                            data-activity-id="${gass.activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
                                 </tr>
                             `;
                         }
@@ -395,29 +279,9 @@ $(document).ready(function () {
                                 <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_efficiency).replace(/\n/g, '<br><br>')}</td>
                                 <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_timeliness).replace(/\n/g, '<br><br>')}</td>
                                 <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>
-                                
-                                // Actions
-                                <td class="text-center" style="background-color: #f8f8f8;">
-                                    <!-- Edit Sub-Activity -->
-                                    <button class="btn btn-sm editSubActivityBtnTarget buttonHover" title="Edit sub-activity name"
-                                        data-sub-activity-id="${gass.sub_activity_id}" 
-                                        data-sub-activity-name="${gass.sub_activity_name}"
-                                        data-sub-activity-success="${gass.sub_activity_success_indicator}"
-                                        data-sub-activity-quality="${gass.sub_activity_quality}"
-                                        data-sub-activity-efficiency="${gass.sub_activity_efficiency}"
-                                        data-sub-activity-timeliness="${gass.sub_activity_timeliness}"
-                                        data-sub-activity-remarks="${gass.sub_activity_remarks}" data-bs-toggle="modal" data-bs-target="#editSubActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Sub-Activity -->
-                                    <button class="btn btn-sm deleteSubActivityBtnTarget buttonHover" title="Delete activity"
-                                        data-sub-activity-id="${gass.sub_activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
                             </tr>
                         `;
                     }
-
                     tbody.append(row);
                 });
 
@@ -606,9 +470,6 @@ $('#employeeSelect').on('change', function () {
         
                 let printedPrograms = new Set();
                 let printedActivities = new Set();
-                
-                let printedProgramsGass = new Set();
-                let printedActivitiesGass = new Set();// <-- NEW set for activities
 
                 // PPA
                 assignments.forEach(function (assignment) {
@@ -630,32 +491,12 @@ $('#employeeSelect').on('change', function () {
                                     <td class="text-left border border-light" style="background-color: #03592c; color:#FFFFFF; vertical-align: top;">
                                         ${Array.isArray(assignment.program_division) ? assignment.program_division.join('<br><br>') : safeValue(assignment.program_division)}
                                     </td>
-
-                                    // Actions
-                                    <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;">
-                                        <!-- Edit Program -->
-                                        <button class="btn btn-sm editProgramBtnTarget buttonHover" title="Edit program name"
-                                            data-program-id="${assignment.program_id}" 
-                                            data-program-name="${assignment.program_name}"
-                                            data-program-success="${assignment.program_success_indicator}"
-                                            data-program-quality="${assignment.program_quality}"
-                                            data-program-efficiency="${assignment.program_efficiency}"
-                                            data-program-timeliness="${assignment.program_timeliness}"
-                                            data-program-remarks="${assignment.program_remarks}"
-                                            data-program-budget="${assignment.program_budget}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
-                                        </button>
-
-                                        <!-- Delete Program -->
-                                        <button class="btn btn-sm deleteProgramBtnTarget buttonHover" title="Delete program"
-                                            data-program-id="${assignment.program_id}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
                                 </tr>
                             `;
                         } else {
                             row += `
                                 <tr style="background-color: #03592c; color: white;">
-                                    <td class="text-left border border-light" colspan="7" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${assignment.program_name}</td>
+                                    <td class="text-left border border-light" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${assignment.program_name}</td>
                                 </tr>
                             `;
                         }
@@ -685,25 +526,6 @@ $('#employeeSelect').on('change', function () {
                                 </td>
                                 <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
                                 <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
-
-                                // Actions
-                                <td class="text-center" style="background-color:rgb(212, 212, 212);">
-                                    <!-- Edit Activity -->
-                                    <button class="btn btn-sm editActivityBtnTarget buttonHover" title="Edit activity name"
-                                        data-activity-id="${assignment.activity_id}" 
-                                        data-activity-name="${assignment.activity_name}"
-                                        data-activity-success="${assignment.activity_success_indicator}"
-                                        data-activity-quality="${assignment.activity_quality}"
-                                        data-activity-efficiency="${assignment.activity_efficiency}"
-                                        data-activity-timeliness="${assignment.activity_timeliness}"
-                                        data-activity-remarks="${assignment.activity_remarks}" data-bs-toggle="modal" data-bs-target="#editActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Activity -->
-                                    <button class="btn btn-sm deleteActivityBtnTarget buttonHover" title="Delete activity"
-                                        data-activity-id="${assignment.activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
                             </tr>
                         `;
                     } else {
@@ -714,25 +536,6 @@ $('#employeeSelect').on('change', function () {
                                 <tr>
                                     <td colspan="6" class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
                                         ${safeValue(assignment.activity_name).replace(/\n/g, '<br><br>')}
-                                    </td>
-
-                                    // Actions
-                                    <td class="text-center" style="background-color:rgb(212, 212, 212);">
-                                        <!-- Edit Activity -->
-                                        <button class="btn btn-sm editActivityBtnTarget buttonHover" title="Edit activity name"
-                                            data-activity-id="${assignment.activity_id}" 
-                                            data-activity-name="${assignment.activity_name}"
-                                            data-activity-success="${assignment.activity_success_indicator}"
-                                            data-activity-quality="${assignment.activity_quality}"
-                                            data-activity-efficiency="${assignment.activity_efficiency}"
-                                            data-activity-timeliness="${assignment.activity_timeliness}"
-                                            data-activity-remarks="${assignment.activity_remarks}" data-bs-toggle="modal" data-bs-target="#editActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                        </button>
-
-                                        <!-- Delete Activity -->
-                                        <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete activity"
-                                            data-activity-id="${assignment.activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                        </button>
                                     </td>
                                 </tr>
                             `;
@@ -747,25 +550,6 @@ $('#employeeSelect').on('change', function () {
                                 <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_efficiency).replace(/\n/g, '<br><br>')}</td>
                                 <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_timeliness).replace(/\n/g, '<br><br>')}</td>
                                 <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(assignment.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>
-                                
-                                // Actions
-                                <td class="text-center" style="background-color: #f8f8f8;">
-                                    <!-- Edit Sub-Activity -->
-                                    <button class="btn btn-sm editSubActivityBtnTarget buttonHover" title="Edit sub-activity name"
-                                        data-sub-activity-id="${assignment.sub_activity_id}" 
-                                        data-sub-activity-name="${assignment.sub_activity_name}"
-                                        data-sub-activity-success="${assignment.sub_activity_success_indicator}"
-                                        data-sub-activity-quality="${assignment.sub_activity_quality}"
-                                        data-sub-activity-efficiency="${assignment.sub_activity_efficiency}"
-                                        data-sub-activity-timeliness="${assignment.sub_activity_timeliness}"
-                                        data-sub-activity-remarks="${assignment.sub_activity_remarks}" data-bs-toggle="modal" data-bs-target="#editSubActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Sub-Activity -->
-                                    <button class="btn btn-sm deleteSubActivityBtnTarget buttonHover" title="Delete activity"
-                                        data-sub-activity-id="${assignment.sub_activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
                             </tr>
                         `;
                     }
@@ -773,116 +557,67 @@ $('#employeeSelect').on('change', function () {
                     tbody.append(row);
                 });
 
+                let printedGassName = new Set();
+                let printedProgramGass = new Set();
+                let printedActivitiesGass = new Set();
                 // GASS
                 gasses.forEach(function (gass) {
-                let row = '';
+                    let row = '';
 
-                if (!printedProgramsGass.has(gass.program_name)) {
-                    printedProgramsGass.add(gass.program_name);
+                    if (!printedGassName.has(gass.gass_name)) {
+                        printedGassName.add(gass.gass_name);
+
+                        if (isDeptHead) {
+                            row += `
+                                <tr style="background-color: #03592c; color: white;">
+                                    <td class="text-left border border-light text-uppercase" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${gass.gass_name}</td>
+                                    <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;">${gass.gass_budget}</td>
+                                    <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;"></td>
+                                </tr>
+                            `;
+                        } else {
+                            row += `
+                                <tr style="background-color: #03592c; color: white;">
+                                    <td class="text-left border border-light text-uppercase" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${gass.gass_name}</td>
+                                </tr>
+                            `;
+                        }
+                    }
+
+                    if (!printedProgramGass.has(gass.program_name)) {
+                        printedProgramGass.add(gass.program_name);
+
+                        if (isDeptHead) {
+                            row += `                                
+                                <tr style="background-color: #03592c; color: white;">
+                                    <td class="text-left border border-light" style="font-weight: bold; background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name)}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-end border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">${safeValue(gass.program_budget).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">
+                                        ${Array.isArray(gass.program_division) ? gass.program_division.join('<br><br>') : safeValue(gass.program_division)}
+                                    </td>
+                                </tr>
+                            `;
+                        } else {
+                            row += `
+                                <tr style="background-color: #03592c; color: white;">
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness).replace(/\n/g, '<br><br>')}</td>
+                                    <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks).replace(/\n/g, '<br><br>')}</td>
+                                </tr>
+                            `;
+                        }
+                    }
 
                     if (isDeptHead) {
-                        row += `
-                            <tr style="background-color: #03592c; color: white;">
-                                <td class="text-left border border-light text-uppercase" colspan="6" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${gass.gass_name}</td>
-                                <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;">${gass.gass_budget}</td>
-                                <td class="text-end border border-light text-uppercase" style="background-color: #03592c; color:#FFFFFF;"></td>
-
-                                // Actions
-                                <td class="text-center" style= "color: #FFFFFF; background-color: #03592c;">
-                                    <!-- Edit Program -->
-                                    <button class="btn btn-sm editProgramBtnTarget buttonHover" title="Edit program name"
-                                        data-gass-id="${gass.gass_id}" 
-                                        data-gass-name="${gass.gass_name}"
-                                        data-gass-budget="${gass.gass_budget}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Program -->
-                                    <button class="btn btn-sm deleteProgramBtnTarget buttonHover" title="Delete program"
-                                        data-program-id="${gass.program_id}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            
-                            <tr style="background-color: #03592c; color: white;">
-                                <td class="text-left border border-light" style="font-weight: bold; background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name)}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-end border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">${safeValue(gass.program_budget).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF; vertical-align: top;">
-                                    ${Array.isArray(gass.program_division) ? gass.program_division.join('<br><br>') : safeValue(gass.program_division)}
-                                </td>
-
-                                // Actions
-                                <td class="text-center" style= "color: #FFFFFF; background-color: rgb(2, 113, 56);">
-                                    <!-- Edit Program -->
-                                    <button class="btn btn-sm editProgramBtnTarget buttonHover" title="Edit program name"
-                                        data-program-id="${gass.program_id}" 
-                                        data-program-name="${gass.program_name}"
-                                        data-program-success="${gass.program_success_indicator}"
-                                        data-program-quality="${gass.program_quality}"
-                                        data-program-efficiency="${gass.program_efficiency}"
-                                        data-program-timeliness="${gass.program_timeliness}"
-                                        data-program-remarks="${gass.program_remarks}"
-                                        data-program-budget="${gass.program_budget}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Program -->
-                                    <button class="btn btn-sm deleteProgramBtnTarget buttonHover" title="Delete program"
-                                        data-program-id="${gass.program_id}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                    } else {
-                        row += `
-                            <tr style="background-color: #03592c; color: white;">
-                                <td class="text-left border border-light text-uppercase" colspan="7" style="font-weight: bold; background-color: #03592c; color:#FFFFFF;">${gass.gass_name}</td>
-                            </tr>
-
-                            <tr style="background-color: #03592c; color: white;">
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_name).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_success_indicator).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_quality).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_efficiency).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_timeliness).replace(/\n/g, '<br><br>')}</td>
-                                <td class="text-left border border-light" style="background-color: rgb(2, 113, 56); color:#FFFFFF;">${safeValue(gass.program_remarks).replace(/\n/g, '<br><br>')}</td>
-
-                                // Actions
-                                <td class="text-center" style= "color: #FFFFFF; background-color: rgb(2, 113, 56);">
-                                    <!-- Edit Program -->
-                                    <button class="btn btn-sm editProgramBtnTarget buttonHover" title="Edit program name"
-                                        data-program-id="${gass.program_id}" 
-                                        data-program-name="${gass.program_name}"
-                                        data-program-success="${gass.program_success_indicator}"
-                                        data-program-quality="${gass.program_quality}"
-                                        data-program-efficiency="${gass.program_efficiency}"
-                                        data-program-timeliness="${gass.program_timeliness}"
-                                        data-program-remarks="${gass.program_remarks}"
-                                        data-program-budget="${gass.program_budget}" data-bs-toggle="modal" data-bs-target="#editProgramModal" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Program -->
-                                    <button class="btn btn-sm deleteProgramBtnTarget buttonHover" title="Delete program"
-                                        data-program-id="${gass.program_id}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                    }
-                }
-
-                if (isDeptHead) {
-                    // Always print Activity row if Dept Head
-                    row += `
-                        
-                    `;
-                } else {
-                    // Print activity row ONLY ONCE
-                    if (!printedActivitiesGass.has(gass.activity_name)) {
-                        printedActivitiesGass.add(gass.activity_name);
+                        // Always print Activity row if Dept Head
                         row += `
                             <tr>
                                 <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
@@ -903,63 +638,52 @@ $('#employeeSelect').on('change', function () {
                                 <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
                                     ${safeValue(gass.activity_remarks).replace(/\n/g, '<br><br>')}
                                 </td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
+                                <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);"></td>
+                            </tr>
+                        `;
+                    } else {
+                        // Print activity row ONLY ONCE
+                        if (!printedActivitiesGass.has(gass.activity_name)) {
+                            printedActivitiesGass.add(gass.activity_name);
+                            row += `
+                                <tr>
+                                    <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                        ${safeValue(gass.activity_name).replace(/\n/g, '<br><br>')}
+                                    </td>
+                                    <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                        ${safeValue(gass.activity_success_indicator).replace(/\n/g, '<br><br>')}
+                                    </td>
+                                    <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                        ${safeValue(gass.activity_quality).replace(/\n/g, '<br><br>')}
+                                    </td>
+                                    <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                        ${safeValue(gass.activity_efficiency).replace(/\n/g, '<br><br>')}
+                                    </td>
+                                    <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                        ${safeValue(gass.activity_timeliness).replace(/\n/g, '<br><br>')}
+                                    </td>
+                                    <td class="text-left border border-muted" style="background-color:rgb(212, 212, 212);">
+                                        ${safeValue(gass.activity_remarks).replace(/\n/g, '<br><br>')}
+                                    </td>
+                                </tr>
+                            `;
+                        }
 
-                                // Actions
-                                <td class="text-center" style="background-color:rgb(212, 212, 212);">
-                                    <!-- Edit Activity -->
-                                    <button class="btn btn-sm editActivityBtnTarget buttonHover" title="Edit activity name"
-                                        data-activity-id="${gass.activity_id}" 
-                                        data-activity-name="${gass.activity_name}"
-                                        data-activity-success="${gass.activity_success_indicator}"
-                                        data-activity-quality="${gass.activity_quality}"
-                                        data-activity-efficiency="${gass.activity_efficiency}"
-                                        data-activity-timeliness="${gass.activity_timeliness}"
-                                        data-activity-remarks="${gass.activity_remarks}" data-bs-toggle="modal" data-bs-target="#editGassActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                    </button>
-
-                                    <!-- Delete Activity -->
-                                    <button class="btn btn-sm deleteProgramBtn buttonHover" title="Delete activity"
-                                        data-activity-id="${gass.activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
+                        // Then print sub-activity always
+                        row += `
+                            <tr>
+                                <td class="text-left ps-3 border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_name).replace(/\n/g, '<br><br>')}</td>
+                                <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_success_indicator).replace(/\n/g, '<br><br>')}</td>
+                                <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_quality).replace(/\n/g, '<br><br>')}</td>
+                                <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_efficiency).replace(/\n/g, '<br><br>')}</td>
+                                <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_timeliness).replace(/\n/g, '<br><br>')}</td>
+                                <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>
                             </tr>
                         `;
                     }
-
-                    // Then print sub-activity always
-                    row += `
-                        <tr>
-                            <td class="text-left ps-3 border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_name).replace(/\n/g, '<br><br>')}</td>
-                            <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_success_indicator).replace(/\n/g, '<br><br>')}</td>
-                            <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_quality).replace(/\n/g, '<br><br>')}</td>
-                            <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_efficiency).replace(/\n/g, '<br><br>')}</td>
-                            <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_timeliness).replace(/\n/g, '<br><br>')}</td>
-                            <td class="text-left border border-muted" style="background-color: #f8f8f8;">${safeValue(gass.sub_activity_remarks).replace(/\n/g, '<br><br>')}</td>
-                            
-                            // Actions
-                            <td class="text-center" style="background-color: #f8f8f8;">
-                                <!-- Edit Sub-Activity -->
-                                <button class="btn btn-sm editSubActivityBtnTarget buttonHover" title="Edit sub-activity name"
-                                    data-sub-activity-id="${gass.sub_activity_id}" 
-                                    data-sub-activity-name="${gass.sub_activity_name}"
-                                    data-sub-activity-success="${gass.sub_activity_success_indicator}"
-                                    data-sub-activity-quality="${gass.sub_activity_quality}"
-                                    data-sub-activity-efficiency="${gass.sub_activity_efficiency}"
-                                    data-sub-activity-timeliness="${gass.sub_activity_timeliness}"
-                                    data-sub-activity-remarks="${gass.sub_activity_remarks}" data-bs-toggle="modal" data-bs-target="#editSubActivityModal" style="color: #FFFFFF;background-color: rgb(144, 144, 144);"><i class="fas fa-edit"></i>
-                                </button>
-
-                                <!-- Delete Sub-Activity -->
-                                <button class="btn btn-sm deleteSubActivityBtnTarget buttonHover" title="Delete activity"
-                                    data-sub-activity-id="${gass.sub_activity_id}" style="color: #FFFFFF; background-color: rgb(144, 144, 144);"><i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                }
-
-                tbody.append(row);
-            });
+                    tbody.append(row);
+                });
                 
             },
             error: function (xhr, status, error) {

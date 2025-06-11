@@ -11,27 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('program_requests', function (Blueprint $table) {
+        Schema::create('sub_activity_requests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('program_id')->nullable();
-            $table->unsignedBigInteger('gass_id')->nullable();
+            $table->unsignedBigInteger('sub_activity_id')->nullable(); //For editing purposes (reference)
+            $table->unsignedBigInteger('activity_id')->nullable(); //Parent table reference
             $table->unsignedBigInteger('requestor');
             
             // Data to add
-            $table->string('name', 250)->nullable(); 
+            $table->string('name', 255)->nullable(); 
             $table->string('successIndicator', 500)->nullable(); 
             $table->string('quality', 500)->nullable(); 
             $table->string('efficiency', 500)->nullable(); 
             $table->string('timeliness', 500)->nullable(); 
             $table->string('remarks', 500)->nullable();
-            $table->string('budget')->nullable(); 
             
             $table->string('status')->default('pending');
             $table->string('action')->nullable(); 
             $table->timestamps();
 
-            $table->foreign('gass_id')->references('id')->on('gass')->onDelete('no action');
-            $table->foreign('program_id')->references('id')->on('programs')->onDelete('cascade');
+            $table->foreign('sub_activity_id')->references('id')->on('sub_activities')->onDelete('cascade'); //For editing purposes (reference)
+            $table->foreign('activity_id')->references('id')->on('activities')->onDelete('no action'); //Parent table reference
             $table->foreign('requestor')->references('id')->on('tbl_employee')->onDelete('no action');
         });
     }
@@ -41,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('program_add_requests');
+        Schema::dropIfExists('sub_activity_requests');
     }
 };

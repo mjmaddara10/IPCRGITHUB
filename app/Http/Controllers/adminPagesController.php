@@ -14,19 +14,25 @@ use App\Models\SubProject;
 use App\Models\Division;
 use App\Models\Gass;
 use App\Models\ProgramRequest;
+use App\Models\ActivityRequest;
+use App\Models\SubActivityRequest;
+use App\Models\GassRequest;
 
 
 class adminPagesController extends Controller
 {
     public function approve(){
-        $programRequest = ProgramRequest::with(['requester','divisions'])
-        ->where('status', 'pending')
-        ->orderBy('created_at', 'desc')
-        ->get();
+        $programRequest = ProgramRequest::with(['requester','divisions','gass'])->where('status', 'pending')->orderBy('created_at', 'desc')->get();
+        $activityRequest = ActivityRequest::with(['requester','employees'])->where('status', 'pending')->orderBy('created_at', 'desc')->get();
+        $subActivityRequest = SubActivityRequest::with(['requester','employees'])->where('status', 'pending')->orderBy('created_at', 'desc')->get();
+        $gassRequest = GassRequest::with(['requester'])->where('status', 'pending')->orderBy('created_at', 'desc')->get();
 
         return view('viewBlades.approveChanges', [
             'role' => auth()->user()->role,
             'programRequest' => $programRequest,
+            'activityRequest' => $activityRequest,
+            'subActivityRequest' => $subActivityRequest,
+            'gassRequest' => $gassRequest,
         ]);
     }
 
@@ -43,7 +49,7 @@ class adminPagesController extends Controller
             'role' => auth()->user()->role
         ]);
     }
-
+    
     public function managePpa(){
         $programs = Program::with([
             'divisions',
@@ -66,10 +72,10 @@ class adminPagesController extends Controller
                 $query->orderBy('order');
             },
         ])->get();
-
+    
         $employees = Employee::all();
         $divisions = Division::all();
-
+    
         return view('viewBlades.managePpa', compact(
             'programs',
             'employees',
@@ -88,25 +94,37 @@ class adminPagesController extends Controller
         $subActivities = SubActivity::with('activity')->get();
         $divisions = Division::with(['employees' => function ($query) {
             $query->where('role', 'Division Chief');
-        }])->get();
-
+        }])->get(); 
+    
+        $data = [];
+        $gassPrograms = [];
         $targets = [];
         $user = auth()->user();
-
+        
         // For staff
         foreach (auth()->user()->subActivities as $subActivity) {
             $activity = $subActivity->activity;
-            $program = $activity->program;
-
+            
             if (!$activity) {
                 \Log::error("Missing activity for SubActivity ID: " . $subActivity->id);
+                continue; // Skip this loop if activity is missing
             }
 
-            $targets[] = [
+            $program = $activity->program;
+
+            if (!$program) {
+                \Log::error("Missing program for Activity ID: " . $activity->id);
+                continue; // Also skip if program is missing
+            }
+
+            $data = [
+                'program_id' => $program->id,
                 'program_name' => $program->name,
                 'program_order' => $program->order ?? 0,
+                'activity_id' => $activity->id,
                 'activity_name' => $activity->name,
                 'activity_order' => $activity->order ?? 0,
+                'sub_activity_id' => $subActivity->id,
                 'sub_activity_name' => $subActivity->name,
                 'sub_activity_success_indicator' => $subActivity->successIndicator,
                 'sub_activity_quality' => $subActivity->quality,
@@ -115,17 +133,28 @@ class adminPagesController extends Controller
                 'sub_activity_remarks' => $subActivity->remarks,
                 'sub_activity_order' => $subActivity->order ?? 0,
             ];
+
+            if (!is_null($program->gass_id)) {
+                $gassPrograms[] = array_merge($data, [
+                    'program_division' => $program->divisions->pluck('name')->toArray(),
+                    'program_budget' => $program->budget,
+                    'program_success_indicator' => $program->successIndicator,
+                    'program_quality' => $program->quality,
+                    'program_efficiency' => $program->efficiency,
+                    'program_timeliness' => $program->timeliness,
+                    'program_remarks' => $program->remarks,
+                    'activity_success_indicator' => $activity->successIndicator,
+                    'activity_quality' => $activity->quality,
+                    'activity_efficiency' => $activity->efficiency,
+                    'activity_timeliness' => $activity->timeliness,
+                    'activity_remarks' => $activity->remarks,
+                    'gass_id' => $program->gass_id,
+                    'gass_name' => optional($program->gass)->name,
+                ]);
+            } else {
+                $targets[] = $data;
+            }
         }
-
-        usort($targets, function ($a, $b) {
-            $programCompare = $a['program_order'] <=> $b['program_order'];
-            if ($programCompare !== 0) return $programCompare;
-
-            $activityCompare = $a['activity_order'] <=> $b['activity_order'];
-            if ($activityCompare !== 0) return $activityCompare;
-
-            return $a['sub_activity_order'] <=> $b['sub_activity_order'];
-        });
 
         return view('viewBlades.viewTargets', compact(
             'programs',
@@ -135,6 +164,7 @@ class adminPagesController extends Controller
         ),[
             'role' => auth()->user()->role,
             'targets' => $targets,
+            'gasses' => $gassPrograms,
             'user' => $user,
         ]);
     }
@@ -162,8 +192,8 @@ class adminPagesController extends Controller
         $programs = Program::with('divisions')->get();
         $activities = Activity::with('subActivities')->get();
         $employees = Employee::with('division')->get();
-        $divisions = Division::all    ();
-
+        $divisions = Division::all();
+    
         return view('viewBlades.adminAssign', compact(
             'programs',
             'employees',

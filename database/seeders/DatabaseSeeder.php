@@ -15,5 +15,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DivisionSeeder::class,
         ]);
+
+        $this->call([
+            UserSeeder::class,
+        ]);
+
+        $this->call([
+            GassSeeder::class,
+        ]);
     }
 }

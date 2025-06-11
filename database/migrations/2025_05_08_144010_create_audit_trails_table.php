@@ -18,12 +18,12 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('tbl_employee')->onDelete('cascade');
 
             $table->string('full_name', 255);
-            $table->string('role', 30);
+            $table->string('role', 250);
             $table->string('action', 250);
-            $table->string('action_from', 500)->nullable();
-            $table->string('action_to', 500)->nullable();
-            $table->string('program_name', 50)->nullable();
-            $table->unsignedBigInteger('record_id');
+            $table->string('action_from', 1000)->nullable();
+            $table->string('action_to', 1000)->nullable();
+            $table->string('program_name', 250)->nullable();
+            $table->unsignedBigInteger('record_id')->nullable();
             $table->timestamps();
         });
     }

@@ -1,36 +1,36 @@
-$(document).on('submit', '.addProgramApproveForm', function(e) {
+$(document).on('submit', '.addSubActivityApproveForm', function(e) {
     e.preventDefault();
 
     Swal.fire({
         title: "Are you sure?",
-        text: "Do you want to add this program?",
+        text: "Do you want to add this sub-activity?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#03592c",
         cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, add program"
+        confirmButtonText: "Yes, add sub-activity"
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/addProgram',
+                url: '/admin/addSubActivity',
                 method: 'POST',
                 data: {
                     _token: $('input[name="_token"]').val(),
-                    addProgramId: $('#addProgramIdRequest').val(),
-                    addProgramName: $('#addProgramNameRequest').val(),
-                    addSuccessIndicator: $('#addProgramSuccessIndicatorRequest').val(),
-                    addQuality: $('#addProgramQualityRequest').val(),
-                    addEfficiency: $('#addProgramEfficiencyRequest').val(),
-                    addTimeliness: $('#addProgramTimelinessRequest').val(),
-                    addRemarks: $('#addProgramRemarksRequest').val(),
-                    addBudget: $('#addProgramBudgetRequest').val(),
-                    requestor: $('#addProgramRequestor').val(),
-                    divisions: JSON.parse($('#divisionIdView').val()),
+                    activityIdSub: $('#addParentActivityId').val(), //For parent
+                    addSubActivityId: $('#addSubActivityIdRequest').val(),
+                    addSubActivityName: $('#addSubActivityNameRequest').val(),
+                    addSuccessIndicator: $('#addSubActivitySuccessIndicatorRequest').val(),
+                    addQuality: $('#addSubActivityQualityRequest').val(),
+                    addEfficiency: $('#addSubActivityEfficiencyRequest').val(),
+                    addTimeliness: $('#addSubActivityTimelinessRequest').val(),
+                    addRemarks: $('#addSubActivityRemarksRequest').val(),
+                    requestor: $('#addSubActivityRequestor').val(),
+                    addAccountableId: JSON.parse($('#employeeIdViewSub').val()),
                 },
                 success: function(response) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Program added successfully.',
+                        text: 'Sub-activity added successfully.',
                         icon: 'success',
                         confirmButtonColor: '#03592c'
                     }).then(() => {
@@ -40,7 +40,7 @@ $(document).on('submit', '.addProgramApproveForm', function(e) {
                 error: function(xhr) {
                     Swal.fire({
                         title: 'Error!',
-                        text: xhr.responseJSON?.message || 'An error occurred while adding the program.',
+                        text: xhr.responseJSON?.message || 'An error occurred while adding the sub-activity.',
                         icon: 'error',
                         confirmButtonColor: '#bc0c0c'
                     });
@@ -50,7 +50,7 @@ $(document).on('submit', '.addProgramApproveForm', function(e) {
     });
 });
 
-$(document).on('submit', '.addProgramDisapproveForm', function(e) {
+$(document).on('submit', '.addSubActivityDisapproveForm', function(e) {
     e.preventDefault();
     
     Swal.fire({
@@ -64,11 +64,11 @@ $(document).on('submit', '.addProgramDisapproveForm', function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/rejectProgramRequest',
+                url: '/admin/rejectSubActivityRequest',
                 method: 'POST',
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content'),
-                    programId: $('#deleteProgramIdAddRequest').val(),
+                    subActivityId: $('#deleteSubActivityIdAddRequest').val(),
                 },
                 success: function(response) {
                     Swal.fire({
@@ -83,7 +83,7 @@ $(document).on('submit', '.addProgramDisapproveForm', function(e) {
                 error: function(xhr) {
                     Swal.fire({
                         title: 'Error!',
-                        text: xhr.responseJSON?.message || 'An error occurred while adding the program.',
+                        text: xhr.responseJSON?.message || 'An error occurred while deleting the sub-activity.',
                         icon: 'error',
                         confirmButtonColor: '#bc0c0c'
                     });
@@ -93,40 +93,40 @@ $(document).on('submit', '.addProgramDisapproveForm', function(e) {
     });
 });
 
-$(document).on('submit', '.editProgramApproveForm', function(e) {
+$(document).on('submit', '.editSubActivityApproveForm', function(e) {
     e.preventDefault();
 
     Swal.fire({
         title: "Are you sure?",
-        text: "Do you want to edit this program?",
+        text: "Do you want to edit this sub-activity?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#03592c",
         cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, edit program"
+        confirmButtonText: "Yes, edit sub-activity"
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/updateProgram',
+                url: '/admin/updateSubActivity',
                 method: 'POST',
                 data: {
                     _token: $('input[name="_token"]').val(),
-                    editProgramId: $('#editProgramIdRequest').val(),
-                    editProgramName: $('#editProgramNameRequest').val(),
-                    editSuccessIndicator: $('#editProgramSuccessIndicatorRequest').val(),
-                    editQuality: $('#editProgramQualityRequest').val(),
-                    editEfficiency: $('#editProgramEfficiencyRequest').val(),
-                    editTimeliness: $('#editProgramTimelinessRequest').val(),
-                    editRemarks: $('#editProgramRemarksRequest').val(),
-                    editBudget: $('#editProgramBudgetRequest').val(),
-                    requestor: $('#editProgramRequestor').val(),
-                    reference: $('#editProgramReference').val(),
-                    divisions: JSON.parse($('#divisionIdViewEditProgram').val()),
+                    editActivityIdSub: $('#editSubActivityReference').val(),
+                    editSubActivityId: $('#editSubActivityIdRequest').val(),
+                    editActivityNameSub: $('#editSubActivityNameRequest').val(),
+                    editSuccessIndicatorSub: $('#editSubActivitySuccessIndicatorRequest').val(),
+                    editQualitySub: $('#editSubActivityQualityRequest').val(),
+                    editEfficiencySub: $('#editSubActivityEfficiencyRequest').val(),
+                    editTimelinessSub: $('#editSubActivityTimelinessRequest').val(),
+                    editRemarksSub: $('#editSubActivityRemarksRequest').val(),
+                    requestor: $('#editSubActivityRequestor').val(),
+                    reference: $('#editSubActivityReference').val(),
+                    editAccountableId: JSON.parse($('#employeeIdViewEditSubActivity').val()),
                 },
                 success: function(response) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Program updated successfully.',
+                        text: 'Sub-Activity updated successfully.',
                         icon: 'success',
                         confirmButtonColor: '#03592c'
                     }).then(() => {
@@ -136,7 +136,7 @@ $(document).on('submit', '.editProgramApproveForm', function(e) {
                 error: function(xhr) {
                     Swal.fire({
                         title: 'Error!',
-                        text: xhr.responseJSON?.message || 'An error occurred while updating the program.',
+                        text: xhr.responseJSON?.message || 'An error occurred while updating the sub-activity.',
                         icon: 'error',
                         confirmButtonColor: '#bc0c0c'
                     });
@@ -146,7 +146,95 @@ $(document).on('submit', '.editProgramApproveForm', function(e) {
     });
 });
 
-$(document).on('submit', '.editProgramDisapproveForm', function(e) {
+$(document).on('submit', '.editSubActivityDisapproveForm', function(e) {
+    e.preventDefault();
+    
+    Swal.fire({
+        title: "Are you sure?",
+        text: "This request will be disapproved and deleted.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#03592c",
+        cancelButtonColor: "#bc0c0c",
+        confirmButtonText: "Confirm"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/admin/rejectSubActivityRequest',
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    subActivityId: $('#deleteSubActivityIdEditRequest').val(),
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Request disapproved',
+                        icon: 'success',
+                        confirmButtonColor: '#03592c'
+                    }).then(() => {
+                        location.reload(); // Or update the DOM instead of reload
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: xhr.responseJSON?.message || 'An error occurred while adding the activity.',
+                        icon: 'error',
+                        confirmButtonColor: '#bc0c0c'
+                    });
+                }
+            });
+        }
+    });
+});
+
+$(document).on('submit', '.deleteSubActivityApproveForm', function(e) {
+    e.preventDefault();
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to delete this sub-activity?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#03592c",
+        cancelButtonColor: "#bc0c0c",
+        confirmButtonText: "Yes, delete activity"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/admin/deleteSubActivity',
+                method: 'POST',
+                data: {
+                    _token: $('input[name="_token"]').val(),
+                    deleteSubActivityId: $('#deleteSubActivityIdDeleteRequest').val(),
+                    subActivityId: $('#deleteSubActivityReference').val(),
+                    requestor: $('#deleteSubActivityRequestor').val(),
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Sub-activity deleted.',
+                        icon: 'success',
+                        confirmButtonColor: '#03592c'
+                    }).then(() => {
+                        location.reload(); // Or update the DOM instead of reload
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: xhr.responseJSON?.message || 'An error occurred while deleting the activity.',
+                        icon: 'error',
+                        confirmButtonColor: '#bc0c0c'
+                    });
+                }
+            });
+        }
+    });
+});
+
+$(document).on('submit', '.deleteSubActivityDisapproveForm', function(e) {
     e.preventDefault();
 
     Swal.fire({
@@ -160,11 +248,11 @@ $(document).on('submit', '.editProgramDisapproveForm', function(e) {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/admin/rejectProgramRequest',
+                url: '/admin/rejectSubActivityRequest',
                 method: 'POST',
                 data: {
                     _token: $('meta[name="csrf-token"]').attr('content'),
-                    programId: $('#deleteProgramIdEditRequest').val(),
+                    subActivityId: $('#deleteSubActivityIdDeleteRequest').val(),
                 },
                 success: function(response) {
                     Swal.fire({
@@ -179,95 +267,7 @@ $(document).on('submit', '.editProgramDisapproveForm', function(e) {
                 error: function(xhr) {
                     Swal.fire({
                         title: 'Error!',
-                        text: xhr.responseJSON?.message || 'An error occurred while adding the program.',
-                        icon: 'error',
-                        confirmButtonColor: '#bc0c0c'
-                    });
-                }
-            });
-        }
-    });
-});
-
-$(document).on('submit', '.deleteProgramApproveForm', function(e) {
-    e.preventDefault();
-
-    Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to delete this program?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#03592c",
-        cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Yes, delete program"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: '/admin/deleteProgram',
-                method: 'POST',
-                data: {
-                    _token: $('input[name="_token"]').val(),
-                    deleteProgramId: $('#deleteProgramIdDeleteRequest').val(),
-                    referenceId: $('#deleteProgramReference').val(),
-                    requestor: $('#deleteProgramRequestor').val(),
-                },
-                success: function(response) {
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'Program deleted.',
-                        icon: 'success',
-                        confirmButtonColor: '#03592c'
-                    }).then(() => {
-                        location.reload(); // Or update the DOM instead of reload
-                    });
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: xhr.responseJSON?.message || 'An error occurred while deleting the program.',
-                        icon: 'error',
-                        confirmButtonColor: '#bc0c0c'
-                    });
-                }
-            });
-        }
-    });
-});
-
-$(document).on('submit', '.deleteProgramDisapproveForm', function(e) {
-    e.preventDefault();
-
-    Swal.fire({
-        title: "Are you sure?",
-        text: "This request will be disapproved and deleted.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#03592c",
-        cancelButtonColor: "#bc0c0c",
-        confirmButtonText: "Confirm"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: '/admin/rejectProgramRequest',
-                method: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    programId: $('#deleteProgramIdDeleteRequest').val(),
-                },
-                success: function(response) {
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'Request disapproved',
-                        icon: 'success',
-                        confirmButtonColor: '#03592c'
-                    }).then(() => {
-                        location.reload(); // Or update the DOM instead of reload
-                    });
-                },
-                error: function(xhr) {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: xhr.responseJSON?.message || 'An error occurred while adding the program.',
+                        text: xhr.responseJSON?.message || 'An error occurred while deleting the sub-activity.',
                         icon: 'error',
                         confirmButtonColor: '#bc0c0c'
                     });

@@ -11,7 +11,12 @@
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="editGassForm" class="p-2">
+                @if($role === 'Division Chief')
+                    <form id="editGassRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="editGassForm" class="p-2">
+                @endif
+                
                     @csrf
                     <input type="hidden" id="editGassId" name="editGassId" required>
 
@@ -29,14 +34,26 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeEditModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                    </div>
+                    @if($role === 'Division Chief')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    @endif
+                    
                 </form>
             </div>
         </div>
@@ -50,20 +67,25 @@
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="addGassProgramModal">
-                    <i class="fas fa-edit me-2"></i>Add Program under GASS
+                    <i class="fas fa-edit me-2"></i>Add Critical Activity
                 </h5>
             </div>
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="addGassProgramForm" class="p-2">
+                @if($role === 'Division Chief')
+                    <form id="addGassProgramRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="addGassProgramForm" class="p-2">
+                @endif
+                
                     @csrf
 
                     <!-- Division Responsible -->
                     <div class="mb-3">
                         <div class="d-flex align-items-center gap-2 mb-2">
                             <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
-                            <button class="btn btn-sm text-white buttonHover" id="addGassDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
+                            <button type="button" class="btn btn-sm text-white buttonHover" id="addGassDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -86,13 +108,12 @@
                         <table class="table table-bordered align-middle text-center border-success">
                             <thead class="table-light fw-bold text-dark">
                                 <tr>
-                                    <th style="min-width: 200px;">Programs/Project/Activities</th>
+                                    <th style="min-width: 200px;">Critical Activity Name</th>
                                     <th style="min-width: 200px;">Success Indicator</th>
                                     <th style="min-width: 200px;">Quality</th>
                                     <th style="min-width: 200px;">Efficiency</th>
                                     <th style="min-width: 200px;">Timeliness</th>
                                     <th style="min-width: 200px;">Remarks</th>
-                                    <th style="min-width: 200px;">Allotted Budget</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,24 +142,32 @@
                                         <textarea class="form-control border-0 shadow-none auto-resize"
                                             style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addRemarks" id="addRemarks"></textarea>
                                     </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: top;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize"
-                                            style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="addBudget" id="addBudget"></textarea>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeAddModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Program
-                        </button>
-                    </div>
+                    @if($role === 'Division Chief')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeAddModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeAddModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Program
+                            </button>
+                        </div>
+                    @endif
+                    
                 </form>
             </div>
         </div>
@@ -152,13 +181,18 @@
             <!-- Header -->
             <div class="modal-header border-0 rounded-top" style="background-color: #03592c;">
                 <h5 class="modal-title text-white fw-bold" id="editGassProgramModalLabel">
-                    <i class="fas fa-edit me-2"></i>Edit Program under GASS
+                    <i class="fas fa-edit me-2"></i>Edit Critical Activity
                 </h5>
             </div>
 
             <!-- Body -->
             <div class="modal-body" style="background-color: #ffffff;">
-                <form id="editGassProgramForm" class="p-2">
+                @if($role === 'Division Chief')
+                    <form id="editGassProgramRequestForm" class="p-2">
+                @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                    <form id="editGassProgramForm" class="p-2">
+                @endif
+                
                     @csrf
                     <input type="hidden" id="editGassProgramId" name="editGassProgramId" required>
 
@@ -173,13 +207,13 @@
                     <div class="mb-3">
                         <div class="d-flex align-items-center gap-2 mb-2">
                             <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
-                            <button class="btn btn-sm text-white" id="editAddDivisionBtn" type="button" title="Add division responsible" style="background-color: #01a550;">
+                            <button class="btn btn-sm text-white" id="editGassAddDivisionBtn" type="button" title="Add division responsible" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
 
                         <div id="editGassDivisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
-                            <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
+                            <div class="division-select-group-edit-gass mb-2 d-flex gap-2 align-items-center">
                                 <select class="form-select border border-success" name="divisions[]">
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}">{{ $division->name }}</option>
@@ -202,7 +236,6 @@
                                     <th style="min-width: 200px;">Efficiency</th>
                                     <th style="min-width: 200px;">Timeliness</th>
                                     <th style="min-width: 200px;">Remarks</th>
-                                    <th style="min-width: 200px;">Budget</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -222,23 +255,32 @@
                                     <td style="border: 1px solid #ccc; vertical-align: top;">
                                         <textarea class="form-control border-0 shadow-none auto-resize" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editGassProgramRemarks" id="editGassProgramRemarks"></textarea>
                                     </td>
-                                    <td style="border: 1px solid #ccc; vertical-align: middle;">
-                                        <textarea class="form-control border-0 shadow-none auto-resize text-center" style="display: block; margin: auto 0; width: 100%; padding-top: 5px;" name="editGassProgramBudget" id="editGassProgramBudget"></textarea>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Footer -->
-                    <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
-                        <button type="button" class="btn btn-danger px-3 closeEditModal">
-                            <i class="fas fa-times me-2"></i>Cancel
-                        </button>
-                        <button type="submit" class="btn btn-success px-3">
-                            <i class="fas fa-save me-2"></i>Save Changes
-                        </button>
-                    </div>
+                    @if($role === 'Division Chief')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Submit
+                            </button>
+                        </div>
+                    @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                        <div class="modal-footer border-0 mt-3" style="background-color: #f8f9fa;">
+                            <button type="button" class="btn btn-danger px-3 closeEditModal">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-3">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    @endif
+                    
                 </form>
             </div>
         </div>

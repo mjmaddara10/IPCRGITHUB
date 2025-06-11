@@ -5,112 +5,51 @@ var tooltipElements = document.querySelectorAll('.buttonHover'); // Select all e
       });
     });
 
-// Auto Resize in PPA crud
-document.querySelectorAll('.auto-resize').forEach(textarea => {
-    textarea.style.overflow = 'hidden';
-    textarea.style.resize = 'none';
-    textarea.style.minHeight = '100px';
-    textarea.style.paddingTop = '5px';
-
-    const resize = () => {
-        textarea.style.height = 'auto';
-        textarea.style.height = textarea.scrollHeight + 'px';
-    };
-    textarea.addEventListener('input', resize);
-    resize(); // Call once on load
-});
-
-// Edit Program Table Resize
 function applyAutoResize() {
     document.querySelectorAll('.auto-resize').forEach(textarea => {
-        textarea.style.overflow = 'hidden';
-        textarea.style.resize = 'none';
-        textarea.style.minHeight = '100px';
-        textarea.style.paddingTop = '5px';
-        textarea.style.boxSizing = 'border-box';
+        Object.assign(textarea.style, {
+            overflow: 'hidden',
+            resize: 'none',
+            minHeight: '100px',
+            paddingTop: '5px',
+            boxSizing: 'border-box',
+        });
 
         const resize = () => {
             textarea.style.height = 'auto';
             textarea.style.height = textarea.scrollHeight + 'px';
         };
 
+        // Prevent multiple listeners
         textarea.removeEventListener('input', textarea._resizeListener);
         textarea._resizeListener = resize;
         textarea.addEventListener('input', resize);
 
-        resize(); // Resize on load
+        resize(); // Initial resize
     });
 }
 
-// Run on page load
+// On page load
 document.addEventListener('DOMContentLoaded', applyAutoResize);
 
-// Also run when modal opens (optional and useful)
-const editModal = document.getElementById('editProgramModal');
-if (editModal) {
-    editModal.addEventListener('shown.bs.modal', () => {
-        setTimeout(applyAutoResize, 100); // Ensure textarea is visible before measuring
-    });
+// Reuse for any modal with auto-resize textareas
+function handleModalAutoResize(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.addEventListener('shown.bs.modal', () => {
+            setTimeout(applyAutoResize, 1000);
+        });
+    }
 }
 
-// Edit Activity Table Resize
-function applyAutoResize() {
-    document.querySelectorAll('.auto-resize').forEach(textarea => {
-        textarea.style.overflow = 'hidden';
-        textarea.style.resize = 'none';
-        textarea.style.minHeight = '100px';
-        textarea.style.paddingTop = '5px';
-        textarea.style.boxSizing = 'border-box';
-
-        const resize = () => {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
-        };
-
-        textarea.removeEventListener('input', textarea._resizeListener);
-        textarea._resizeListener = resize;
-        textarea.addEventListener('input', resize);
-
-        resize();
-    });
-}
-
-document.addEventListener('DOMContentLoaded', applyAutoResize);
-
-const editActivityModal = document.getElementById('editActivityModal');
-if (editActivityModal) {
-    editActivityModal.addEventListener('shown.bs.modal', () => {
-        setTimeout(applyAutoResize, 100);
-    });
-}
-
-// Edit Sub-Activity Table Resize
-function applyAutoResize() {
-    document.querySelectorAll('.auto-resize').forEach(textarea => {
-        textarea.style.overflow = 'hidden';
-        textarea.style.resize = 'none';
-        textarea.style.minHeight = '100px';
-        textarea.style.paddingTop = '5px';
-        textarea.style.boxSizing = 'border-box';
-
-        const resize = () => {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
-        };
-
-        textarea.removeEventListener('input', textarea._resizeListener);
-        textarea._resizeListener = resize;
-        textarea.addEventListener('input', resize);
-
-        resize();
-    });
-}
-
-document.addEventListener('DOMContentLoaded', applyAutoResize);
-
-const editSubModal = document.getElementById('editSubActivityModal');
-if (editSubModal) {
-    editSubModal.addEventListener('shown.bs.modal', () => {
-        setTimeout(applyAutoResize, 100);
-    });
-}
+// Attach to all your modals
+['editProgramModal',
+'editActivityModal',
+'editSubActivityModal',
+'viewAddProgramRequestModal',
+'viewEditProgramRequestModal',
+'viewDeleteProgramRequestModal',
+'viewAddActivityRequestModal',
+'viewDeleteActivityRequestModal',
+'viewAddSubActivityRequestModal',
+'viewSubEditActivityRequestModal',].forEach(handleModalAutoResize);

@@ -59,15 +59,40 @@ Route::prefix('admin')->group(function () {
     // GASS
     Route::post('/updateGass', [gassController::class, 'updateGass'])->name('updateGass');
     Route::post('/addGassProgram', [gassController::class, 'addGassProgram'])->name('addGassProgram');
+    Route::post('/updateGassProgram', [gassController::class, 'updateGassProgram'])->name('updateGassProgram');
 
-    // ========================= Requesting ==========================//
+    // ========================= Requesting for PPA Change ==========================//
     Route::post('/addProgramRequest', [requestPpaController::class, 'addProgramRequest'])->name('addProgramRequest');
+    Route::post('/editProgramRequest', [requestPpaController::class, 'editProgramRequest'])->name('editProgramRequest');
+    Route::post('/deleteProgramRequest', [requestPpaController::class, 'deleteProgramRequest'])->name('deleteProgramRequest');
+    Route::post('/addActivityRequest', [requestPpaController::class, 'addActivityRequest'])->name('addActivityRequest');
+    Route::post('/editActivityRequest', [requestPpaController::class, 'editActivityRequest'])->name('editActivityRequest');
+    Route::post('/deleteActivityRequest', [requestPpaController::class, 'deleteActivityRequest'])->name('deleteActivityRequest');
+    Route::post('/addSubActivityRequest', [requestPpaController::class, 'addSubActivityRequest'])->name('addSubActivityRequest');
+    Route::post('/editSubActivityRequest', [requestPpaController::class, 'editSubActivityRequest'])->name('editSubActivityRequest');
+    Route::post('/deleteSubActivityRequest', [requestPpaController::class, 'deleteSubActivityRequest'])->name('deleteSubActivityRequest');
+    Route::post('/editGassRequest', [requestPpaController::class, 'editGassRequest'])->name('editGassRequest');
+    Route::post('/addGassCritRequest', [requestPpaController::class, 'addGassCritRequest'])->name('addGassCritRequest');
+    Route::post('/editGassCritRequest', [requestPpaController::class, 'editGassCritRequest'])->name('editGassCritRequest');
 
     // ========================= Reject Requests ==========================//
     Route::post('/rejectProgramRequest', [requestPpaController::class, 'rejectProgramRequest'])->name('rejectProgramRequest');
+    Route::post('/rejectActivityRequest', [requestPpaController::class, 'rejectActivityRequest'])->name('rejectActivityRequest');
+    Route::post('/rejectSubActivityRequest', [requestPpaController::class, 'rejectSubActivityRequest'])->name('rejectSubActivityRequest');
+    Route::post('/rejectGassRequest', [requestPpaController::class, 'rejectGassRequest'])->name('rejectGassRequest');
 
-    // ========================= View Details of Requests (Divisions) ==========================//
+    // ========================= View Details of Requests ==========================//
     Route::get('/programRequests/{id}/divisions', [requestPpaController::class, 'getDivisions']);
+    Route::get('/program/{id}/divisions', [requestPpaController::class, 'getReferenceDivisions']);
+    Route::get('/fetchReferenceProgramDetails/{id}', [requestPpaController::class, 'fetchReferenceProgramDetails']);
+
+    Route::get('/activityRequests/{id}/employees', [requestPpaController::class, 'getEmployees']);
+    Route::get('/activity/{id}/employees', [requestPpaController::class, 'getReferenceEmployees']);
+    Route::get('/fetchReferenceActivityDetails/{id}', [requestPpaController::class, 'fetchReferenceActivityDetails']);
+
+    Route::get('/subActivityRequests/{id}/employees', [requestPpaController::class, 'getEmployeesSub']);
+    Route::get('/subActivity/{id}/employees', [requestPpaController::class, 'getReferenceEmployeesSub']);
+    Route::get('/fetchReferenceSubActivityDetails/{id}', [requestPpaController::class, 'fetchReferenceSubActivityDetails']);
 });
 
 Route::prefix('viewPpa')->group(function () {
@@ -107,5 +132,6 @@ Route::middleware(['auth', 'role:Department Head|Assistant Department Head'])->g
         Route::get('/viewIpcr', [adminPagesController::class, 'viewIpcr'])->name('head.viewIpcr');
         Route::get('/audit', [adminPagesController::class, 'audit'])->name('head.audit');
         Route::get('/approve', [adminPagesController::class, 'approve'])->name('head.approve');
+        Route::post('/approve', [adminPagesController::class, 'approve'])->name('head.approve');
     });
 });
