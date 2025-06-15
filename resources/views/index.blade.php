@@ -51,7 +51,6 @@
 
             <!-- Modal Body -->
             <div class="modal-body" style="background-color: #f8f9fa;">
-
                 <!-- Login form -->
                 <form class="p-2" action="{{ route('userLogin') }}" method="POST">
                     @csrf
@@ -86,4 +85,25 @@
         </div>
     </div>
 </div>
+
+<script>
+    @if(session('login_username_failed'))
+        Swal.fire({
+            title: "Login Failed",
+            text: "{{ session('login_username_failed') }}",
+            icon: "error",
+            confirmButtonColor: "#bc0c0c",
+            confirmButtonText: "Close "
+        });
+    @elseif(session('login_password_failed'))
+        Swal.fire({
+            title: "Login Failed",
+            text: "{{ session('login_password_failed') }}",
+            icon: "error",
+            confirmButtonColor: "#bc0c0c",
+            confirmButtonText: "Close "
+        });
+    @endif
+</script>
 @endsection
+

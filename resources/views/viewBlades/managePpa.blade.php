@@ -110,25 +110,24 @@
 
             <style>
                .table-fixed-header {
-    position: relative;
-    max-height: 70vh;
-    overflow-y: auto;
-}
+                    position: relative;
+                    max-height: 70vh;
+                    overflow-y: auto;
+                }
 
-.table-fixed-header thead {
-    position: sticky;
-    top: 0;
-    z-index: 2; /* Ensure the headers stay above the rows */
-    background-color: white; /* Optional: adds a white background for better visibility */
-}
+                .table-fixed-header thead {
+                    position: sticky;
+                    top: 0;
+                    z-index: 2; /* Ensure the headers stay above the rows */
+                    background-color: white; /* Optional: adds a white background for better visibility */
+                }
 
-.table-fixed-header th {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    background-color: white; /* Optional: adds a white background for better visibility */
-}
-
+                .table-fixed-header th {
+                    position: sticky;
+                    top: 0;
+                    z-index: 2;
+                    background-color: white; /* Optional: adds a white background for better visibility */
+                }
             </style>
 
             <!-- PPA Table -->
@@ -433,7 +432,7 @@
                                     </button>
                                 </td>
                             </tr>
-                            <!-- Programs -->
+                            <!-- Critical Activity -->
                             @foreach ($gass->programs->sortBy('order') as $program)
                                 @php
                                     // Get all the division IDs for the current program
@@ -484,9 +483,23 @@
                                         </button>
 
                                         <!-- Delete Critical Activity -->
-                                        <button class="btn action-btn deleteProgramBtn buttonHover" title="Delete critical activity"
-                                            data-program-id="{{ $program->id }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
-                                        </button>
+                                        @if($role === 'Division Chief')
+                                            <button class="btn action-btn deleteProgramRequestBtn buttonHover" title="Delete critical activity"
+                                                data-program-id="{{ $program->id }}" 
+                                                data-gass-id="{{ $program->gass_id }}" 
+                                                data-program-name="{{ $program->name }}"
+                                                data-program-success="{{ $program->successIndicator }}"
+                                                data-program-quality="{{ $program->quality }}"
+                                                data-program-efficiency="{{ $program->efficiency }}"
+                                                data-program-timeliness="{{ $program->timeliness }}"
+                                                data-program-remarks="{{ $program->remarks }}"
+                                                data-program-budget="{{ $program->budget }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
+                                            </button>
+                                        @elseif($role === 'Department Head' || $role === 'Assistant Department Head')
+                                            <button class="btn action-btn deleteProgramBtn buttonHover" title="Delete critical activity"
+                                                data-program-id="{{ $program->id }}" style= "color: #FFFFFF; background-color: rgb(1, 165, 80);"><i class="fas fa-trash"></i>
+                                            </button>
+                                        @endif
 
                                         <!-- Move -->
                                         <div style="display: flex; justify-content: center; gap: 3px;">

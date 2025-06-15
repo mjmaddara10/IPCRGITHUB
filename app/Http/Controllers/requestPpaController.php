@@ -68,18 +68,36 @@ class requestPpaController extends Controller
     }
 
     public function deleteProgramRequest(Request $request) {
-        $deleteProgramRequest = ProgramRequest::create([
-            'requestor' => auth()->id(),
-            'name' => $request->deleteProgramName,
-            'program_id' => $request->deleteProgramId,
-            'successIndicator' => $request->deleteProgramSuccessIndicator,
-            'quality' => $request->deleteProgramQuality,
-            'efficiency' => $request->deleteProgramEfficiency,
-            'timeliness' => $request->deleteProgramTimeliness,
-            'remarks' => $request->deleteProgramRemarks,
-            'budget' => $request->deleteProgramBudget,
-            'action' => "delete",
-        ]);
+        Log::info($request->deleteProgramGassId);
+        
+        if ($request->deleteProgramGassId !== null) {
+            $deleteProgramRequest = ProgramRequest::create([
+                'requestor' => auth()->id(),
+                'name' => $request->deleteProgramName,
+                'program_id' => $request->deleteProgramId,
+                'successIndicator' => $request->deleteProgramSuccessIndicator,
+                'quality' => $request->deleteProgramQuality,
+                'efficiency' => $request->deleteProgramEfficiency,
+                'timeliness' => $request->deleteProgramTimeliness,
+                'remarks' => $request->deleteProgramRemarks,
+                'budget' => $request->deleteProgramBudget,
+                'gass_id' => 1,
+                'action' => "delete",
+            ]);
+        } else {
+            $deleteProgramRequest = ProgramRequest::create([
+                'requestor' => auth()->id(),
+                'name' => $request->deleteProgramName,
+                'program_id' => $request->deleteProgramId,
+                'successIndicator' => $request->deleteProgramSuccessIndicator,
+                'quality' => $request->deleteProgramQuality,
+                'efficiency' => $request->deleteProgramEfficiency,
+                'timeliness' => $request->deleteProgramTimeliness,
+                'remarks' => $request->deleteProgramRemarks,
+                'budget' => $request->deleteProgramBudget,
+                'action' => "delete",
+            ]);
+        }
     }
 
     // ====================== Activity ====================== //

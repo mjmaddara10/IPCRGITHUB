@@ -675,8 +675,9 @@ class ppaController extends Controller
                 $deleteRequestProgram->update([
                     'status' => 'approved',
                 ]);
-            }
-
+            } 
+            
+            ActivityRequest::where('program_id', $program->id)->delete();
             // Now delete the program
             $program->delete();
 
@@ -685,6 +686,9 @@ class ppaController extends Controller
             // If program is not found
             return response()->json(['error' => 'Program not found!'], 404);
         } catch (\Exception $e) {
+            Log::error('Error while deleting program: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
             // Handle any other errors
             return response()->json(['error' => 'An error occurred while trying to delete the program.'], 500);
         }

@@ -16,8 +16,9 @@ class authorizationController extends Controller
         $user = Employee::where('username', $request->username)->first();
 
         if (!$user) {
-            \Log::debug('User not found');
-            return back()->withErrors(['username' => 'Invalid credentials']);
+            return redirect()->back()->with('login_username_failed', 'Username does not exist');
+        } elseif ($user->password !== $request->password) {
+            return redirect()->back()->with('login_password_failed', 'Wrong password');
         }
 
         // Log the user in (default guard)

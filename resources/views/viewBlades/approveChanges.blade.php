@@ -100,7 +100,7 @@
                                     </thead>
                                    <tbody>
                                         @foreach($programRequest as $programRequest)
-                                            @if($programRequest->action === 'add' && $programRequest->gass_id === 1)
+                                            @if($programRequest->action === 'add' && $programRequest->gass_id == 1)
                                                 <tr>
                                                     <td data-order="{{ $programRequest->created_at }}">
                                                         {{ \Carbon\Carbon::parse($programRequest->created_at)->format('F j, Y') }}<br>
@@ -160,7 +160,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            @elseif($programRequest->action === 'edit' && $programRequest->gass_id === 1)
+                                            @elseif($programRequest->action === 'edit' && $programRequest->gass_id == 1)
                                                 <tr>
                                                     <td data-order="{{ $programRequest->created_at }}">
                                                         {{ \Carbon\Carbon::parse($programRequest->created_at)->format('F j, Y') }}<br>
@@ -217,6 +217,37 @@
                                                                 data-reference-program="{{ $programRequest->program_id }}"
                                                                 data-program-divisions='@json($programRequest->divisions->pluck("name"))'
                                                                 data-program-division-id='@json($programRequest->divisions->pluck("id"))' class="btn action-btn buttonHover bg-primary viewEditProgramRequest" title="View details" style="color: #FFFFFF;" data-bs-toggle="modal" data-bs-target="#viewEditProgramRequestModal"><i class="fas fa-eye"></i>
+                                                            </button>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @elseif($programRequest->action === 'delete' && $programRequest->gass_id == 1)
+                                                <tr>
+                                                    <td data-order="{{ $programRequest->created_at }}">
+                                                        {{ \Carbon\Carbon::parse($programRequest->created_at)->format('F j, Y') }}<br>
+                                                        <small class="text-muted">{{ \Carbon\Carbon::parse($programRequest->created_at)->format('g:i A') }}</small>
+                                                    </td>
+                                                    <td>{{ $programRequest->requester->firstName ?? '' }} {{ $programRequest->requester->middleName ? strtoupper(substr($programRequest->requester->middleName, 0, 1)) . '.' : '—' }} {{ $programRequest->requester->lastName ?? '' }}<br>
+                                                        <small class="text-50 text-muted">{{ $programRequest->requester->position ?? '' }}</small>
+                                                    </td>
+                                                    <td>{{ $programRequest->requester->division->name ?? '' }}</td>
+                                                    <td>Delete Critical Activity named, "{{ $programRequest->name }}"</td>
+                                                    <td class="text-center">
+                                                        <div style="display: flex; justify-content: center; gap: 3px;">
+                                                                
+                                                            <button data-program-id="{{ $programRequest->id }}"
+                                                                data-program-name="{{ $programRequest->name }}"
+                                                                data-program-success-indicator="{{ $programRequest->successIndicator }}"
+                                                                data-program-quality="{{ $programRequest->quality }}"
+                                                                data-program-efficiency="{{ $programRequest->efficiency }}"
+                                                                data-program-timeliness="{{ $programRequest->timeliness }}"
+                                                                data-program-remarks="{{ $programRequest->remarks }}"
+                                                                data-program-budget="{{ $programRequest->budget }}"
+                                                                data-program-requestor="{{ $programRequest->requestor }}"
+                                                                data-reference-program="{{ $programRequest->program_id }}"
+                                                                data-program-divisions='@json($programRequest->divisions->pluck("name"))'
+                                                                data-program-division-id='@json($programRequest->divisions->pluck("id"))' class="btn action-btn buttonHover bg-primary viewDeleteProgramRequest" title="View details" style="color: #FFFFFF;" data-bs-toggle="modal" data-bs-target="#viewDeleteProgramRequestModal"><i class="fas fa-eye"></i>
                                                             </button>
 
                                                         </div>

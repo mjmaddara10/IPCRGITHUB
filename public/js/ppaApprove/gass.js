@@ -108,6 +108,7 @@ $(document).on('submit', '.addGassCritApproveForm', function(e) {
                 data: {
                     _token: $('input[name="_token"]').val(),
                     addProgramName: $('#AddGassCritNameRequest').val(),
+                    addGassCritRequestId: $('#addGassCritRequestId').val(),
                     addSuccessIndicator: $('#AddGassCritSuccessIndicatorRequest').val(),
                     addQuality: $('#AddGassCritQualityRequest').val(),
                     addEfficiency: $('#AddGassCritEfficiencyRequest').val(),
@@ -119,7 +120,7 @@ $(document).on('submit', '.addGassCritApproveForm', function(e) {
                 success: function(response) {
                     Swal.fire({
                         title: 'Success!',
-                        text: 'Critical ctivity added successfully.',
+                        text: 'Critical Activity added successfully.',
                         icon: 'success',
                         confirmButtonColor: '#03592c'
                     }).then(() => {

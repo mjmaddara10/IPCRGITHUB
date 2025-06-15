@@ -15,6 +15,7 @@ use App\Models\Division;
 use App\Models\AuditTrail;
 use App\Models\Gass;
 use App\Models\GassRequest;
+use App\Models\ProgramRequest;
 
 class gassController extends Controller
 {
@@ -81,6 +82,14 @@ class gassController extends Controller
                 'order' => $maxOrder + 1,
                 'gass_id' => $gass->id,
             ]);
+
+            Log::info('Add GASS Request Id:', [$request->addGassCritRequestId]);
+            if ($request->filled('addGassCritRequestId')) {
+            $addRequestGassCrit = ProgramRequest::findOrFail($request->addGassCritRequestId);
+            $addRequestGassCrit->update([
+                'status' => 'approved',
+            ]);
+        }
 
             // Check if 'all' is selected
             if (in_array('all', $request->divisions)) {

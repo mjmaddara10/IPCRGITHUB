@@ -100,6 +100,9 @@ $(document).on('click', '.deleteProgramRequestBtn', function(e) {
     var programTimeliness = $(this).data('program-timeliness');
     var programRemarks = $(this).data('program-remarks');
     var programBudget = $(this).data('program-budget');
+    var gassId = $(this).data('gass-id');
+
+    console.log("gass id:" + gassId);
 
     Swal.fire({
         title: "Are you sure?",
@@ -123,6 +126,7 @@ $(document).on('click', '.deleteProgramRequestBtn', function(e) {
                     deleteProgramTimeliness: programTimeliness,
                     deleteProgramRemarks: programRemarks,
                     deleteProgramBudget: programBudget,
+                    deleteProgramGassId: gassId,
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
