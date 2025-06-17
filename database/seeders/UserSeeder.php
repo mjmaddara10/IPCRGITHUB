@@ -295,7 +295,7 @@ class UserSeeder extends Seeder
                 'password' => 'CPascua',
                 'role' => 'Staff',
             ],[
-                'firstName' => 'Anna Riza',
+                'firstName' => 'Anna Rizza',
                 'middleName' => 'A',
                 'lastName' => 'Pumanes',
                 'position' => 'Administrative Aide IV (HRM Aide)',

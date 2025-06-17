@@ -15,12 +15,12 @@ class CreateProgramsTable extends Migration
     {
         Schema::create('programs', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 50);
-            $table->string('successIndicator', 500)->nullable(); 
-            $table->string('quality', 500)->nullable(); 
-            $table->string('efficiency', 500)->nullable(); 
-            $table->string('timeliness', 500)->nullable(); 
-            $table->string('remarks', 500)->nullable();
+            $table->string('name', 100);
+            $table->text('successIndicator')->nullable(); 
+            $table->text('quality')->nullable(); 
+            $table->text('efficiency')->nullable(); 
+            $table->text('timeliness')->nullable(); 
+            $table->text('remarks')->nullable();
             $table->string('budget', 11)->nullable(); 
             $table->timestamps();
         });

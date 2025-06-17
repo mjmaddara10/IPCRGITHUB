@@ -14,11 +14,11 @@ class CreateActivitiesTable extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id(); // Primary key
             $table->string('name', 255)->nullable();
-            $table->string('successIndicator', 500)->nullable();
-            $table->string('quality', 500)->nullable();
-            $table->string('efficiency', 500)->nullable();
-            $table->string('timeliness', 500)->nullable();
-            $table->string('remarks', 500)->nullable();
+            $table->text('successIndicator')->nullable();
+            $table->text('quality')->nullable();
+            $table->text('efficiency')->nullable();
+            $table->text('timeliness')->nullable();
+            $table->text('remarks')->nullable();
             
             $table->unsignedBigInteger('program_id')->nullable();
             $table->foreign('program_id')->references('id')->on('programs')->onDelete('cascade');

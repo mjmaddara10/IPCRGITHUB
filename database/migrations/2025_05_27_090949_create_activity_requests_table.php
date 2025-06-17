@@ -19,11 +19,11 @@ return new class extends Migration
             
             // Data to add
             $table->string('name', 250)->nullable(); 
-            $table->string('successIndicator', 500)->nullable(); 
-            $table->string('quality', 500)->nullable(); 
-            $table->string('efficiency', 500)->nullable(); 
-            $table->string('timeliness', 500)->nullable(); 
-            $table->string('remarks', 500)->nullable();
+            $table->text('successIndicator')->nullable(); 
+            $table->text('quality')->nullable(); 
+            $table->text('efficiency')->nullable(); 
+            $table->text('timeliness')->nullable(); 
+            $table->text('remarks')->nullable();
             
             $table->string('status')->default('pending');
             $table->string('action')->nullable(); 

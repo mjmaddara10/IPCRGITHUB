@@ -154,7 +154,7 @@
                                 $divisionIds = $program->divisions->pluck('id')->implode(',');
                             @endphp
                             <tr class="programRow" id="program-{{ $program->id }}" data-division-ids="{{ $divisionIds }}" data-program-id="{{ $program->id }}" style="vertical-align: top;">
-                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase default-text" style="background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
+                                <td class="text-left border border-muted ps-1 fw-bold text-uppercase default-text" style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF">{{ $program->name }}</td>
                                 <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->successIndicator }}</td>
                                 <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->quality }}</td>
                                 <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: #03592c; color:#FFFFFF;">{{ $program->efficiency }}</td>
@@ -239,7 +239,7 @@
                             @foreach ($program->activities->sortBy('order') as $activity)
                                 <tr class="activityRow" id="activity-{{ $activity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
                                     <td class="text-left" hidden>{{ $activity->id }}</td>
-                                    <td class="text-left border border-muted default-text" style="background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
+                                    <td class="text-left border border-muted default-text" style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
                                     <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->successIndicator }}</td>
                                     <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->quality }}</td>
                                     <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
@@ -321,7 +321,7 @@
                                 @foreach($activity->subActivities->sortBy('order') as $subActivity)
                                     <tr class="subActivityRow" id="subActivity-{{ $subActivity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
                                         <td class="text-left" hidden>{{ $subActivity->id }}</td>
-                                        <td class="text-left ps-3 border border-muted default-text">{{ $subActivity->name }}</td>
+                                        <td class="text-left ps-3 border border-muted default-text" style="white-space: pre-wrap;">{{ $subActivity->name }}</td>
                                         <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
                                         <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
                                         <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
@@ -439,7 +439,7 @@
                                     $divisionIds = $program->divisions->pluck('id')->implode(',');
                                 @endphp
                                 <tr class="programRow" id="program-{{ $program->id }}" data-program-id="{{ $program->id }}" style="vertical-align: top;">
-                                    <td class="text-left border border-muted ps-1 fw-bold text-uppercase default-text" style="background-color:rgb(2, 113, 56); color:#FFFFFF">{{ $program->name }}</td>
+                                    <td class="text-left border border-muted ps-1 fw-bold text-uppercase default-text" style="white-space: pre-wrap; background-color:rgb(2, 113, 56); color:#FFFFFF">{{ $program->name }}</td>
                                     <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $program->successIndicator }}</td>
                                     <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $program->quality }}</td>
                                     <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color: rgb(2, 113, 56); color:#FFFFFF;">{{ $program->efficiency }}</td>
@@ -523,7 +523,7 @@
                                 @foreach ($program->activities->sortBy('order') as $activity)
                                     <tr class="activityRow" id="activity-{{ $activity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
                                         <td class="text-left" hidden>{{ $activity->id }}</td>
-                                        <td class="text-left border border-muted default-text" style="background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
+                                        <td class="text-left border border-muted default-text" style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->name }}</td>
                                         <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->successIndicator }}</td>
                                         <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->quality }}</td>
                                         <td class="text-left border border-muted default-text"style="white-space: pre-wrap; background-color:rgb(212, 212, 212);">{{ $activity->efficiency }}</td>
@@ -591,13 +591,13 @@
                                     @foreach($activity->subActivities->sortBy('order') as $subActivity)
                                         <tr class="subActivityRow" id="subActivity-{{ $subActivity->id }}" data-program-id="{{ $program->id }}" data-activity-id="{{ $activity->id }}" data-parent-program-id="{{ $program->id }}">
                                             <td class="text-left" hidden>{{ $subActivity->id }}</td>
-                                            <td class="text-left ps-3 border border-muted default-text">{{ $subActivity->name }}</td>
-                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
-                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
-                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
-                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
-                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
-                                            <td class="text-left border border-muted default-text"style="white-space: pre-wrap;"></td>
+                                            <td class="text-left ps-3 border border-muted default-text" style="white-space: pre-wrap;">{{ $subActivity->name }}</td>
+                                            <td class="text-left border border-muted default-text" style="white-space: pre-wrap;">{{ $subActivity->successIndicator }}</td>
+                                            <td class="text-left border border-muted default-text" style="white-space: pre-wrap;">{{ $subActivity->quality }}</td>
+                                            <td class="text-left border border-muted default-text" style="white-space: pre-wrap;">{{ $subActivity->efficiency }}</td>
+                                            <td class="text-left border border-muted default-text" style="white-space: pre-wrap;">{{ $subActivity->timeliness }}</td>
+                                            <td class="text-left border border-muted default-text" style="white-space: pre-wrap;">{{ $subActivity->remarks }}</td>
+                                            <td class="text-left border border-muted default-text" style="white-space: pre-wrap;"></td>
                                             @php
                                                 $allEmployeeCount = \App\Models\Employee::count();
                                                 $assignedCountAccountable = $activity->employees->count();

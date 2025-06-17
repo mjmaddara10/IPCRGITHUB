@@ -52,13 +52,13 @@ function populateAccountableOptions(accountables) {
     $selects.each(function () {
         const $select = $(this);
         $select.empty();
-        $select.append('<option value="">Select accountable person</option>');
+        $select.append(`<option value="">Select accountable person</option>`);
 
         accountables.forEach(accountable => {
             $select.append(`<option value="${accountable.id}">${accountable.name} | ${accountable.position}</option>`);
         });
 
-        $select.append('<option value="od">All Employees from Organizational Development</option>');
+        $select.append(`<option value="od">All Employees from Organizational Development</option>`);
     });
 }
 
@@ -73,15 +73,15 @@ $('#addAccountablePersonBtn').on('click', function () {
 
     // Use the first select as the template for options
     const firstSelect = $('.accountableSelect').first();
-    const $newGroup = $(`
-        <div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
+    const $newGroup = $(
+        `<div class="accountable-select-group mb-2 d-flex gap-2 align-items-center">
             <select class="form-select border-2 py-2 accountableSelect" name="addAccountableId[]" style="border-color: #03592c; background-color: #ffffff;">
             </select>
             <button type="button" class="btn btn-danger btn-sm removeAccountableBtn">
                 <i class="fas fa-minus"></i>
             </button>
-        </div>
-    `);
+        </div>`
+    );
 
     const $newSelect = $newGroup.find('select');
     
