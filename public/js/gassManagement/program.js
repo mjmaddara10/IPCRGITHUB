@@ -38,7 +38,7 @@ function addGassDivisionSelect(selectedId = null) {
     });
 
     const allSelected = selectedId === 'all' ? 'selected' : '';
-    selectHtml += `<option value="all" ${allSelected}>All Divisions</option>`;
+    // selectHtml += `<option value="all" ${allSelected}>All Divisions</option>`;
 
     selectHtml += `</select>
         <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">

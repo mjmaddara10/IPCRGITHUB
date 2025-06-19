@@ -686,10 +686,10 @@
                     <!-- Division Responsible -->
                     <div class="mb-3">
                         <div class="d-flex align-items-center gap-2 mb-2">
-                            <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
-                            <button class="btn btn-sm text-white buttonHover" id="addDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
+                            <label class="form-label fw-bold text-dark mb-0">Division Responsible:</label>
+                            <!-- <button class="btn btn-sm text-white buttonHover" id="addDivisionBtn" title="Add division responsible" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
-                            </button>
+                            </button> -->
                         </div>
                         <div id="divisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
                             <div class="division-select-group mb-2 d-flex gap-2 align-items-center">
@@ -697,11 +697,11 @@
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}">{{ $division->name }}</option>
                                     @endforeach
-                                    <option value="all">All Divisions</option>
+                                    <!-- <option value="all">All Divisions</option> -->
                                 </select>
-                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
+                                <!-- <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
                                     <i class="fas fa-minus"></i>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                     </div>
@@ -812,10 +812,10 @@
                     <!-- Division Responsible -->
                     <div class="mb-3">
                         <div class="d-flex align-items-center gap-2 mb-2">
-                            <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
-                            <button class="btn btn-sm text-white" id="editAddDivisionBtn" type="button" title="Add division responsible" style="background-color: #01a550;">
+                            <label class="form-label fw-bold text-dark mb-0">Division Responsible:</label>
+                            <!-- <button class="btn btn-sm text-white" id="editAddDivisionBtn" type="button" title="Add division responsible" style="background-color: #01a550;">
                                 <i class="fas fa-plus"></i>
-                            </button>
+                            </button> -->
                         </div>
 
                         <div id="editDivisionSelectContainer" data-divisions="{{ json_encode($divisions) }}">
@@ -824,11 +824,11 @@
                                     @foreach ($divisions as $division)
                                         <option value="{{ $division->id }}">{{ $division->name }}</option>
                                     @endforeach
-                                    <option value="all">All Divisions</option>
+                                    <!-- <option value="all">All Divisions</option> -->
                                 </select>
-                                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
+                                <!-- <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled>
                                     <i class="fas fa-minus"></i>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                     </div>

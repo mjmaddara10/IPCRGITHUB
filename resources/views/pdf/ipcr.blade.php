@@ -68,7 +68,7 @@
 
     <body class="calibri">
         <main>
-            @if($employee->role === 'Staff')
+            @if($employee->role === 'Staff' || $employee->role === 'Assistant Department Head')
                 @foreach ($groupedTargetsBySignatory as $signatoryName => $data)
                     <div @if(!$loop->first) style="page-break-before: always;" @endif>
                         <!-- Info & Table -->
@@ -76,22 +76,36 @@
                             <thead>
                                 <tr>
                                     <!-- Header -->
-                                    <td colspan="6" style="text-align: justify; padding: 6px; vertical-align: middle;">
-                                        <div style="width: 100%; text-align: center;">
-                                            <strong class="medium">INDIVIDUAL PERFORMANCE COMMITMENT AND REVIEW (TARGETS)</strong>
-                                        </div>
-                                    </td>
+                                    @if($employee->role === 'Staff')
+                                        <td colspan="6" style="text-align: justify; padding: 6px; vertical-align: middle;">
+                                            <div style="width: 100%; text-align: center;">
+                                                <strong class="medium">INDIVIDUAL PERFORMANCE COMMITMENT AND REVIEW (TARGETS)</strong>
+                                            </div>
+                                        </td>
+                                    @else
+                                        <td colspan="6" style="text-align: justify; padding: 6px; vertical-align: middle;">
+                                            <div style="width: 100%; text-align: center;">
+                                                <strong class="medium">DIVISION PERFORMANCE COMMITMENT AND REVIEW (DPCR)</strong>
+                                            </div>
+                                        </td>
+                                    @endif
                                 </tr>
 
                                 <tr>
-                                    <td colspan="6" style="text-align: justify; padding: 6px; vertical-align: middle;">
-                                        <p class="small bold">
-                                            I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }},
-                                            {{ $employee->position }} - {{ $employee->status }} of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE,
-                                            {{ strtoupper($employee->division->name) ?? '' }},
-                                            commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }}.
-                                        </p>
-                                    </td>
+                                    @if($employee->role === 'Staff')
+                                        <td colspan="6" style="text-align: justify; padding: 6px; vertical-align: middle;">
+                                            <p class="small bold">
+                                                I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }},
+                                                {{ $employee->position }} - {{ $employee->status }} of the PROVINCIAL HUMAN RESOURCE MANAGEMENT OFFICE,
+                                                {{ strtoupper($employee->division->name) ?? '' }},
+                                                commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }}.
+                                            </p>
+                                        </td>
+                                    @else
+                                        <td colspan="6" style="text-align: justify; padding: 6px; vertical-align: middle;" >
+                                            <p class="small bold">I, {{ strtoupper($employee->firstName . ' ' . ($employee->middleName ? substr($employee->middleName, 0, 1) . '. ' : '') . $employee->lastName) }}, PHRMO, Provincial Government of Nueva Vizcaya, commit to deliver and agree to be rated on the attainment of the following target in accordance with the indicated measures for the period {{ $dateRange }}.</p>
+                                        </td>
+                                    @endif
                                 </tr>
 
                                 <!-- Spacer -->
@@ -115,30 +129,60 @@
                                 <tr class="small"><td colspan="6" style="height:30px;"></td></tr>
 
                                 <!-- Sign -->
-                                <tr class="smaller">
-                                    <td class="border">Reviewed by</td>
-                                    <td class="border"></td>
-                                    <td class="border"></td>
-                                    <td class="border"></td>
-                                    <td class="border">Approved by</td>
-                                    <td class="border"></td>
-                                </tr>
-                                <tr class="smaller bold" style="text-align: center;">
-                                    <td class="border" style="padding-top: 30px;">{{ $signatoryName }}</td>
-                                    <td class="border" style="padding-top: 30px;"></td>
-                                    <td class="border" style="padding-top: 30px;">CAROL G. GUNTALILIB</td>
-                                    <td class="border" style="padding-top: 30px;"></td>
-                                    <td class="border" style="padding-top: 30px;">MA. CARLA LUCIA M. TORRALBA, DDM</td>
-                                    <td class="border" style="padding-top: 30px;"></td>
-                                </tr>
-                                <tr class="smaller" style="text-align: center;">
-                                    <td class="border">{{ $data['signatoryPosition'] }}</td>
-                                    <td class="border">Date</td>
-                                    <td class="border">Assistant PHRMO</td>
-                                    <td class="border">Date</td>
-                                    <td class="border">PHRMO</td>
-                                    <td class="border">Date</td>
-                                </tr>
+                                @if($employee->role === 'Staff')
+                                    <tr class="smaller">
+                                        <td class="border">Reviewed by</td>
+                                        <td class="border"></td>
+                                        <td class="border"></td>
+                                        <td class="border"></td>
+                                        <td class="border">Approved by</td>
+                                        <td class="border"></td>
+                                    </tr>
+                                    <tr class="smaller bold" style="text-align: center;">
+                                        <td class="border" style="padding-top: 30px;">{{ $signatoryName }}</td>
+                                        <td class="border" style="padding-top: 30px;"></td>
+                                        <td class="border" style="padding-top: 30px;">CAROL G. GUNTALILIB</td>
+                                        <td class="border" style="padding-top: 30px;"></td>
+                                        <td class="border" style="padding-top: 30px;">MA. CARLA LUCIA M. TORRALBA, DDM</td>
+                                        <td class="border" style="padding-top: 30px;"></td>
+                                    </tr>
+                                    <tr class="smaller" style="text-align: center;">
+                                        <td class="border">{{ $data['signatoryPosition'] }}</td>
+                                        <td class="border">Date</td>
+                                        <td class="border">Assistant PHRMO</td>
+                                        <td class="border">Date</td>
+                                        <td class="border">PHRMO</td>
+                                        <td class="border">Date</td>
+                                    </tr>
+                                @else
+                                    <tr class="smaller">
+                                        <td class="border">Reviewed by</td>
+                                        <td class="border"></td>
+                                        <td class="border"></td>
+                                        <td class="border"></td>
+                                        <td class="border">Approved by</td>
+                                        <td class="border"></td>
+                                    </tr>
+
+                                    <tr class="smaller bold" style="text-align: center;">
+                                        <td style="padding-top: 30px;" class="border">CAROL G. GUNTALILIB</td> <!--Supervisor-->
+                                        <td style="padding-top: 30px;" class="border"></td>
+                                        <td style="padding-top: 30px;" class="border"></td>
+                                        <td class="border"></td>
+                                        <td style="padding-top: 30px;" class="border">MA. CARLA LUCIA M. TORRALBA, DDM</td>
+                                        <td class="border"></td>
+                                    </tr>
+
+                                    <!-- Position -->
+                                    <tr class="smaller" style="text-align: center;">
+                                        <td class="border">Assistant PHRMO</td>
+                                        <td class="border" >Date</td>
+                                        <td class="border"></td>
+                                        <td class="border"></td>
+                                        <td class="border">PHRMO</td>
+                                        <td class="border">Date</td>
+                                    </tr>
+                                @endif
 
                                 <tr class="smaller"><td colspan="6" style="height:30px;"></td></tr>
 

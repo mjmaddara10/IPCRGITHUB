@@ -59,21 +59,21 @@ function addDivisionSelect(selectedId = null) {
     const allSelected = selectedId === 'all' ? 'selected' : '';
     selectHtml += `<option value="all" ${allSelected}>All Divisions</option>`;
 
-    selectHtml += `</select>
-        <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-            <i class="fas fa-minus"></i>
-        </button>
-    </div>`;
+    // selectHtml += `</select>
+    //     <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+    //         <i class="fas fa-minus"></i>
+    //     </button>
+    // </div>`;
 
     $('#editDivisionSelectContainer').append(selectHtml);
 }
 
 // Utility: Disable first remove button
-function updateRemoveButtons() {
-    const removeBtns = $('#editDivisionSelectContainer .removeDivisionBtn');
-    removeBtns.prop('disabled', false);
-    removeBtns.first().prop('disabled', true);
-}
+// function updateRemoveButtons() {
+//     const removeBtns = $('#editDivisionSelectContainer .removeDivisionBtn');
+//     removeBtns.prop('disabled', false);
+//     removeBtns.first().prop('disabled', true);
+// }
 
 // Utility: Disable already selected divisions
 function updateDivisionOptions() {
@@ -311,9 +311,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 <select class="form-select selectDivision" name="divisions[]">
                     ${optionsHTML}
                 </select>
-                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled title="Cannot remove when 'All Divisions' is selected">
-                    <i class="fas fa-minus"></i>
-                </button>
+                // <button type="button" class="btn btn-danger btn-sm removeDivisionBtn" disabled title="Cannot remove when 'All Divisions' is selected">
+                //     <i class="fas fa-minus"></i>
+                // </button>
             </div>
         `;
         divisionContainer.insertAdjacentHTML('beforeend', selectGroupHTML);
@@ -379,9 +379,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 <select class="form-select selectDivision" name="divisions[]">
                     ${optionsHTML}
                 </select>
-                <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
-                    <i class="fas fa-minus"></i>
-                </button>
+                // <button type="button" class="btn btn-danger btn-sm removeDivisionBtn">
+                //     <i class="fas fa-minus"></i>
+                // </button>
             </div>
         `;
 

@@ -79,6 +79,121 @@ class pdfController extends Controller
                     }
                 }
             }
+        } elseif ($role === 'Division Chief') {
+            $divisionId = $employee->division_id; // Get division of the logged-in chief
+
+            $programs = Program::whereHas('divisions', function ($query) use ($divisionId) {
+                $query->where('divisions.id', $divisionId);
+            })
+            ->with([
+                'divisions',
+                'activities.subActivities.employees',
+                'activities.employees',
+                'gass'
+            ])
+            ->get();
+
+            
+
+            
+
+            foreach ($programs as $program) {
+                foreach ($program->activities as $activity) {
+                    $activityEmployees = $activity->employees->map(function ($emp) {
+                        return $emp->username;
+                    })->toArray();
+
+                    if ($activity->subActivities->isEmpty()) {
+                        // Add only activity-level entry
+                        $programData = [
+                            'program_id' => $program->id,
+                            'program_name' => $program->name,
+                            'program_order' => $program->order ?? 0,
+                            'program_division' => $program->divisions->pluck('name')->toArray(),
+                            'program_budget' => $program->budget,
+                            'program_success_indicator' => $program->successIndicator,
+                            'program_quality' => $program->quality,
+                            'program_efficiency' => $program->efficiency,
+                            'program_timeliness' => $program->timeliness,
+                            'program_remarks' => $program->remarks,
+                            'activity_id' => $activity->id,
+                            'activity_name' => $activity->name,
+                            'activity_order' => $activity->order ?? 0,
+                            'activity_success_indicator' => $activity->successIndicator,
+                            'activity_quality' => $activity->quality,
+                            'activity_efficiency' => $activity->efficiency,
+                            'activity_timeliness' => $activity->timeliness,
+                            'activity_remarks' => $activity->remarks,
+                            'activity_employees' => $activityEmployees,
+                            'sub_activity_employees' => $subActivityEmployees,
+                            'sub_activity_id' => null,
+                            'sub_activity_name' => null,
+                            'sub_activity_success_indicator' => null,
+                            'sub_activity_quality' => null,
+                            'sub_activity_efficiency' => null,
+                            'sub_activity_timeliness' => null,
+                            'sub_activity_remarks' => null,
+                            'sub_activity_order' => null,
+                            'gass_id' => $program->gass_id,
+                            'gass_name' => $program->gass->name ?? null,
+                            'gass_budget' => $program->gass->budget ?? null,
+                        ];
+
+                        if ($program->gass_id) {
+                            $gassPrograms[] = $programData;
+                        } else {
+                            $targets[] = $programData;
+                        }
+                    } else {
+                        // Include all sub-activities
+                        foreach ($activity->subActivities as $sub) {
+                            $subActivityEmployees = $sub->employees->map(function ($emp) {
+                                return $emp->username;
+                            })->toArray();
+
+                            $programData = [
+                                'program_id' => $program->id,
+                                'program_name' => $program->name,
+                                'program_order' => $program->order ?? 0,
+                                'program_division' => $program->divisions->pluck('name')->toArray(),
+                                'program_budget' => $program->budget,
+                                'program_success_indicator' => $program->successIndicator,
+                                'program_quality' => $program->quality,
+                                'program_efficiency' => $program->efficiency,
+                                'program_timeliness' => $program->timeliness,
+                                'program_remarks' => $program->remarks,
+                                'activity_id' => $activity->id,
+                                'activity_name' => $activity->name,
+                                'activity_order' => $activity->order ?? 0,
+                                'activity_success_indicator' => $activity->successIndicator,
+                                'activity_quality' => $activity->quality,
+                                'activity_efficiency' => $activity->efficiency,
+                                'activity_timeliness' => $activity->timeliness,
+                                'activity_remarks' => $activity->remarks,
+                                'activity_employees' => $activityEmployees,
+                                'sub_activity_employees' => $subActivityEmployees,
+                                'sub_activity_id' => $sub->id,
+                                'sub_activity_name' => $sub->name,
+                                'sub_activity_order' => $sub->order ?? 0,
+                                'sub_activity_success_indicator' => $sub->successIndicator,
+                                'sub_activity_quality' => $sub->quality,
+                                'sub_activity_efficiency' => $sub->efficiency,
+                                'sub_activity_timeliness' => $sub->timeliness,
+                                'sub_activity_remarks' => $sub->remarks,
+                                'gass_id' => $program->gass_id,
+                                'gass_name' => $program->gass->name ?? null,
+                                'gass_budget' => $program->gass->budget ?? null,
+                            ];
+
+                            if ($program->gass_id) {
+                                $gassPrograms[] = $programData;
+                            } else {
+                                $targets[] = $programData;
+                            }
+                        }
+                    }
+                }
+            }
         }
         // 🔹 FOR STAFF or DIVISION CHIEF — only get what they are assigned to
         else {
@@ -216,7 +331,7 @@ class pdfController extends Controller
                 'isPhpEnabled' => true,
                 'isRemoteEnabled' => true,
             ]);
-        } elseif ($employee->role === 'Division Chief' || $employee->role === 'Assistant Department Head') {
+        } elseif ($employee->role === 'Division Chief') {
             $pdf = PDF::loadView('pdf.dpcr', $data)->setPaper([0, 0, 936.0, 612.0]);
             $pdf->set_option("isPhpEnabled", true);
             $pdf->set_option("isHtml5ParserEnabled", true);

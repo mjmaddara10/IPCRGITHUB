@@ -704,7 +704,7 @@ class ppaController extends Controller
             return response()->json([]);
         }
 
-        $accountables = Employee::whereIn('role', ['Staff', 'Division Chief']) // Include both roles
+        $accountables = Employee::whereIn('role', ['Staff', 'Division Chief', 'Assistant Department Head']) // Include both roles
             ->get();
 
         $results = $accountables->map(function ($employee) {

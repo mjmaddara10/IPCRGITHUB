@@ -57,7 +57,7 @@ $(document).ready(function () {
                 let tbody = $('#usersTable tbody');
                 tbody.empty();
         
-                const isDeptHead = (role === 'Department Head' || role === 'Assistant Department Head');
+                const isDeptHead = (role === 'Department Head');
         
                 if (isDeptHead) {
                     $('#thead-default').addClass('d-none');
@@ -458,7 +458,7 @@ $('#employeeSelect').on('change', function () {
                 let tbody = $('#usersTable tbody');
                 tbody.empty();
         
-                const isDeptHead = (role === 'Department Head' || role === 'Assistant Department Head');
+                const isDeptHead = (role === 'Department Head');
         
                 if (isDeptHead) {
                     $('#thead-default').addClass('d-none');
