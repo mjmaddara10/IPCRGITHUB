@@ -533,7 +533,7 @@
                 <!-- Division Responsible -->
                 <div class="mb-3">
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
+                        <label class="form-label fw-bold text-dark mb-0">Division Responsible:</label>
                     </div>
                     <div id="divisionInputsContainer" class="mb-2 d-flex flex-column gap-2">
                         <!-- JS will insert text inputs here -->
@@ -639,7 +639,7 @@
                 <!-- Division Responsible -->
                 <div class="mb-3">
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
+                        <label class="form-label fw-bold text-dark mb-0">Division Responsible:</label>
                     </div>
                     <div id="currentProgramDivisionsContainer" class="mb-2 d-flex flex-column gap-2">
                         <!-- JS will insert text inputs here -->
@@ -702,7 +702,7 @@
                 </div>
                 <div class="mb-3">
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
+                        <label class="form-label fw-bold text-dark mb-0">Division Responsible:</label>
                     </div>
                     <div id="divisionInputsContainerEditProgram" class="mb-2 d-flex flex-column gap-2">
                         <!-- JS will insert text inputs here -->
@@ -804,7 +804,7 @@
                 <!-- Division Responsible -->
                 <div class="mb-3">
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
+                        <label class="form-label fw-bold text-dark mb-0">Division Responsible:</label>
                     </div>
                     <div id="divisionInputsContainerDeleteProgram" class="mb-2 d-flex flex-column gap-2">
                         <!-- JS will insert text inputs here -->
@@ -1693,7 +1693,7 @@
                 <!-- Division Responsible -->
                 <div class="mb-3">
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <label class="form-label fw-bold text-dark mb-0">Division/s Responsible:</label>
+                        <label class="form-label fw-bold text-dark mb-0">Division Responsible:</label>
                     </div>
                     <div id="divisionInputsContainerAddGassCrit" class="mb-2 d-flex flex-column gap-2">
                         <!-- JS will insert text inputs here -->
